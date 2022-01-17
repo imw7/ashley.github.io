@@ -1,0 +1,1005 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go语言基础之包 | 魏奇的博客</title>
+    <meta property="og:title" content="Go语言基础之包 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-04-05T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-04-05T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go语言基础之包">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/11_package/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#包介绍">包介绍</a></li>
+    <li><a href="#定义包">定义包</a></li>
+    <li><a href="#可见性">可见性</a></li>
+    <li><a href="#包的导入">包的导入</a>
+      <ul>
+        <li><a href="#单行导入">单行导入</a></li>
+        <li><a href="#多行导入">多行导入</a></li>
+      </ul>
+    </li>
+    <li><a href="#自定义包名">自定义包名</a></li>
+    <li><a href="#匿名导入包">匿名导入包</a></li>
+    <li><a href="#init初始化函数">init()初始化函数</a>
+      <ul>
+        <li><a href="#init函数介绍">init()函数介绍</a></li>
+        <li><a href="#init函数执行顺序">init()函数执行顺序</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go语言基础之包</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年4月5日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>在工程化的Go语言开发项目中，Go语言的源码复用是建立在包（package）基础之上的。本文介绍了Go语言中如何定义包、如何导出包的内容及如何导入其他包。</p>
+<h1 id="go语言的包package">Go语言的包（package）</h1>
+<h2 id="包介绍">包介绍</h2>
+<p><code>包（package）</code>是多个Go源码的集合，是一种高级的代码复用方案，Go语言为我们提供了很多内置包，如<code>fmt</code>、<code>os</code>、<code>io</code>等。</p>
+<h2 id="定义包">定义包</h2>
+<p>我们还可以根据自己的需要创建自己的包。一个包可以简单理解为一个存放<code>.go</code>文件的文件夹。 该文件夹下面的所有go文件都要在代码的第一行添加如下代码，声明该文件归属的包。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> 包名
+</code></pre></td></tr></table>
+</div>
+</div><p>注意事项：</p>
+<ul>
+<li>一个文件夹下面直接包含的文件只能归属一个<code>package</code>，同样一个<code>package</code>的文件不能在多个文件夹下。</li>
+<li>包名可以不和文件夹的名字一样，包名不能包含 <code>-</code> 符号。</li>
+<li>包名为<code>main</code>的包为应用程序的入口包，这种包编译后会得到一个可执行文件，而编译不包含<code>main</code>包的源代码则不会得到可执行文件。</li>
+</ul>
+<h2 id="可见性">可见性</h2>
+<p>如果想在一个包中引用另外一个包里的标识符（如变量、常量、类型、函数等）时，该标识符必须是对外可见的（public）。在Go语言中只需要将标识符的首字母大写就可以让标识符对外可见了。</p>
+<p>举个例子， 我们定义一个包名为<code>pkg2</code>的包，代码如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> pkg2
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+
+<span style="color:#888;font-style:italic">// 包变量可见性
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">var</span> a = 100 <span style="color:#888;font-style:italic">// 首字母小写，外部包不可见，只能在当前包内使用
+</span><span style="color:#888;font-style:italic"></span>
+<span style="color:#888;font-style:italic">// 首字母大写外部包可见，可在其他包中使用
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">const</span> Mode = 1
+
+<span style="font-weight:bold;font-style:italic">type</span> person <span style="font-weight:bold;font-style:italic">struct</span> { <span style="color:#888;font-style:italic">// 首字母小写，外部包不可见，只能在当前包内使用
+</span><span style="color:#888;font-style:italic"></span>	name <span style="font-weight:bold">string</span>
+}
+
+<span style="color:#888;font-style:italic">// 首字母大写，外部包可见，可在其他包中使用
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Add</span>(x, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x + y
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">age</span>() { <span style="color:#888;font-style:italic">// 首字母小写，外部包不可见，只能在当前包内使用
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> Age = 18 <span style="color:#888;font-style:italic">// 函数局部变量，外部包不可见，只能在当前函数内使用
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(Age)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>结构体中的字段名和接口中的方法名如果首字母都是大写，外部包可以访问这些字段和方法。例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">type</span> Student <span style="font-weight:bold;font-style:italic">struct</span> {
+	Name  <span style="font-weight:bold">string</span> <span style="color:#888;font-style:italic">//可在包外访问的方法
+</span><span style="color:#888;font-style:italic"></span>	class <span style="font-weight:bold">string</span> <span style="color:#888;font-style:italic">//仅限包内访问的字段
+</span><span style="color:#888;font-style:italic"></span>}
+
+<span style="font-weight:bold;font-style:italic">type</span> Payer <span style="font-weight:bold;font-style:italic">interface</span> {
+	<span style="color:#666;font-weight:bold;font-style:italic">init</span>() <span style="color:#888;font-style:italic">//仅限包内访问的方法
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#666;font-weight:bold;font-style:italic">Pay</span>()  <span style="color:#888;font-style:italic">//可在包外访问的方法
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="包的导入">包的导入</h2>
+<p>要在代码中引用其他包的内容，需要使用<code>import</code>关键字导入使用的包。具体语法如下:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;包的路径&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>注意事项：</p>
+<ul>
+<li>import导入语句通常放在文件开头包声明语句的下面。</li>
+<li>导入的包名需要使用双引号包裹起来。</li>
+<li>包名是从<code>$GOPATH/src/</code>后开始计算的，使用<code>/</code>进行路径分隔。</li>
+<li>Go语言中禁止循环导入包。</li>
+</ul>
+<h3 id="单行导入">单行导入</h3>
+<p>单行导入的格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;包1&#34;</span>
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;包2&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="多行导入">多行导入</h3>
+<p>多行导入的格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> (
+    <span style="color:#666;font-style:italic">&#34;包1&#34;</span>
+    <span style="color:#666;font-style:italic">&#34;包2&#34;</span>
+)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="自定义包名">自定义包名</h2>
+<p>在导入包名的时候，我们还可以为导入的包设置别名。通常用于导入的包名太长或者导入的包名冲突的情况。具体语法格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> 别名 <span style="color:#666;font-style:italic">&#34;包的路径&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>单行导入方式定义别名：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+<span style="font-weight:bold">import</span> m <span style="color:#666;font-style:italic">&#34;imw7.com/studygo/pkg_test&#34;</span>
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(m.<span style="color:#666;font-weight:bold;font-style:italic">Add</span>(100, 200))
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(m.Mode)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>多行导入方式定义别名：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> (
+    <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+    m <span style="color:#666;font-style:italic">&#34;imw7.com/studygo/pkg_test&#34;</span>
+ )
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(m.<span style="color:#666;font-weight:bold;font-style:italic">Add</span>(100, 200))
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(m.Mode)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="匿名导入包">匿名导入包</h2>
+<p>如果只希望导入包，而不使用包内部的数据时，可以使用匿名导入包。具体的格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> _ <span style="color:#666;font-style:italic">&#34;包的路径&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>匿名导入的包与其他方式导入的包一样都会被编译到可执行文件中。</p>
+<h2 id="init初始化函数">init()初始化函数</h2>
+<h3 id="init函数介绍">init()函数介绍</h3>
+<p>在Go语言程序执行时导入包语句会自动触发包内部<code>init()</code>函数的调用。需要注意的是： <code>init()</code>函数没有参数也没有返回值。 <code>init()</code>函数在程序运行时自动被调用执行，不能在代码中主动调用它。</p>
+<p>包初始化执行的顺序如下图所示：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/package/init01.png">
+            <img class="mx-auto" alt="包中的init()执行时机" src="https://imw7.github.io/images/Go/package/init01.png" />
+        </a>
+    </p>
+<h3 id="init函数执行顺序">init()函数执行顺序</h3>
+<p>Go语言包会从<code>main</code>包开始检查其导入的所有包，每个包中又可能导入了其他的包。Go编译器由此构建出一个树状的包引用关系，再根据引用顺序决定编译顺序，依次编译这些包的代码。</p>
+<p>在运行时，被最后导入的包会最先初始化并调用其<code>init()</code>函数， 如下图示：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/package/init02.png">
+            <img class="mx-auto" alt="包之间的init()执行顺序" src="https://imw7.github.io/images/Go/package/init02.png" />
+        </a>
+    </p>
+<h1 id="练习题">练习题</h1>
+<p>编写一个<code>calc</code>包实现加减乘除四个功能函数，在<code>snow</code>这个包中导入并使用加减乘除四个函数实现数学运算。</p>
+<p>①<strong><code>calc</code>包</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// calc.go
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">package</span> calc
+
+<span style="color:#888;font-style:italic">// Add 加法运算
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Add</span>(a ...<span style="font-weight:bold">float64</span>) <span style="font-weight:bold">float64</span> {
+	ret := a[0]
+	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(a); i++ {
+		ret += a[i]
+	}
+	<span style="font-weight:bold">return</span> ret
+}
+
+<span style="color:#888;font-style:italic">// Sub 减法运算
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Sub</span>(s ...<span style="font-weight:bold">float64</span>) <span style="font-weight:bold">float64</span> {
+	ret := s[0]
+	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(s); i++ {
+		ret -= s[i]
+	}
+	<span style="font-weight:bold">return</span> ret
+}
+
+<span style="color:#888;font-style:italic">// Mul 乘法运算
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Mul</span>(m ...<span style="font-weight:bold">float64</span>) <span style="font-weight:bold">float64</span> {
+	ret := m[0]
+	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(m); i++ {
+		ret *= m[i]
+	}
+	<span style="font-weight:bold">return</span> ret
+}
+
+<span style="color:#888;font-style:italic">// Div 除法运算
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Div</span>(d ...<span style="font-weight:bold">float64</span>) <span style="font-weight:bold">float64</span> {
+	ret := d[0]
+	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(d); i++ {
+		ret /= d[i]
+	}
+	<span style="font-weight:bold">return</span> ret
+}
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// go.mod
+</span><span style="color:#888;font-style:italic"></span>module imw7.com/studygo/import_demo/calc
+
+<span style="font-weight:bold">go</span> 1.16
+</code></pre></td></tr></table>
+</div>
+</div><p>②<strong><code>snow</code>包</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// main.go
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	calc <span style="color:#666;font-style:italic">&#34;imw7.com/studygo/import_demo/calc&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	a := calc.<span style="color:#666;font-weight:bold;font-style:italic">Add</span>(1, 2, 3, 4, 5)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(a)
+
+	s := calc.<span style="color:#666;font-weight:bold;font-style:italic">Sub</span>(20, 23, 5)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+
+	m := calc.<span style="color:#666;font-weight:bold;font-style:italic">Mul</span>(3, 5, 2, 7)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(m)
+
+	d := calc.<span style="color:#666;font-weight:bold;font-style:italic">Div</span>(20, 2, 4)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(d)
+}
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// go.mod
+</span><span style="color:#888;font-style:italic"></span>module import_demo
+
+<span style="font-weight:bold">go</span> 1.16
+
+require <span style="color:#666;font-style:italic">&#34;imw7.com/studygo/import_demo/calc&#34;</span> v0.0.0
+replace <span style="color:#666;font-style:italic">&#34;imw7.com/studygo/import_demo/calc&#34;</span> =&gt; <span style="color:#666;font-style:italic">&#34;../calc&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>输出结果</strong></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">15
+-8
+210
+2.5
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/10_struct/">Go语言基础之结构体</a></li>
+        
+        <li><a href="/post/Go/09_function/">Go语言基础之函数</a></li>
+        
+        <li><a href="/post/Go/08_map/">Go语言基础之map</a></li>
+        
+        <li><a href="/post/Go/06_slice/">Go语言基础之切片</a></li>
+        
+        <li><a href="/post/Go/07_pointer/">Go语言基础之指针</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/package'>package</a></li>
+                
+                <li><a href='/tags/%E5%9F%BA%E7%A1%80'>基础</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

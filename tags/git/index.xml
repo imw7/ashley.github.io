@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>git on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/git/</link>
+    <description>Recent content in git on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 28 Apr 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/git/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Git各种命令</title>
+      <link>https://blog.imw7.com/post/git_cmds/</link>
+      <pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/git_cmds/</guid>
+      <description>&lt;p&gt;对于程序员来说学会版本控制是必须的技能，本文介绍Git的各种命令以及如何将代码托管到GitHub上。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

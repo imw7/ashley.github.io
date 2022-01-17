@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>map on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/map/</link>
+    <description>Recent content in map on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 16 Mar 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/map/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go语言基础之map</title>
+      <link>https://blog.imw7.com/post/Go/08_map/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/08_map/</guid>
+      <description>&lt;p&gt;Go语言中提供的映射关系容器为&lt;code&gt;map&lt;/code&gt;，其内部使用&lt;code&gt;散列表（hash）&lt;/code&gt;实现。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

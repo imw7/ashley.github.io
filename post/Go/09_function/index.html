@@ -1,0 +1,1770 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go语言基础之函数 | 魏奇的博客</title>
+    <meta property="og:title" content="Go语言基础之函数 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-03-23T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-03-23T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go语言基础之函数">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/09_function/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#函数定义">函数定义</a></li>
+    <li><a href="#函数的调用">函数的调用</a></li>
+    <li><a href="#参数">参数</a>
+      <ul>
+        <li><a href="#类型简写">类型简写</a></li>
+        <li><a href="#可变参数">可变参数</a></li>
+      </ul>
+    </li>
+    <li><a href="#返回值">返回值</a>
+      <ul>
+        <li><a href="#多返回值">多返回值</a></li>
+        <li><a href="#返回值命名">返回值命名</a></li>
+        <li><a href="#返回值补充">返回值补充</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li><a href="#变量作用域">变量作用域</a>
+      <ul>
+        <li><a href="#全局变量">全局变量</a></li>
+        <li><a href="#局部变量">局部变量</a></li>
+      </ul>
+    </li>
+    <li><a href="#函数类型与变量">函数类型与变量</a>
+      <ul>
+        <li><a href="#定义函数类型">定义函数类型</a></li>
+        <li><a href="#函数类型变量">函数类型变量</a></li>
+      </ul>
+    </li>
+    <li><a href="#高阶函数">高阶函数</a>
+      <ul>
+        <li><a href="#函数作为参数">函数作为参数</a></li>
+        <li><a href="#函数作为返回值">函数作为返回值</a></li>
+      </ul>
+    </li>
+    <li><a href="#匿名函数和闭包">匿名函数和闭包</a>
+      <ul>
+        <li><a href="#匿名函数">匿名函数</a></li>
+        <li><a href="#闭包">闭包</a></li>
+      </ul>
+    </li>
+    <li><a href="#defer语句">defer语句</a>
+      <ul>
+        <li><a href="#defer执行时机">defer执行时机</a></li>
+        <li><a href="#defer经典案例">defer经典案例</a></li>
+        <li><a href="#defer面试题">defer面试题</a></li>
+      </ul>
+    </li>
+  </ul>
+
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#panicrecover">panic/recover</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go语言基础之函数</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年3月23日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>函数是组织好的、可重复使用的、用于执行指定任务的代码块。本文介绍了Go语言中函数的相关内容。</p>
+<h1 id="函数">函数</h1>
+<p>Go语言中支持函数、匿名函数和闭包，并且函数在Go语言中属于“一等公民”。</p>
+<h2 id="函数定义">函数定义</h2>
+<p>Go语言中定义函数使用<code>func</code>关键字，具体格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> 函数名(参数)(返回值){
+    函数体
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>其中：</p>
+<ul>
+<li>函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也称不能重名（包的概念详见后文）。</li>
+<li>参数：参数由参数变量和参数变量的类型组成，多个参数之间使用<code>,</code>分隔。</li>
+<li>返回值：返回值由返回值变量和其变量类型组成，也可以只写返回值的类型，多个返回值必须用<code>()</code>包裹，并用<code>,</code>分隔。</li>
+<li>函数体：实现指定功能的代码块。</li>
+</ul>
+<p>我们先来定义一个求两个数之和的函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">intSum</span>(x <span style="font-weight:bold">int</span>, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x + y
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>函数的参数和返回值都是可选的，例如我们可以实现一个既不需要参数也没有返回值的函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sayHello</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Hello 中国&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="函数的调用">函数的调用</h2>
+<p>定义了函数之后，我们可以通过<code>函数名()</code>的方式调用函数。 例如我们调用上面定义的两个函数，代码如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">sayHello</span>()
+	ret := <span style="color:#666;font-weight:bold;font-style:italic">intSum</span>(10, 20)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(ret)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>注意，调用有返回值的函数时，可以不接收其返回值。</p>
+<h2 id="参数">参数</h2>
+<h3 id="类型简写">类型简写</h3>
+<p>函数的参数中如果相邻变量的类型相同，则可以省略类型，例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">intSum</span>(x, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x + y
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的代码中，<code>intSum</code>函数有两个参数，这两个参数的类型均为<code>int</code>，因此可以省略<code>x</code>的类型，因为<code>y</code>后面有类型说明，<code>x</code>参数也是该类型。</p>
+<h3 id="可变参数">可变参数</h3>
+<p>可变参数是指函数的参数数量不固定。Go语言中的可变参数通过在参数名后加<code>...</code>来标识。</p>
+<p>注意：可变参数通常要作为函数的最后一个参数。</p>
+<p>举个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">intSum2</span>(x ...<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x) <span style="color:#888;font-style:italic">// x是一个切片
+</span><span style="color:#888;font-style:italic"></span>	sum := 0
+	<span style="font-weight:bold">for</span> _, v := <span style="font-weight:bold">range</span> x {
+		sum = sum + v
+	}
+	<span style="font-weight:bold">return</span> sum
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>调用上面的函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">ret1 := <span style="color:#666;font-weight:bold;font-style:italic">intSum2</span>()
+ret2 := <span style="color:#666;font-weight:bold;font-style:italic">intSum2</span>(10)
+ret3 := <span style="color:#666;font-weight:bold;font-style:italic">intSum2</span>(10, 20)
+ret4 := <span style="color:#666;font-weight:bold;font-style:italic">intSum2</span>(10, 20, 30)
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(ret1, ret2, ret3, ret4) <span style="color:#888;font-style:italic">//0 10 30 60
+</span></code></pre></td></tr></table>
+</div>
+</div><p>固定参数搭配可变参数使用时，可变参数要放在固定参数的后面，示例代码如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">intSum3</span>(x <span style="font-weight:bold">int</span>, y ...<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x, y)
+	sum := x
+	<span style="font-weight:bold">for</span> _, v := <span style="font-weight:bold">range</span> y {
+		sum = sum + v
+	}
+	<span style="font-weight:bold">return</span> sum
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>调用上述函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">ret5 := <span style="color:#666;font-weight:bold;font-style:italic">intSum3</span>(100)
+ret6 := <span style="color:#666;font-weight:bold;font-style:italic">intSum3</span>(100, 10)
+ret7 := <span style="color:#666;font-weight:bold;font-style:italic">intSum3</span>(100, 10, 20)
+ret8 := <span style="color:#666;font-weight:bold;font-style:italic">intSum3</span>(100, 10, 20, 30)
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(ret5, ret6, ret7, ret8) <span style="color:#888;font-style:italic">// 100 110 130 160
+</span></code></pre></td></tr></table>
+</div>
+</div><p>本质上，函数的可变参数是通过切片来实现的。</p>
+<h2 id="返回值">返回值</h2>
+<p>Go语言中通过<code>return</code>关键字向外输出返回值。</p>
+<h3 id="多返回值">多返回值</h3>
+<p>Go语言中函数支持多返回值，函数如果有多个返回值时必须用<code>()</code>将所有返回值包裹起来。</p>
+<p>举个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(x, y <span style="font-weight:bold">int</span>) (<span style="font-weight:bold">int</span>, <span style="font-weight:bold">int</span>) {
+	sum := x + y
+	sub := x - y
+	<span style="font-weight:bold">return</span> sum, sub
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="返回值命名">返回值命名</h3>
+<p>函数定义时可以给返回值命名，并在函数体中直接使用这些变量，最后通过<code>return</code>关键字返回。</p>
+<p>例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(x, y <span style="font-weight:bold">int</span>) (sum, sub <span style="font-weight:bold">int</span>) {
+	sum = x + y
+	sub = x - y
+	<span style="font-weight:bold">return</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="返回值补充">返回值补充</h3>
+<p>当我们的一个函数返回值类型为<code>slice</code>时，<code>nil</code>可以看做是一个有效的<code>slice</code>，没必要显示返回一个长度为<code>0</code>的切片。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">someFunc</span>(x <span style="font-weight:bold">string</span>) []<span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">if</span> x == <span style="color:#666;font-style:italic">&#34;&#34;</span> {
+		<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span> <span style="color:#888;font-style:italic">// 没必要返回[]int{}
+</span><span style="color:#888;font-style:italic"></span>	}
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="函数进阶">函数进阶</h1>
+<h2 id="变量作用域">变量作用域</h2>
+<h3 id="全局变量">全局变量</h3>
+<p>全局变量是定义在函数外部的变量，它在程序整个运行周期内都有效。 在函数中可以访问到全局变量。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+
+<span style="color:#888;font-style:italic">// 定义全局变量num
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">var</span> num <span style="font-weight:bold">int64</span> = 10
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">testGlobalVar</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;num=%d\n&#34;</span>, num) <span style="color:#888;font-style:italic">// 函数中可以访问全局变量num
+</span><span style="color:#888;font-style:italic"></span>}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">testGlobalVar</span>() <span style="color:#888;font-style:italic">// num=10
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="局部变量">局部变量</h3>
+<p>局部变量又分为两种： 函数内定义的变量无法在该函数外使用，例如下面的示例代码<code>main</code>函数中无法使用<code>testLocalVar</code>函数中定义的变量<code>x</code>：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">testLocalVar</span>() {
+	<span style="color:#888;font-style:italic">// 定义一个函数局部变量x,仅在该函数内生效
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> x <span style="font-weight:bold">int64</span> = 100
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;x=%d\n&#34;</span>, x)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">testLocalVar</span>()
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x) <span style="color:#888;font-style:italic">// 此时无法使用变量x
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>如果局部变量和全局变量重名，优先访问局部变量。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+
+<span style="color:#888;font-style:italic">// 定义全局变量num
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">var</span> num <span style="font-weight:bold">int64</span> = 10
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">testNum</span>() {
+	num := 100
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;num=%d\n&#34;</span>, num) <span style="color:#888;font-style:italic">// 函数中优先使用局部变量
+</span><span style="color:#888;font-style:italic"></span>}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">testNum</span>() <span style="color:#888;font-style:italic">// num=100
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来我们来看一下语句块定义的变量，通常我们会在if条件判断、for循环、switch语句上使用这种定义变量的方式。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">testLocalVar2</span>(x, y <span style="font-weight:bold">int</span>) {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x, y) <span style="color:#888;font-style:italic">// 函数的参数也是只在本函数中生效
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> x &gt; 0 {
+		z := 100 <span style="color:#888;font-style:italic">// 变量z只在if语句块生效
+</span><span style="color:#888;font-style:italic"></span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(z)
+	}
+	<span style="color:#888;font-style:italic">//fmt.Println(z)// 此处无法使用变量z
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>还有我们之前讲过的for循环语句中定义的变量，也是只在for语句块中生效：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">testLocalVar3</span>() {
+	<span style="font-weight:bold">for</span> i := 0; i &lt; 10; i++ {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(i) <span style="color:#888;font-style:italic">// 变量i只在当前for语句块中生效
+</span><span style="color:#888;font-style:italic"></span>	}
+	<span style="color:#888;font-style:italic">// fmt.Println(i) // 此处无法使用变量i
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="函数类型与变量">函数类型与变量</h2>
+<h3 id="定义函数类型">定义函数类型</h3>
+<p>我们可以使用<code>type</code>关键字来定义一个函数类型，具体格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">type</span> calculation <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>, <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>上面语句定义了一个<code>calculation</code>类型，它是一种函数类型，这种函数接收两个int类型的参数并且返回一个int类型的返回值。</p>
+<p>简单来说，凡是满足这个条件的函数都是calculation类型的函数，例如下面的add和sub是calculation类型。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">add</span>(x, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x + y
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sub</span>(x, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x - y
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>add和sub都能赋值给calculation类型的变量。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">var</span> c calculation
+c = add
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="函数类型变量">函数类型变量</h3>
+<p>我们可以声明函数类型的变量并且为该变量赋值：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="font-weight:bold;font-style:italic">var</span> c calculation               <span style="color:#888;font-style:italic">// 声明一个calculation类型的变量c
+</span><span style="color:#888;font-style:italic"></span>	c = add                         <span style="color:#888;font-style:italic">// 把add赋值给c
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type of c:%T\n&#34;</span>, c) <span style="color:#888;font-style:italic">// type of c:main.calculation
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">c</span>(1, 2))            <span style="color:#888;font-style:italic">// 像调用add一样调用c
+</span><span style="color:#888;font-style:italic"></span>
+	f := add                        <span style="color:#888;font-style:italic">// 将函数add赋值给变量f1
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type of f:%T\n&#34;</span>, f) <span style="color:#888;font-style:italic">// type of f:func(int, int) int
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(10, 20))          <span style="color:#888;font-style:italic">// 像调用add一样调用f
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="高阶函数">高阶函数</h2>
+<p>高阶函数分为函数作为参数和函数作为返回值两部分。</p>
+<h3 id="函数作为参数">函数作为参数</h3>
+<p>函数可以作为参数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">add</span>(x, y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> x + y
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(x, y <span style="font-weight:bold">int</span>, op <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>, <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">op</span>(x, y)
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	ret2 := <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(10, 20, add)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(ret2) <span style="color:#888;font-style:italic">//30
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="函数作为返回值">函数作为返回值</h3>
+<p>函数也可以作为返回值：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">do</span>(s <span style="font-weight:bold">string</span>) (<span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>, <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span>, <span style="font-weight:bold">error</span>) {
+	<span style="font-weight:bold">switch</span> s {
+	<span style="font-weight:bold">case</span> <span style="color:#666;font-style:italic">&#34;+&#34;</span>:
+		<span style="font-weight:bold">return</span> add, <span style="font-weight:bold">nil</span>
+	<span style="font-weight:bold">case</span> <span style="color:#666;font-style:italic">&#34;-&#34;</span>:
+		<span style="font-weight:bold">return</span> sub, <span style="font-weight:bold">nil</span>
+	<span style="font-weight:bold">default</span>:
+		err := errors.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(<span style="color:#666;font-style:italic">&#34;无法识别的操作符&#34;</span>)
+		<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>, err
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="匿名函数和闭包">匿名函数和闭包</h2>
+<h3 id="匿名函数">匿名函数</h3>
+<p>函数当然还可以作为返回值，但是在Go语言中函数内部不能再像之前那样定义函数了，只能定义匿名函数。匿名函数就是没有函数名的函数，匿名函数的定义格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span>(参数)(返回值){
+    函数体
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>匿名函数因为没有函数名，所以没办法像普通函数那样调用，所以匿名函数需要保存到某个变量或者作为立即执行函数:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 将匿名函数保存到变量
+</span><span style="color:#888;font-style:italic"></span>	add := <span style="font-weight:bold;font-style:italic">func</span>(x, y <span style="font-weight:bold">int</span>) {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x + y)
+	}
+	<span style="color:#666;font-weight:bold;font-style:italic">add</span>(10, 20) <span style="color:#888;font-style:italic">// 通过变量调用匿名函数
+</span><span style="color:#888;font-style:italic"></span>
+	<span style="color:#888;font-style:italic">//自执行函数：匿名函数定义完加()直接执行
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">func</span>(x, y <span style="font-weight:bold">int</span>) {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(x + y)
+	}(10, 20)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>匿名函数多用于实现回调函数和闭包。</p>
+<h3 id="闭包">闭包</h3>
+<p>闭包指的是一个函数和与其相关的引用环境组合而成的实体。简单来说，<code>闭包=函数+引用环境</code>。 首先我们来看一个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">adder</span>() <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold;font-style:italic">var</span> x <span style="font-weight:bold">int</span>
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+		x += y
+		<span style="font-weight:bold">return</span> x
+	}
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="font-weight:bold;font-style:italic">var</span> f = <span style="color:#666;font-weight:bold;font-style:italic">adder</span>()
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(10)) <span style="color:#888;font-style:italic">// 10
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(20)) <span style="color:#888;font-style:italic">// 30
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(30)) <span style="color:#888;font-style:italic">// 60
+</span><span style="color:#888;font-style:italic"></span>
+	f1 := <span style="color:#666;font-weight:bold;font-style:italic">adder</span>()
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(40)) <span style="color:#888;font-style:italic">// 40
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(50)) <span style="color:#888;font-style:italic">// 90
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>变量<code>f</code>是一个函数并且它引用了其外部作用域中的<code>x</code>变量，此时<code>f</code>就是一个闭包。 在<code>f</code>的生命周期内，变量<code>x</code>也一直有效。 闭包进阶示例1：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">adder2</span>(x <span style="font-weight:bold">int</span>) <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(y <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+		x += y
+		<span style="font-weight:bold">return</span> x
+	}
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="font-weight:bold;font-style:italic">var</span> f = <span style="color:#666;font-weight:bold;font-style:italic">adder2</span>(10)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(10)) <span style="color:#888;font-style:italic">// 20
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(20)) <span style="color:#888;font-style:italic">// 40
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f</span>(30)) <span style="color:#888;font-style:italic">// 70
+</span><span style="color:#888;font-style:italic"></span>
+	f1 := <span style="color:#666;font-weight:bold;font-style:italic">adder2</span>(20)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(40)) <span style="color:#888;font-style:italic">// 60
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(50)) <span style="color:#888;font-style:italic">// 110
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>闭包进阶示例2：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">makeSuffixFunc</span>(suffix <span style="font-weight:bold">string</span>) <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">string</span>) <span style="font-weight:bold">string</span> {
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(name <span style="font-weight:bold">string</span>) <span style="font-weight:bold">string</span> {
+		<span style="font-weight:bold">if</span> !strings.<span style="color:#666;font-weight:bold;font-style:italic">HasSuffix</span>(name, suffix) {
+			<span style="font-weight:bold">return</span> name + suffix
+		}
+		<span style="font-weight:bold">return</span> name
+	}
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	jpgFunc := <span style="color:#666;font-weight:bold;font-style:italic">makeSuffixFunc</span>(<span style="color:#666;font-style:italic">&#34;.jpg&#34;</span>)
+	txtFunc := <span style="color:#666;font-weight:bold;font-style:italic">makeSuffixFunc</span>(<span style="color:#666;font-style:italic">&#34;.txt&#34;</span>)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">jpgFunc</span>(<span style="color:#666;font-style:italic">&#34;test&#34;</span>)) <span style="color:#888;font-style:italic">// test.jpg
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">txtFunc</span>(<span style="color:#666;font-style:italic">&#34;test&#34;</span>)) <span style="color:#888;font-style:italic">// test.txt
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>闭包进阶示例3：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(base <span style="font-weight:bold">int</span>) (<span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span>, <span style="font-weight:bold;font-style:italic">func</span>(<span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span>) {
+	add := <span style="font-weight:bold;font-style:italic">func</span>(i <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+		base += i
+		<span style="font-weight:bold">return</span> base
+	}
+
+	sub := <span style="font-weight:bold;font-style:italic">func</span>(i <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+		base -= i
+		<span style="font-weight:bold">return</span> base
+	}
+	<span style="font-weight:bold">return</span> add, sub
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	f1, f2 := <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(10)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(1), <span style="color:#666;font-weight:bold;font-style:italic">f2</span>(2)) <span style="color:#888;font-style:italic">// 11 9
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(3), <span style="color:#666;font-weight:bold;font-style:italic">f2</span>(4)) <span style="color:#888;font-style:italic">// 12 8
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>(5), <span style="color:#666;font-weight:bold;font-style:italic">f2</span>(6)) <span style="color:#888;font-style:italic">// 13 7
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>闭包其实并不复杂，只要牢记<code>闭包=函数+引用环境</code>。</p>
+<h2 id="defer语句">defer语句</h2>
+<p>Go语言中的<code>defer</code>语句会将其后面跟随的语句进行延迟处理。在<code>defer</code>归属的函数即将返回时，将延迟处理的语句按<code>defer</code>定义的逆序进行执行，也就是说，先被<code>defer</code>的语句最后被执行，最后被<code>defer</code>的语句，最先被执行。</p>
+<p>举个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;start&#34;</span>)
+	<span style="font-weight:bold">defer</span> fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(1)
+	<span style="font-weight:bold">defer</span> fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(2)
+	<span style="font-weight:bold">defer</span> fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(3)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;end&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>输出结果：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">start
+end
+3
+2
+1
+</code></pre></td></tr></table>
+</div>
+</div><p>由于<code>defer</code>语句延迟调用的特性，所以<code>defer</code>语句能非常方便的处理资源释放问题。比如：资源清理、文件关闭、解锁及记录时间等。</p>
+<h3 id="defer执行时机">defer执行时机</h3>
+<p>在Go语言的函数中<code>return</code>语句在底层并不是原子操作，它分为给返回值赋值和RET指令两步。而<code>defer</code>语句执行的时机就在返回值赋值操作后，RET指令执行前。具体如下图所示：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/function/defer.png">
+            <img class="mx-auto" alt="defer执行时机" src="https://imw7.github.io/images/Go/function/defer.png" />
+        </a>
+    </p>
+<h3 id="defer经典案例">defer经典案例</h3>
+<p>阅读下面的代码，写出最后的打印结果。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">f1</span>() <span style="font-weight:bold">int</span> {
+	x := 5
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() {
+		x++
+	}()
+	<span style="font-weight:bold">return</span> x
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">f2</span>() (x <span style="font-weight:bold">int</span>) {
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() {
+		x++
+	}()
+	<span style="font-weight:bold">return</span> 5
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">f3</span>() (y <span style="font-weight:bold">int</span>) {
+	x := 5
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() {
+		x++
+	}()
+	<span style="font-weight:bold">return</span> x
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">f4</span>() (x <span style="font-weight:bold">int</span>) {
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>(x <span style="font-weight:bold">int</span>) {
+		x++
+	}(x)
+	<span style="font-weight:bold">return</span> 5
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f1</span>())
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f2</span>())
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f3</span>())
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-weight:bold;font-style:italic">f4</span>())
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="defer面试题">defer面试题</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(index <span style="font-weight:bold">string</span>, a, b <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	ret := a + b
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(index, a, b, ret)
+	<span style="font-weight:bold">return</span> ret
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	x := 1
+	y := 2
+	<span style="font-weight:bold">defer</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(<span style="color:#666;font-style:italic">&#34;AA&#34;</span>, x, <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(<span style="color:#666;font-style:italic">&#34;A&#34;</span>, x, y))
+	x = 10
+	<span style="font-weight:bold">defer</span> <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(<span style="color:#666;font-style:italic">&#34;BB&#34;</span>, x, <span style="color:#666;font-weight:bold;font-style:italic">calc</span>(<span style="color:#666;font-style:italic">&#34;B&#34;</span>, x, y))
+	y = 20
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>问，上面代码的输出结果是？（提示：defer注册要延迟执行的函数时该函数所有的参数都需要确定其值）</p>
+<h1 id="内置函数介绍">内置函数介绍</h1>
+<table>
+<thead>
+<tr>
+<th align="center">内置函数</th>
+<th align="center">介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">close</td>
+<td align="center">主要用来关闭channel</td>
+</tr>
+<tr>
+<td align="center">len</td>
+<td align="center">用来求长度，比如string、array、slice、map、channel</td>
+</tr>
+<tr>
+<td align="center">new</td>
+<td align="center">用来分配内存，主要用来分配值类型，比如int、struct。返回的是指针</td>
+</tr>
+<tr>
+<td align="center">make</td>
+<td align="center">用来分配内存，主要用来分配引用类型，比如chan、map、slice</td>
+</tr>
+<tr>
+<td align="center">append</td>
+<td align="center">用来追加元素到数组、slice中</td>
+</tr>
+<tr>
+<td align="center">panic和recover</td>
+<td align="center">用来做错误处理</td>
+</tr>
+</tbody>
+</table>
+<h3 id="panicrecover">panic/recover</h3>
+<p>Go语言中目前（Go1.12）是没有异常机制，但是使用<code>panic/recover</code>模式来处理错误。 <code>panic</code>可以在任何地方引发，但<code>recover</code>只有在<code>defer</code>调用的函数中有效。 首先来看一个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcA</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;func A&#34;</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcB</span>() {
+	<span style="font-weight:bold;font-style:italic">panic</span>(<span style="color:#666;font-style:italic">&#34;panic in B&#34;</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcC</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;func C&#34;</span>)
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">funcA</span>()
+	<span style="color:#666;font-weight:bold;font-style:italic">funcB</span>()
+	<span style="color:#666;font-weight:bold;font-style:italic">funcC</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>输出：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">func A
+panic: panic in B
+
+goroutine 1 [running]:
+main.funcB(...)
+        .../code/func/main.go:12
+main.main()
+        .../code/func/main.go:20 +0x98
+</code></pre></td></tr></table>
+</div>
+</div><p>程序运行期间<code>funcB</code>中引发了<code>panic</code>导致程序崩溃，异常退出了。这个时候我们就可以通过<code>recover</code>将程序恢复回来，继续往后执行。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcA</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;func A&#34;</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcB</span>() {
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() {
+		err := <span style="font-weight:bold;font-style:italic">recover</span>()
+		<span style="color:#888;font-style:italic">// 如果程序出出现了panic错误,可以通过recover恢复过来
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;recover in B&#34;</span>)
+		}
+	}()
+	<span style="font-weight:bold;font-style:italic">panic</span>(<span style="color:#666;font-style:italic">&#34;panic in B&#34;</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">funcC</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;func C&#34;</span>)
+}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#666;font-weight:bold;font-style:italic">funcA</span>()
+	<span style="color:#666;font-weight:bold;font-style:italic">funcB</span>()
+	<span style="color:#666;font-weight:bold;font-style:italic">funcC</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>注意：</strong></p>
+<ol>
+<li><code>recover()</code>必须搭配<code>defer</code>使用。</li>
+<li><code>defer</code>一定要在可能引发<code>panic</code>的语句之前定义。</li>
+</ol>
+<h1 id="练习题">练习题</h1>
+<p>分金币</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">/*
+</span><span style="color:#888;font-style:italic">你有50枚金币，需要分配给以下几个人：Matthew,Sarah,Augustus,Heidi,Emilie,Peter,Giana,Adriano,Aaron,Elizabeth。
+</span><span style="color:#888;font-style:italic">分配规则如下：
+</span><span style="color:#888;font-style:italic">a. 名字中每包含1个&#39;e&#39;或&#39;E&#39;分1枚金币
+</span><span style="color:#888;font-style:italic">b. 名字中每包含1个&#39;i&#39;或&#39;I&#39;分2枚金币
+</span><span style="color:#888;font-style:italic">c. 名字中每包含1个&#39;o&#39;或&#39;O&#39;分3枚金币
+</span><span style="color:#888;font-style:italic">d: 名字中每包含1个&#39;u&#39;或&#39;U&#39;分4枚金币
+</span><span style="color:#888;font-style:italic">写一个程序，计算每个用户分到多少金币，以及最后剩余多少金币？
+</span><span style="color:#888;font-style:italic">程序结构如下，请实现 ‘dispatchCoin’ 函数
+</span><span style="color:#888;font-style:italic">*/</span>
+<span style="font-weight:bold;font-style:italic">var</span> (
+	coins = 50
+	users = []<span style="font-weight:bold">string</span>{
+		<span style="color:#666;font-style:italic">&#34;Matthew&#34;</span>, <span style="color:#666;font-style:italic">&#34;Sarah&#34;</span>, <span style="color:#666;font-style:italic">&#34;Augustus&#34;</span>, <span style="color:#666;font-style:italic">&#34;Heidi&#34;</span>, <span style="color:#666;font-style:italic">&#34;Emilie&#34;</span>, <span style="color:#666;font-style:italic">&#34;Peter&#34;</span>, <span style="color:#666;font-style:italic">&#34;Giana&#34;</span>, <span style="color:#666;font-style:italic">&#34;Adriano&#34;</span>, <span style="color:#666;font-style:italic">&#34;Aaron&#34;</span>, <span style="color:#666;font-style:italic">&#34;Elizabeth&#34;</span>,
+	}
+	distribution = <span style="font-weight:bold;font-style:italic">make</span>(<span style="font-weight:bold;font-style:italic">map</span>[<span style="font-weight:bold">string</span>]<span style="font-weight:bold">int</span>, <span style="font-weight:bold;font-style:italic">len</span>(users))
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	left := <span style="color:#666;font-weight:bold;font-style:italic">dispatchCoin</span>()
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;剩下：&#34;</span>, left)
+}
+</code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-GO" data-lang="GO"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">dispatchCoin</span>() (left <span style="font-weight:bold">int</span>) {
+    left = coins
+    <span style="color:#888;font-style:italic">// 1.依次拿到每个人的名字
+</span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold">for</span> _, name := <span style="font-weight:bold">range</span> users {
+        <span style="color:#888;font-style:italic">// 2.拿到一个人名根据分金币的规则去分金币
+</span><span style="color:#888;font-style:italic"></span>        e := strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;e&#34;</span>) + strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;E&#34;</span>)
+        i := strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;i&#34;</span>) + strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;I&#34;</span>)
+        o := strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;o&#34;</span>) + strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;O&#34;</span>)
+        u := strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;u&#34;</span>) + strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(name, <span style="color:#666;font-style:italic">&#34;U&#34;</span>)
+        sum := e*1 + i*2 + o*3 + u*4
+        <span style="color:#888;font-style:italic">//  1&gt;每个人分的金币数应该保存到 distribution 中
+</span><span style="color:#888;font-style:italic"></span>        distribution[name] = sum
+        <span style="color:#888;font-style:italic">//  2&gt;还要记录下剩余的金币数
+</span><span style="color:#888;font-style:italic"></span>        left -= sum
+    }
+    <span style="color:#888;font-style:italic">// 3.整个第2步执行完就能得到最终每个人分的金币数和剩余金币数
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// fmt.Println(distribution)
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> name, value := <span style="font-weight:bold">range</span> distribution {
+		<span style="font-weight:bold">if</span> value &gt; 1 {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;%s got %d coins.\n&#34;</span>, name, value)
+		} <span style="font-weight:bold">else</span> {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;%s got %d coin.\n&#34;</span>, name, value)
+		}
+	}
+    <span style="font-weight:bold">return</span> left
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/08_map/">Go语言基础之map</a></li>
+        
+        <li><a href="/post/Go/06_slice/">Go语言基础之切片</a></li>
+        
+        <li><a href="/post/Go/07_pointer/">Go语言基础之指针</a></li>
+        
+        <li><a href="/post/Go/05_array/">Go语言基础之数组</a></li>
+        
+        <li><a href="/post/Go/04_process_control/">Go语言基础之流程控制</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E5%87%BD%E6%95%B0'>函数</a></li>
+                
+                <li><a href='/tags/%E5%9F%BA%E7%A1%80'>基础</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

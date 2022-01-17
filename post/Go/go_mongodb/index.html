@@ -1,0 +1,1338 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go语言操作MongoDB | 魏奇的博客</title>
+    <meta property="og:title" content="Go语言操作MongoDB - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-11-02T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-11-02T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go语言操作MongoDB">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/go_mongodb/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#mongodb介绍">mongoDB介绍</a>
+      <ul>
+        <li><a href="#mongodb相关概念">mongoDB相关概念</a></li>
+      </ul>
+    </li>
+    <li><a href="#mongodb安装">mongoDB安装</a></li>
+    <li><a href="#mongodb基本使用">mongoDB基本使用</a>
+      <ul>
+        <li><a href="#启动mongodb数据库">启动mongoDB数据库</a></li>
+        <li><a href="#启动client">启动client</a></li>
+        <li><a href="#数据库常用命令">数据库常用命令</a></li>
+        <li><a href="#数据集常用命令">数据集常用命令</a></li>
+        <li><a href="#文档常用命令">文档常用命令</a></li>
+      </ul>
+    </li>
+    <li><a href="#go语言操作mongodb">Go语言操作mongoDB</a>
+      <ul>
+        <li><a href="#安装mongodb-go驱动包">安装mongoDB Go驱动包</a></li>
+        <li><a href="#通过go代码连接mongodb">通过Go代码连接mongoDB</a></li>
+        <li><a href="#连接池模式">连接池模式</a></li>
+        <li><a href="#bson">BSON</a></li>
+        <li><a href="#crud">CRUD</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考链接">参考链接</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go语言操作MongoDB</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年11月2日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
+<h2 id="mongodb介绍">mongoDB介绍</h2>
+<p><a href="https://www.mongodb.com/">mongoDB</a>是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
+<p>mongoDB中将一条数据存储为一个文档（document），数据结构由键值（key-value）对组成。 其中文档类似于我们平常编程中用到的JSON对象。 文档中的字段值可以包含其他文档，数组及文档数组。</p>
+<h3 id="mongodb相关概念">mongoDB相关概念</h3>
+<p>mongoDB中相关概念与我们熟悉的SQL概念对比如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">MongoDB术语/概念</th>
+<th align="center">说明</th>
+<th align="center">对比SQL术语/概念</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">database</td>
+<td align="center">数据库</td>
+<td align="center">database</td>
+</tr>
+<tr>
+<td align="center">collection</td>
+<td align="center">集合</td>
+<td align="center">table</td>
+</tr>
+<tr>
+<td align="center">document</td>
+<td align="center">文档</td>
+<td align="center">row</td>
+</tr>
+<tr>
+<td align="center">field</td>
+<td align="center">字段</td>
+<td align="center">column</td>
+</tr>
+<tr>
+<td align="center">index</td>
+<td align="center">index</td>
+<td align="center">索引</td>
+</tr>
+<tr>
+<td align="center">primary key</td>
+<td align="center">主键 MongoDB自动将_id字段设置为主键</td>
+<td align="center">primary key</td>
+</tr>
+</tbody>
+</table>
+<h2 id="mongodb安装">mongoDB安装</h2>
+<p>我们这里下载和安装社区版，<a href="https://www.mongodb.com/download-center/community">官网下载地址</a>。 打开上述连接后，选择对应的版本、操作系统平台（常见的平台均支持）和包类型，点击Download按钮下载即可。</p>
+<p>这里补充说明下，Windows平台有<code>ZIP</code>和<code>MSI</code>两种包类型: * ZIP：压缩文件版本 * MSI：可执行文件版本，点击”下一步”安装即可。</p>
+<p>macOS平台除了在该网页下载<code>TGZ</code>文件外，还可以使用<code>Homebrew</code>安装。</p>
+<p>更多安装细节可以参考<a href="https://docs.mongodb.com/manual/administration/install-community/">官方安装教程</a>，里面有<code>Linux</code>、<code>macOS</code>和<code>Windows</code>三大主流平台的安装教程。</p>
+<h2 id="mongodb基本使用">mongoDB基本使用</h2>
+<h3 id="启动mongodb数据库">启动mongoDB数据库</h3>
+<h4 id="windows">Windows</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\4.2\bin\mongod.exe&#34;</span> --dbpath=<span style="color:#666;font-style:italic">&#34;c:\data\db&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="mac">Mac</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mongod --config /usr/local/etc/mongod.conf
+</code></pre></td></tr></table>
+</div>
+</div><p>或</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">brew services start mongodb-community@4.2
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="启动client">启动client</h3>
+<h4 id="windows-1">Windows</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\4.2\bin\mongo.exe&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="mac-1">Mac</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">mongo
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="数据库常用命令">数据库常用命令</h3>
+<p><code>show dbs;</code>：查看数据库</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; show dbs;
+admin   0.000GB
+config  0.000GB
+<span style="font-weight:bold;font-style:italic">local</span>   0.000GB
+<span style="font-weight:bold;font-style:italic">test</span>    0.000GB
+</code></pre></td></tr></table>
+</div>
+</div><p><code>use eric;</code>：切换到指定数据库，如果不存在该数据库就创建。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; use eric;
+switched to db eric
+</code></pre></td></tr></table>
+</div>
+</div><p><code>db;</code>：显示当前所在数据库。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db;
+eric
+</code></pre></td></tr></table>
+</div>
+</div><p><code>db.dropDatabase()</code>：删除当前数据库</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.dropDatabase();
+{ <span style="color:#666;font-style:italic">&#34;ok&#34;</span> : 1 }
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="数据集常用命令">数据集常用命令</h3>
+<p><code>db.createCollection(name,options)</code>：创建数据集</p>
+<ul>
+<li>name：数据集名称</li>
+<li>options：可选参数，指定内存大小和索引。</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.createCollection(<span style="color:#666;font-style:italic">&#34;student&#34;</span>);
+{ <span style="color:#666;font-style:italic">&#34;ok&#34;</span> : 1 }
+</code></pre></td></tr></table>
+</div>
+</div><p><code>show collections;</code>：查看当前数据库中所有集合。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; show collections;
+student
+</code></pre></td></tr></table>
+</div>
+</div><p><code>db.student.drop()</code>：删除指定数据集</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.drop()
+<span style="font-weight:bold;font-style:italic">true</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="文档常用命令">文档常用命令</h3>
+<p>插入一条文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.insertOne({name:<span style="color:#666;font-style:italic">&#34;小王子&#34;</span>,age:18});
+{
+	<span style="color:#666;font-style:italic">&#34;acknowledged&#34;</span> : true,
+	<span style="color:#666;font-style:italic">&#34;insertedId&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db149e904b33457f8c02509&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>插入多条文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.insertMany([
+... {name:<span style="color:#666;font-style:italic">&#34;张三&#34;</span>,age:20},
+... {name:<span style="color:#666;font-style:italic">&#34;李四&#34;</span>,age:25}
+... ]);
+{
+	<span style="color:#666;font-style:italic">&#34;acknowledged&#34;</span> : true,
+	<span style="color:#666;font-style:italic">&#34;insertedIds&#34;</span> : [
+		ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250a&#34;</span>),
+		ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250b&#34;</span>)
+	]
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>查询所有文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.find();
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db149e904b33457f8c02509&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;小王子&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 18 }
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250a&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 20 }
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250b&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;李四&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 25 }
+</code></pre></td></tr></table>
+</div>
+</div><p>查询age&gt;20岁的文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.find(
+... {age:{<span style="color:#666;font-weight:bold;font-style:italic">$gt</span>:20}}
+... )
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250b&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;李四&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 25 }
+</code></pre></td></tr></table>
+</div>
+</div><p>更新文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.update(
+... {name:<span style="color:#666;font-style:italic">&#34;小王子&#34;</span>},
+... {name:<span style="color:#666;font-style:italic">&#34;老王子&#34;</span>,age:98}
+... );
+WriteResult({ <span style="color:#666;font-style:italic">&#34;nMatched&#34;</span> : 1, <span style="color:#666;font-style:italic">&#34;nUpserted&#34;</span> : 0, <span style="color:#666;font-style:italic">&#34;nModified&#34;</span> : 1 })
+&gt; db.student.find()
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db149e904b33457f8c02509&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;老王子&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 98 }
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250a&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 20 }
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250b&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;李四&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 25 }
+</code></pre></td></tr></table>
+</div>
+</div><p>删除文档：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">&gt; db.student.deleteOne({name:<span style="color:#666;font-style:italic">&#34;李四&#34;</span>});
+{ <span style="color:#666;font-style:italic">&#34;acknowledged&#34;</span> : true, <span style="color:#666;font-style:italic">&#34;deletedCount&#34;</span> : 1 }
+&gt; db.student.find()
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db149e904b33457f8c02509&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;老王子&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 98 }
+{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250a&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 20 }
+</code></pre></td></tr></table>
+</div>
+</div><p>命令实在太多，更多命令请参阅<a href="https://docs.mongodb.com/manual/mongo/">官方文档：shell命令</a>和<a href="https://docs.mongodb.com/manual/crud/">官方文档：CRUD操作</a>。</p>
+<h2 id="go语言操作mongodb">Go语言操作mongoDB</h2>
+<p>我们这里使用的是官方的驱动包，当然你也可以使用第三方的驱动包（如mgo等）。 mongoDB官方版的Go驱动发布的比较晚（2018年12月13号）。</p>
+<h3 id="安装mongodb-go驱动包">安装mongoDB Go驱动包</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get github.com/mongodb/mongo-go-driver
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="通过go代码连接mongodb">通过Go代码连接mongoDB</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+
+	<span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/mongo&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/mongo/options&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 设置客户端连接配置
+</span><span style="color:#888;font-style:italic"></span>	clientOptions := options.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>().<span style="color:#666;font-weight:bold;font-style:italic">ApplyURI</span>(<span style="color:#666;font-style:italic">&#34;mongodb://localhost:27017&#34;</span>)
+
+	<span style="color:#888;font-style:italic">// 连接到MongoDB
+</span><span style="color:#888;font-style:italic"></span>	client, err := mongo.<span style="color:#666;font-weight:bold;font-style:italic">Connect</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), clientOptions)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 检查连接
+</span><span style="color:#888;font-style:italic"></span>	err = client.<span style="color:#666;font-weight:bold;font-style:italic">Ping</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="font-weight:bold">nil</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Connected to MongoDB!&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>连接上MongoDB之后，可以通过下面的语句处理我们上面的eric数据库中的student数据集了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 指定获取要操作的数据集
+</span><span style="color:#888;font-style:italic"></span>collection := client.<span style="color:#666;font-weight:bold;font-style:italic">Database</span>(<span style="color:#666;font-style:italic">&#34;eric&#34;</span>).<span style="color:#666;font-weight:bold;font-style:italic">Collection</span>(<span style="color:#666;font-style:italic">&#34;student&#34;</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>处理完任务之后可以通过下面的命令断开与MongoDB的连接：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 断开连接
+</span><span style="color:#888;font-style:italic"></span>err = client.<span style="color:#666;font-weight:bold;font-style:italic">Disconnect</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>())
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Connection to MongoDB closed.&#34;</span>)
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="连接池模式">连接池模式</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+
+	<span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/mongo&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/mongo/options&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ConnectToDB</span>(uri, name <span style="font-weight:bold">string</span>, timeout time.Duration, num <span style="font-weight:bold">uint64</span>) (*mongo.Database, <span style="font-weight:bold">error</span>) {
+	ctx, cancel := context.<span style="color:#666;font-weight:bold;font-style:italic">WithTimeout</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), timeout)
+	<span style="font-weight:bold">defer</span> <span style="color:#666;font-weight:bold;font-style:italic">cancel</span>()
+	o := options.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>().<span style="color:#666;font-weight:bold;font-style:italic">ApplyURI</span>(uri)
+	o.<span style="color:#666;font-weight:bold;font-style:italic">SetMaxPoolSize</span>(num)
+	client, err := mongo.<span style="color:#666;font-weight:bold;font-style:italic">Connect</span>(ctx, o)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>, err
+	}
+
+	<span style="font-weight:bold">return</span> client.<span style="color:#666;font-weight:bold;font-style:italic">Database</span>(name), <span style="font-weight:bold">nil</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="bson">BSON</h3>
+<p>MongoDB中的JSON文档存储在名为BSON(二进制编码的JSON)的二进制表示中。与其他将JSON数据存储为简单字符串和数字的数据库不同，BSON编码扩展了JSON表示，使其包含额外的类型，如int、long、date、浮点数和decimal128。这使得应用程序更容易可靠地处理、排序和比较数据。</p>
+<p>连接MongoDB的Go驱动程序中有两大类型表示BSON数据：<code>D</code>和<code>Raw</code>。</p>
+<p>类型<code>D</code>家族被用来简洁地构建使用本地Go类型的BSON对象。这对于构造传递给MongoDB的命令特别有用。<code>D</code>家族包括四类:</p>
+<ul>
+<li>D：一个BSON文档。这种类型应该在顺序重要的情况下使用，比如MongoDB命令。</li>
+<li>M：一张无序的map。它和D是一样的，只是它不保持顺序。</li>
+<li>A：一个BSON数组。</li>
+<li>E：D里面的一个元素。</li>
+</ul>
+<p>要使用BSON，需要先导入下面的包：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/bson&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>下面是一个使用D类型构建的过滤器文档的例子，它可以用来查找name字段与’张三’或’李四’匹配的文档:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">bson.D{{
+	<span style="color:#666;font-style:italic">&#34;name&#34;</span>,
+	bson.D{{
+		<span style="color:#666;font-style:italic">&#34;$in&#34;</span>,
+		bson.A{<span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;李四&#34;</span>},
+	}},
+}}
+</code></pre></td></tr></table>
+</div>
+</div><p><code>Raw</code>类型家族用于验证字节切片。你还可以使用<code>Lookup()</code>从原始类型检索单个元素。如果你不想要将BSON反序列化成另一种类型的开销，那么这是非常有用的。这个教程我们将只使用D类型。</p>
+<h3 id="crud">CRUD</h3>
+<p>我们现在Go代码中定义一个<code>Studet</code>类型如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">type</span> Student <span style="font-weight:bold;font-style:italic">struct</span> {
+	Name <span style="font-weight:bold">string</span>
+	Age <span style="font-weight:bold">int</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来，创建一些<code>Student</code>类型的值，准备插入到数据库中：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">s1 := Student{<span style="color:#666;font-style:italic">&#34;小红&#34;</span>, 12}
+s2 := Student{<span style="color:#666;font-style:italic">&#34;小兰&#34;</span>, 10}
+s3 := Student{<span style="color:#666;font-style:italic">&#34;小黄&#34;</span>, 11}
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="插入文档">插入文档</h4>
+<p>使用<code>collection.InsertOne()</code>方法插入一条文档记录：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">insertResult, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">InsertOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), s1)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Inserted a single document: &#34;</span>, insertResult.InsertedID)
+</code></pre></td></tr></table>
+</div>
+</div><p>使用<code>collection.InsertMany()</code>方法插入多条文档记录：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">students := []<span style="font-weight:bold;font-style:italic">interface</span>{}{s2, s3}
+insertManyResult, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">InsertMany</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), students)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Inserted multiple documents: &#34;</span>, insertManyResult.InsertedIDs)
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="更新文档">更新文档</h4>
+<p><code>updateone()</code>方法允许你更新单个文档。它需要一个筛选器文档来匹配数据库中的文档，并需要一个更新文档来描述更新操作。你可以使用<code>bson.D</code>类型来构建筛选文档和更新文档:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">filter := bson.D{{<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;小兰&#34;</span>}}
+
+update := bson.D{
+	{<span style="color:#666;font-style:italic">&#34;$inc&#34;</span>, bson.D{
+		{<span style="color:#666;font-style:italic">&#34;age&#34;</span>, 1},
+	}},
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>接下来，就可以通过下面的语句找到小兰，给他增加一岁了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">updateResult, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">UpdateOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), filter, update)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Matched %v documents and updated %v documents.\n&#34;</span>, updateResult.MatchedCount, updateResult.ModifiedCount)
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="查找文档">查找文档</h4>
+<p>要找到一个文档，你需要一个filter文档，以及一个指向可以将结果解码为其值的指针。要查找单个文档，使用<code>collection.FindOne()</code>。这个方法返回一个可以解码为值的结果。</p>
+<p>我们使用上面定义过的那个filter来查找姓名为’小兰’的文档。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 创建一个Student变量用来接收查询的结果
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">var</span> result Student
+err = collection.<span style="color:#666;font-weight:bold;font-style:italic">FindOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), filter).<span style="color:#666;font-weight:bold;font-style:italic">Decode</span>(&amp;result)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Found a single document: %+v\n&#34;</span>, result)
+</code></pre></td></tr></table>
+</div>
+</div><p>要查找多个文档，请使用<code>collection.Find()</code>。此方法返回一个游标。游标提供了一个文档流，你可以通过它一次迭代和解码一个文档。当游标用完之后，应该关闭游标。下面的示例将使用<code>options</code>包设置一个限制以便只返回两个文档。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 查询多个
+</span><span style="color:#888;font-style:italic">// 将选项传递给Find()
+</span><span style="color:#888;font-style:italic"></span>findOptions := options.<span style="color:#666;font-weight:bold;font-style:italic">Find</span>()
+findOptions.<span style="color:#666;font-weight:bold;font-style:italic">SetLimit</span>(2)
+
+<span style="color:#888;font-style:italic">// 定义一个切片用来存储查询结果
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">var</span> results []*Student
+
+<span style="color:#888;font-style:italic">// 把bson.D{{}}作为一个filter来匹配所有文档
+</span><span style="color:#888;font-style:italic"></span>cur, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">Find</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), bson.D{{}}, findOptions)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+
+<span style="color:#888;font-style:italic">// 查找多个文档返回一个光标
+</span><span style="color:#888;font-style:italic">// 遍历游标允许我们一次解码一个文档
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">for</span> cur.<span style="color:#666;font-weight:bold;font-style:italic">Next</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>()) {
+	<span style="color:#888;font-style:italic">// 创建一个值，将单个文档解码为该值
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> elem Student
+	err := cur.<span style="color:#666;font-weight:bold;font-style:italic">Decode</span>(&amp;elem)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	results = <span style="font-weight:bold;font-style:italic">append</span>(results, &amp;elem)
+}
+
+<span style="font-weight:bold">if</span> err := cur.<span style="color:#666;font-weight:bold;font-style:italic">Err</span>(); err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+
+<span style="color:#888;font-style:italic">// 完成后关闭游标
+</span><span style="color:#888;font-style:italic"></span>cur.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>())
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Found multiple documents (array of pointers): %#v\n&#34;</span>, results)
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="删除文档">删除文档</h4>
+<p>最后，可以使用<code>collection.DeleteOne()</code>或<code>collection.DeleteMany()</code>删除文档。如果你传递<code>bson.D{{}}</code>作为过滤器参数，它将匹配数据集中的所有文档。还可以使用<code>collection. drop()</code>删除整个数据集。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 删除名字是小黄的那个
+</span><span style="color:#888;font-style:italic"></span>deleteResult1, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">DeleteOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), bson.D{{<span style="color:#666;font-style:italic">&#34;name&#34;</span>,<span style="color:#666;font-style:italic">&#34;小黄&#34;</span>}})
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Deleted %v documents in the trainers collection\n&#34;</span>, deleteResult1.DeletedCount)
+<span style="color:#888;font-style:italic">// 删除所有
+</span><span style="color:#888;font-style:italic"></span>deleteResult2, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">DeleteMany</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), bson.D{{}})
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Deleted %v documents in the trainers collection\n&#34;</span>, deleteResult2.DeletedCount)
+</code></pre></td></tr></table>
+</div>
+</div><p>更多方法请查阅<a href="https://godoc.org/go.mongodb.org/mongo-driver">官方文档</a>。</p>
+<h2 id="参考链接">参考链接</h2>
+<p><a href="https://docs.mongodb.com/manual/mongo/">https://docs.mongodb.com/manual/mongo/</a></p>
+<p><a href="https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial">https://www.mongodb.com/blog/post/mongodb-go-driver-tutorial</a></p>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/go_redis/">Go语言操作Redis</a></li>
+        
+        <li><a href="/post/Go/sqlx/">sqlx库使用指南</a></li>
+        
+        <li><a href="/post/Go/go_mysql/">Go语言操作MySQL</a></li>
+        
+        <li><a href="/post/Go/go_cookie_session/">Cookie和Session</a></li>
+        
+        <li><a href="/post/Go/go_logrus/">第三方日志库logrus使用</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/MongoDB'>MongoDB</a></li>
+                
+                <li><a href='/tags/%E6%95%B0%E6%8D%AE%E5%BA%93'>数据库</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

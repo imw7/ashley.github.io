@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Go on 魏奇的博客</title>
+    <link>https://blog.imw7.com/categories/Go/</link>
+    <description>Recent content in Go on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 23 Dec 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/categories/Go/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>一般项目的结构</title>
+      <link>https://blog.imw7.com/post/Go/project_struct/</link>
+      <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/project_struct/</guid>
+      <description>&lt;p&gt;实际项目业务功能和模块会很多，我们不可能把所有代码都写在一个go文件里面或者写在一个main入口函数里面；我们需要对项目结构做一些规划，方便维护代码以及扩展。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>密码加密</title>
+      <link>https://blog.imw7.com/post/Go/bcrypt/</link>
+      <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/bcrypt/</guid>
+      <description>&lt;p&gt;本文介绍的密码加密方式是&lt;code&gt;bcrypt&lt;/code&gt;。&lt;code&gt;bcrypt&lt;/code&gt;是单向&lt;code&gt;Hash&lt;/code&gt;加密算法，类似&lt;code&gt;Pbkdf2&lt;/code&gt;算法，不可反向破解生成明文。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>为Go项目编写Makefile</title>
+      <link>https://blog.imw7.com/post/Go/makefile/</link>
+      <pubDate>Fri, 10 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/makefile/</guid>
+      <description>&lt;p&gt;借助&lt;code&gt;Makefile&lt;/code&gt;我们在编译过程中不再需要每次手动输入编译的命令和编译的参数，可以极大简化项目编译过程。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>go-micro</title>
+      <link>https://blog.imw7.com/post/Go/go_micro/</link>
+      <pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_micro/</guid>
+      <description>&lt;p&gt;本文介绍 go-micro 框架，该框架是微服务的基础框架。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gRPC</title>
+      <link>https://blog.imw7.com/post/Go/grpc/</link>
+      <pubDate>Wed, 21 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/grpc/</guid>
+      <description>&lt;p&gt;gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP/2协议设计，可以基于一个HTTP/2链接提供多个服务，对于移动设备更加友好。本文将介绍gRPC的一些用法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>安装Go语言及搭建Go语言开发环境</title>
+      <link>https://blog.imw7.com/post/Go/go_install_dev/</link>
+      <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_install_dev/</guid>
+      <description>&lt;p&gt;最新1.16版本，一步一步，从零搭建Go语言开发环境。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>VS Code配置Go语言开发环境</title>
+      <link>https://blog.imw7.com/post/Go/00_go_in_vscode/</link>
+      <pubDate>Tue, 16 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/00_go_in_vscode/</guid>
+      <description>&lt;p&gt;&lt;code&gt;VS Code&lt;/code&gt;是微软开源的一款编辑器，插件系统十分的丰富。本文就介绍了如何使用&lt;code&gt;VS Code&lt;/code&gt;搭建&lt;code&gt;Go&lt;/code&gt;语言开发环境。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言配置管理神器——Viper中文教程</title>
+      <link>https://blog.imw7.com/post/Go/viper_tutorial/</link>
+      <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/viper_tutorial/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34;&gt;Viper&lt;/a&gt;是适用于Go应用程序的完整配置解决方案。它被设计用于在应用程序中工作，并且可以处理所有类型的配置需求和格式。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>常见排序算法</title>
+      <link>https://blog.imw7.com/post/Go/algorithm_sort/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/algorithm_sort/</guid>
+      <description>&lt;p&gt;本文介绍了Go语言版经典的排序算法–选择排序、冒泡排序、插入排序、快速排序、归并排序和堆排序。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gin框架路由拆分与注册</title>
+      <link>https://blog.imw7.com/post/Go/gin_routes_registry/</link>
+      <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/gin_routes_registry/</guid>
+      <description>&lt;p&gt;本文总结了我平时在项目中积累的关于gin框架路由拆分与注册的若干方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>在gin框架中使用JWT</title>
+      <link>https://blog.imw7.com/post/Go/jwt_in_gin/</link>
+      <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/jwt_in_gin/</guid>
+      <description>&lt;p&gt;JWT全称JSON Web Token是一种跨域认证解决方案，属于一个开放的标准，它规定了一种Token实现方式，目前多用于前后端分离项目和OAuth2.0业务场景下。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>protobuf初识</title>
+      <link>https://blog.imw7.com/post/Go/protobuf/</link>
+      <pubDate>Sun, 08 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/protobuf/</guid>
+      <description>&lt;p&gt;protobuf是一种高效的数据格式，平台无关、语言无关、可扩展，可用于 RPC 系统和持续数据存储系统。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何使用go module导入本地包</title>
+      <link>https://blog.imw7.com/post/Go/go_import_local/</link>
+      <pubDate>Thu, 27 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_import_local/</guid>
+      <description>&lt;p&gt;&lt;code&gt;go module&lt;/code&gt;是&lt;code&gt;Go1.11&lt;/code&gt;版本之后官方推出的版本管理工具，并且从&lt;code&gt;Go1.13&lt;/code&gt;版本开始，&lt;code&gt;go module&lt;/code&gt;将是&lt;code&gt;Go&lt;/code&gt;语言默认的依赖管理工具。到&lt;code&gt;Go1.14&lt;/code&gt;版本推出之后&lt;code&gt;Go modules&lt;/code&gt; 功能已经被正式推荐在生产环境下使用了。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言操作MongoDB</title>
+      <link>https://blog.imw7.com/post/Go/go_mongodb/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_mongodb/</guid>
+      <description>&lt;p&gt;mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Cookie和Session</title>
+      <link>https://blog.imw7.com/post/Go/go_cookie_session/</link>
+      <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_cookie_session/</guid>
+      <description>&lt;p&gt;Cookie和Session是Web开发绕不开的一个环节，本文介绍了Cookie和Session的原理及在Go语言中如何操作Cookie。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>第三方日志库logrus使用</title>
+      <link>https://blog.imw7.com/post/Go/go_logrus/</link>
+      <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_logrus/</guid>
+      <description>&lt;p&gt;日志是程序中必不可少的一个环节，由于Go语言内置的日志库功能比较简洁，我们在实际开发中通常会选择使用第三方的日志库进行开发。文本介绍了&lt;code&gt;logrus&lt;/code&gt;这个日志库的基本使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Elasticsearch</title>
+      <link>https://blog.imw7.com/post/Go/go_elasticsearch/</link>
+      <pubDate>Wed, 28 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_elasticsearch/</guid>
+      <description>&lt;p&gt;本文简单介绍了ES、Kibana和Go语言操作ES。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之html/template</title>
+      <link>https://blog.imw7.com/post/Go/go_template/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_template/</guid>
+      <description>&lt;p&gt;&lt;code&gt;html/template&lt;/code&gt;包实现了数据驱动的模板，用于生成可防止代码注入的安全的&lt;code&gt;HTML&lt;/code&gt;内容。它提供了和&lt;code&gt;text/template&lt;/code&gt;包相同的接口，&lt;code&gt;Go&lt;/code&gt;语言中输出&lt;code&gt;HTML&lt;/code&gt;的场景都应使用&lt;code&gt;html/template&lt;/code&gt;这个包。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>gin框架介绍及使用</title>
+      <link>https://blog.imw7.com/post/Go/gin_quickstart/</link>
+      <pubDate>Sat, 24 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/gin_quickstart/</guid>
+      <description>&lt;p&gt;&lt;code&gt;Gin&lt;/code&gt;是一个用Go语言编写的web框架。它是一个类似于&lt;code&gt;martini&lt;/code&gt;但拥有更好性能的API框架, 由于使用了&lt;code&gt;httprouter&lt;/code&gt;，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上&lt;code&gt;Gin&lt;/code&gt;。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go操作etcd</title>
+      <link>https://blog.imw7.com/post/Go/go_etcd/</link>
+      <pubDate>Mon, 19 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_etcd/</guid>
+      <description>&lt;p&gt;etcd是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍etcd的安装和使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go操作Kafka</title>
+      <link>https://blog.imw7.com/post/Go/go_kafka/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_kafka/</guid>
+      <description>&lt;p&gt;Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据，具有高性能、持久化、多副本备份、横向扩展等特点。本文介绍了如何使用Go语言发送和接收kafka消息。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>日志收集项目</title>
+      <link>https://blog.imw7.com/post/Go/log_agent/</link>
+      <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/log_agent/</guid>
+      <description>&lt;p&gt;本文介绍日志收集项目的架构设计以及Kafka、tailf、sarama等包的使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go操作NSQ</title>
+      <link>https://blog.imw7.com/post/Go/go_nsq/</link>
+      <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_nsq/</guid>
+      <description>&lt;p&gt;NSQ是目前比较流行的一个分布式的消息队列，本文主要介绍了NSQ及Go语言如何操作NSQ。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go性能调优</title>
+      <link>https://blog.imw7.com/post/Go/preformance_optimisation/</link>
+      <pubDate>Sun, 28 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/preformance_optimisation/</guid>
+      <description>&lt;p&gt;在计算机性能调试领域里，profiling 是指对应用程序的画像，画像就是应用程序使用 CPU 和内存的情况。 Go语言是一个对性能特别看重的语言，因此语言中自带了 profiling 的库，这篇文章就要讲解怎么在 Go 中做 profiling。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言操作Redis</title>
+      <link>https://blog.imw7.com/post/Go/go_redis/</link>
+      <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_redis/</guid>
+      <description>&lt;p&gt;在项目开发中redis的使用也比较频繁，本文介绍了Go语言中&lt;code&gt;go-redis&lt;/code&gt;库的基本使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>sqlx库使用指南</title>
+      <link>https://blog.imw7.com/post/Go/sqlx/</link>
+      <pubDate>Sat, 20 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/sqlx/</guid>
+      <description>&lt;p&gt;在项目中我们通常可能会使用&lt;code&gt;database/sql&lt;/code&gt;连接MySQL数据库。本文借助使用&lt;code&gt;sqlx&lt;/code&gt;实现批量插入数据的例子，介绍了&lt;code&gt;sqlx&lt;/code&gt;中可能被你忽视了的&lt;code&gt;sqlx.In&lt;/code&gt;和&lt;code&gt;DB.NamedExec&lt;/code&gt;方法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言操作MySQL</title>
+      <link>https://blog.imw7.com/post/Go/go_mysql/</link>
+      <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_mysql/</guid>
+      <description>&lt;p&gt;MySQL是业界常用的关系型数据库，本文介绍了Go语言如何操作MySQL数据库。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之net/http</title>
+      <link>https://blog.imw7.com/post/Go/go_http/</link>
+      <pubDate>Sat, 06 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_http/</guid>
+      <description>&lt;p&gt;Go语言内置的&lt;code&gt;net/http&lt;/code&gt;包十分的优秀，提供了HTTP客户端和服务端的实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之strconv</title>
+      <link>https://blog.imw7.com/post/Go/go_strconv/</link>
+      <pubDate>Sat, 29 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_strconv/</guid>
+      <description>&lt;p&gt;Go语言中&lt;code&gt;strconv&lt;/code&gt;包实现了基本数据类型和其字符串表示的相互转换。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之Time</title>
+      <link>https://blog.imw7.com/post/Go/go_time/</link>
+      <pubDate>Sun, 23 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_time/</guid>
+      <description>&lt;p&gt;时间和日期是我们编程中经常会用到的，本文主要介绍了Go语言内置的time包的基本用法。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库flag基本用法</title>
+      <link>https://blog.imw7.com/post/Go/go_flag/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_flag/</guid>
+      <description>&lt;p&gt;Go语言内置的&lt;code&gt;flag&lt;/code&gt;包实现了命令行参数的解析，&lt;code&gt;flag&lt;/code&gt;包使得开发命令行工具更为简单。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之Context</title>
+      <link>https://blog.imw7.com/post/Go/go_context/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_context/</guid>
+      <description>&lt;p&gt;在 Go http包的Server中，每一个请求都有一个对应的 goroutine 去处理。请求处理函数通常会启动额外的 goroutine 用来访问后端服务，比如数据库和RPC服务。用来处理一个请求的 goroutine 通常需要访问一些与请求特定的数据，比如终端用户的身份认证信息、验证相关的token、请求的截止时间。 当一个请求被取消或超时时，所有用来处理该请求的 goroutine 都应该迅速退出，然后系统才能释放这些 goroutine 占用的资源。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言标准库之log</title>
+      <link>https://blog.imw7.com/post/Go/go_log/</link>
+      <pubDate>Sat, 22 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_log/</guid>
+      <description>&lt;p&gt;无论是软件开发的调试阶段还是软件上线之后的运行阶段，日志一直都是非常重要的一个环节，我们也应该养成在程序中记录日志的好习惯。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言之文件操作</title>
+      <link>https://blog.imw7.com/post/Go/go_file/</link>
+      <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_file/</guid>
+      <description>&lt;p&gt;本文主要介绍了Go语言中文件读写的相关操作。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之单元测试</title>
+      <link>https://blog.imw7.com/post/Go/16_test/</link>
+      <pubDate>Fri, 07 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/16_test/</guid>
+      <description>&lt;p&gt;不写测试的开发不是好程序员。这篇文章主要介绍下在Go语言中如何做单元测试和基准测试。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之网络编程</title>
+      <link>https://blog.imw7.com/post/Go/15_socket/</link>
+      <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/15_socket/</guid>
+      <description>&lt;p&gt;现在我们几乎每天都在使用互联网，我们前面已经学习了如何编写Go语言程序，但是如何才能让我们的程序通过网络互相通信呢？本章我们就一起来学习下Go语言中的网络编程。 关于网络编程其实是一个很庞大的领域，本文只是简单的演示了如何使用net包进行TCP和UDP通信。如需了解更详细的网络编程请自行检索和阅读专业资料。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之并发</title>
+      <link>https://blog.imw7.com/post/Go/14_concurrence/</link>
+      <pubDate>Sat, 04 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/14_concurrence/</guid>
+      <description>&lt;p&gt;并发是编程里面一个非常重要的概念，Go语言在语言层面天生支持并发，这也是Go语言流行的一个很重要的原因。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之反射</title>
+      <link>https://blog.imw7.com/post/Go/13_reflect/</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/13_reflect/</guid>
+      <description>&lt;p&gt;本文介绍了Go语言反射的意义和基本使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之接口</title>
+      <link>https://blog.imw7.com/post/Go/12_interface/</link>
+      <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/12_interface/</guid>
+      <description>&lt;p&gt;接口（interface）定义了一个对象的行为规范，只定义规范不实现，由具体的对象来实现规范的细节。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之包</title>
+      <link>https://blog.imw7.com/post/Go/11_package/</link>
+      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/11_package/</guid>
+      <description>&lt;p&gt;在工程化的Go语言开发项目中，Go语言的源码复用是建立在包（package）基础之上的。本文介绍了Go语言中如何定义包、如何导出包的内容及如何导入其他包。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之结构体</title>
+      <link>https://blog.imw7.com/post/Go/10_struct/</link>
+      <pubDate>Sun, 31 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/10_struct/</guid>
+      <description>&lt;p&gt;Go语言中没有“类”的概念，也不支持“类”的继承等面向对象的概念。Go语言中通过结构体的内嵌再配合接口比面向对象具有更高的扩展性和灵活性。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之函数</title>
+      <link>https://blog.imw7.com/post/Go/09_function/</link>
+      <pubDate>Sat, 23 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/09_function/</guid>
+      <description>&lt;p&gt;函数是组织好的、可重复使用的、用于执行指定任务的代码块。本文介绍了Go语言中函数的相关内容。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之map</title>
+      <link>https://blog.imw7.com/post/Go/08_map/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/08_map/</guid>
+      <description>&lt;p&gt;Go语言中提供的映射关系容器为&lt;code&gt;map&lt;/code&gt;，其内部使用&lt;code&gt;散列表（hash）&lt;/code&gt;实现。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之切片</title>
+      <link>https://blog.imw7.com/post/Go/06_slice/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/06_slice/</guid>
+      <description>&lt;p&gt;本文主要介绍Go语言中切片（slice）及它的基本使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之指针</title>
+      <link>https://blog.imw7.com/post/Go/07_pointer/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/07_pointer/</guid>
+      <description>&lt;p&gt;区别于C/C++中的指针，Go语言中的指针不能进行偏移和运算，是安全指针。&lt;/p&gt;
+&lt;p&gt;要搞明白Go语言中的指针需要先知道3个概念：指针地址、指针类型和指针取值。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之数组</title>
+      <link>https://blog.imw7.com/post/Go/05_array/</link>
+      <pubDate>Sat, 16 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/05_array/</guid>
+      <description>&lt;p&gt;本文主要介绍Go语言中数组（array）及它的基本使用。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之流程控制</title>
+      <link>https://blog.imw7.com/post/Go/04_process_control/</link>
+      <pubDate>Sun, 10 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/04_process_control/</guid>
+      <description>&lt;p&gt;流程控制是每种编程语言控制逻辑走向和执行次序的重要部分，流程控制可以说是一门语言的“经脉”。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之运算符</title>
+      <link>https://blog.imw7.com/post/Go/03_operators/</link>
+      <pubDate>Sat, 09 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/03_operators/</guid>
+      <description>&lt;p&gt;运算符用于在程序运行时执行数学或逻辑运算。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言fmt包使用指南</title>
+      <link>https://blog.imw7.com/post/Go/go_fmt/</link>
+      <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_fmt/</guid>
+      <description>&lt;p&gt;fmt标准库是在学习Go语言过程中接触最早最频繁的一个了，本文介绍了fmt包的一些常用函数。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之基本数据类型</title>
+      <link>https://blog.imw7.com/post/Go/02_datatype/</link>
+      <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/02_datatype/</guid>
+      <description>&lt;p&gt;&lt;code&gt;Go&lt;/code&gt;语言中有丰富的数据类型，除了基本的&lt;code&gt;整型&lt;/code&gt;、&lt;code&gt;浮点型&lt;/code&gt;、&lt;code&gt;布尔型&lt;/code&gt;、&lt;code&gt;字符串&lt;/code&gt;外，还有&lt;code&gt;数组&lt;/code&gt;、&lt;code&gt;切片&lt;/code&gt;、&lt;code&gt;结构体&lt;/code&gt;、&lt;code&gt;函数&lt;/code&gt;、&lt;code&gt;map&lt;/code&gt;和&lt;code&gt;通道(channel)&lt;/code&gt;等。&lt;code&gt;Go&lt;/code&gt; 语言的基本类型和其他语言大同小异。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言基础之变量和常量</title>
+      <link>https://blog.imw7.com/post/Go/01_var_and_const/</link>
+      <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/01_var_and_const/</guid>
+      <description>&lt;p&gt;变量和常量是编程必不可少的部分，也是很好理解的一部分。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Go语言之依赖管理</title>
+      <link>https://blog.imw7.com/post/Go/go_dependency/</link>
+      <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_dependency/</guid>
+      <description>&lt;p&gt;&lt;code&gt;Go&lt;/code&gt;语言的依赖管理随着版本的更迭正逐渐完善起来。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

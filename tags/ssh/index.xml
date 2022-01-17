@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ssh on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/ssh/</link>
+    <description>Recent content in ssh on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ssh使用scp或rsync上传和下载文件</title>
+      <link>https://blog.imw7.com/post/ssh_upload_download/</link>
+      <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/ssh_upload_download/</guid>
+      <description>&lt;p&gt;本文主要介绍，如何向远程服务器上传文件，以及如何从远程服务器上下载文件。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

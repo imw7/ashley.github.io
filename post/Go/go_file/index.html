@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go语言之文件操作 | 魏奇的博客</title>
+    <meta property="og:title" content="Go语言之文件操作 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-06-07T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-06-07T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go语言之文件操作">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/go_file/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#fileread">file.Read()</a>
+      <ul>
+        <li><a href="#基本使用">基本使用</a></li>
+        <li><a href="#循环读取">循环读取</a></li>
+      </ul>
+    </li>
+    <li><a href="#bufio读取文件">bufio读取文件</a></li>
+    <li><a href="#ioutil读取整个文件">ioutil读取整个文件</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#write和writestring">Write和WriteString</a></li>
+    <li><a href="#bufionewwriter">bufio.NewWriter</a></li>
+    <li><a href="#ioutilwritefile">ioutil.WriteFile</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#copyfile">copyFile</a></li>
+    <li><a href="#实现一个cat命令">实现一个cat命令</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go语言之文件操作</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月7日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>本文主要介绍了Go语言中文件读写的相关操作。</p>
+<p>文件是什么？</p>
+<p>计算机中的文件是存储在外部介质（通常是磁盘）上的数据集合，文件分为文本文件和二进制文件。</p>
+<h1 id="打开和关闭文件">打开和关闭文件</h1>
+<p><code>os.Open()</code>函数能够打开一个文件，返回一个<code>*File</code>和一个<code>err</code>。对得到的文件实例调用<code>close()</code>方法能够关闭文件。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 只读方式打开当前目录下的main.go文件
+</span><span style="color:#888;font-style:italic"></span>	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(<span style="color:#666;font-style:italic">&#34;./main.go&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="color:#888;font-style:italic">// 关闭文件
+</span><span style="color:#888;font-style:italic"></span>	_ = file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>为了防止文件忘记关闭，我们通常使用defer注册文件关闭语句。</p>
+<h1 id="读取文件">读取文件</h1>
+<h2 id="fileread">file.Read()</h2>
+<h3 id="基本使用">基本使用</h3>
+<p>Read方法定义如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> (f *File) <span style="color:#666;font-weight:bold;font-style:italic">Read</span>(b []<span style="font-weight:bold">byte</span>) (n <span style="font-weight:bold">int</span>, err <span style="font-weight:bold">error</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>它接收一个字节切片，返回读取的字节数和可能的具体错误，读到文件末尾时会返回<code>0</code>和<code>io.EOF</code>。 举个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 只读方式打开当前目录下的main.go文件
+</span><span style="color:#888;font-style:italic"></span>	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(<span style="color:#666;font-style:italic">&#34;./main.go&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+	<span style="color:#888;font-style:italic">// 使用Read方法读取数据
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> tmp = <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">byte</span>, 128)
+	n, err := file.<span style="color:#666;font-weight:bold;font-style:italic">Read</span>(tmp)
+	<span style="font-weight:bold">if</span> err == io.EOF {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;文件读完了&#34;</span>)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;读取了%d字节数据\n&#34;</span>, n)
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(tmp[:n]))
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="循环读取">循环读取</h3>
+<p>使用for循环读取文件中的所有数据。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 只读方式打开当前目录下的main.go文件
+</span><span style="color:#888;font-style:italic"></span>	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(<span style="color:#666;font-style:italic">&#34;./main.go&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed!, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+	<span style="color:#888;font-style:italic">// 循环读取文件
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> content []<span style="font-weight:bold">byte</span>
+	<span style="font-weight:bold;font-style:italic">var</span> tmp = <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">byte</span>, 128)
+	<span style="font-weight:bold">for</span> {
+		n, err := file.<span style="color:#666;font-weight:bold;font-style:italic">Read</span>(tmp)
+		<span style="font-weight:bold">if</span> err == io.EOF {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;文件读完了&#34;</span>)
+			<span style="font-weight:bold">break</span>
+		}
+		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read file failed, err:&#34;</span>, err)
+			<span style="font-weight:bold">return</span>
+		}
+		content = <span style="font-weight:bold;font-style:italic">append</span>(content, tmp[:n]...)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(content))
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="bufio读取文件">bufio读取文件</h2>
+<p>bufio是在file的基础上封装了一层API，支持更多的功能。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;bufio&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;io&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// bufio按行读取示例
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(<span style="color:#666;font-style:italic">&#34;./xx.txt&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+	reader := bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(file)
+	<span style="font-weight:bold">for</span> {
+		line, err := reader.<span style="color:#666;font-weight:bold;font-style:italic">ReadString</span>(<span style="color:#666;font-style:italic">&#39;\n&#39;</span>) <span style="color:#888;font-style:italic">//注意是字符
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err == io.EOF {
+			<span style="font-weight:bold">if</span> <span style="font-weight:bold;font-style:italic">len</span>(line) != 0 {
+				fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(line)
+			}
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;文件读完了&#34;</span>)
+			<span style="font-weight:bold">break</span>
+		}
+		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read file failed, err:&#34;</span>, err)
+			<span style="font-weight:bold">return</span>
+		}
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Print</span>(line)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="ioutil读取整个文件">ioutil读取整个文件</h2>
+<p><code>io/ioutil</code>包的<code>ReadFile</code>方法能够读取完整的文件，只需要将文件名作为参数传入。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;io/ioutil&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// ioutil.ReadFile读取整个文件
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	content, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadFile</span>(<span style="color:#666;font-style:italic">&#34;./main.go&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(content))
+}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="文件写入操作">文件写入操作</h1>
+<p><code>os.OpenFile()</code>函数能够以指定模式打开文件，从而实现文件写入相关功能。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">OpenFile</span>(name <span style="font-weight:bold">string</span>, flag <span style="font-weight:bold">int</span>, perm FileMode) (*File, <span style="font-weight:bold">error</span>) {
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>其中：</p>
+<p><code>name</code>：要打开的文件名 <code>flag</code>：打开文件的模式。 模式有以下几种：</p>
+<table>
+<thead>
+<tr>
+<th align="center">模式</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>os.O_WRONLY</code></td>
+<td align="center">只写</td>
+</tr>
+<tr>
+<td align="center"><code>os.O_CREATE</code></td>
+<td align="center">创建文件</td>
+</tr>
+<tr>
+<td align="center"><code>os.O_RDONLY</code></td>
+<td align="center">只读</td>
+</tr>
+<tr>
+<td align="center"><code>os.O_RDWR</code></td>
+<td align="center">读写</td>
+</tr>
+<tr>
+<td align="center"><code>os.O_TRUNC</code></td>
+<td align="center">清空</td>
+</tr>
+<tr>
+<td align="center"><code>os.O_APPEND</code></td>
+<td align="center">追加</td>
+</tr>
+</tbody>
+</table>
+<p><code>perm</code>：文件权限，一个八进制数。r（读）04，w（写）02，x（执行）01。</p>
+<h2 id="write和writestring">Write和WriteString</h2>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">OpenFile</span>(<span style="color:#666;font-style:italic">&#34;xx.txt&#34;</span>, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+	str := <span style="color:#666;font-style:italic">&#34;hello 世界&#34;</span>
+	_, _ = file.<span style="color:#666;font-weight:bold;font-style:italic">Write</span>([]<span style="font-weight:bold;font-style:italic">byte</span>(str))     <span style="color:#888;font-style:italic">// 写入字节切片数据
+</span><span style="color:#888;font-style:italic"></span>	_, _ = file.<span style="color:#666;font-weight:bold;font-style:italic">WriteString</span>(<span style="color:#666;font-style:italic">&#34;hello 中国&#34;</span>) <span style="color:#888;font-style:italic">// 直接写入字符串数据
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="bufionewwriter">bufio.NewWriter</h2>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	file, err := os.<span style="color:#666;font-weight:bold;font-style:italic">OpenFile</span>(<span style="color:#666;font-style:italic">&#34;xx.txt&#34;</span>, os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0666)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;open file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> file.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+	writer := bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewWriter</span>(file)
+	<span style="font-weight:bold">for</span> i := 0; i &lt; 10; i++ {
+		_, _ = writer.<span style="color:#666;font-weight:bold;font-style:italic">WriteString</span>(<span style="color:#666;font-style:italic">&#34;hello世界\n&#34;</span>) <span style="color:#888;font-style:italic">// 将数据先写入缓存
+</span><span style="color:#888;font-style:italic"></span>	}
+    _ = writer.<span style="color:#666;font-weight:bold;font-style:italic">Flush</span>() <span style="color:#888;font-style:italic">// 将缓存中的内容写入文件
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="ioutilwritefile">ioutil.WriteFile</h2>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	str := <span style="color:#666;font-style:italic">&#34;hello 世界&#34;</span>
+	err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">WriteFile</span>(<span style="color:#666;font-style:italic">&#34;./xx.txt&#34;</span>, []<span style="font-weight:bold;font-style:italic">byte</span>(str), 0666)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;write file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="练习">练习</h1>
+<h2 id="copyfile">copyFile</h2>
+<p>借助<code>io.Copy()</code>实现一个拷贝文件函数。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// CopyFile 拷贝文件函数
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">CopyFile</span>(dstName, srcName <span style="font-weight:bold">string</span>) (written <span style="font-weight:bold">int64</span>, err <span style="font-weight:bold">error</span>) {
+	<span style="color:#888;font-style:italic">// 以读方式打开源文件
+</span><span style="color:#888;font-style:italic"></span>	src, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(srcName)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;open %s failed, err:%v.\n&#34;</span>, srcName, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = src.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+	<span style="color:#888;font-style:italic">// 以写|创建的方式打开目标文件
+</span><span style="color:#888;font-style:italic"></span>	dst, err := os.<span style="color:#666;font-weight:bold;font-style:italic">OpenFile</span>(dstName, os.O_WRONLY|os.O_CREATE, 0644)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;open %s failed, err:%v.\n&#34;</span>, dstName, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = dst.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+	<span style="font-weight:bold">return</span> io.<span style="color:#666;font-weight:bold;font-style:italic">Copy</span>(dst, src) <span style="color:#888;font-style:italic">// 调用io.Copy()拷贝内容
+</span><span style="color:#888;font-style:italic"></span>}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	_, err := <span style="color:#666;font-weight:bold;font-style:italic">CopyFile</span>(<span style="color:#666;font-style:italic">&#34;dst.txt&#34;</span>, <span style="color:#666;font-style:italic">&#34;src.txt&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;copy file failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;copy done!&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="实现一个cat命令">实现一个cat命令</h2>
+<p>使用文件操作相关知识，模拟实现linux平台<code>cat</code>命令的功能。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// cat命令实现
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">cat</span>(r *bufio.Reader) {
+	<span style="font-weight:bold">for</span> {
+		buf, err := r.<span style="color:#666;font-weight:bold;font-style:italic">ReadBytes</span>(<span style="color:#666;font-style:italic">&#39;\n&#39;</span>) <span style="color:#888;font-style:italic">// 注意是字符
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err == io.EOF {
+			<span style="font-weight:bold">break</span>
+		}
+		_, _ = fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintf</span>(os.Stdout, <span style="color:#666;font-style:italic">&#34;%s&#34;</span>, buf)
+	}
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	flag.<span style="color:#666;font-weight:bold;font-style:italic">Parse</span>() <span style="color:#888;font-style:italic">// 解析命令行参数
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>() == 0 {
+		<span style="color:#888;font-style:italic">// 如果没有参数默认从标准输入读取内容
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-weight:bold;font-style:italic">cat</span>(bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(os.Stdin))
+	}
+	<span style="color:#888;font-style:italic">// 依次读取每个指定文件的内容并打印到终端
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> i := 0; i &lt; flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>(); i++ {
+		f, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Open</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">Arg</span>(i))
+		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			_, _ = fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintf</span>(os.Stdout, <span style="color:#666;font-style:italic">&#34;reading from %s failed, err:%v\n&#34;</span>, flag.<span style="color:#666;font-weight:bold;font-style:italic">Arg</span>(i), err)
+			<span style="font-weight:bold">continue</span>
+		}
+		<span style="color:#666;font-weight:bold;font-style:italic">cat</span>(bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(f))
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/16_test/">Go语言基础之单元测试</a></li>
+        
+        <li><a href="/post/Go/15_socket/">Go语言基础之网络编程</a></li>
+        
+        <li><a href="/post/Go/14_concurrence/">Go语言基础之并发</a></li>
+        
+        <li><a href="/post/Go/13_reflect/">Go语言基础之反射</a></li>
+        
+        <li><a href="/post/Go/12_interface/">Go语言基础之接口</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C'>文件操作</a></li>
+                
+                <li><a href='/tags/%E5%9F%BA%E7%A1%80'>基础</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

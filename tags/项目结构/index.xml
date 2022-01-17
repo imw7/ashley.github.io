@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>项目结构 on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/</link>
+    <description>Recent content in 项目结构 on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 23 Dec 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>一般项目的结构</title>
+      <link>https://blog.imw7.com/post/Go/project_struct/</link>
+      <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/project_struct/</guid>
+      <description>&lt;p&gt;实际项目业务功能和模块会很多，我们不可能把所有代码都写在一个go文件里面或者写在一个main入口函数里面；我们需要对项目结构做一些规划，方便维护代码以及扩展。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>排序算法 on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</link>
+    <description>Recent content in 排序算法 on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 10 May 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>常见排序算法</title>
+      <link>https://blog.imw7.com/post/Go/algorithm_sort/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/algorithm_sort/</guid>
+      <description>&lt;p&gt;本文介绍了Go语言版经典的排序算法–选择排序、冒泡排序、插入排序、快速排序、归并排序和堆排序。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

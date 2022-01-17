@@ -1,0 +1,1318 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go操作etcd | 魏奇的博客</title>
+    <meta property="og:title" content="Go操作etcd - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-19T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-19T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go操作etcd">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/go_etcd/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#etcd介绍">etcd介绍</a></li>
+    <li><a href="#etcd应用场景">etcd应用场景</a>
+      <ul>
+        <li><a href="#服务发现">服务发现</a></li>
+        <li><a href="#配置中心">配置中心</a></li>
+        <li><a href="#分布式锁">分布式锁</a></li>
+      </ul>
+    </li>
+    <li><a href="#为什么用-etcd-而不用zookeeper">为什么用 etcd 而不用ZooKeeper？</a>
+      <ul>
+        <li><a href="#为什么不选择zookeeper">为什么不选择ZooKeeper？</a></li>
+        <li><a href="#为什么选择etcd">为什么选择etcd？</a></li>
+      </ul>
+    </li>
+    <li><a href="#etcd集群">etcd集群</a>
+      <ul>
+        <li><a href="#搭建一个3节点集群示例">搭建一个3节点集群示例：</a></li>
+      </ul>
+    </li>
+    <li><a href="#go语言操作etcd">Go语言操作etcd</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#put和get操作">put和get操作</a></li>
+        <li><a href="#watch操作">watch操作</a></li>
+        <li><a href="#lease租约">lease租约</a></li>
+        <li><a href="#keepalive">keepAlive</a></li>
+        <li><a href="#基于etcd实现分布式锁">基于etcd实现分布式锁</a></li>
+        <li><a href="#其他操作">其他操作</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go操作etcd</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月19日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>etcd是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍etcd的安装和使用。</p>
+<h1 id="etcd">etcd</h1>
+<h2 id="etcd介绍">etcd介绍</h2>
+<p><a href="https://etcd.io/">etcd</a>是使用Go语言开发的一个开源的、高可用的分布式key-value存储系统，可以用于配置共享和服务的注册和发现。</p>
+<p>类似项目有zookeeper和consul。</p>
+<p>etcd具有以下特点：</p>
+<ul>
+<li>完全复制：集群中的每个节点都可以使用完整的存档</li>
+<li>高可用性：Etcd可用于避免硬件的单点故障或网络问题</li>
+<li>一致性：每次读取都会返回跨多主机的最新写入</li>
+<li>简单：包括一个定义良好、面向用户的API（gRPC）</li>
+<li>安全：实现了带有可选的客户端证书身份验证的自动化TLS</li>
+<li>快速：每秒10000次写入的基准速度</li>
+<li>可靠：使用Raft算法实现了强一致、高可用的服务存储目录</li>
+</ul>
+<h2 id="etcd应用场景">etcd应用场景</h2>
+<h3 id="服务发现">服务发现</h3>
+<p>服务发现要解决的也是分布式系统中最常见的问题之一，即在同一个分布式集群中的进程或服务，要如何才能找到对方并建立连接。本质上来说，服务发现就是想要了解集群中是否有进程在监听 udp 或 tcp 端口，并且通过名字就可以查找和连接。</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/etcd/etcd_01.png">
+            <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/etcd/etcd_01.png" />
+        </a>
+    </p>
+<h3 id="配置中心">配置中心</h3>
+<p>将一些配置信息放到 etcd 上进行集中管理。</p>
+<p>这类场景的使用方式通常是这样：应用在启动的时候主动从 etcd 获取一次配置信息，同时，在 etcd 节点上注册一个 Watcher 并等待，以后每次配置有更新的时候，etcd 都会实时通知订阅者，以此达到获取最新配置信息的目的。</p>
+<h3 id="分布式锁">分布式锁</h3>
+<p>因为 etcd 使用 Raft 算法保持了数据的强一致性，某次操作存储到集群中的值必然是全局一致的，所以很容易实现分布式锁。锁服务有两种使用方式，一是保持独占，二是控制时序。</p>
+<ul>
+<li><strong>保持独占即所有获取锁的用户最终只有一个可以得到</strong>。etcd 为此提供了一套实现分布式锁原子操作 CAS（<code>CompareAndSwap</code>）的 API。通过设置<code>prevExist</code>值，可以保证在多个节点同时去创建某个目录时，只有一个成功。而创建成功的用户就可以认为是获得了锁。</li>
+<li>控制时序，即所有想要获得锁的用户都会被安排执行，但是<strong>获得锁的顺序也是全局唯一的，同时决定了执行顺序</strong>。etcd 为此也提供了一套 API（自动创建有序键），对一个目录建值时指定为<code>POST</code>动作，这样 etcd 会自动在目录下生成一个当前最大的值为键，存储这个新的值（客户端编号）。同时还可以使用 API 按顺序列出所有当前目录下的键值。此时这些键的值就是客户端的时序，而这些键中存储的值可以是代表客户端的编号。</li>
+</ul>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/etcd/etcd_02.png">
+            <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/etcd/etcd_02.png" />
+        </a>
+    </p>
+<h2 id="为什么用-etcd-而不用zookeeper">为什么用 etcd 而不用ZooKeeper？</h2>
+<p>etcd 实现的这些功能，ZooKeeper都能实现。那么为什么要用 etcd 而非直接使用ZooKeeper呢？</p>
+<h3 id="为什么不选择zookeeper">为什么不选择ZooKeeper？</h3>
+<ol>
+<li>部署维护复杂，其使用的<code>Paxos</code>强一致性算法复杂难懂。官方只提供了<code>Java</code>和<code>C</code>两种语言的接口。</li>
+<li>使用<code>Java</code>编写引入大量的依赖。运维人员维护起来比较麻烦。</li>
+<li>最近几年发展缓慢，不如<code>etcd</code>和<code>consul</code>等后起之秀。</li>
+</ol>
+<h3 id="为什么选择etcd">为什么选择etcd？</h3>
+<ol>
+<li>简单。使用 Go 语言编写部署简单；支持HTTP/JSON API,使用简单；使用 Raft 算法保证强一致性让用户易于理解。</li>
+<li>etcd 默认数据一更新就进行持久化。</li>
+<li>etcd 支持 SSL 客户端安全认证。</li>
+</ol>
+<p>最后，etcd 作为一个年轻的项目，正在高速迭代和开发中，这既是一个优点，也是一个缺点。优点是它的未来具有无限的可能性，缺点是无法得到大项目长时间使用的检验。然而，目前 <code>CoreOS</code>、<code>Kubernetes</code>和<code>CloudFoundry</code>等知名项目均在生产环境中使用了<code>etcd</code>，所以总的来说，etcd值得你去尝试。</p>
+<h2 id="etcd集群">etcd集群</h2>
+<p>etcd 作为一个高可用键值存储系统，天生就是为集群化而设计的。由于 Raft 算法在做决策时需要多数节点的投票，所以 etcd 一般部署集群推荐奇数个节点，推荐的数量为 3、5 或者 7 个节点构成一个集群。</p>
+<h3 id="搭建一个3节点集群示例">搭建一个3节点集群示例：</h3>
+<p>在每个etcd节点指定集群成员，为了区分不同的集群最好同时配置一个独一无二的token。</p>
+<p>下面是提前定义好的集群信息，其中<code>n1</code>、<code>n2</code>和<code>n3</code>表示3个不同的etcd节点。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span>=token-01
+<span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span>=new
+<span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span>=<span style="color:#666;font-weight:bold;font-style:italic">n1</span>=http://10.240.0.17:2380,n2=http://10.240.0.18:2380,n3=http://10.240.0.19:2380
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>n1</code>这台机器上执行以下命令来启动etcd：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">etcd --data-dir=data.etcd --name n1 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.17:2380 --listen-peer-urls http://10.240.0.17:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.17:2379 --listen-client-urls http://10.240.0.17:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>n2</code>这台机器上执行以下命令启动etcd：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">etcd --data-dir=data.etcd --name n2 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.18:2380 --listen-peer-urls http://10.240.0.18:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.18:2379 --listen-client-urls http://10.240.0.18:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>n3</code>这台机器上执行以下命令启动etcd：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">etcd --data-dir=data.etcd --name n3 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.19:2380 --listen-peer-urls http://10.240.0.19:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.19:2379 --listen-client-urls http://10.240.0.19:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>etcd 官网提供了一个可以公网访问的 etcd 存储地址。你可以通过如下命令得到 etcd 服务的目录，并把它作为<code>-discovery</code>参数使用。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl https://discovery.etcd.io/new?size=3
+https://discovery.etcd.io/a81b5818e67a6ea83e9d4daea5ecbc92
+
+<span style="color:#888;font-style:italic"># grab this token</span>
+<span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span>=token-01
+<span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span>=new
+<span style="color:#666;font-weight:bold;font-style:italic">DISCOVERY</span>=https://discovery.etcd.io/a81b5818e67a6ea83e9d4daea5ecbc92
+
+
+etcd --data-dir=data.etcd --name n1 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.17:2380 --listen-peer-urls http://10.240.0.17:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.17:2379 --listen-client-urls http://10.240.0.17:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--discovery <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">DISCOVERY</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+
+
+etcd --data-dir=data.etcd --name n2 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.18:2380 --listen-peer-urls http://10.240.0.18:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.18:2379 --listen-client-urls http://10.240.0.18:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--discovery <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">DISCOVERY</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+
+
+etcd --data-dir=data.etcd --name n3 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.19:2380 --listen-peer-urls http://10.240.0.19:2380 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.19:2379 --listen-client-urls http:/10.240.0.19:2379 <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--discovery <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">DISCOVERY</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
+</span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>到此etcd集群就搭建起来了，可以使用<code>etcdctl</code>来连接etcd。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">ETCDCTL_API</span>=3
+<span style="color:#666;font-weight:bold;font-style:italic">HOST_1</span>=10.240.0.17
+<span style="color:#666;font-weight:bold;font-style:italic">HOST_2</span>=10.240.0.18
+<span style="color:#666;font-weight:bold;font-style:italic">HOST_3</span>=10.240.0.19
+<span style="color:#666;font-weight:bold;font-style:italic">ENDPOINTS</span>=<span style="color:#666;font-weight:bold;font-style:italic">$HOST_1</span>:2379,<span style="color:#666;font-weight:bold;font-style:italic">$HOST_2</span>:2379,<span style="color:#666;font-weight:bold;font-style:italic">$HOST_3</span>:2379
+
+etcdctl --endpoints=<span style="color:#666;font-weight:bold;font-style:italic">$ENDPOINTS</span> member list
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="go语言操作etcd">Go语言操作etcd</h2>
+<p>这里使用官方的<a href="https://github.com/etcd-io/etcd/releases/tag/v3.2.32">etcd/clientv3</a>包来连接etcd并进行相关操作。</p>
+<h3 id="安装">安装</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get go.etcd.io/etcd/clientv3
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="put和get操作">put和get操作</h3>
+<p><code>put</code>命令用来设置键值对数据，<code>get</code>命令用来根据key获取值。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// etcd client put/get demo
+</span><span style="color:#888;font-style:italic">// use etcd/clientv3
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{
+		Endpoints:   []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:2379&#34;</span>},
+		DialTimeout: 5 * time.Second,
+	})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		<span style="color:#888;font-style:italic">// handle error!
+</span><span style="color:#888;font-style:italic"></span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+    fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd success&#34;</span>)
+	<span style="font-weight:bold">defer</span> cli.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+	<span style="color:#888;font-style:italic">// put
+</span><span style="color:#888;font-style:italic"></span>	ctx, cancel := context.<span style="color:#666;font-weight:bold;font-style:italic">WithTimeout</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), time.Second)
+	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(ctx, <span style="color:#666;font-style:italic">&#34;eric&#34;</span>, <span style="color:#666;font-style:italic">&#34;21&#34;</span>)
+	<span style="color:#666;font-weight:bold;font-style:italic">cancel</span>()
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;put to etcd failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="color:#888;font-style:italic">// get
+</span><span style="color:#888;font-style:italic"></span>	ctx, cancel = context.<span style="color:#666;font-weight:bold;font-style:italic">WithTimeout</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), time.Second)
+	resp, err := cli.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(ctx, <span style="color:#666;font-style:italic">&#34;eric&#34;</span>)
+	<span style="color:#666;font-weight:bold;font-style:italic">cancel</span>()
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get from etcd failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	<span style="font-weight:bold">for</span> _, ev := <span style="font-weight:bold">range</span> resp.Kvs {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;%s:%s\n&#34;</span>, ev.Key, ev.Value)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="watch操作">watch操作</h3>
+<p><code>watch</code>用来获取未来更改的通知。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3&#34;</span>
+    <span style="color:#666;font-style:italic">&#34;time&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// watch demo
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{
+		Endpoints:   []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:2379&#34;</span>},
+		DialTimeout: 5 * time.Second,
+	})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd failed, err:&#34;</span>, err)
+		<span style="font-weight:bold">return</span>
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd success&#34;</span>)
+	<span style="font-weight:bold">defer</span> cli.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+	<span style="color:#888;font-style:italic">// watch key:eric change
+</span><span style="color:#888;font-style:italic"></span>	rch := cli.<span style="color:#666;font-weight:bold;font-style:italic">Watch</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), <span style="color:#666;font-style:italic">&#34;eric&#34;</span>) <span style="color:#888;font-style:italic">// &lt;-chan WatchResponse
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> wresp := <span style="font-weight:bold">range</span> rch {
+		<span style="font-weight:bold">for</span> _, ev := <span style="font-weight:bold">range</span> wresp.Events {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Type: %s Key:%s Value:%s\n&#34;</span>, ev.Type, ev.Kv.Key, ev.Kv.Value)
+		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>将上面的代码保存编译执行，此时程序就会等待etcd中<code>eric</code>这个key的变化。</p>
+<p>例如：我们打开终端执行以下命令修改、删除、设置<code>eric</code>这个key。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;22&#34;</span>
+OK
+
+etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 del eric
+1
+
+etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;23&#34;</span>
+OK
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的程序都能收到如下通知。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">watch&gt;watch.exe
+connect to etcd success
+Type: PUT Key:eric Value:22
+Type: DELETE Key:eric Value:
+Type: PUT Key:eric Value:23
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="lease租约">lease租约</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+    <span style="color:#666;font-style:italic">&#34;time&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// etcd lease
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{
+		Endpoints:   []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:2379&#34;</span>},
+		DialTimeout: time.Second * 5,
+	})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd succeed.&#34;</span>)
+	<span style="font-weight:bold">defer</span> cli.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+
+	<span style="color:#888;font-style:italic">// 创建一个5秒的租约
+</span><span style="color:#888;font-style:italic"></span>	resp, err := cli.<span style="color:#666;font-weight:bold;font-style:italic">Grant</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), 5)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 5秒钟之后, /eric/ 这个key就会被移除
+</span><span style="color:#888;font-style:italic"></span>	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;/eric/&#34;</span>, <span style="color:#666;font-style:italic">&#34;male&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="keepalive">keepAlive</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// etcd keepAlive
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{
+		Endpoints:   []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:2379&#34;</span>},
+		DialTimeout: time.Second * 5,
+	})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;connect to etcd succeed.&#34;</span>)
+	<span style="font-weight:bold">defer</span> cli.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+
+	resp, err := cli.<span style="color:#666;font-weight:bold;font-style:italic">Grant</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), 5)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;/eric/&#34;</span>, <span style="color:#666;font-style:italic">&#34;male&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// the key &#39;foo&#39; will be kept forever
+</span><span style="color:#888;font-style:italic"></span>	ch, kaerr := cli.<span style="color:#666;font-weight:bold;font-style:italic">KeepAlive</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), resp.ID)
+	<span style="font-weight:bold">if</span> kaerr != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(kaerr)
+	}
+	<span style="font-weight:bold">for</span> {
+		ka := &lt;-ch
+		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;ttl:&#34;</span>, ka.TTL)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="基于etcd实现分布式锁">基于etcd实现分布式锁</h3>
+<p><code>go.etcd.io/etcd/clientv3/concurrency</code>在etcd之上实现并发操作，如分布式锁、屏障和选举。</p>
+<p>导入该包：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3/concurrency&#34;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>基于etcd实现的分布式锁示例：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{Endpoints: endpoints})
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+<span style="font-weight:bold">defer</span> cli.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+
+<span style="color:#888;font-style:italic">// 创建两个单独的会话用来演示锁竞争
+</span><span style="color:#888;font-style:italic"></span>s1, err := concurrency.<span style="color:#666;font-weight:bold;font-style:italic">NewSession</span>(cli)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+<span style="font-weight:bold">defer</span> s1.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+m1 := concurrency.<span style="color:#666;font-weight:bold;font-style:italic">NewMutex</span>(s1, <span style="color:#666;font-style:italic">&#34;/my-lock/&#34;</span>)
+
+s2, err := concurrency.<span style="color:#666;font-weight:bold;font-style:italic">NewSession</span>(cli)
+<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+<span style="font-weight:bold">defer</span> s2.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+m2 := concurrency.<span style="color:#666;font-weight:bold;font-style:italic">NewMutex</span>(s2, <span style="color:#666;font-style:italic">&#34;/my-lock/&#34;</span>)
+
+<span style="color:#888;font-style:italic">// 会话s1获取锁
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">if</span> err := m1.<span style="color:#666;font-weight:bold;font-style:italic">Lock</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>()); err != <span style="font-weight:bold">nil</span> {
+    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;acquired lock for s1&#34;</span>)
+
+m2Locked := <span style="font-weight:bold;font-style:italic">make</span>(<span style="font-weight:bold;font-style:italic">chan</span> <span style="font-weight:bold;font-style:italic">struct</span>{})
+<span style="font-weight:bold">go</span> <span style="font-weight:bold;font-style:italic">func</span>() {
+    <span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">close</span>(m2Locked)
+    <span style="color:#888;font-style:italic">// 等待直到会话s1释放了/my-lock/的锁
+</span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold">if</span> err := m2.<span style="color:#666;font-weight:bold;font-style:italic">Lock</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>()); err != <span style="font-weight:bold">nil</span> {
+        log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+    }
+}()
+
+<span style="font-weight:bold">if</span> err := m1.<span style="color:#666;font-weight:bold;font-style:italic">Unlock</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>()); err != <span style="font-weight:bold">nil</span> {
+    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+}
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;released lock for s1&#34;</span>)
+
+&lt;-m2Locked
+fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;acquired lock for s2&#34;</span>)
+</code></pre></td></tr></table>
+</div>
+</div><p>输出：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">acquired lock <span style="font-weight:bold">for</span> s1
+released lock <span style="font-weight:bold">for</span> s1
+acquired lock <span style="font-weight:bold">for</span> s2
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://godoc.org/go.etcd.io/etcd/clientv3/concurrency">查看文档了解更多</a></p>
+<h3 id="其他操作">其他操作</h3>
+<p>其他操作请查看<a href="https://godoc.org/go.etcd.io/etcd/clientv3">etcd/clientv3官方文档</a>。</p>
+<p>参考链接：</p>
+<ul>
+<li><a href="https://etcd.io/docs/v3.3.12/demo/">https://etcd.io/docs/v3.3.12/demo/</a></li>
+<li><a href="https://www.infoq.cn/article/etcd-interpretation-application-scenario-implement-principle/">https://www.infoq.cn/article/etcd-interpretation-application-scenario-implement-principle/</a></li>
+</ul>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/go_kafka/">Go操作Kafka</a></li>
+        
+        <li><a href="/post/Go/go_nsq/">Go操作NSQ</a></li>
+        
+        <li><a href="/post/Go/log_agent/">日志收集项目</a></li>
+        
+        <li><a href="/post/Go/preformance_optimisation/">Go性能调优</a></li>
+        
+        <li><a href="/post/Go/go_redis/">Go语言操作Redis</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/etcd'>etcd</a></li>
+                
+                <li><a href='/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7'>常用组件和技巧</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

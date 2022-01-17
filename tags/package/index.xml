@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>package on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/package/</link>
+    <description>Recent content in package on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 05 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/package/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go语言基础之包</title>
+      <link>https://blog.imw7.com/post/Go/11_package/</link>
+      <pubDate>Fri, 05 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/11_package/</guid>
+      <description>&lt;p&gt;在工程化的Go语言开发项目中，Go语言的源码复用是建立在包（package）基础之上的。本文介绍了Go语言中如何定义包、如何导出包的内容及如何导入其他包。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

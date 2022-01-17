@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>centos on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/centos/</link>
+    <description>Recent content in centos on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 13 Jan 2022 15:31:46 +0800</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/centos/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>在CentOS7.x上重置MySQL8.0密码</title>
+      <link>https://blog.imw7.com/post/mysql/</link>
+      <pubDate>Thu, 13 Jan 2022 15:31:46 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/mysql/</guid>
+      <description>&lt;p&gt;本文介绍在&lt;code&gt;CentOS&lt;/code&gt;服务器上重置&lt;code&gt;MySQL8.0&lt;/code&gt;的密码。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>CentOS与Redis</title>
+      <link>https://blog.imw7.com/post/redis_on_centos/</link>
+      <pubDate>Wed, 12 Jan 2022 12:05:23 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/redis_on_centos/</guid>
+      <description>&lt;p&gt;本文介绍如何在centos上安装、配置、启动、关闭和卸载redis。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

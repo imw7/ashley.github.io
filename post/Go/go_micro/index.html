@@ -1,0 +1,2131 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>go-micro | 魏奇的博客</title>
+    <meta property="og:title" content="go-micro - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-08-11T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-08-11T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="go-micro">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/go_micro/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#go-micro-简介与设计理念">go-micro 简介与设计理念</a></li>
+    <li><a href="#go-micro-基础架构介绍">go-micro 基础架构介绍</a></li>
+    <li><a href="#go-micro-主要功能">go-micro 主要功能</a></li>
+    <li><a href="#小结">小结</a></li>
+    <li><a href="#编写-go-micro-http服务">编写 go-micro HTTP服务</a>
+      <ul>
+        <li><a href="#go-micro安装">go-micro安装</a></li>
+        <li><a href="#开始编写go-micro-http服务">开始编写go-micro HTTP服务</a></li>
+      </ul>
+    </li>
+    <li><a href="#启动http服务">启动HTTP服务</a>
+      <ul>
+        <li><a href="#httpserver">httpServer</a></li>
+        <li><a href="#使用gin进行初始化路由">使用gin进行初始化路由</a></li>
+        <li><a href="#postman测试">Postman测试</a></li>
+      </ul>
+    </li>
+    <li><a href="#事件驱动">事件驱动</a>
+      <ul>
+        <li><a href="#发布与订阅模式">发布与订阅模式</a></li>
+        <li><a href="#代码实现">代码实现</a></li>
+      </ul>
+    </li>
+    <li><a href="#注册和配置中心">注册和配置中心</a>
+      <ul>
+        <li><a href="#consul安装">Consul安装</a></li>
+        <li><a href="#关键代码">关键代码</a></li>
+        <li><a href="#配置中心">配置中心</a></li>
+        <li><a href="#maingo">main.go</a></li>
+      </ul>
+    </li>
+    <li><a href="#consul和grpc结合使用">consul和grpc结合使用</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">go-micro</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年8月11日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>本文介绍 go-micro 框架，该框架是微服务的基础框架。</p>
+<h2 id="go-micro-简介与设计理念">go-micro 简介与设计理念</h2>
+<p>Go Micro 是一个基于 Go 语言编写的、用于构建微服务的基础框架，提供了分布式开发所需的核心组件，包括 RPC 和事件驱动通信等。</p>
+<p>它的设计哲学是「可插拔」的插件化架构，其核心专注于提供底层的接口定义和基础工具，这些底层接口可以兼容各种实现。例如 Go Micro 默认通过 consul 进行服务发现（2019年源码修改了默认使用 mdns），通过 HTTP 协议进行通信，通过 protobuf 和 json 进行编解码，以便你可以基于这些开箱提供的组件快速启动，但是如果需要的话，你也可以通过符合底层接口定义的其他组件替换默认组件，比如通过 etcd 或 zookeeper 进行服务发现，这也是插件化架构的优势所在：不需要修改任何底层代码即可实现上层组件的替换。</p>
+<h2 id="go-micro-基础架构介绍">go-micro 基础架构介绍</h2>
+<p>go-micro之所以可以高度订制和它的框架结构是分不开的，go-micro 由 8 个关键的 interface 组成，每一个 interface 都可以根据自己的需求重新实现，这 8 个主要的 interface 也构成了 go-micro 的框架结构：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/framework.png">
+            <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/go_micro/framework.png" />
+        </a>
+    </p>
+<ul>
+<li>最顶层的 <strong>Service</strong> 接口是构建服务的主要组件，它把底层的各个包需要实现的接口，做了一次封装，包含了一系列用于初始化 Service 和 Client 的方法，使我们可以很简单的创建一个 RPC 服务；</li>
+<li><strong>Client</strong> 是请求服务的接口，从 Registry 中获取 Server 信息，然后封装了 Transport 和 Codec 进行 RPC 调用，也封装了 Brocker 进行消息发布，默认通过 RPC 协议进行通信，也可以基于 HTTP 或 gRPC；</li>
+<li><strong>Server</strong> 是监听服务调用的接口，也将以接收 Broker 推送过来的消息，需要向 Registry 注册自己的存在与否，以便客户端发起请求，和 Client 一样，默认基于 RPC 协议通信，也可以替换为 HTTP 或 gRPC；</li>
+<li><strong>Broker</strong> 是消息发布和订阅的接口，默认实现是基于 HTTP，在生产环境可以替换为 Kafka、RabbitMQ 等其他组件实现；</li>
+<li><strong>Codec</strong> 用于解决传输过程中的编码和解码，默认实现是 protobuf，也可以替换成 json、mercury 等；</li>
+<li><strong>Registry</strong> 用于实现服务的注册和发现，当有新的 Service 发布时，需要向 Registry 注册，然后 Registry 通知客户端进行更新，Go Micro 默认基于 consul 实现服务注册与发现，当然，也可以替换成 etcd、zookeeper、kuberpackage mainnetes 等；</li>
+<li><strong>Selector</strong> 是客户端级别的负载均衡，当有客户端向服务端发送请求时，Selector 根据不同的算法从 Registery 的主机列表中得到可用的 Service 节点进行通信。目前的实现有循环算法和随机算法，默认使用随机算法，另外，Selector 还有缓存机制，默认是本地缓存，还支持 label、blacklist 等方式；</li>
+<li><strong>Transport</strong> 是服务之间通信的接口，也就是服务发送和接收的最终实现方式，默认使用 HTTP 同步通信，也可以支持 TCP、UDP、NATS、gRPC 等其他方式。</li>
+</ul>
+<p>Go Micro 官方创建了一个 <a href="https://github.com/microhq/go-plugins">Plugins</a> 仓库，用于维护 Go Micro 核心接口支持的可替换插件：</p>
+<table>
+<thead>
+<tr>
+<th align="left">接口</th>
+<th align="left">支持组件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Broker</td>
+<td align="left">NATS、NSQ、RabbitMQ、Kafka、Redis 等</td>
+</tr>
+<tr>
+<td align="left">Client</td>
+<td align="left">gRPC、HTTP</td>
+</tr>
+<tr>
+<td align="left">Codec</td>
+<td align="left">BSON、Mercury 等</td>
+</tr>
+<tr>
+<td align="left">Registry</td>
+<td align="left">Etcd、NATS、Kubernetes、Eureka 等</td>
+</tr>
+<tr>
+<td align="left">Selector</td>
+<td align="left">Label、Blacklist、Static 等</td>
+</tr>
+<tr>
+<td align="left">Transport</td>
+<td align="left">NATS、gPRC、RabbitMQ、TCP、UDP</td>
+</tr>
+<tr>
+<td align="left">Wrapper</td>
+<td align="left">中间件：熔断、限流、追踪、监控</td>
+</tr>
+</tbody>
+</table>
+<p>各个组件接口之间的关系可以通过下图串联：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/interface.jpg">
+            <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/go_micro/interface.jpg" />
+        </a>
+    </p>
+<h2 id="go-micro-主要功能">go-micro 主要功能</h2>
+<p><strong>服务发现</strong>：自动服务注册和名称解析。服务发现是微服务开发的核心。当服务 A 需要与服务 B 通话时，它需要该服务的位置。默认发现机制是多播 DNS（mdns），一种零配置系统。您可以选择使用 SWIM 协议为 p2p 网络设置八卦，或者为弹性云原生设置 consul。</p>
+<p><strong>负载均衡</strong>：基于服务发现构建的客户端负载均衡。一旦我们获得了服务的任意数量实例的地址，我们现在需要一种方法来决定要路由到哪个节点。我们使用随机散列负载均衡来提供跨服务的均匀分布，并在出现问题时重试不同的节点。</p>
+<p><strong>消息编码</strong>：基于内容类型的动态消息编码。客户端和服务器将使用编码器和内容类型为您无缝编码和解码 Go 类型。可以编码任何种类的消息并从不同的客户端发送。客户端和服务器默认处理此问题。这包括默认的 protobuf 和 json。</p>
+<p><strong>请求响应</strong>：基于 RPC 的请求响应，支持双向流。我们提供了同步通信的抽象。对服务的请求将自动解决，负载平衡，拨号和流式传输。启用 tls 时，默认传输为 http/1.1 或 http2。</p>
+<p><strong>Async Messaging</strong>：PubSub 是异步通信和事件驱动架构的一流公民。事件通知是微服务开发的核心模式。启用 tls 时，默认消息传递是点对点 http/1.1 或 http2。</p>
+<p><strong>可插拔接口</strong>：Go Micro 为每个分布式系统抽象使用 Go 接口，因此，这些接口是可插拔的，并允许 Go Micro 与运行时无关，可以插入任何基础技术。</p>
+<h2 id="小结">小结</h2>
+<p>通过上述介绍，可以看到，Go Micro 简单轻巧、易于上手、功能强大、扩展方便，是基于 Go 语言进行微服务架构时非常值得推荐的一个 RPC 框架，基于其核心功能及插件，我们可以轻松解决之前讨论的微服务架构引入的需要解决的问题：</p>
+<ul>
+<li>服务接口定义：通过 Transport、Codec 定义通信协议及数据编码；</li>
+<li>服务发布与调用：通过 Registry 实现服务注册与订阅，还可以基于 Selector 提高系统可用性；</li>
+<li>服务监控、服务治理、故障定位：通过 Plugins Wrapper 中间件来实现。</li>
+</ul>
+<p>接下来，我们将基于 Go Micro 微服务框架演示如何基于 Go 落地微服务架构。</p>
+<h2 id="编写-go-micro-http服务">编写 go-micro HTTP服务</h2>
+<h3 id="go-micro安装">go-micro安装</h3>
+<h4 id="安装protobuf">安装protobuf</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">go</span> get -u google.golang.org/protobuf/proto
+<span style="font-weight:bold">go</span> install github.com/golang/protobuf/protoc-gen-<span style="font-weight:bold">go</span><span style="">@</span>latest
+<span style="font-weight:bold">go</span> install <span style="font-weight:bold">go</span>-micro.dev/v4/cmd/protoc-gen-micro<span style="">@</span>v4
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="安装go-micro框架">安装go-micro框架</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go install go-micro.dev/v4/cmd/micro@master
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="开始编写go-micro-http服务">开始编写go-micro HTTP服务</h3>
+<p>greeter文件夹下创建pb文件夹，在pb文件夹中写入<code>greeter.proto</code>文件：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf">syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>;<span style="">
+</span><span style=""></span><span style="font-weight:bold">option</span> go_package = <span style="color:#666;font-style:italic">&#34;../pb&#34;</span>;<span style="">
+</span><span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Request</span> {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">string</span> name = 1;<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Response</span> {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">string</span> msg = 1;<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">service</span> Greeter {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">rpc</span> Hello (Request) <span style="font-weight:bold">returns</span> (Response) {}<span style="">
+</span><span style=""></span>}<span style="">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>进入pb目录输入命令：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">protoc --micro_out=. --go_out=:. greeter.proto
+</code></pre></td></tr></table>
+</div>
+</div><p>会生成<code>greeter.pb.go</code>和<code>greeter.pb.micro.go</code>两个文件。</p>
+<p>编写server端，创建服务并注册一下handler，运行服务。</p>
+<p>server端<code>main.go</code>：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;micro-demo/handler&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;micro-demo/pb&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// create service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;greeter&#34;</span>),
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Version</span>(<span style="color:#666;font-style:italic">&#34;latest&#34;</span>),
+	)
+
+	<span style="color:#888;font-style:italic">// initialise flags
+</span><span style="color:#888;font-style:italic"></span>	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	<span style="color:#888;font-style:italic">// register handler
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := pb.<span style="color:#666;font-weight:bold;font-style:italic">RegisterGreeterHandler</span>(service.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(), &amp;handler.Greeter{}); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// run service
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := service.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>handler包下<code>greeter.go</code>文件：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> handler
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/util/log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;micro-demo/pb&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">type</span> Greeter <span style="font-weight:bold;font-style:italic">struct</span>{}
+
+<span style="font-weight:bold;font-style:italic">func</span> (g *Greeter) <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(ctx context.Context, req *pb.Request, rsp *pb.Response) <span style="font-weight:bold">error</span> {
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Info</span>(<span style="color:#666;font-style:italic">&#34;Received Greeter.Hello request&#34;</span>)
+	rsp.Msg = <span style="color:#666;font-style:italic">&#34;Hello, &#34;</span> + req.Name + <span style="color:#666;font-style:italic">&#34;!&#34;</span>
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>调用server服务有两种方式，一种是通过终端命令调用，另一种是通过client端代码调用。</p>
+<ul>
+<li>终端命令调用</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">micro call greeter Greeter.Hello <span style="color:#666;font-style:italic">&#39;{&#34;name&#34;: &#34;John&#34;}&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>输出结果：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">{<span style="color:#666;font-style:italic">&#34;msg&#34;</span>:<span style="color:#666;font-style:italic">&#34;Hello, John!&#34;</span>}
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>编写client端调用service服务</li>
+</ul>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;micro-demo/pb&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// create a new service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>()
+
+	<span style="color:#888;font-style:italic">// parse command line flags
+</span><span style="color:#888;font-style:italic"></span>	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	<span style="color:#888;font-style:italic">// use the generated client stub
+</span><span style="color:#888;font-style:italic"></span>	client := pb.<span style="color:#666;font-weight:bold;font-style:italic">NewGreeterService</span>(<span style="color:#666;font-style:italic">&#34;greeter&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>())
+
+	<span style="color:#888;font-style:italic">// make request
+</span><span style="color:#888;font-style:italic"></span>	rsp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), &amp;pb.Request{Name: <span style="color:#666;font-style:italic">&#34;John&#34;</span>})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(rsp.Msg)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>运行<code>go.micro.srv.HelloWorld</code>服务，启动客户端，运行结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Hello, John!
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="启动http服务">启动HTTP服务</h2>
+<p>使用go-micro的http创建一个可以调用接口的微服务HTTP</p>
+<h3 id="httpserver">httpServer</h3>
+<p>这里使用gin框架结合go-micro来进行编写</p>
+<p>首先，创建一个http目录，并在该目录下创建main.go，写入代码。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	httpServer <span style="color:#666;font-style:italic">&#34;github.com/asim/go-micro/plugins/server/http/v4&#34;</span> <span style="color:#888;font-style:italic">// 特别注意这里
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#666;font-style:italic">&#34;github.com/gin-gonic/gin&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-demo/http/handler&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/registry&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/server&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// create service
+</span><span style="color:#888;font-style:italic"></span>	srv := httpServer.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>(
+		server.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;hello&#34;</span>),
+		server.<span style="color:#666;font-weight:bold;font-style:italic">Address</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>),
+	)
+
+	gin.<span style="color:#666;font-weight:bold;font-style:italic">SetMode</span>(gin.ReleaseMode)
+	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">New</span>()
+	router.<span style="color:#666;font-weight:bold;font-style:italic">Use</span>(gin.<span style="color:#666;font-weight:bold;font-style:italic">Recovery</span>())
+
+	<span style="color:#888;font-style:italic">// register router
+</span><span style="color:#888;font-style:italic"></span>	demo := handler.<span style="color:#666;font-weight:bold;font-style:italic">NewDemo</span>()
+	demo.<span style="color:#666;font-weight:bold;font-style:italic">InitRouter</span>(router)
+
+	hd := srv.<span style="color:#666;font-weight:bold;font-style:italic">NewHandler</span>(router)
+	<span style="font-weight:bold">if</span> err := srv.<span style="color:#666;font-weight:bold;font-style:italic">Handle</span>(hd); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// create a new service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(srv),
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Registry</span>(registry.<span style="color:#666;font-weight:bold;font-style:italic">NewRegistry</span>()),
+	)
+	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	<span style="color:#888;font-style:italic">// run service
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := service.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用gin进行初始化路由">使用gin进行初始化路由</h3>
+<p>在http目录创建handler\handler.go</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> handler
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;github.com/gin-gonic/gin&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-demo/hello/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">type</span> demo <span style="font-weight:bold;font-style:italic">struct</span>{}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">NewDemo</span>() *demo {
+	<span style="font-weight:bold">return</span> &amp;demo{}
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> (d *demo) <span style="color:#666;font-weight:bold;font-style:italic">InitRouter</span>(router *gin.Engine) {
+	router.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/demo&#34;</span>, d.demo)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> (d *demo) <span style="color:#666;font-weight:bold;font-style:italic">demo</span>(c *gin.Context) {
+	<span style="color:#888;font-style:italic">// create a service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>()
+	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	client := pb.<span style="color:#666;font-weight:bold;font-style:italic">NewHelloService</span>(<span style="color:#666;font-style:italic">&#34;hello&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>())
+
+	rsp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Call</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), &amp;pb.Request{Name: <span style="color:#666;font-style:italic">&#34;John&#34;</span>})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;code&#34;</span>: http.StatusInternalServerError,
+			<span style="color:#666;font-style:italic">&#34;msg&#34;</span>:  err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>(),
+		})
+		<span style="font-weight:bold">return</span>
+	}
+
+	c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+		<span style="color:#666;font-style:italic">&#34;code&#34;</span>: http.StatusOK,
+		<span style="color:#666;font-style:italic">&#34;msg&#34;</span>:  rsp.Msg,
+	})
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="postman测试">Postman测试</h3>
+<p>在启动两个微服务之后，使用postman进行测试，调用成功并返回结果：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/postman_test.png">
+            <img class="mx-auto" alt="Postman测试" src="https://imw7.github.io/images/Go/go_micro/postman_test.png" />
+        </a>
+    </p>
+<h2 id="事件驱动">事件驱动</h2>
+<p>事件驱动架构理解起来比较简单，普通认为好的软件架构都是解耦的，微服务之间不应该相互耦合或依赖。举个例子，我们在代码中调用微服务的函数，会先通过服务发现找到微服务的地址再调用，我们的代码与该微服务有了直接性的调用交互，并不算是完全的解耦。</p>
+<h3 id="发布与订阅模式">发布与订阅模式</h3>
+<p>为了理解时间驱动架构为何能使代码完全解耦，先了解事件的发布、订阅流程。微服务X完成任务x后通知消息系统说“x已完成”，它并不关心有哪些微服务正在监听这个事件、事件发生后会产生哪些影响。如果系统发生为了某个事件，随之其他微服务都要做出动作是很容易的。</p>
+<p>举个例子，<code>user-service</code>创建了一个新用户，<code>email-service</code>要给该用户发一封注册成功的邮件，<code>message-service</code>要给网站管理员发一条用户注册的通知短信。</p>
+<h4 id="一般实现">一般实现</h4>
+<p>在<code>user-service</code>的代码中实例化另两个微服务客户端后，调用函数发邮件和短信，代码耦合度很高。如下图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/normal.png">
+            <img class="mx-auto" alt="一般实现" src="https://imw7.github.io/images/Go/go_micro/normal.png" />
+        </a>
+    </p>
+<h4 id="事件驱动-1">事件驱动</h4>
+<p>在事件驱动的架构下，<code>user-service</code>只需向消息系统发布一条 <code>topic</code> 为 <code>&quot;user.created&quot;</code> 的消息，其他两个订阅了此 <code>topic</code> 的 <code>service</code> 能知道有用户注册了，拿到用户信息后他们自行发邮件、发短信。如下图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/pubsub.png">
+            <img class="mx-auto" alt="发布与订阅模式" src="https://imw7.github.io/images/Go/go_micro/pubsub.png" />
+        </a>
+    </p>
+<h3 id="代码实现">代码实现</h3>
+<p>首先创建pubsub文件夹，pb文件夹下<code>pubsub.proto</code>文件：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf">syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pubsub</span>;<span style="">
+</span><span style=""></span><span style="font-weight:bold">option</span> go_package = <span style="color:#666;font-style:italic">&#34;../pb&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Event</span> {<span style="">
+</span><span style=""></span>  <span style="color:#888;font-style:italic">// unique id
+</span><span style="color:#888;font-style:italic"></span>  <span style="font-weight:bold">string</span> id = 1;<span style="">
+</span><span style=""></span>  <span style="color:#888;font-style:italic">// unix timestamp
+</span><span style="color:#888;font-style:italic"></span>  <span style="font-weight:bold">int64</span> timestamp = 2;<span style="">
+</span><span style=""></span>  <span style="color:#888;font-style:italic">// message
+</span><span style="color:#888;font-style:italic"></span>  <span style="font-weight:bold">string</span> msg = 3;<span style="">
+</span><span style=""></span>}<span style="">
+</span></code></pre></td></tr></table>
+</div>
+</div><h4 id="publish-事件发布">Publish 事件发布</h4>
+<p><code>main.go</code>文件：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-examples/pubsub/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/metadata&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/server&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/util/log&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// Sub All methods of Sub will be executed when a message is received
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> Sub <span style="font-weight:bold;font-style:italic">struct</span>{}
+
+<span style="color:#888;font-style:italic">// Process Method can be of any name
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (s *Sub) <span style="color:#666;font-weight:bold;font-style:italic">Process</span>(ctx context.Context, event *pb.Event) <span style="font-weight:bold">error</span> {
+	md, _ := metadata.<span style="color:#666;font-weight:bold;font-style:italic">FromContext</span>(ctx)
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(<span style="color:#666;font-style:italic">&#34;[pubsub.1] received event %+v when metadata %+v\n&#34;</span>, event, md)
+	<span style="color:#888;font-style:italic">// do something with event
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}
+
+<span style="color:#888;font-style:italic">// Alternatively a function can be used
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">subEv</span>(ctx context.Context, event *pb.Event) <span style="font-weight:bold">error</span> {
+	md, _ := metadata.<span style="color:#666;font-weight:bold;font-style:italic">FromContext</span>(ctx)
+	log.<span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(<span style="color:#666;font-style:italic">&#34;[pubsub.2] received event %+v when metadata %+v\n&#34;</span>, event, md)
+	<span style="color:#888;font-style:italic">// do something with event
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// create a service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;go.micro.srv.pubsub&#34;</span>),
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Version</span>(<span style="color:#666;font-style:italic">&#34;latest&#34;</span>),
+	)
+	<span style="color:#888;font-style:italic">// initialise flags
+</span><span style="color:#888;font-style:italic"></span>	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	<span style="color:#888;font-style:italic">// register subscriber
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := micro.<span style="color:#666;font-weight:bold;font-style:italic">RegisterSubscriber</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.1&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(), &amp;Sub{}); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// register subscriber with queue, each msg is delivered to a unique subscriber
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := micro.<span style="color:#666;font-weight:bold;font-style:italic">RegisterSubscriber</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.2&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(), subEv, server.<span style="color:#666;font-weight:bold;font-style:italic">SubscriberQueue</span>(<span style="color:#666;font-style:italic">&#34;queue.pubsub&#34;</span>)); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// run service
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := service.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>运行结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./pubsub 
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=v4@v4.4.0/service.go:206 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Starting [service] go.micro.srv.pubsub
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:820 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Transport [http] Listening on [::]:39189
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:840 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Broker [http] Connected to 127.0.0.1:43507
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:654 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Registry [mdns] Registering node: go.micro.srv.pubsub-b046fb63-518c-40e8-8d36-4a8a086b242d
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.1
+2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.2
+</code></pre></td></tr></table>
+</div>
+</div><p>可以看到，直接使用go-micro的NewEvent订阅即可，成功订阅example.topic.pubsub.1和example.topic.pubsub.2。</p>
+<h4 id="subscribe-事件订阅">Subscribe 事件订阅</h4>
+<p>事件既然有发布，那么当然会有订阅。client文件夹下<code>main.go</code>文件：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;github.com/pborman/uuid&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-examples/pubsub/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/util/log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// send events using the publisher
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sendEv</span>(topic <span style="font-weight:bold">string</span>, p micro.Publisher) {
+	t := time.<span style="color:#666;font-weight:bold;font-style:italic">NewTimer</span>(time.Second)
+
+	<span style="font-weight:bold">for</span> <span style="font-weight:bold">range</span> t.C {
+		<span style="color:#888;font-style:italic">// create new event
+</span><span style="color:#888;font-style:italic"></span>		ev := &amp;pb.Event{
+			Id:        uuid.<span style="color:#666;font-weight:bold;font-style:italic">NewUUID</span>().<span style="color:#666;font-weight:bold;font-style:italic">String</span>(),
+			Timestamp: time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">Unix</span>(),
+			Msg:       fmt.<span style="color:#666;font-weight:bold;font-style:italic">Sprintf</span>(<span style="color:#666;font-style:italic">&#34;Messaging you all day on %s&#34;</span>, topic),
+		}
+
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(<span style="color:#666;font-style:italic">&#34;publishing %+v\n&#34;</span>, ev)
+
+		<span style="color:#888;font-style:italic">// publish an event
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err := p.<span style="color:#666;font-weight:bold;font-style:italic">Publish</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>(), ev); err != <span style="font-weight:bold">nil</span> {
+			log.<span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(<span style="color:#666;font-style:italic">&#34;error publishing %v&#34;</span>, err)
+		}
+	}
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// create a service
+</span><span style="color:#888;font-style:italic"></span>	service := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;go.micro.cli.pubsub&#34;</span>),
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Version</span>(<span style="color:#666;font-style:italic">&#34;latest&#34;</span>),
+	)
+
+	<span style="color:#888;font-style:italic">// initialise flags
+</span><span style="color:#888;font-style:italic"></span>	service.<span style="color:#666;font-weight:bold;font-style:italic">Init</span>()
+
+	<span style="color:#888;font-style:italic">// create publisher
+</span><span style="color:#888;font-style:italic"></span>	pub1 := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewEvent</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.1&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>())
+	pub2 := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewEvent</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.2&#34;</span>, service.<span style="color:#666;font-weight:bold;font-style:italic">Client</span>())
+
+	<span style="color:#888;font-style:italic">// pub to topic 1
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">go</span> <span style="color:#666;font-weight:bold;font-style:italic">sendEv</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.1&#34;</span>, pub1)
+	<span style="color:#888;font-style:italic">// pub to topic 2
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">go</span> <span style="color:#666;font-weight:bold;font-style:italic">sendEv</span>(<span style="color:#666;font-style:italic">&#34;example.topic.pubsub.2&#34;</span>, pub2)
+
+	<span style="color:#888;font-style:italic">// block forever
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">select</span> {}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>运行结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./client 
+2021-12-12 00:37:17  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=client/main.go:25 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info publishing [id:<span style="color:#666;font-style:italic">&#34;9a76de8c-5aa0-11ec-a19b-e454e8084c9f&#34;</span> timestamp:1639240637 msg:<span style="color:#666;font-style:italic">&#34;Messaging you all day on example.topic.pubsub.1&#34;</span>]
+
+2021-12-12 00:37:17  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=client/main.go:25 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info publishing [id:<span style="color:#666;font-style:italic">&#34;9a76e8e1-5aa0-11ec-a19b-e454e8084c9f&#34;</span> timestamp:1639240637 msg:<span style="color:#666;font-style:italic">&#34;Messaging you all day on example.topic.pubsub.2&#34;</span>]
+</code></pre></td></tr></table>
+</div>
+</div><p>结果显示，成功订阅事件并调用成功。</p>
+<h2 id="注册和配置中心">注册和配置中心</h2>
+<p>下面介绍go-micro v4是如何进行配置<a href="https://www.consul.io">consul</a>注册中心和操作配置中心的。</p>
+<p>go-micro框架为服务注册发现提供了标准的接口Registry。只要实现这个接口就可以定制自己的服务注册和发现。不过官方已经为主流注册中心提供了官方的接口实现，大多数时候我们不需要从头写起。</p>
+<h3 id="consul安装">Consul安装</h3>
+<p>Ubuntu直接运行如下命令即可：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository <span style="color:#666;font-style:italic">&#34;deb [arch=amd64] https://apt.releases.hashicorp.com </span><span style="font-weight:bold">$(</span>lsb_release -cs<span style="font-weight:bold">)</span><span style="color:#666;font-style:italic"> main&#34;</span>
+sudo apt-get update &amp;&amp; sudo apt-get install consul
+</code></pre></td></tr></table>
+</div>
+</div><p>在Terminal终端中输出命令</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">consul --version
+</code></pre></td></tr></table>
+</div>
+</div><p>出现了类似于如下的结果，则表示安装成功了。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">Consul v1.10.4
+Revision 7bbad6fe
+Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
+</code></pre></td></tr></table>
+</div>
+</div><p>在Terminal终端中输入如下命令即可启动consul了。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">consul agent -dev
+</code></pre></td></tr></table>
+</div>
+</div><p>运行成功后，访问 http://localhost:8500 就可以到consul自带的UI界面了，如图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/consul_init.png">
+            <img class="mx-auto" alt="consul" src="https://imw7.github.io/images/Go/go_micro/consul_init.png" />
+        </a>
+    </p>
+<h3 id="关键代码">关键代码</h3>
+<p><code>main.go</code>的关键代码如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;github.com/asim/go-micro/plugins/registry/consul/v4&#34;</span>
+    <span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/config&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/handler&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+    <span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/logger&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/registry&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// register consul
+</span><span style="color:#888;font-style:italic"></span>	reg := consul.<span style="color:#666;font-weight:bold;font-style:italic">NewRegistry</span>(<span style="font-weight:bold;font-style:italic">func</span>(options *registry.Options) {
+		options.Addrs = []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:8500&#34;</span>}
+	})
+    
+    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>
+	<span style="color:#888;font-style:italic">// create service
+</span><span style="color:#888;font-style:italic"></span>	srv := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;registerConf&#34;</span>),
+		micro.<span style="color:#666;font-weight:bold;font-style:italic">Version</span>(<span style="color:#666;font-style:italic">&#34;latest&#34;</span>),
+		<span style="color:#888;font-style:italic">// 注册consul中心
+</span><span style="color:#888;font-style:italic"></span>		micro.<span style="color:#666;font-weight:bold;font-style:italic">Registry</span>(reg),
+	)
+
+	<span style="color:#888;font-style:italic">// register handler
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := pb.<span style="color:#666;font-weight:bold;font-style:italic">RegisterRegisterConfHandler</span>(srv.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(), &amp;handler.RegisterConf{}); err != <span style="font-weight:bold">nil</span> {
+		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// run service
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := srv.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(); err != <span style="font-weight:bold">nil</span> {
+		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>go-micro v4 提供plugins，只需要引入并创建实例之后，使用micro.Registry注册即可。</p>
+<p>运行后效果图如下：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/registerConf.png">
+            <img class="mx-auto" alt="registerConf" src="https://imw7.github.io/images/Go/go_micro/registerConf.png" />
+        </a>
+    </p>
+<p>可以看出名为<code>registerConf</code>的服务出现在了页面上。</p>
+<h3 id="配置中心">配置中心</h3>
+<p>点击 <code>Key/Value</code>创建目录<code>micro/config</code>，然后在<code>config</code>目录分别创建<code>mysql</code>、<code>redis</code>、<code>logger</code>和<code>server</code>四个key，如下图所示：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/config_center.png">
+            <img class="mx-auto" alt="config center" src="https://imw7.github.io/images/Go/go_micro/config_center.png" />
+        </a>
+    </p>
+<p>以其中mysql为例，输入信息：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/mysql_info.png">
+            <img class="mx-auto" alt="mysql info" src="https://imw7.github.io/images/Go/go_micro/mysql_info.png" />
+        </a>
+    </p>
+<p>然后在项目中的<code>registerConf</code>文件夹下创建config目录，并创建config.go、mysql.go文件，分别编写其中代码。</p>
+<h4 id="configgo">config.go</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> config
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;github.com/asim/go-micro/plugins/config/source/consul/v4&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/config&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;strconv&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// GetConsulConfig 设置配置中心
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">GetConsulConfig</span>(host <span style="font-weight:bold">string</span>, port <span style="font-weight:bold">int64</span>, prefix <span style="font-weight:bold">string</span>) (config.Config, <span style="font-weight:bold">error</span>) {
+	<span style="color:#888;font-style:italic">// 添加配置中心
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 配置中心使用consul key/value模式
+</span><span style="color:#888;font-style:italic"></span>	consulSource := consul.<span style="color:#666;font-weight:bold;font-style:italic">NewSource</span>(
+		<span style="color:#888;font-style:italic">// 设置配置中心地址
+</span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">WithAddress</span>(host+<span style="color:#666;font-style:italic">&#34;:&#34;</span>+strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(port, 10)),
+		<span style="color:#888;font-style:italic">// 设置前缀，不设置默认为 /micro/config
+</span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">WithPrefix</span>(prefix),
+		<span style="color:#888;font-style:italic">// 是否移除前缀，这里设置为true：表示可以不带前缀直接获取对应配置
+</span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">StripPrefix</span>(<span style="font-weight:bold">true</span>),
+	)
+	<span style="color:#888;font-style:italic">// 配置初始化
+</span><span style="color:#888;font-style:italic"></span>	conf, err := config.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold">return</span> conf, err
+	}
+	err = conf.<span style="color:#666;font-weight:bold;font-style:italic">Load</span>(consulSource)
+	<span style="font-weight:bold">return</span> conf, err
+}
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="mysqlgo">mysql.go</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> config
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/config&#34;</span>
+
+<span style="color:#888;font-style:italic">// MySQLConfig 创建结构体
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> MySQLConfig <span style="font-weight:bold;font-style:italic">struct</span> {
+	Host     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;host&#34;`</span>
+	User     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;user&#34;`</span>
+	Pwd      <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;pwd&#34;`</span>
+	Database <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;database&#34;`</span>
+	Port     <span style="font-weight:bold">int64</span>  <span style="color:#666;font-style:italic">`json:&#34;port&#34;`</span>
+}
+
+<span style="color:#888;font-style:italic">// GetMySQLFromConsul 获取mysql的配置
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">GetMySQLFromConsul</span>(config config.Config, path ...<span style="font-weight:bold">string</span>) (*MySQLConfig, <span style="font-weight:bold">error</span>) {
+	mysqlConfig := &amp;MySQLConfig{}
+	<span style="color:#888;font-style:italic">// 获取配置
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := config.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(path...).<span style="color:#666;font-weight:bold;font-style:italic">Scan</span>(mysqlConfig); err != <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>, err
+	}
+	<span style="font-weight:bold">return</span> mysqlConfig, <span style="font-weight:bold">nil</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="maingo">main.go</h3>
+<p>最后在主函数中插入如下代码，即可实现在启动服务之前就可获取配置中心的配置信息。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {	
+	<span style="color:#888;font-style:italic">// register consul
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>    
+    <span style="color:#888;font-style:italic">// 配置中心
+</span><span style="color:#888;font-style:italic"></span>	consulConfig, err := config.<span style="color:#666;font-weight:bold;font-style:italic">GetConsulConfig</span>(<span style="color:#666;font-style:italic">&#34;127.0.0.1&#34;</span>, 8500, <span style="color:#666;font-style:italic">&#34;/micro/config&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// MySQL配置信息
+</span><span style="color:#888;font-style:italic"></span>	info, err := config.<span style="color:#666;font-weight:bold;font-style:italic">GetMySQLFromConsul</span>(consulConfig, <span style="color:#666;font-style:italic">&#34;mysql&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	logger.<span style="color:#666;font-weight:bold;font-style:italic">Info</span>(<span style="color:#666;font-style:italic">&#34;MySQL配置信息:&#34;</span>, info)
+    
+    <span style="color:#888;font-style:italic">// create service
+</span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>运行主函数之后，可以成功获取刚在consul页面输入的mysql配置信息，如图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/get_conf.png">
+            <img class="mx-auto" alt="get_conf" src="https://imw7.github.io/images/Go/go_micro/get_conf.png" />
+        </a>
+    </p>
+<h2 id="consul和grpc结合使用">consul和grpc结合使用</h2>
+<p>如何将grpc服务注册到consul中呢？</p>
+<p><code>hello.proto</code></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-protobuf" data-lang="protobuf">syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>;<span style="">
+</span><span style=""></span><span style="font-weight:bold">option</span> go_package = <span style="color:#666;font-style:italic">&#34;../pb&#34;</span>;<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Request</span> {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">string</span> name = 1;<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Response</span> {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">string</span> msg = 1;<span style="">
+</span><span style=""></span>}<span style="">
+</span><span style="">
+</span><span style=""></span><span style="font-weight:bold;font-style:italic">service</span> HelloService {<span style="">
+</span><span style=""></span>  <span style="font-weight:bold">rpc</span> Hello (Request) <span style="font-weight:bold">returns</span> (Response);<span style="">
+</span><span style=""></span>}<span style="">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>服务端<code>server.go</code></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;github.com/hashicorp/consul/api&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;grpc-consul/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;net&#34;</span>
+)
+
+<span style="color:#888;font-style:italic">// 把grpc服务注册到consul上面
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">type</span> HelloService <span style="font-weight:bold;font-style:italic">struct</span>{}
+
+<span style="color:#888;font-style:italic">// Hello 绑定方法，实现接口
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (h *HelloService) <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(_ context.Context, req *pb.Request) (*pb.Response, <span style="font-weight:bold">error</span>) {
+	<span style="font-weight:bold">return</span> &amp;pb.Response{Msg: <span style="color:#666;font-style:italic">&#34;Hello, &#34;</span> + req.Name + <span style="color:#666;font-style:italic">&#34;!&#34;</span>}, <span style="font-weight:bold">nil</span>
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 初始化consul配置，客户端服务器需要一致
+</span><span style="color:#888;font-style:italic"></span>	consulConfig := api.<span style="color:#666;font-weight:bold;font-style:italic">DefaultConfig</span>()
+
+	<span style="color:#888;font-style:italic">// 获取consul操作对象
+</span><span style="color:#888;font-style:italic"></span>	registry, err := api.<span style="color:#666;font-weight:bold;font-style:italic">NewClient</span>(consulConfig)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 注册服务，服务的常规配置
+</span><span style="color:#888;font-style:italic"></span>	registerService := api.AgentServiceRegistration{
+		ID:      <span style="color:#666;font-style:italic">&#34;1&#34;</span>,
+		Name:    <span style="color:#666;font-style:italic">&#34;HelloService&#34;</span>,
+		Tags:    []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;grpc&#34;</span>, <span style="color:#666;font-style:italic">&#34;consul&#34;</span>},
+		Port:    1234,
+		Address: <span style="color:#666;font-style:italic">&#34;127.0.0.1&#34;</span>,
+		Check: &amp;api.AgentServiceCheck{
+			CheckID:  <span style="color:#666;font-style:italic">&#34;consul grpc test&#34;</span>,
+			TCP:      <span style="color:#666;font-style:italic">&#34;127.0.0.1:1234&#34;</span>,
+			Timeout:  <span style="color:#666;font-style:italic">&#34;5s&#34;</span>,
+			Interval: <span style="color:#666;font-style:italic">&#34;5s&#34;</span>,
+		},
+	}
+
+	<span style="color:#888;font-style:italic">// 将服务注册到consul上
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := registry.<span style="color:#666;font-weight:bold;font-style:italic">Agent</span>().<span style="color:#666;font-weight:bold;font-style:italic">ServiceRegister</span>(&amp;registerService); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 设置监听
+</span><span style="color:#888;font-style:italic"></span>	listener, err := net.<span style="color:#666;font-weight:bold;font-style:italic">Listen</span>(<span style="color:#666;font-style:italic">&#34;tcp&#34;</span>, <span style="color:#666;font-style:italic">&#34;:1234&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(<span style="color:#666;font-style:italic">&#34;listen failed, err:&#34;</span>, err)
+	}
+
+	<span style="color:#888;font-style:italic">// 构造gRPC对象
+</span><span style="color:#888;font-style:italic"></span>	grpcServer := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>()
+	<span style="color:#888;font-style:italic">// 注册服务
+</span><span style="color:#888;font-style:italic"></span>	pb.<span style="color:#666;font-weight:bold;font-style:italic">RegisterHelloServiceServer</span>(grpcServer, &amp;HelloService{})
+
+	<span style="color:#888;font-style:italic">// 启动服务
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := grpcServer.<span style="color:#666;font-weight:bold;font-style:italic">Serve</span>(listener); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>客户端<code>client.go</code></p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;github.com/hashicorp/consul/api&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc/credentials/insecure&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;grpc-consul/pb&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;strconv&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 初始化consul配置，客户端服务端需要一致
+</span><span style="color:#888;font-style:italic"></span>	consulConfig := api.<span style="color:#666;font-weight:bold;font-style:italic">DefaultConfig</span>()
+
+	<span style="color:#888;font-style:italic">// 获取consul操作对象
+</span><span style="color:#888;font-style:italic"></span>	registerClient, err := api.<span style="color:#666;font-weight:bold;font-style:italic">NewClient</span>(consulConfig)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 服务注销
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// if err := registerClient.Agent().ServiceDeregister(&#34;1&#34;); err != nil {
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	log.Fatal(err)
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// }
+</span><span style="color:#888;font-style:italic"></span>
+	<span style="color:#888;font-style:italic">// 服务发现，从consul上获取健康的服务
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// params:
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@service: 服务名。注册服务时指定该string
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@tag: 外号/别名。如果有多个，任选一个
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@passingOnly: 是否通过健康检查
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@q: 查询参数，通常为nil
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// returns:
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@ServiceEntry: 存储服务的切片
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">//  @QueryMeta: 额外查询返回值，通常为nil
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">//  @error: 错误信息
+</span><span style="color:#888;font-style:italic"></span>	serviceEntry, _, err := registerClient.<span style="color:#666;font-weight:bold;font-style:italic">Health</span>().<span style="color:#666;font-weight:bold;font-style:italic">Service</span>(
+		<span style="color:#666;font-style:italic">&#34;HelloService&#34;</span>, <span style="color:#666;font-style:italic">&#34;consul&#34;</span>, <span style="font-weight:bold">false</span>, &amp;api.QueryOptions{})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+
+	<span style="color:#888;font-style:italic">// 和grpc服务建立连接
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// conn, err := grpc.Dial(&#34;127.0.0.1:1234&#34;, grpc.WithTransportCredentials(insecure.NewCredentials()))
+</span><span style="color:#888;font-style:italic"></span>	conn, err := grpc.<span style="color:#666;font-weight:bold;font-style:italic">Dial</span>(serviceEntry[0].Service.Address+<span style="color:#666;font-style:italic">&#34;:&#34;</span>+strconv.<span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(serviceEntry[0].Service.Port),
+		grpc.<span style="color:#666;font-weight:bold;font-style:italic">WithTransportCredentials</span>(insecure.<span style="color:#666;font-weight:bold;font-style:italic">NewCredentials</span>()))
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>(conn *grpc.ClientConn) {
+		err := conn.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			<span style="font-weight:bold">return</span>
+		}
+	}(conn)
+
+	<span style="color:#888;font-style:italic">// 初始化 gRPC 客户端
+</span><span style="color:#888;font-style:italic"></span>	client := pb.<span style="color:#666;font-weight:bold;font-style:italic">NewHelloServiceClient</span>(conn)
+
+	<span style="color:#888;font-style:italic">// 调用远程函数
+</span><span style="color:#888;font-style:italic"></span>	rsp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), &amp;pb.Request{Name: <span style="color:#666;font-style:italic">&#34;John&#34;</span>})
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(rsp.Msg)
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/viper_tutorial/">Go语言配置管理神器——Viper中文教程</a></li>
+        
+        <li><a href="/post/Go/protobuf/">protobuf初识</a></li>
+        
+        <li><a href="/post/about_docker/">Docker的安装与使用</a></li>
+        
+        <li><a href="/post/Go/go_logrus/">第三方日志库logrus使用</a></li>
+        
+        <li><a href="/post/Go/go_etcd/">Go操作etcd</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/go-micro'>go-micro</a></li>
+                
+                <li><a href='/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7'>常用组件和技巧</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

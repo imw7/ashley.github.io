@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>go-micro on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/go-micro/</link>
+    <description>Recent content in go-micro on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 11 Aug 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/go-micro/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>go-micro</title>
+      <link>https://blog.imw7.com/post/Go/go_micro/</link>
+      <pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_micro/</guid>
+      <description>&lt;p&gt;本文介绍 go-micro 框架，该框架是微服务的基础框架。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

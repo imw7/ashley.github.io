@@ -1,0 +1,1973 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Go语言基础之单元测试 | 魏奇的博客</title>
+    <meta property="og:title" content="Go语言基础之单元测试 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-06-07T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-06-07T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Go语言基础之单元测试">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/16_test/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#测试函数的格式">测试函数的格式</a></li>
+    <li><a href="#测试函数示例">测试函数示例</a></li>
+    <li><a href="#测试组">测试组</a></li>
+    <li><a href="#子测试">子测试</a></li>
+    <li><a href="#测试覆盖率">测试覆盖率</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#基准测试函数格式">基准测试函数格式</a></li>
+    <li><a href="#基准测试示例">基准测试示例</a></li>
+    <li><a href="#性能比较函数">性能比较函数</a></li>
+    <li><a href="#重置时间">重置时间</a></li>
+    <li><a href="#并行测试">并行测试</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#testmain">TestMain</a></li>
+    <li><a href="#子测试的setup与teardown">子测试的Setup与Teardown</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#示例函数的格式">示例函数的格式</a></li>
+    <li><a href="#示例函数示例">示例函数示例</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Go语言基础之单元测试</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月7日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>不写测试的开发不是好程序员。这篇文章主要介绍下在Go语言中如何做单元测试和基准测试。</p>
+<h1 id="go-test工具">go test工具</h1>
+<p>Go语言中的测试依赖<code>go test</code>命令。编写测试代码和编写普通的Go代码过程是类似的，并不需要学习新的语法、规则或工具。</p>
+<p>go test命令是一个按照一定约定和组织的测试代码的驱动程序。在包目录内，所有以<code>_test.go</code>为后缀名的源代码文件都是<code>go test</code>测试的一部分，不会被<code>go build</code>编译到最终的可执行文件中。</p>
+<p>在<code>*_test.go</code>文件中有三种类型的函数，单元测试函数、基准测试函数和示例函数。</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">格式</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">测试函数</td>
+<td align="center">函数名前缀为Test</td>
+<td align="center">测试程序的一些逻辑行为是否正确</td>
+</tr>
+<tr>
+<td align="center">基准函数</td>
+<td align="center">函数名前缀为Benchmark</td>
+<td align="center">测试函数的性能</td>
+</tr>
+<tr>
+<td align="center">示例函数</td>
+<td align="center">函数名前缀为Example</td>
+<td align="center">为文档提供示例文档</td>
+</tr>
+</tbody>
+</table>
+<p><code>go test</code>命令会遍历所有的<code>*_test.go</code>文件中符合上述命名规则的函数，然后生成一个临时的main包用于调用相应的测试函数，然后构建并运行、报告测试结果，最后清理测试中生成的临时文件。</p>
+<h1 id="测试函数">测试函数</h1>
+<h2 id="测试函数的格式">测试函数的格式</h2>
+<p>每个测试函数必须导入<code>testing</code>包，测试函数的基本格式（签名）如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestName</span>(t *testing.T){
+    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>测试函数的名字必须以<code>Test</code>开头，可选的后缀名必须以大写字母开头，举几个例子：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestAdd</span>(t *testing.T){ ... }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSum</span>(t *testing.T){ ... }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestLog</span>(t *testing.T){ ... }
+</code></pre></td></tr></table>
+</div>
+</div><p>其中参数<code>t</code>用于报告测试失败和附加的日志信息。 <code>testing.T</code>的拥有的方法如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Error</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Fail</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">FailNow</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Failed</span>() <span style="font-weight:bold">bool</span>
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Fatalf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Log</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Name</span>() <span style="font-weight:bold">string</span>
+<span style="font-weight:bold;font-style:italic">func</span> (t *T) <span style="color:#666;font-weight:bold;font-style:italic">Parallel</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (t *T) <span style="color:#666;font-weight:bold;font-style:italic">Run</span>(name <span style="font-weight:bold">string</span>, f <span style="font-weight:bold;font-style:italic">func</span>(t *T)) <span style="font-weight:bold">bool</span>
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Skip</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">SkipNow</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Skipf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *T) <span style="color:#666;font-weight:bold;font-style:italic">Skipped</span>() <span style="font-weight:bold">bool</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="测试函数示例">测试函数示例</h2>
+<p>就像细胞是构成我们身体的基本单位，一个软件程序也是由很多单元组件构成的。单元组件可以是函数、结构体、方法和最终用户可能依赖的任意东西。总之我们需要确保这些组件是能够正常运行的。单元测试是一些利用各种方法测试单元组件的程序，它会将结果与预期输出进行比较。</p>
+<p>接下来，我们定义一个<code>split</code>的包，包中定义了一个<code>Split</code>函数，具体实现如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// split/split.go
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold">package</span> split
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;strings&#34;</span>
+
+<span style="color:#888;font-style:italic">// split package with a single split function.
+</span><span style="color:#888;font-style:italic"></span>
+<span style="color:#888;font-style:italic">// Split slices s into all substrings separated by sep and
+</span><span style="color:#888;font-style:italic">// returns a slice of the substrings between those separators.
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(s, sep <span style="font-weight:bold">string</span>) (result []<span style="font-weight:bold">string</span>) {
+	i := strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+
+	<span style="font-weight:bold">for</span> i &gt; -1 {
+		result = <span style="font-weight:bold;font-style:italic">append</span>(result, s[:i])
+		s = s[i+1:]
+		i = strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+	}
+	result = <span style="font-weight:bold;font-style:italic">append</span>(result, s)
+	<span style="font-weight:bold">return</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在当前目录下，我们创建一个<code>split_test.go</code>的测试文件，并定义一个测试函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// split/split_test.go
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold">package</span> split
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;reflect&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;testing&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) { <span style="color:#888;font-style:italic">// 测试函数名必须以Test开头，必须接收一个*testing.T类型参数
+</span><span style="color:#888;font-style:italic"></span>	got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, <span style="color:#666;font-style:italic">&#34;:&#34;</span>)         <span style="color:#888;font-style:italic">// 程序输出的结果
+</span><span style="color:#888;font-style:italic"></span>	excepted := []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}    <span style="color:#888;font-style:italic">// 期望的结果
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(excepted, got) { <span style="color:#888;font-style:italic">// 因为slice不能比较直接，借助反射包中的方法比较
+</span><span style="color:#888;font-style:italic"></span>		t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%v, got:%v&#34;</span>, excepted, got) <span style="color:#888;font-style:italic">// 测试失败输出错误提示
+</span><span style="color:#888;font-style:italic"></span>	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>此时<code>split</code>这个包中的文件如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ ls -l
+总用量 8
+-rw-rw-r-- 1 imw7 imw7 427 6月   7 09:19 split.go
+-rw-rw-r-- 1 imw7 imw7 482 6月   7 09:27 split_test.go
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>split</code>包路径下，执行<code>go test</code>命令，可以看到输出结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span>
+PASS
+ok      github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>一个测试用例有点单薄，我们再编写一个测试使用多个字符切割字符串的例子，在<code>split_test.go</code>中添加如下测试函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestMoreSplit</span>(t *testing.T) {
+	got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;about&#34;</span>, <span style="color:#666;font-style:italic">&#34;ou&#34;</span>)
+	excepted := []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;ab&#34;</span>, <span style="color:#666;font-style:italic">&#34;t&#34;</span>}
+	<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(excepted, got) {
+		t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%v, got:%v&#34;</span>, excepted, got)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>再次运行<code>go test</code>命令，输出结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> 
+--- FAIL: TestMoreSplit (0.00s)
+    split_test.go:20: excepted:[ab t], got:[ab ut]
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次，我们的测试失败了。我们可以为<code>go test</code>命令添加<code>-v</code>参数，查看测试函数名称和运行时间：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   TestSplit
+--- PASS: TestSplit (0.00s)
+=== RUN   TestMoreSplit
+    split_test.go:20: excepted:[ab t], got:[ab ut]
+--- FAIL: TestMoreSplit (0.00s)
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次我们能清楚的看到是<code>TestMoreSplit</code>这个测试没有成功。 还可以在<code>go test</code>命令后添加<code>-run</code>参数，它对应一个正则表达式，只有函数名匹配上的测试函数才会被<code>go test</code>命令执行。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v -run=<span style="color:#666;font-style:italic">&#34;More&#34;</span>
+=== RUN   TestMoreSplit
+    split_test.go:20: excepted:[ab t], got:[ab ut]
+--- FAIL: TestMoreSplit (0.00s)
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>现在我们回过头来解决我们程序中的问题。很显然我们最初的<code>split</code>函数并没有考虑到sep为多个字符的情况，我们来修复下这个Bug：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> split
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;strings&#34;</span>
+
+<span style="color:#888;font-style:italic">// split package with a single split function.
+</span><span style="color:#888;font-style:italic"></span>
+<span style="color:#888;font-style:italic">// Split slices s into all substrings separated by sep and
+</span><span style="color:#888;font-style:italic">// returns a slice of the substrings between those separators.
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(s, sep <span style="font-weight:bold">string</span>) (result []<span style="font-weight:bold">string</span>) {
+	i := strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+
+	<span style="font-weight:bold">for</span> i &gt; -1 {
+		result = <span style="font-weight:bold;font-style:italic">append</span>(result, s[:i])
+		s = s[i+<span style="font-weight:bold;font-style:italic">len</span>(sep):] <span style="color:#888;font-style:italic">// 这里使用len(sep)获取sep的长度
+</span><span style="color:#888;font-style:italic"></span>		i = strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+	}
+	result = <span style="font-weight:bold;font-style:italic">append</span>(result, s)
+	<span style="font-weight:bold">return</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次我们再来测试一下，我们的程序。注意，当我们修改了我们的代码之后不要仅仅执行那些失败的测试函数，我们应该完整的运行所有的测试，保证不会因为修改代码而引入了新的问题。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   TestSplit
+--- PASS: TestSplit (0.00s)
+=== RUN   TestMoreSplit
+--- PASS: TestMoreSplit (0.00s)
+PASS
+ok      github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次我们的测试都通过了。</p>
+<h2 id="测试组">测试组</h2>
+<p>我们现在还想要测试一下<code>split</code>函数对中文字符串的支持，这个时候我们可以再编写一个<code>TestChineseSplit</code>测试函数，但是我们也可以使用如下更友好的一种方式来添加更多的测试用例。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+   <span style="color:#888;font-style:italic">// 定义一个测试用例类型
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">type</span> test <span style="font-weight:bold;font-style:italic">struct</span> {
+		got      <span style="font-weight:bold">string</span>
+		sep      <span style="font-weight:bold">string</span>
+		excepted []<span style="font-weight:bold">string</span>
+	}
+	<span style="color:#888;font-style:italic">// 定义一个存储测试用例的切片
+</span><span style="color:#888;font-style:italic"></span>	tests := []test{
+		{got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;:&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}},
+		{got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;,&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>}},
+		{got: <span style="color:#666;font-style:italic">&#34;abcd&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;bc&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;d&#34;</span>}},
+		{got: <span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;上&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}},
+	}
+	<span style="color:#888;font-style:italic">// 遍历切片，逐一执行测试用例
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> _, tc := <span style="font-weight:bold">range</span> tests {
+		got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(tc.got, tc.sep)
+		<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(got, tc.excepted) {
+			t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%v, got:%v&#34;</span>, tc.excepted, got)
+		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>我们通过上面的代码把多个测试用例合到一起，再次执行<code>go test</code>命令。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   TestSplit
+    split_test.go:42: excepted:[海水海 来], got:[ 海水海 来]
+--- FAIL: TestSplit (0.00s)
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>我们的测试出现了问题，仔细看打印的测试失败提示信息：<code>excepted:[海来水来海], got:[ 海自来水来自海 ]</code>，你会发现<code>[ 海自来水来自海 ]</code>中有两个不明显的空串，这种情况下十分推荐使用<code>%#v</code>的格式化方式。</p>
+<p>我们修改下测试用例的格式化输出错误提示部分：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+   ...
+   
+	<span style="font-weight:bold">for</span> _, tc := <span style="font-weight:bold">range</span> tests {
+		got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(tc.got, tc.sep)
+		<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(got, tc.excepted) {
+			t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%#v, got:%#v&#34;</span>, tc.excepted, got)
+		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>此时运行<code>go test</code>命令后就能看到比较明显的提示信息了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   TestSplit
+    split_test.go:42: excepted:[]string{<span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}, got:[]string{<span style="color:#666;font-style:italic">&#34;&#34;</span>, <span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}
+--- FAIL: TestSplit (0.00s)
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="子测试">子测试</h2>
+<p>看起来都挺不错的，但是如果测试用例比较多的时候，我们是没办法一眼看出来具体是哪个测试用例失败了。我们可能会想到下面的解决办法：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+	<span style="font-weight:bold;font-style:italic">type</span> test <span style="font-weight:bold;font-style:italic">struct</span> { <span style="color:#888;font-style:italic">// 定义test结构体
+</span><span style="color:#888;font-style:italic"></span>		got <span style="font-weight:bold">string</span>
+		sep   <span style="font-weight:bold">string</span>
+		excepted  []<span style="font-weight:bold">string</span>
+	}
+	tests := <span style="font-weight:bold;font-style:italic">map</span>[<span style="font-weight:bold">string</span>]test{ <span style="color:#888;font-style:italic">// 测试用例使用map存储
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-style:italic">&#34;simple&#34;</span>:      {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;:&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;wrong sep&#34;</span>:   {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;,&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;more sep&#34;</span>:    {got: <span style="color:#666;font-style:italic">&#34;abcd&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;bc&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;d&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;leading sep&#34;</span>: {got: <span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;上&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}},
+	}
+	<span style="font-weight:bold">for</span> name, tc := <span style="font-weight:bold">range</span> tests {
+		got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(tc.got, tc.sep)
+		<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(got, tc.excepted) {
+			t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;name:%s excepted:%#v, got:%#v&#34;</span>, name, tc.excepted, got) <span style="color:#888;font-style:italic">// 将测试用例的name格式化输出
+</span><span style="color:#888;font-style:italic"></span>		}
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的做法是能够解决问题的。同时<code>Go1.7+</code>中新增了子测试，我们可以按照如下方式使用<code>t.Run</code>执行子测试：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+	<span style="font-weight:bold;font-style:italic">type</span> test <span style="font-weight:bold;font-style:italic">struct</span> { <span style="color:#888;font-style:italic">// 定义test结构体
+</span><span style="color:#888;font-style:italic"></span>		got <span style="font-weight:bold">string</span>
+		sep   <span style="font-weight:bold">string</span>
+		excepted  []<span style="font-weight:bold">string</span>
+	}
+	tests := <span style="font-weight:bold;font-style:italic">map</span>[<span style="font-weight:bold">string</span>]test{ <span style="color:#888;font-style:italic">// 测试用例使用map存储
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-style:italic">&#34;simple&#34;</span>:      {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;:&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;wrong sep&#34;</span>:   {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;,&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;more sep&#34;</span>:    {got: <span style="color:#666;font-style:italic">&#34;abcd&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;bc&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;d&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;leading sep&#34;</span>: {got: <span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;上&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}},
+	}
+	<span style="font-weight:bold">for</span> name, tc := <span style="font-weight:bold">range</span> tests {
+		t.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(name, <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) { <span style="color:#888;font-style:italic">// 使用t.Run()执行子测试
+</span><span style="color:#888;font-style:italic"></span>			got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(tc.got, tc.sep)
+			<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(got, tc.excepted) {
+				t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%#v, got:%#v&#34;</span>, tc.excepted, got)
+			}
+		})
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>此时我们再执行<code>go test</code>命令就能够看到更清晰的输出内容了：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>
+=== RUN   TestSplit/simple
+=== RUN   TestSplit/wrong_sep
+=== RUN   TestSplit/more_sep
+=== RUN   TestSplit/leading_sep
+    split_test.go:43: excepted:[]string{<span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}, got:[]string{<span style="color:#666;font-style:italic">&#34;&#34;</span>, <span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}
+--- FAIL: TestSplit (0.00s)
+    --- PASS: TestSplit/simple (0.00s)
+    --- PASS: TestSplit/wrong_sep (0.00s)
+    --- PASS: TestSplit/more_sep (0.00s)
+    --- FAIL: TestSplit/leading_sep (0.00s)
+FAIL
+<span style="font-weight:bold;font-style:italic">exit</span> status 1
+FAIL    github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>这个时候我们要把测试用例中的错误修改回来：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+	...
+	tests := <span style="font-weight:bold;font-style:italic">map</span>[<span style="font-weight:bold">string</span>]test{ <span style="color:#888;font-style:italic">// 测试用例使用map存储
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-style:italic">&#34;simple&#34;</span>:      {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;:&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;wrong sep&#34;</span>:   {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;,&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;more sep&#34;</span>:    {got: <span style="color:#666;font-style:italic">&#34;abcd&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;bc&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;d&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;leading sep&#34;</span>: {got: <span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;上&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;&#34;</span>, <span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}},
+	}
+	...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>我们都知道可以通过<code>-run=RegExp</code>来指定运行的测试用例，还可以通过<code>/</code>来指定要运行的子测试用例，例如：<code>go test -v -run=Split/simple</code>只会运行<code>simple</code>对应的子测试用例。</p>
+<h2 id="测试覆盖率">测试覆盖率</h2>
+<p>测试覆盖率是你的代码被测试套件覆盖的百分比。通常我们使用的都是语句的覆盖率，也就是在测试中至少被运行一次的代码占总代码的比例。</p>
+<p>Go提供内置功能来检查你的代码覆盖率。我们可以使用<code>go test -cover</code>来查看测试覆盖率。例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -cover
+PASS
+coverage: 100.0% of statements
+ok      github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>从上面的结果可以看到我们的测试用例覆盖了100%的代码。</p>
+<p>Go还提供了一个额外的<code>-coverprofile</code>参数，用来将覆盖率相关的记录信息输出到一个文件。例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -cover -coverprofile=c.out
+PASS
+coverage: 100.0% of statements
+ok      github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><p>上面的命令会将覆盖率相关的信息输出到当前文件夹下面的<code>c.out</code>文件中，然后我们执行<code>go tool cover -html=c.out</code>，使用<code>cover</code>工具来处理生成的记录信息，该命令会打开本地的浏览器窗口生成一个HTML报告。
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/unit_test/cover.png">
+            <img class="mx-auto" alt="Go test cover" src="https://imw7.github.io/images/Go/unit_test/cover.png" />
+        </a>
+    上图中每个用绿色标记的语句块表示被覆盖了，而红色的表示没有被覆盖。</p>
+<h1 id="基准测试">基准测试</h1>
+<h2 id="基准测试函数格式">基准测试函数格式</h2>
+<p>基准测试就是在一定的工作负载之下检测程序性能的一种方法。基准测试的基本格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkName</span>(b *testing.B){
+    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>基准测试以<code>Benchmark</code>为前缀，需要一个<code>*testing.B</code>类型的参数b，基准测试必须要执行<code>b.N</code>次，这样的测试才有对照性，<code>b.N</code>的值是系统根据实际情况去调整的，从而保证测试的稳定性。 <code>testing.B</code>拥有的方法如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Error</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Fail</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">FailNow</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Failed</span>() <span style="font-weight:bold">bool</span>
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Fatalf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Log</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Logf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Name</span>() <span style="font-weight:bold">string</span>
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">ReportAllocs</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">ResetTimer</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">Run</span>(name <span style="font-weight:bold">string</span>, f <span style="font-weight:bold;font-style:italic">func</span>(b *B)) <span style="font-weight:bold">bool</span>
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">RunParallel</span>(body <span style="font-weight:bold;font-style:italic">func</span>(*PB))
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">SetBytes</span>(n <span style="font-weight:bold">int64</span>)
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">SetParallelism</span>(p <span style="font-weight:bold">int</span>)
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Skip</span>(args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">SkipNow</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Skipf</span>(format <span style="font-weight:bold">string</span>, args ...<span style="font-weight:bold;font-style:italic">interface</span>{})
+<span style="font-weight:bold;font-style:italic">func</span> (c *B) <span style="color:#666;font-weight:bold;font-style:italic">Skipped</span>() <span style="font-weight:bold">bool</span>
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">StartTimer</span>()
+<span style="font-weight:bold;font-style:italic">func</span> (b *B) <span style="color:#666;font-weight:bold;font-style:italic">StopTimer</span>()
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="基准测试示例">基准测试示例</h2>
+<p>我们为split包中的<code>Split</code>函数编写基准测试如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkSplit</span>(b *testing.B) {
+	<span style="font-weight:bold">for</span> i := 0; i &lt; b.N; i++ {
+		<span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, <span style="color:#666;font-style:italic">&#34;上&#34;</span>)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>基准测试并不会默认执行，需要增加<code>-bench</code>参数，所以我们通过执行<code>go test -bench=Split</code>命令执行基准测试，输出结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=Split
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/split
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkSplit-8         6848065               203.7 ns/op
+PASS
+ok      github.com/imw7/studygo/test_demo/split  1.575s
+</code></pre></td></tr></table>
+</div>
+</div><p>其中<code>BenchmarkSplit-8</code>表示对Split函数进行基准测试，数字<code>8</code>表示<code>GOMAXPROCS</code>的值，这个对于并发基准测试很重要。<code>6848065</code>和<code>203.7ns/op</code>表示每次调用<code>Split</code>函数耗时<code>203.7ns</code>，这个结果是<code>6848065</code>次调用的平均值。</p>
+<p>我们还可以为基准测试添加<code>-benchmem</code>参数，来获得内存分配的统计数据。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=Split -benchmem
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/split
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkSplit-8         6876964               189.9 ns/op           112 B/op          3 allocs/op
+PASS
+ok      github.com/imw7/studygo/test_demo/split  1.486s
+</code></pre></td></tr></table>
+</div>
+</div><p>其中，<code>112 B/op</code>表示每次操作内存分配了112字节，<code>3 allocs/op</code>则表示每次操作进行了3次内存分配。 我们将我们的<code>Split</code>函数优化如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(s, sep <span style="font-weight:bold">string</span>) (result []<span style="font-weight:bold">string</span>) {
+	result = <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">string</span>, 0, strings.<span style="color:#666;font-weight:bold;font-style:italic">Count</span>(s, sep)+1)
+	i := strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+	<span style="font-weight:bold">for</span> i &gt; -1 {
+		result = <span style="font-weight:bold;font-style:italic">append</span>(result, s[:i])
+		s = s[i+<span style="font-weight:bold;font-style:italic">len</span>(sep):] <span style="color:#888;font-style:italic">// 这里使用len(sep)获取sep的长度
+</span><span style="color:#888;font-style:italic"></span>		i = strings.<span style="color:#666;font-weight:bold;font-style:italic">Index</span>(s, sep)
+	}
+	result = <span style="font-weight:bold;font-style:italic">append</span>(result, s)
+	<span style="font-weight:bold">return</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次我们提前使用make函数将result初始化为一个容量足够大的切片，而不再像之前一样通过调用append函数来追加。我们来看一下这个改进会带来多大的性能提升：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=Split -benchmem
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/split
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkSplit-8        10881188               113.0 ns/op            48 B/op          1 allocs/op
+PASS
+ok      github.com/imw7/studygo/test_demo/split  1.344s
+</code></pre></td></tr></table>
+</div>
+</div><p>这个使用make函数提前分配内存的改动，减少了2/3的内存分配次数，并且减少了一半的内存分配。</p>
+<h2 id="性能比较函数">性能比较函数</h2>
+<p>上面的基准测试只能得到给定操作的绝对耗时，但是在很多性能问题是发生在两个不同操作之间的相对耗时，比如同一个函数处理1000个元素的耗时与处理1万甚至100万个元素的耗时的差别是多少？再或者对于同一个任务究竟使用哪种算法性能最佳？我们通常需要对两个不同算法的实现使用相同的输入来进行基准比较测试。</p>
+<p>性能比较函数通常是一个带有参数的函数，被多个不同的Benchmark函数传入不同的值来调用。举个例子如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">benchmark</span>(b *testing.B, size <span style="font-weight:bold">int</span>){<span style="color:#888;font-style:italic">/* ... */</span>}
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Benchmark10</span>(b *testing.B){ <span style="color:#666;font-weight:bold;font-style:italic">benchmark</span>(b, 10) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Benchmark100</span>(b *testing.B){ <span style="color:#666;font-weight:bold;font-style:italic">benchmark</span>(b, 100) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Benchmark1000</span>(b *testing.B){ <span style="color:#666;font-weight:bold;font-style:italic">benchmark</span>(b, 1000) }
+</code></pre></td></tr></table>
+</div>
+</div><p>例如我们编写了一个计算斐波那契数列的函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// fib.go
+</span><span style="color:#888;font-style:italic"></span>
+<span style="color:#888;font-style:italic">// Fib 是一个计算第n个斐波那契数的函数
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(n <span style="font-weight:bold">int</span>) <span style="font-weight:bold">int</span> {
+	<span style="font-weight:bold">if</span> n &lt; 2 {
+		<span style="font-weight:bold">return</span> n
+	}
+	<span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(n-1) + <span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(n-2)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>我们编写的性能比较函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// fib_test.go
+</span><span style="color:#888;font-style:italic"></span>
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b *testing.B, n <span style="font-weight:bold">int</span>) {
+	<span style="font-weight:bold">for</span> i := 0; i &lt; b.N; i++ {
+		<span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(n)
+	}
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib1</span>(b *testing.B)  { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 1) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib2</span>(b *testing.B)  { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 2) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib3</span>(b *testing.B)  { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 3) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib10</span>(b *testing.B) { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 10) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib20</span>(b *testing.B) { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 20) }
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFib40</span>(b *testing.B) { <span style="color:#666;font-weight:bold;font-style:italic">benchmarkFib</span>(b, 40) }
+</code></pre></td></tr></table>
+</div>
+</div><p>运行基准测试：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">fib $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=.
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/fib
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkFib1-8         749359886                1.564 ns/op
+BenchmarkFib2-8         254584318                4.730 ns/op
+BenchmarkFib3-8         162427525                7.540 ns/op
+BenchmarkFib10-8         4202830               284.1 ns/op
+BenchmarkFib20-8           33248             35873 ns/op
+BenchmarkFib40-8               2         534712806 ns/op
+PASS
+ok      github.com/imw7/studygo/test_demo/fib    9.634s
+</code></pre></td></tr></table>
+</div>
+</div><p>这里需要注意的是，默认情况下，每个基准测试至少运行1秒。如果在Benchmark函数返回时没有到1秒，则b.N的值会按1,2,5,10,20,50，…增加，并且函数再次运行。</p>
+<p>最终的BenchmarkFib40只运行了两次，每次运行的平均值只有不到一秒。像这种情况下我们应该可以使用<code>-benchtime</code>标志增加最小基准时间，以产生更准确的结果。例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">fib $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=Fib40 -benchtime=20s
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/fib
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkFib40-8              44         546986579 ns/op
+PASS
+ok      github.com/imw7/studygo/test_demo/fib    24.609s
+</code></pre></td></tr></table>
+</div>
+</div><p>这一次<code>BenchmarkFib40</code>函数运行了44次，结果就会更准确一些了。</p>
+<p>使用性能比较函数做测试的时候一个容易犯的错误就是把<code>b.N</code>作为输入的大小，例如以下两个例子都是错误的示范：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 错误示范1
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFibWrong</span>(b *testing.B) {
+	<span style="font-weight:bold">for</span> n := 0; n &lt; b.N; n++ {
+		<span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(n)
+	}
+}
+
+<span style="color:#888;font-style:italic">// 错误示范2
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkFibWrong2</span>(b *testing.B) {
+	<span style="color:#666;font-weight:bold;font-style:italic">Fib</span>(b.N)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="重置时间">重置时间</h2>
+<p><code>b.ResetTimer</code>之前的处理不会放到执行时间里，也不会输出到报告中，所以可以在之前做一些不计划作为测试报告的操作。例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkSplit</span>(b *testing.B) {
+	time.<span style="color:#666;font-weight:bold;font-style:italic">Sleep</span>(5 * time.Second) <span style="color:#888;font-style:italic">// 假设需要做一些耗时的无关操作
+</span><span style="color:#888;font-style:italic"></span>	b.<span style="color:#666;font-weight:bold;font-style:italic">ResetTimer</span>()              <span style="color:#888;font-style:italic">// 重置计时器
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> i := 0; i &lt; b.N; i++ {
+		<span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, <span style="color:#666;font-style:italic">&#34;上&#34;</span>)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="并行测试">并行测试</h2>
+<p><code>func (b *B) RunParallel(body func(*PB))</code>会以并行的方式执行给定的基准测试。</p>
+<p><code>RunParallel</code>会创建出多个<code>goroutine</code>，并将<code>b.N</code>分配给这些<code>goroutine</code>执行， 其中<code>goroutine</code>数量的默认值为<code>GOMAXPROCS</code>。用户如果想要增加非CPU受限（non-CPU-bound）基准测试的并行性， 那么可以在<code>RunParallel</code>之前调用<code>SetParallelism</code> 。<code>RunParallel</code>通常会与<code>-cpu</code>标志一同使用。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">BenchmarkSplitParallel</span>(b *testing.B) {
+	<span style="color:#888;font-style:italic">// b.SetParallelism(1) // 设置使用的CPU数
+</span><span style="color:#888;font-style:italic"></span>	b.<span style="color:#666;font-weight:bold;font-style:italic">RunParallel</span>(<span style="font-weight:bold;font-style:italic">func</span>(pb *testing.PB) {
+		<span style="font-weight:bold">for</span> pb.<span style="color:#666;font-weight:bold;font-style:italic">Next</span>() {
+			<span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, <span style="color:#666;font-style:italic">&#34;上&#34;</span>)
+		}
+	})
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>执行一下基准测试：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -bench=.
+goos: linux
+goarch: amd64
+pkg: github.com/imw7/studygo/test_demo/split
+cpu: Intel(R) Core(TM) i5-9300H CPU @ 2.40GHz
+BenchmarkSplit-8                10531164               112.4 ns/op
+BenchmarkSplitParallel-8        34737585                34.38 ns/op
+PASS
+ok      github.com/imw7/studygo/test_demo/split  2.532s
+</code></pre></td></tr></table>
+</div>
+</div><p>还可以通过在测试命令后添加<code>-cpu</code>参数如<code>go test -bench=. -cpu 1</code>来指定使用的CPU数量。</p>
+<h1 id="setup与teardown">Setup与TearDown</h1>
+<p>测试程序有时需要在测试之前进行额外的设置（setup）或在测试之后进行拆卸（teardown）。</p>
+<h2 id="testmain">TestMain</h2>
+<p>通过在<code>*_test.go</code>文件中定义<code>TestMain</code>函数来可以在测试之前进行额外的设置（setup）或在测试之后进行拆卸（teardown）操作。</p>
+<p>如果测试文件包含函数:<code>func TestMain(m *testing.M)</code>那么生成的测试会先调用 TestMain(m)，然后再运行具体测试。<code>TestMain</code>运行在主<code>goroutine</code>中, 可以在调用 <code>m.Run</code>前后做任何设置（setup）和拆卸（teardown）。退出测试的时候应该使用<code>m.Run</code>的返回值作为参数调用<code>os.Exit</code>。</p>
+<p>一个使用<code>TestMain</code>来设置Setup和TearDown的示例如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestMain</span>(m *testing.M) {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;write setup code here...&#34;</span>) <span style="color:#888;font-style:italic">// 测试之前的做一些设置
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 如果 TestMain 使用了 flags，这里应该加上flag.Parse()
+</span><span style="color:#888;font-style:italic"></span>	retCode := m.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()                         <span style="color:#888;font-style:italic">// 执行测试
+</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;write teardown code here...&#34;</span>) <span style="color:#888;font-style:italic">// 测试之后做一些拆卸工作
+</span><span style="color:#888;font-style:italic"></span>	os.<span style="color:#666;font-weight:bold;font-style:italic">Exit</span>(retCode)                           <span style="color:#888;font-style:italic">// 退出测试
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>需要注意的是：在调用<code>TestMain</code>时, <code>flag.Parse</code>并没有被调用。所以如果<code>TestMain</code> 依赖于command-line标志 (包括 testing 包的标记), 则应该显示的调用<code>flag.Parse</code>。</p>
+<h2 id="子测试的setup与teardown">子测试的Setup与Teardown</h2>
+<p>有时候我们可能需要为每个测试集设置Setup与Teardown，也有可能需要为每个子测试设置Setup与Teardown。下面我们定义两个函数工具函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 测试集的Setup与Teardown
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">setupTestCase</span>(t *testing.T) <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) {
+	t.<span style="color:#666;font-weight:bold;font-style:italic">Log</span>(<span style="color:#666;font-style:italic">&#34;如有需要在此执行:测试之前的setup&#34;</span>)
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) {
+		t.<span style="color:#666;font-weight:bold;font-style:italic">Log</span>(<span style="color:#666;font-style:italic">&#34;如有需要在此执行:测试之后的teardown&#34;</span>)
+	}
+}
+
+<span style="color:#888;font-style:italic">// 子测试的Setup与Teardown
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">setupSubTest</span>(t *testing.T) <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) {
+	t.<span style="color:#666;font-weight:bold;font-style:italic">Log</span>(<span style="color:#666;font-style:italic">&#34;如有需要在此执行:子测试之前的setup&#34;</span>)
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) {
+		t.<span style="color:#666;font-weight:bold;font-style:italic">Log</span>(<span style="color:#666;font-style:italic">&#34;如有需要在此执行:子测试之后的teardown&#34;</span>)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>使用方式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>(t *testing.T) {
+	<span style="font-weight:bold;font-style:italic">type</span> test <span style="font-weight:bold;font-style:italic">struct</span> { <span style="color:#888;font-style:italic">// 定义test结构体
+</span><span style="color:#888;font-style:italic"></span>		got <span style="font-weight:bold">string</span>
+		sep   <span style="font-weight:bold">string</span>
+		excepted  []<span style="font-weight:bold">string</span>
+	}
+	tests := <span style="font-weight:bold;font-style:italic">map</span>[<span style="font-weight:bold">string</span>]test{ <span style="color:#888;font-style:italic">// 测试用例使用map存储
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-style:italic">&#34;simple&#34;</span>:      {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;:&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a&#34;</span>, <span style="color:#666;font-style:italic">&#34;b&#34;</span>, <span style="color:#666;font-style:italic">&#34;c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;wrong sep&#34;</span>:   {got: <span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;,&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;more sep&#34;</span>:    {got: <span style="color:#666;font-style:italic">&#34;about&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;ou&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;ab&#34;</span>, <span style="color:#666;font-style:italic">&#34;t&#34;</span>}},
+		<span style="color:#666;font-style:italic">&#34;leading sep&#34;</span>: {got: <span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, sep: <span style="color:#666;font-style:italic">&#34;上&#34;</span>, excepted: []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;&#34;</span>, <span style="color:#666;font-style:italic">&#34;海水海&#34;</span>, <span style="color:#666;font-style:italic">&#34;来&#34;</span>}},
+	}
+	teardownTestCase := <span style="color:#666;font-weight:bold;font-style:italic">setupTestCase</span>(t) <span style="color:#888;font-style:italic">// 测试之前执行setup操作
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">defer</span> <span style="color:#666;font-weight:bold;font-style:italic">teardownTestCase</span>(t)            <span style="color:#888;font-style:italic">// 测试之后执行testdoen操作
+</span><span style="color:#888;font-style:italic"></span>
+	<span style="font-weight:bold">for</span> name, tc := <span style="font-weight:bold">range</span> tests {
+		t.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(name, <span style="font-weight:bold;font-style:italic">func</span>(t *testing.T) { <span style="color:#888;font-style:italic">// 使用t.Run()执行子测试
+</span><span style="color:#888;font-style:italic"></span>			teardownSubTest := <span style="color:#666;font-weight:bold;font-style:italic">setupSubTest</span>(t) <span style="color:#888;font-style:italic">// 子测试之前执行setup操作
+</span><span style="color:#888;font-style:italic"></span>			<span style="font-weight:bold">defer</span> <span style="color:#666;font-weight:bold;font-style:italic">teardownSubTest</span>(t)           <span style="color:#888;font-style:italic">// 测试之后执行testdoen操作
+</span><span style="color:#888;font-style:italic"></span>			got := <span style="color:#666;font-weight:bold;font-style:italic">Split</span>(tc.got, tc.sep)
+			<span style="font-weight:bold">if</span> !reflect.<span style="color:#666;font-weight:bold;font-style:italic">DeepEqual</span>(got, tc.excepted) {
+				t.<span style="color:#666;font-weight:bold;font-style:italic">Errorf</span>(<span style="color:#666;font-style:italic">&#34;excepted:%#v, got:%#v&#34;</span>, tc.excepted, got)
+			}
+		})
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>测试结果如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -v
+=== RUN   <span style="color:#666;font-weight:bold;font-style:italic">TestSplit</span>
+=== RUN   TestSplit/simple
+=== RUN   TestSplit/wrong_sep
+=== RUN   TestSplit/more_sep
+=== RUN   TestSplit/leading_sep
+--- PASS: TestSplit (0.00s)
+    --- PASS: TestSplit/simple (0.00s)
+    --- PASS: TestSplit/wrong_sep (0.00s)
+    --- PASS: TestSplit/more_sep (0.00s)
+    --- PASS: TestSplit/leading_sep (0.00s)
+=== RUN   TestSplit
+    split_test.go:10: 如有需要在此执行:测试之前的setup
+=== RUN   TestSplit/simple
+    split_test.go:18: 如有需要在此执行:子测试之前的setup
+    split_test.go:20: 如有需要在此执行:子测试之后的teardown
+=== RUN   TestSplit/wrong_sep
+    split_test.go:18: 如有需要在此执行:子测试之前的setup
+    split_test.go:20: 如有需要在此执行:子测试之后的teardown
+=== RUN   TestSplit/more_sep
+    split_test.go:18: 如有需要在此执行:子测试之前的setup
+    split_test.go:20: 如有需要在此执行:子测试之后的teardown
+=== RUN   TestSplit/leading_sep
+    split_test.go:18: 如有需要在此执行:子测试之前的setup
+    split_test.go:20: 如有需要在此执行:子测试之后的teardown
+=== CONT  TestSplit
+    split_test.go:12: 如有需要在此执行:测试之后的teardown
+--- PASS: TestSplit (0.00s)
+    --- PASS: TestSplit/simple (0.00s)
+    --- PASS: TestSplit/wrong_sep (0.00s)
+    --- PASS: TestSplit/more_sep (0.00s)
+    --- PASS: TestSplit/leading_sep (0.00s)
+PASS
+ok      github.com/imw7/studygo/test_demo/split  0.001s
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="示例函数">示例函数</h1>
+<h2 id="示例函数的格式">示例函数的格式</h2>
+<p>被<code>go test</code>特殊对待的第三种函数就是示例函数，它们的函数名以<code>Example</code>为前缀。它们既没有参数也没有返回值。标准格式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ExampleName</span>() {
+    <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="示例函数示例">示例函数示例</h2>
+<p>下面的代码是我们为<code>Split</code>函数编写的一个示例函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ExampleSplit</span>() {
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(split.<span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;a:b:c&#34;</span>, <span style="color:#666;font-style:italic">&#34;:&#34;</span>))
+	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(split.<span style="color:#666;font-weight:bold;font-style:italic">Split</span>(<span style="color:#666;font-style:italic">&#34;上海水海上来&#34;</span>, <span style="color:#666;font-style:italic">&#34;上&#34;</span>))
+	<span style="color:#888;font-style:italic">// Output:
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// [a b c]
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// [ 海水海 来]
+</span><span style="color:#888;font-style:italic"></span>}
+</code></pre></td></tr></table>
+</div>
+</div><p>为你的代码编写示例代码有如下三个用处：</p>
+<ol>
+<li>
+<p>示例函数能够作为文档直接使用，例如基于web的godoc中能把示例函数与对应的函数或包相关联。</p>
+</li>
+<li>
+<p>示例函数只要包含了<code>// Output:</code>也是可以通过<code>go test</code>运行的可执行测试。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">split $ go <span style="font-weight:bold;font-style:italic">test</span> -run Example
+PASS
+ok      github.com/imw7/studygo/test_demo/split       0.002s
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>示例函数提供了可以直接运行的示例代码，可以直接在<code>golang.org</code>的<code>godoc</code>文档服务器上使用<code>Go Playground</code>运行示例代码。下图为<code>strings.ToUpper</code>函数在Playground的示例函数效果。
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/unit_test/example.png">
+            <img class="mx-auto" alt="Go Playground" src="https://imw7.github.io/images/Go/unit_test/example.png" />
+        </a>
+    </p>
+</li>
+</ol>
+<h1 id="练习题">练习题</h1>
+<p>编写一个回文检测函数，并为其编写单元测试和基准测试，根据测试的结果逐步对其进行优化。（回文：一个字符串正序和逆序一样，如“Madam,I’mAdam”、“油灯少灯油”等。）</p>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/go_file/">Go语言之文件操作</a></li>
+        
+        <li><a href="/post/Go/15_socket/">Go语言基础之网络编程</a></li>
+        
+        <li><a href="/post/Go/14_concurrence/">Go语言基础之并发</a></li>
+        
+        <li><a href="/post/Go/13_reflect/">Go语言基础之反射</a></li>
+        
+        <li><a href="/post/Go/12_interface/">Go语言基础之接口</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/%E6%B5%8B%E8%AF%95'>测试</a></li>
+                
+                <li><a href='/tags/%E5%9F%BA%E7%A1%80'>基础</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

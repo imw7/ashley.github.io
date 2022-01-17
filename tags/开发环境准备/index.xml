@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>开发环境准备 on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/</link>
+    <description>Recent content in 开发环境准备 on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 20 Mar 2021 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>安装Go语言及搭建Go语言开发环境</title>
+      <link>https://blog.imw7.com/post/Go/go_install_dev/</link>
+      <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_install_dev/</guid>
+      <description>&lt;p&gt;最新1.16版本，一步一步，从零搭建Go语言开发环境。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>VS Code配置Go语言开发环境</title>
+      <link>https://blog.imw7.com/post/Go/00_go_in_vscode/</link>
+      <pubDate>Tue, 16 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/00_go_in_vscode/</guid>
+      <description>&lt;p&gt;&lt;code&gt;VS Code&lt;/code&gt;是微软开源的一款编辑器，插件系统十分的丰富。本文就介绍了如何使用&lt;code&gt;VS Code&lt;/code&gt;搭建&lt;code&gt;Go&lt;/code&gt;语言开发环境。&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>如何使用go module导入本地包</title>
+      <link>https://blog.imw7.com/post/Go/go_import_local/</link>
+      <pubDate>Thu, 27 Feb 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/Go/go_import_local/</guid>
+      <description>&lt;p&gt;&lt;code&gt;go module&lt;/code&gt;是&lt;code&gt;Go1.11&lt;/code&gt;版本之后官方推出的版本管理工具，并且从&lt;code&gt;Go1.13&lt;/code&gt;版本开始，&lt;code&gt;go module&lt;/code&gt;将是&lt;code&gt;Go&lt;/code&gt;语言默认的依赖管理工具。到&lt;code&gt;Go1.14&lt;/code&gt;版本推出之后&lt;code&gt;Go modules&lt;/code&gt; 功能已经被正式推荐在生产环境下使用了。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

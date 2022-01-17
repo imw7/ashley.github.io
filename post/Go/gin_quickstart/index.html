@@ -1,0 +1,2134 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>gin框架介绍及使用 | 魏奇的博客</title>
+    <meta property="og:title" content="gin框架介绍及使用 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2019-08-24T00:00:00&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-08-24T00:00:00&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="gin框架介绍及使用">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/Go/gin_quickstart/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#gin框架介绍">Gin框架介绍</a></li>
+    <li><a href="#gin框架安装与使用">Gin框架安装与使用</a>
+      <ul>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#第一个gin示例">第一个Gin示例：</a></li>
+      </ul>
+    </li>
+    <li><a href="#restful-api">RESTful API</a></li>
+    <li><a href="#gin渲染">Gin渲染</a>
+      <ul>
+        <li><a href="#html渲染">HTML渲染</a></li>
+        <li><a href="#自定义模板函数">自定义模板函数</a></li>
+        <li><a href="#静态文件处理">静态文件处理</a></li>
+        <li><a href="#使用模板继承">使用模板继承</a></li>
+        <li><a href="#补充文件路径处理">补充文件路径处理</a></li>
+        <li><a href="#json渲染">JSON渲染</a></li>
+        <li><a href="#xml渲染">XML渲染</a></li>
+        <li><a href="#ymal渲染">YMAL渲染</a></li>
+        <li><a href="#protobuf渲染">protobuf渲染</a></li>
+      </ul>
+    </li>
+    <li><a href="#获取参数">获取参数</a>
+      <ul>
+        <li><a href="#获取querystring参数">获取querystring参数</a></li>
+        <li><a href="#获取form参数">获取form参数</a></li>
+        <li><a href="#获取path参数">获取path参数</a></li>
+        <li><a href="#参数绑定">参数绑定</a></li>
+      </ul>
+    </li>
+    <li><a href="#文件上传">文件上传</a>
+      <ul>
+        <li><a href="#单个文件上传">单个文件上传</a></li>
+        <li><a href="#多个文件上传">多个文件上传</a></li>
+      </ul>
+    </li>
+    <li><a href="#重定向">重定向</a>
+      <ul>
+        <li><a href="#http重定向">HTTP重定向</a></li>
+        <li><a href="#路由重定向">路由重定向</a></li>
+      </ul>
+    </li>
+    <li><a href="#gin路由">Gin路由</a>
+      <ul>
+        <li><a href="#普通路由">普通路由</a></li>
+        <li><a href="#路由组">路由组</a></li>
+        <li><a href="#路由原理">路由原理</a></li>
+      </ul>
+    </li>
+    <li><a href="#gin中间件">Gin中间件</a>
+      <ul>
+        <li><a href="#定义中间件">定义中间件</a></li>
+        <li><a href="#注册中间件">注册中间件</a></li>
+        <li><a href="#中间件注意事项">中间件注意事项</a></li>
+      </ul>
+    </li>
+    <li><a href="#运行多个服务">运行多个服务</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">gin框架介绍及使用</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年8月24日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p><code>Gin</code>是一个用Go语言编写的web框架。它是一个类似于<code>martini</code>但拥有更好性能的API框架, 由于使用了<code>httprouter</code>，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上<code>Gin</code>。</p>
+<h2 id="gin框架介绍">Gin框架介绍</h2>
+<p>Go世界里最流行的Web框架，<a href="https://github.com/gin-gonic/gin">Github</a>上有<code>47K+</code>star。 基于<a href="https://github.com/julienschmidt/httprouter">httprouter</a>开发的Web框架。 <a href="https://gin-gonic.com/zh-cn/docs/">中文文档</a>齐全，简单易用的轻量级框架。</p>
+<h2 id="gin框架安装与使用">Gin框架安装与使用</h2>
+<h3 id="安装">安装</h3>
+<p>下载并安装<code>Gin</code>:</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get -u github.com/gin-gonic/gin
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="第一个gin示例">第一个Gin示例：</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-golang" data-lang="golang"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;github.com/gin-gonic/gin&#34;</span>
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 创建一个默认的路由引擎
+</span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	<span style="color:#888;font-style:italic">// GET：请求方式；/hello：请求的路径
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 当客户端以GET方法请求/hello路径时，会执行后面的匿名函数
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/hello&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// c.JSON：返回JSON格式的数据
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(200, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>,
+		})
+	})
+	<span style="color:#888;font-style:italic">// 启动HTTP服务，默认在0.0.0.0:8080启动服务
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>将上面的代码保存并编译执行，然后使用浏览器打开<code>127.0.0.1:8080/hello</code>就能看到一串JSON字符串。</p>
+<h2 id="restful-api">RESTful API</h2>
+<p>REST与技术无关，代表的是一种软件架构风格，REST是Representational State Transfer的简称，中文翻译为“表征状态转移”或“表现层状态转化”。</p>
+<p>推荐阅读<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html">阮一峰 理解RESTful架构</a></p>
+<p>简单来说，REST的含义就是客户端与Web服务器之间进行交互的时候，使用HTTP协议中的4个请求方法代表不同的动作。</p>
+<ul>
+<li><code>GET</code>用来获取资源</li>
+<li><code>POST</code>用来新建资源</li>
+<li><code>PUT</code>用来更新资源</li>
+<li><code>DELETE</code>用来删除资源。</li>
+</ul>
+<p>只要API程序遵循了REST风格，那就可以称其为RESTful API。目前在前后端分离的架构中，前后端基本都是通过RESTful API来进行交互。</p>
+<p>例如，我们现在要编写一个管理书籍的系统，我们可以查询对一本书进行查询、创建、更新和删除等操作，我们在编写程序的时候就要设计客户端浏览器与我们Web服务端交互的方式和路径。按照经验我们通常会设计成如下模式：</p>
+<table>
+<thead>
+<tr>
+<th align="center">请求方法</th>
+<th align="center">URL</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">GET</td>
+<td align="center">/book</td>
+<td align="center">查询书籍信息</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td align="center">/create_book</td>
+<td align="center">创建书籍记录</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td align="center">/update_book</td>
+<td align="center">更新书籍信息</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td align="center">/delete_book</td>
+<td align="center">删除书籍信息</td>
+</tr>
+</tbody>
+</table>
+<p>同样的需求我们按照RESTful API设计如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">请求方法</th>
+<th align="center">URL</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">GET</td>
+<td align="center">/book</td>
+<td align="center">查询书籍信息</td>
+</tr>
+<tr>
+<td align="center">POST</td>
+<td align="center">/book</td>
+<td align="center">创建书籍记录</td>
+</tr>
+<tr>
+<td align="center">PUT</td>
+<td align="center">/book</td>
+<td align="center">更新书籍信息</td>
+</tr>
+<tr>
+<td align="center">DELETE</td>
+<td align="center">/book</td>
+<td align="center">删除书籍信息</td>
+</tr>
+</tbody>
+</table>
+<p>Gin框架支持开发RESTful API的开发。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/book&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(200, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;GET&#34;</span>,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/book&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(200, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;POST&#34;</span>,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">PUT</span>(<span style="color:#666;font-style:italic">&#34;/book&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(200, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;PUT&#34;</span>,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">DELETE</span>(<span style="color:#666;font-style:italic">&#34;/book&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(200, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;DELETE&#34;</span>,
+		})
+	})
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>开发RESTful API的时候我们通常使用<a href="https://www.getpostman.com/">Postman</a>来作为客户端的测试工具。</p>
+<h2 id="gin渲染">Gin渲染</h2>
+<h3 id="html渲染">HTML渲染</h3>
+<p>我们首先定义一个存放模板文件的<code>templates</code>文件夹，然后在其内部按照业务分别定义一个<code>posts</code>文件夹和一个<code>users</code>文件夹。 <code>posts/index.html</code>文件的内容如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">{{define &#34;posts/index.html&#34;}}
+<span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang=<span style="color:#666;font-style:italic">&#34;en&#34;</span>&gt;
+
+&lt;head&gt;
+    &lt;meta charset=<span style="color:#666;font-style:italic">&#34;UTF-8&#34;</span>&gt;
+    &lt;meta name=<span style="color:#666;font-style:italic">&#34;viewport&#34;</span> content=<span style="color:#666;font-style:italic">&#34;width=device-width, initial-scale=1.0&#34;</span>&gt;
+    &lt;meta http-equiv=<span style="color:#666;font-style:italic">&#34;X-UA-Compatible&#34;</span> content=<span style="color:#666;font-style:italic">&#34;ie=edge&#34;</span>&gt;
+    &lt;title&gt;posts/index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    {{.title}}
+&lt;/body&gt;
+&lt;/html&gt;
+{{end}}
+</code></pre></td></tr></table>
+</div>
+</div><p><code>users/index.html</code>文件的内容如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">{{define &#34;users/index.html&#34;}}
+<span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang=<span style="color:#666;font-style:italic">&#34;en&#34;</span>&gt;
+&lt;head&gt;
+    &lt;meta charset=<span style="color:#666;font-style:italic">&#34;UTF-8&#34;</span>&gt;
+    &lt;meta name=<span style="color:#666;font-style:italic">&#34;viewport&#34;</span> content=<span style="color:#666;font-style:italic">&#34;width=device-width, initial-scale=1.0&#34;</span>&gt;
+    &lt;meta http-equiv=<span style="color:#666;font-style:italic">&#34;X-UA-Compatible&#34;</span> content=<span style="color:#666;font-style:italic">&#34;ie=edge&#34;</span>&gt;
+    &lt;title&gt;users/index&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    {{.title}}
+&lt;/body&gt;
+&lt;/html&gt;
+{{end}}
+</code></pre></td></tr></table>
+</div>
+</div><p>Gin框架中使用<code>LoadHTMLGlob()</code>或者<code>LoadHTMLFiles()</code>方法进行HTML模板渲染。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">LoadHTMLGlob</span>(<span style="color:#666;font-style:italic">&#34;templates/**/*&#34;</span>)
+	<span style="color:#888;font-style:italic">//r.LoadHTMLFiles(&#34;templates/posts/index.html&#34;, &#34;templates/users/index.html&#34;)
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/posts/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;posts/index.html&#34;</span>, gin.H{
+			<span style="color:#666;font-style:italic">&#34;title&#34;</span>: <span style="color:#666;font-style:italic">&#34;posts/index&#34;</span>,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;users/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;users/index.html&#34;</span>, gin.H{
+			<span style="color:#666;font-style:italic">&#34;title&#34;</span>: <span style="color:#666;font-style:italic">&#34;users/index&#34;</span>,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="自定义模板函数">自定义模板函数</h3>
+<p>定义一个不转义相应内容的<code>safe</code>模板函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	router.<span style="color:#666;font-weight:bold;font-style:italic">SetFuncMap</span>(template.FuncMap{
+		<span style="color:#666;font-style:italic">&#34;safe&#34;</span>: <span style="font-weight:bold;font-style:italic">func</span>(str <span style="font-weight:bold">string</span>) template.HTML{
+			<span style="font-weight:bold">return</span> template.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(str)
+		},
+	})
+	router.<span style="color:#666;font-weight:bold;font-style:italic">LoadHTMLFiles</span>(<span style="color:#666;font-style:italic">&#34;./index.tmpl&#34;</span>)
+
+	router.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;index.tmpl&#34;</span>, <span style="color:#666;font-style:italic">&#34;&lt;a href=&#39;https://imw7.github.io&#39;&gt;魏奇的博客&lt;/a&gt;&#34;</span>)
+	})
+
+	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>index.tmpl</code>中使用定义好的<code>safe</code>模板函数：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang=<span style="color:#666;font-style:italic">&#34;zh-CN&#34;</span>&gt;
+&lt;head&gt;
+    &lt;title&gt;修改模板引擎的标识符&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div&gt;{{ . | safe }}&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="静态文件处理">静态文件处理</h3>
+<p>当我们渲染的HTML文件中引用了静态文件时，我们只需要按照以下方式在渲染页面前调用<code>gin.Static</code>方法即可。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Static</span>(<span style="color:#666;font-style:italic">&#34;/static&#34;</span>, <span style="color:#666;font-style:italic">&#34;./static&#34;</span>)
+	r.<span style="color:#666;font-weight:bold;font-style:italic">LoadHTMLGlob</span>(<span style="color:#666;font-style:italic">&#34;templates/**/*&#34;</span>)
+   <span style="color:#888;font-style:italic">// ...
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="使用模板继承">使用模板继承</h3>
+<p>Gin框架默认都是使用单模板，如果需要使用<code>block template</code>功能，可以通过<code>&quot;github.com/gin-contrib/multitemplate&quot;</code>库实现，具体示例如下：</p>
+<p>首先，假设我们项目目录下的templates文件夹下有以下模板文件，其中<code>home.tmpl</code>和<code>index.tmpl</code>继承了<code>base.tmpl</code>：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">templates
+├── includes
+│   ├── home.tmpl
+│   └── index.tmpl
+├── layouts
+│   └── base.tmpl
+└── scripts.tmpl
+</code></pre></td></tr></table>
+</div>
+</div><p>然后我们定义一个<code>loadTemplates</code>函数如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">loadTemplates</span>(templatesDir <span style="font-weight:bold">string</span>) multitemplate.Renderer {
+	r := multitemplate.<span style="color:#666;font-weight:bold;font-style:italic">NewRenderer</span>()
+	layouts, err := filepath.<span style="color:#666;font-weight:bold;font-style:italic">Glob</span>(templatesDir + <span style="color:#666;font-style:italic">&#34;/layouts/*.tmpl&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold;font-style:italic">panic</span>(err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>())
+	}
+	includes, err := filepath.<span style="color:#666;font-weight:bold;font-style:italic">Glob</span>(templatesDir + <span style="color:#666;font-style:italic">&#34;/includes/*.tmpl&#34;</span>)
+	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold;font-style:italic">panic</span>(err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>())
+	}
+	<span style="color:#888;font-style:italic">// 为layouts/和includes/目录生成 templates map
+</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> _, include := <span style="font-weight:bold">range</span> includes {
+		layoutCopy := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">string</span>, <span style="font-weight:bold;font-style:italic">len</span>(layouts))
+		<span style="font-weight:bold;font-style:italic">copy</span>(layoutCopy, layouts)
+		files := <span style="font-weight:bold;font-style:italic">append</span>(layoutCopy, include)
+		r.<span style="color:#666;font-weight:bold;font-style:italic">AddFromFiles</span>(filepath.<span style="color:#666;font-weight:bold;font-style:italic">Base</span>(include), files...)
+	}
+	<span style="font-weight:bold">return</span> r
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>我们在<code>main</code>函数中</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">indexFunc</span>(c *gin.Context){
+	c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;index.tmpl&#34;</span>, <span style="font-weight:bold">nil</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">homeFunc</span>(c *gin.Context){
+	c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;home.tmpl&#34;</span>, <span style="font-weight:bold">nil</span>)
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>(){
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.HTMLRender = <span style="color:#666;font-weight:bold;font-style:italic">loadTemplates</span>(<span style="color:#666;font-style:italic">&#34;./templates&#34;</span>)
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, indexFunc)
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/home&#34;</span>, homeFunc)
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="补充文件路径处理">补充文件路径处理</h3>
+<p>关于模板文件和静态文件的路径，我们需要根据公司/项目的要求进行设置。可以使用下面的函数获取当前执行程序的路径。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">getCurrentPath</span>() <span style="font-weight:bold">string</span> {
+	<span style="font-weight:bold">if</span> ex, err := os.<span style="color:#666;font-weight:bold;font-style:italic">Executable</span>(); err == <span style="font-weight:bold">nil</span> {
+		<span style="font-weight:bold">return</span> filepath.<span style="color:#666;font-weight:bold;font-style:italic">Dir</span>(ex)
+	}
+	<span style="font-weight:bold">return</span> <span style="color:#666;font-style:italic">&#34;./&#34;</span>
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="json渲染">JSON渲染</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+
+	<span style="color:#888;font-style:italic">// gin.H 是map[string]interface{}的缩写
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/someJSON&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// 方式一：自己拼接JSON
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>})
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/moreJSON&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// 方法二：使用结构体
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold;font-style:italic">var</span> msg <span style="font-weight:bold;font-style:italic">struct</span> {
+			Name    <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;user&#34;`</span>
+			Message <span style="font-weight:bold">string</span>
+			Age     <span style="font-weight:bold">int</span>
+		}
+		msg.Name = <span style="color:#666;font-style:italic">&#34;小明&#34;</span>
+		msg.Message = <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>
+		msg.Age = 18
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, msg)
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="xml渲染">XML渲染</h3>
+<p>注意需要使用具名的结构体类型。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	<span style="color:#888;font-style:italic">// gin.H 是map[string]interface{}的缩写
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/someXML&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// 方式一：自己拼接JSON
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">XML</span>(http.StatusOK, gin.H{<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>})
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/moreXML&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// 方法二：使用结构体
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold;font-style:italic">type</span> MessageRecord <span style="font-weight:bold;font-style:italic">struct</span> {
+			Name    <span style="font-weight:bold">string</span>
+			Message <span style="font-weight:bold">string</span>
+			Age     <span style="font-weight:bold">int</span>
+		}
+		<span style="font-weight:bold;font-style:italic">var</span> msg MessageRecord
+		msg.Name = <span style="color:#666;font-style:italic">&#34;小明&#34;</span>
+		msg.Message = <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>
+		msg.Age = 18
+		c.<span style="color:#666;font-weight:bold;font-style:italic">XML</span>(http.StatusOK, msg)
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="ymal渲染">YMAL渲染</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/someYAML&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+	c.<span style="color:#666;font-weight:bold;font-style:italic">YAML</span>(http.StatusOK, gin.H{<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;ok&#34;</span>, <span style="color:#666;font-style:italic">&#34;status&#34;</span>: http.StatusOK})
+})
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="protobuf渲染">protobuf渲染</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/someProtoBuf&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+	reps := []<span style="font-weight:bold">int64</span>{<span style="font-weight:bold;font-style:italic">int64</span>(1), <span style="font-weight:bold;font-style:italic">int64</span>(2)}
+	label := <span style="color:#666;font-style:italic">&#34;test&#34;</span>
+	<span style="color:#888;font-style:italic">// protobuf 的具体定义写在 testdata/protoexample 文件中。
+</span><span style="color:#888;font-style:italic"></span>	data := &amp;protoexample.Test{
+		Label: &amp;label,
+		Reps:  reps,
+	}
+	<span style="color:#888;font-style:italic">// 请注意，数据在响应中变为二进制数据
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 将输出被 protoexample.Test protobuf 序列化了的数据
+</span><span style="color:#888;font-style:italic"></span>	c.<span style="color:#666;font-weight:bold;font-style:italic">ProtoBuf</span>(http.StatusOK, data)
+})
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="获取参数">获取参数</h2>
+<h3 id="获取querystring参数">获取querystring参数</h3>
+<p><code>querystring</code>指的是URL中<code>?</code>后面携带的参数，例如：<code>/user/search?username=小明&amp;address=成都</code>。 获取请求的querystring参数的方法如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">//Default返回一个默认的路由引擎
+</span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/user/search&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		username := c.<span style="color:#666;font-weight:bold;font-style:italic">DefaultQuery</span>(<span style="color:#666;font-style:italic">&#34;username&#34;</span>, <span style="color:#666;font-style:italic">&#34;小明&#34;</span>)
+		<span style="color:#888;font-style:italic">//username := c.Query(&#34;username&#34;)
+</span><span style="color:#888;font-style:italic"></span>		address := c.<span style="color:#666;font-weight:bold;font-style:italic">Query</span>(<span style="color:#666;font-style:italic">&#34;address&#34;</span>)
+		<span style="color:#888;font-style:italic">//输出json结果给调用方
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>:  <span style="color:#666;font-style:italic">&#34;ok&#34;</span>,
+			<span style="color:#666;font-style:italic">&#34;username&#34;</span>: username,
+			<span style="color:#666;font-style:italic">&#34;address&#34;</span>:  address,
+		})
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="获取form参数">获取form参数</h3>
+<p>请求的数据通过form表单来提交，例如向<code>/user/search</code>发送一个POST请求，获取请求数据的方式如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">//Default返回一个默认的路由引擎
+</span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/user/search&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// DefaultPostForm取不到值时会返回指定的默认值
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#888;font-style:italic">//username := c.DefaultPostForm(&#34;username&#34;, &#34;小明&#34;)
+</span><span style="color:#888;font-style:italic"></span>		username := c.<span style="color:#666;font-weight:bold;font-style:italic">PostForm</span>(<span style="color:#666;font-style:italic">&#34;username&#34;</span>)
+		address := c.<span style="color:#666;font-weight:bold;font-style:italic">PostForm</span>(<span style="color:#666;font-style:italic">&#34;address&#34;</span>)
+		<span style="color:#888;font-style:italic">//输出json结果给调用方
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>:  <span style="color:#666;font-style:italic">&#34;ok&#34;</span>,
+			<span style="color:#666;font-style:italic">&#34;username&#34;</span>: username,
+			<span style="color:#666;font-style:italic">&#34;address&#34;</span>:  address,
+		})
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="获取path参数">获取path参数</h3>
+<p>请求的参数通过URL路径传递，例如：<code>/user/search/小明/成都</code>。 获取请求URL路径中的参数的方式如下。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">//Default返回一个默认的路由引擎
+</span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/user/search/:username/:address&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		username := c.<span style="color:#666;font-weight:bold;font-style:italic">Param</span>(<span style="color:#666;font-style:italic">&#34;username&#34;</span>)
+		address := c.<span style="color:#666;font-weight:bold;font-style:italic">Param</span>(<span style="color:#666;font-style:italic">&#34;address&#34;</span>)
+		<span style="color:#888;font-style:italic">//输出json结果给调用方
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>:  <span style="color:#666;font-style:italic">&#34;ok&#34;</span>,
+			<span style="color:#666;font-style:italic">&#34;username&#34;</span>: username,
+			<span style="color:#666;font-style:italic">&#34;address&#34;</span>:  address,
+		})
+	})
+
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="参数绑定">参数绑定</h3>
+<p>为了能够更方便的获取请求相关参数，提高开发效率，我们可以基于请求的<code>Content-Type</code>识别请求数据类型并利用反射机制自动提取请求中<code>QueryString</code>、<code>form表单</code>、<code>JSON</code>、<code>XML</code>等参数到结构体中。 下面的示例代码演示了<code>.ShouldBind()</code>强大的功能，它能够基于请求自动提取<code>JSON</code>、<code>form表单</code>和<code>QueryString</code>类型的数据，并把值绑定到指定的结构体对象。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// Binding from JSON
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> Login <span style="font-weight:bold;font-style:italic">struct</span> {
+	User     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`form:&#34;user&#34; json:&#34;user&#34; binding:&#34;required&#34;`</span>
+	Password <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`form:&#34;password&#34; json:&#34;password&#34; binding:&#34;required&#34;`</span>
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+
+	<span style="color:#888;font-style:italic">// 绑定JSON的示例 ({&#34;user&#34;: &#34;q1mi&#34;, &#34;password&#34;: &#34;123456&#34;})
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/loginJSON&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="font-weight:bold;font-style:italic">var</span> login Login
+
+		<span style="font-weight:bold">if</span> err := c.<span style="color:#666;font-weight:bold;font-style:italic">ShouldBind</span>(&amp;login); err == <span style="font-weight:bold">nil</span> {
+			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;login info:%#v\n&#34;</span>, login)
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+				<span style="color:#666;font-style:italic">&#34;user&#34;</span>:     login.User,
+				<span style="color:#666;font-style:italic">&#34;password&#34;</span>: login.Password,
+			})
+		} <span style="font-weight:bold">else</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusBadRequest, gin.H{<span style="color:#666;font-style:italic">&#34;error&#34;</span>: err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>()})
+		}
+	})
+
+	<span style="color:#888;font-style:italic">// 绑定form表单示例 (user=q1mi&amp;password=123456)
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/loginForm&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="font-weight:bold;font-style:italic">var</span> login Login
+		<span style="color:#888;font-style:italic">// ShouldBind()会根据请求的Content-Type自行选择绑定器
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err := c.<span style="color:#666;font-weight:bold;font-style:italic">ShouldBind</span>(&amp;login); err == <span style="font-weight:bold">nil</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+				<span style="color:#666;font-style:italic">&#34;user&#34;</span>:     login.User,
+				<span style="color:#666;font-style:italic">&#34;password&#34;</span>: login.Password,
+			})
+		} <span style="font-weight:bold">else</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusBadRequest, gin.H{<span style="color:#666;font-style:italic">&#34;error&#34;</span>: err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>()})
+		}
+	})
+
+	<span style="color:#888;font-style:italic">// 绑定QueryString示例 (/loginQuery?user=q1mi&amp;password=123456)
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/loginForm&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="font-weight:bold;font-style:italic">var</span> login Login
+		<span style="color:#888;font-style:italic">// ShouldBind()会根据请求的Content-Type自行选择绑定器
+</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> err := c.<span style="color:#666;font-weight:bold;font-style:italic">ShouldBind</span>(&amp;login); err == <span style="font-weight:bold">nil</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+				<span style="color:#666;font-style:italic">&#34;user&#34;</span>:     login.User,
+				<span style="color:#666;font-style:italic">&#34;password&#34;</span>: login.Password,
+			})
+		} <span style="font-weight:bold">else</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusBadRequest, gin.H{<span style="color:#666;font-style:italic">&#34;error&#34;</span>: err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>()})
+		}
+	})
+
+	<span style="color:#888;font-style:italic">// Listen and serve on 0.0.0.0:8080
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
+}
+</code></pre></td></tr></table>
+</div>
+</div><p><code>ShouldBind</code>会按照下面的顺序解析请求中的数据完成绑定：</p>
+<ol>
+<li>如果是 <code>GET</code> 请求，只使用 <code>Form</code> 绑定引擎（<code>query</code>）。</li>
+<li>如果是 <code>POST</code> 请求，首先检查 <code>content-type</code> 是否为 <code>JSON</code> 或 <code>XML</code>，然后再使用 <code>Form</code>（<code>form-data</code>）。</li>
+</ol>
+<h2 id="文件上传">文件上传</h2>
+<h3 id="单个文件上传">单个文件上传</h3>
+<p>文件上传前端页面代码：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
+&lt;html lang=<span style="color:#666;font-style:italic">&#34;zh-CN&#34;</span>&gt;
+&lt;head&gt;
+    &lt;title&gt;上传文件示例&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action=<span style="color:#666;font-style:italic">&#34;/upload&#34;</span> method=<span style="color:#666;font-style:italic">&#34;post&#34;</span> enctype=<span style="color:#666;font-style:italic">&#34;multipart/form-data&#34;</span>&gt;
+    &lt;input type=<span style="color:#666;font-style:italic">&#34;file&#34;</span> name=<span style="color:#666;font-style:italic">&#34;f1&#34;</span>&gt;
+    &lt;input type=<span style="color:#666;font-style:italic">&#34;submit&#34;</span> value=<span style="color:#666;font-style:italic">&#34;上传&#34;</span>&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre></td></tr></table>
+</div>
+</div><p>后端gin框架部分代码：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	<span style="color:#888;font-style:italic">// 处理multipart forms提交文件时默认的内存限制是32 MiB
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 可以通过下面的方式修改
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// router.MaxMultipartMemory = 8 &lt;&lt; 20  // 8 MiB
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/upload&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// 单个文件
+</span><span style="color:#888;font-style:italic"></span>		file, err := c.<span style="color:#666;font-weight:bold;font-style:italic">FormFile</span>(<span style="color:#666;font-style:italic">&#34;f1&#34;</span>)
+		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+			c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusInternalServerError, gin.H{
+				<span style="color:#666;font-style:italic">&#34;message&#34;</span>: err.<span style="color:#666;font-weight:bold;font-style:italic">Error</span>(),
+			})
+			<span style="font-weight:bold">return</span>
+		}
+
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(file.Filename)
+		dst := fmt.<span style="color:#666;font-weight:bold;font-style:italic">Sprintf</span>(<span style="color:#666;font-style:italic">&#34;C:/tmp/%s&#34;</span>, file.Filename)
+		<span style="color:#888;font-style:italic">// 上传文件到指定的目录
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">SaveUploadedFile</span>(file, dst)
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: fmt.<span style="color:#666;font-weight:bold;font-style:italic">Sprintf</span>(<span style="color:#666;font-style:italic">&#34;&#39;%s&#39; uploaded!&#34;</span>, file.Filename),
+		})
+	})
+	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="多个文件上传">多个文件上传</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	<span style="color:#888;font-style:italic">// 处理multipart forms提交文件时默认的内存限制是32 MiB
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 可以通过下面的方式修改
+</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// router.MaxMultipartMemory = 8 &lt;&lt; 20  // 8 MiB
+</span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/upload&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		<span style="color:#888;font-style:italic">// Multipart form
+</span><span style="color:#888;font-style:italic"></span>		form, _ := c.<span style="color:#666;font-weight:bold;font-style:italic">MultipartForm</span>()
+		files := form.File[<span style="color:#666;font-style:italic">&#34;file&#34;</span>]
+
+		<span style="font-weight:bold">for</span> index, file := <span style="font-weight:bold">range</span> files {
+			log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(file.Filename)
+			dst := fmt.<span style="color:#666;font-weight:bold;font-style:italic">Sprintf</span>(<span style="color:#666;font-style:italic">&#34;C:/tmp/%s_%d&#34;</span>, file.Filename, index)
+			<span style="color:#888;font-style:italic">// 上传文件到指定的目录
+</span><span style="color:#888;font-style:italic"></span>			c.<span style="color:#666;font-weight:bold;font-style:italic">SaveUploadedFile</span>(file, dst)
+		}
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: fmt.<span style="color:#666;font-weight:bold;font-style:italic">Sprintf</span>(<span style="color:#666;font-style:italic">&#34;%d files uploaded!&#34;</span>, <span style="font-weight:bold;font-style:italic">len</span>(files)),
+		})
+	})
+	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="重定向">重定向</h2>
+<h3 id="http重定向">HTTP重定向</h3>
+<p>HTTP 重定向很容易。 内部、外部重定向均支持。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+	c.<span style="color:#666;font-weight:bold;font-style:italic">Redirect</span>(http.StatusMovedPermanently, <span style="color:#666;font-style:italic">&#34;http://www.baidu.com/&#34;</span>)
+})
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="路由重定向">路由重定向</h3>
+<p>路由重定向，使用<code>HandleContext</code>：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+    <span style="color:#888;font-style:italic">// 指定重定向的URL
+</span><span style="color:#888;font-style:italic"></span>    c.Request.URL.Path = <span style="color:#666;font-style:italic">&#34;/test2&#34;</span>
+    r.<span style="color:#666;font-weight:bold;font-style:italic">HandleContext</span>(c)
+})
+r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test2&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+    c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{<span style="color:#666;font-style:italic">&#34;hello&#34;</span>: <span style="color:#666;font-style:italic">&#34;world&#34;</span>})
+})
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="gin路由">Gin路由</h2>
+<h3 id="普通路由">普通路由</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+r.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+</code></pre></td></tr></table>
+</div>
+</div><p>此外，还有一个可以匹配所有请求方法的<code>Any</code>方法如下：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">Any</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+</code></pre></td></tr></table>
+</div>
+</div><p>为没有配置处理函数的路由添加处理程序，默认情况下它返回404代码，下面的代码为没有匹配到路由的请求都返回<code>views/404.html</code>页面。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">r.<span style="color:#666;font-weight:bold;font-style:italic">NoRoute</span>(<span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusNotFound, <span style="color:#666;font-style:italic">&#34;views/404.html&#34;</span>, <span style="font-weight:bold">nil</span>)
+	})
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="路由组">路由组</h3>
+<p>我们可以将拥有共同URL前缀的路由划分为一个路由组。习惯性一对<code>{}</code>包裹同组的路由，这只是为了看着清晰，你用不用<code>{}</code>包裹功能上没什么区别。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
+	userGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/user&#34;</span>)
+	{
+		userGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		userGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		userGroup.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+
+	}
+	shopGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/shop&#34;</span>)
+	{
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/cart&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/checkout&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+	}
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>路由组也是支持嵌套的，例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">shopGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/shop&#34;</span>)
+	{
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/cart&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/checkout&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+		<span style="color:#888;font-style:italic">// 嵌套路由组
+</span><span style="color:#888;font-style:italic"></span>		xx := shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;xx&#34;</span>)
+		xx.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/oo&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+	}
+</code></pre></td></tr></table>
+</div>
+</div><p>通常我们将路由分组用在划分业务逻辑或划分API版本时。</p>
+<h3 id="路由原理">路由原理</h3>
+<p>Gin框架中的路由使用的是<a href="https://github.com/julienschmidt/httprouter">httprouter</a>这个库。</p>
+<p>其基本原理就是构造一个路由地址的前缀树。</p>
+<h2 id="gin中间件">Gin中间件</h2>
+<p>Gin框架允许开发者在处理请求的过程中，加入用户自己的钩子（Hook）函数。这个钩子函数就叫中间件，中间件适合处理一些公共的业务逻辑，比如登录认证、权限校验、数据分页、记录日志、耗时统计等。</p>
+<h3 id="定义中间件">定义中间件</h3>
+<p>Gin中的中间件必须是一个<code>gin.HandlerFunc</code>类型。例如我们像下面的代码一样定义一个统计请求耗时的中间件。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// StatCost 是一个统计耗时请求耗时的中间件
+</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>() gin.HandlerFunc {
+	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		start := time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>()
+		c.<span style="color:#666;font-weight:bold;font-style:italic">Set</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;小明&#34;</span>) <span style="color:#888;font-style:italic">// 可以通过c.Set在请求上下文中设置值，后续的处理函数能够取到该值
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#888;font-style:italic">// 调用该请求的剩余处理程序
+</span><span style="color:#888;font-style:italic"></span>		c.<span style="color:#666;font-weight:bold;font-style:italic">Next</span>()
+		<span style="color:#888;font-style:italic">// 不调用该请求的剩余处理程序
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#888;font-style:italic">// c.Abort()
+</span><span style="color:#888;font-style:italic"></span>		<span style="color:#888;font-style:italic">// 计算耗时
+</span><span style="color:#888;font-style:italic"></span>		cost := time.<span style="color:#666;font-weight:bold;font-style:italic">Since</span>(start)
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(cost)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="注册中间件">注册中间件</h3>
+<p>在gin框架中，我们可以为每个路由添加任意数量的中间件。</p>
+<h4 id="为全局路由注册">为全局路由注册</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	<span style="color:#888;font-style:italic">// 新建一个没有任何默认中间件的路由
+</span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">New</span>()
+	<span style="color:#888;font-style:italic">// 注册一个全局中间件
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Use</span>(<span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>())
+	
+	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		name := c.<span style="color:#666;font-weight:bold;font-style:italic">MustGet</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>).(<span style="font-weight:bold">string</span>) <span style="color:#888;font-style:italic">// 从上下文取值
+</span><span style="color:#888;font-style:italic"></span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(name)
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>,
+		})
+	})
+	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
+}
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="为某个路由单独注册">为某个路由单独注册</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// 给/test2路由单独注册中间件（可注册多个）
+</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test2&#34;</span>, <span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>(), <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		name := c.<span style="color:#666;font-weight:bold;font-style:italic">MustGet</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>).(<span style="font-weight:bold">string</span>) <span style="color:#888;font-style:italic">// 从上下文取值
+</span><span style="color:#888;font-style:italic"></span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(name)
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(http.StatusOK, gin.H{
+			<span style="color:#666;font-style:italic">&#34;message&#34;</span>: <span style="color:#666;font-style:italic">&#34;Hello world!&#34;</span>,
+		})
+	})
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="为路由组注册中间件">为路由组注册中间件</h4>
+<p>为路由组注册中间件有以下两种写法。</p>
+<p>写法1：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">shopGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/shop&#34;</span>, <span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>())
+{
+    shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+    ...
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>写法2：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">shopGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/shop&#34;</span>)
+shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">Use</span>(<span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>())
+{
+    shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
+    ...
+}
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="中间件注意事项">中间件注意事项</h3>
+<h4 id="gin默认中间件">gin默认中间件</h4>
+<p><code>gin.Default()</code>默认使用了<code>Logger</code>和<code>Recovery</code>中间件，其中：</p>
+<ul>
+<li><code>Logger</code>中间件将日志写入<code>gin.DefaultWriter</code>，即使配置了<code>GIN_MODE=release</code>。</li>
+<li><code>Recovery</code>中间件会recover任何<code>panic</code>。如果有panic的话，会写入500响应码。</li>
+</ul>
+<p>如果不想使用上面两个默认的中间件，可以使用<code>gin.New()</code>新建一个没有任何默认中间件的路由。</p>
+<h4 id="gin中间件中使用goroutine">gin中间件中使用goroutine</h4>
+<p>当在中间件或<code>handler</code>中启动新的<code>goroutine</code>时，<strong>不能使用</strong>原始的上下文（c *gin.Context），必须使用其只读副本（<code>c.Copy()</code>）。</p>
+<h2 id="运行多个服务">运行多个服务</h2>
+<p>我们可以在多个端口启动服务，例如：</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
+
+<span style="font-weight:bold">import</span> (
+	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+
+	<span style="color:#666;font-style:italic">&#34;github.com/gin-gonic/gin&#34;</span>
+	<span style="color:#666;font-style:italic">&#34;golang.org/x/sync/errgroup&#34;</span>
+)
+
+<span style="font-weight:bold;font-style:italic">var</span> (
+	g errgroup.Group
+)
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">router01</span>() http.Handler {
+	e := gin.<span style="color:#666;font-weight:bold;font-style:italic">New</span>()
+	e.<span style="color:#666;font-weight:bold;font-style:italic">Use</span>(gin.<span style="color:#666;font-weight:bold;font-style:italic">Recovery</span>())
+	e.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(
+			http.StatusOK,
+			gin.H{
+				<span style="color:#666;font-style:italic">&#34;code&#34;</span>:  http.StatusOK,
+				<span style="color:#666;font-style:italic">&#34;error&#34;</span>: <span style="color:#666;font-style:italic">&#34;Welcome server 01&#34;</span>,
+			},
+		)
+	})
+
+	<span style="font-weight:bold">return</span> e
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">router02</span>() http.Handler {
+	e := gin.<span style="color:#666;font-weight:bold;font-style:italic">New</span>()
+	e.<span style="color:#666;font-weight:bold;font-style:italic">Use</span>(gin.<span style="color:#666;font-weight:bold;font-style:italic">Recovery</span>())
+	e.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
+		c.<span style="color:#666;font-weight:bold;font-style:italic">JSON</span>(
+			http.StatusOK,
+			gin.H{
+				<span style="color:#666;font-style:italic">&#34;code&#34;</span>:  http.StatusOK,
+				<span style="color:#666;font-style:italic">&#34;error&#34;</span>: <span style="color:#666;font-style:italic">&#34;Welcome server 02&#34;</span>,
+			},
+		)
+	})
+
+	<span style="font-weight:bold">return</span> e
+}
+
+<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+	server01 := &amp;http.Server{
+		Addr:         <span style="color:#666;font-style:italic">&#34;:8080&#34;</span>,
+		Handler:      <span style="color:#666;font-weight:bold;font-style:italic">router01</span>(),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+
+	server02 := &amp;http.Server{
+		Addr:         <span style="color:#666;font-style:italic">&#34;:8081&#34;</span>,
+		Handler:      <span style="color:#666;font-weight:bold;font-style:italic">router02</span>(),
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+	}
+   <span style="color:#888;font-style:italic">// 借助errgroup.Group或者自行开启两个goroutine分别启动两个服务
+</span><span style="color:#888;font-style:italic"></span>	g.<span style="color:#666;font-weight:bold;font-style:italic">Go</span>(<span style="font-weight:bold;font-style:italic">func</span>() <span style="font-weight:bold">error</span> {
+		<span style="font-weight:bold">return</span> server01.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>()
+	})
+
+	g.<span style="color:#666;font-weight:bold;font-style:italic">Go</span>(<span style="font-weight:bold;font-style:italic">func</span>() <span style="font-weight:bold">error</span> {
+		<span style="font-weight:bold">return</span> server02.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>()
+	})
+
+	<span style="font-weight:bold">if</span> err := g.<span style="color:#666;font-weight:bold;font-style:italic">Wait</span>(); err != <span style="font-weight:bold">nil</span> {
+		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+	}
+}
+</code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>请参阅</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/Go/go_etcd/">Go操作etcd</a></li>
+        
+        <li><a href="/post/Go/go_kafka/">Go操作Kafka</a></li>
+        
+        <li><a href="/post/Go/log_agent/">日志收集项目</a></li>
+        
+        <li><a href="/post/Go/go_nsq/">Go操作NSQ</a></li>
+        
+        <li><a href="/post/Go/preformance_optimisation/">Go性能调优</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/gin'>gin</a></li>
+                
+                <li><a href='/tags/Web%E5%BC%80%E5%8F%91'>Web开发</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上重置MySQL8.0密码">在CentOS7.x上重置MySQL8.0密码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/http/" title="HTTP协议">HTTP协议</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/project_struct/" title="一般项目的结构">一般项目的结构</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/grpc/" title="gRPC">gRPC</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/ubuntu_firefox_blibili/" title="Ubuntu下Firefox使用HTML5播放器看B站">Ubuntu下Firefox使用HTML5播放器看B站</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (52)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
