@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>常用框架和组件 on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/</link>
+    <link>https://www.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/</link>
     <description>Recent content in 常用框架和组件 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Mon, 16 Mar 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>在gin框架中使用JWT</title>
-      <link>https://blog.imw7.com/post/Go/jwt_in_gin/</link>
+      <link>https://www.imw7.com/post/Go/jwt_in_gin/</link>
       <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/jwt_in_gin/</guid>
+      <guid>https://www.imw7.com/post/Go/jwt_in_gin/</guid>
       <description>&lt;p&gt;JWT全称JSON Web Token是一种跨域认证解决方案，属于一个开放的标准，它规定了一种Token实现方式，目前多用于前后端分离项目和OAuth2.0业务场景下。&lt;/p&gt;</description>
     </item>
     

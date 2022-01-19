@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>logrus on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/logrus/</link>
+    <link>https://www.imw7.com/tags/logrus/</link>
     <description>Recent content in logrus on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 29 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/logrus/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/logrus/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>第三方日志库logrus使用</title>
-      <link>https://blog.imw7.com/post/Go/go_logrus/</link>
+      <link>https://www.imw7.com/post/Go/go_logrus/</link>
       <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_logrus/</guid>
+      <guid>https://www.imw7.com/post/Go/go_logrus/</guid>
       <description>&lt;p&gt;日志是程序中必不可少的一个环节，由于Go语言内置的日志库功能比较简洁，我们在实际开发中通常会选择使用第三方的日志库进行开发。文本介绍了&lt;code&gt;logrus&lt;/code&gt;这个日志库的基本使用。&lt;/p&gt;</description>
     </item>
     

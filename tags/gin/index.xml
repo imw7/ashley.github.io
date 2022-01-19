@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>gin on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/gin/</link>
+    <link>https://www.imw7.com/tags/gin/</link>
     <description>Recent content in gin on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/gin/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/gin/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>gin框架路由拆分与注册</title>
-      <link>https://blog.imw7.com/post/Go/gin_routes_registry/</link>
+      <link>https://www.imw7.com/post/Go/gin_routes_registry/</link>
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/gin_routes_registry/</guid>
+      <guid>https://www.imw7.com/post/Go/gin_routes_registry/</guid>
       <description>&lt;p&gt;本文总结了我平时在项目中积累的关于gin框架路由拆分与注册的若干方法。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>在gin框架中使用JWT</title>
-      <link>https://blog.imw7.com/post/Go/jwt_in_gin/</link>
+      <link>https://www.imw7.com/post/Go/jwt_in_gin/</link>
       <pubDate>Mon, 16 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/jwt_in_gin/</guid>
+      <guid>https://www.imw7.com/post/Go/jwt_in_gin/</guid>
       <description>&lt;p&gt;JWT全称JSON Web Token是一种跨域认证解决方案，属于一个开放的标准，它规定了一种Token实现方式，目前多用于前后端分离项目和OAuth2.0业务场景下。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>gin框架介绍及使用</title>
-      <link>https://blog.imw7.com/post/Go/gin_quickstart/</link>
+      <link>https://www.imw7.com/post/Go/gin_quickstart/</link>
       <pubDate>Sat, 24 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/gin_quickstart/</guid>
+      <guid>https://www.imw7.com/post/Go/gin_quickstart/</guid>
       <description>&lt;p&gt;&lt;code&gt;Gin&lt;/code&gt;是一个用Go语言编写的web框架。它是一个类似于&lt;code&gt;martini&lt;/code&gt;但拥有更好性能的API框架, 由于使用了&lt;code&gt;httprouter&lt;/code&gt;，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上&lt;code&gt;Gin&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     

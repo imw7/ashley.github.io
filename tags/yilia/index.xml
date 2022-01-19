@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>yilia on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/yilia/</link>
+    <link>https://www.imw7.com/tags/yilia/</link>
     <description>Recent content in yilia on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 16 May 2017 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/yilia/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/yilia/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Hexo博客搭建以及yilia主题设置</title>
-      <link>https://blog.imw7.com/post/hexo_with_yilia/</link>
+      <link>https://www.imw7.com/post/hexo_with_yilia/</link>
       <pubDate>Tue, 16 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/hexo_with_yilia/</guid>
+      <guid>https://www.imw7.com/post/hexo_with_yilia/</guid>
       <description>&lt;p&gt;作为一个技术宅，拥有自己的博客是很酷炫的事情。本文介绍如何从零开始搭建Hexo博客以及Hexo主题yilia的相关设置。&lt;/p&gt;</description>
     </item>
     

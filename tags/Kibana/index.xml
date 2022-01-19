@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Kibana on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/Kibana/</link>
+    <link>https://www.imw7.com/tags/Kibana/</link>
     <description>Recent content in Kibana on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Wed, 28 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/Kibana/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/Kibana/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Elasticsearch</title>
-      <link>https://blog.imw7.com/post/Go/go_elasticsearch/</link>
+      <link>https://www.imw7.com/post/Go/go_elasticsearch/</link>
       <pubDate>Wed, 28 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_elasticsearch/</guid>
+      <guid>https://www.imw7.com/post/Go/go_elasticsearch/</guid>
       <description>&lt;p&gt;本文简单介绍了ES、Kibana和Go语言操作ES。&lt;/p&gt;</description>
     </item>
     

@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>函数 on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/</link>
+    <link>https://www.imw7.com/tags/%E5%87%BD%E6%95%B0/</link>
     <description>Recent content in 函数 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 23 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/%E5%87%BD%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言基础之函数</title>
-      <link>https://blog.imw7.com/post/Go/09_function/</link>
+      <link>https://www.imw7.com/post/Go/09_function/</link>
       <pubDate>Sat, 23 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/09_function/</guid>
+      <guid>https://www.imw7.com/post/Go/09_function/</guid>
       <description>&lt;p&gt;函数是组织好的、可重复使用的、用于执行指定任务的代码块。本文介绍了Go语言中函数的相关内容。&lt;/p&gt;</description>
     </item>
     

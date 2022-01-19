@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>NSQ on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/NSQ/</link>
+    <link>https://www.imw7.com/tags/NSQ/</link>
     <description>Recent content in NSQ on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 17 Aug 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/NSQ/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/NSQ/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go操作NSQ</title>
-      <link>https://blog.imw7.com/post/Go/go_nsq/</link>
+      <link>https://www.imw7.com/post/Go/go_nsq/</link>
       <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_nsq/</guid>
+      <guid>https://www.imw7.com/post/Go/go_nsq/</guid>
       <description>&lt;p&gt;NSQ是目前比较流行的一个分布式的消息队列，本文主要介绍了NSQ及Go语言如何操作NSQ。&lt;/p&gt;</description>
     </item>
     

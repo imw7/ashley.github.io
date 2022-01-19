@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>go module on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/go-module/</link>
+    <link>https://www.imw7.com/tags/go-module/</link>
     <description>Recent content in go module on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 27 Feb 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/go-module/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/go-module/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>如何使用go module导入本地包</title>
-      <link>https://blog.imw7.com/post/Go/go_import_local/</link>
+      <link>https://www.imw7.com/post/Go/go_import_local/</link>
       <pubDate>Thu, 27 Feb 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_import_local/</guid>
+      <guid>https://www.imw7.com/post/Go/go_import_local/</guid>
       <description>&lt;p&gt;&lt;code&gt;go module&lt;/code&gt;是&lt;code&gt;Go1.11&lt;/code&gt;版本之后官方推出的版本管理工具，并且从&lt;code&gt;Go1.13&lt;/code&gt;版本开始，&lt;code&gt;go module&lt;/code&gt;将是&lt;code&gt;Go&lt;/code&gt;语言默认的依赖管理工具。到&lt;code&gt;Go1.14&lt;/code&gt;版本推出之后&lt;code&gt;Go modules&lt;/code&gt; 功能已经被正式推荐在生产环境下使用了。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go语言之依赖管理</title>
-      <link>https://blog.imw7.com/post/Go/go_dependency/</link>
+      <link>https://www.imw7.com/post/Go/go_dependency/</link>
       <pubDate>Thu, 28 Feb 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_dependency/</guid>
+      <guid>https://www.imw7.com/post/Go/go_dependency/</guid>
       <description>&lt;p&gt;&lt;code&gt;Go&lt;/code&gt;语言的依赖管理随着版本的更迭正逐渐完善起来。&lt;/p&gt;</description>
     </item>
     

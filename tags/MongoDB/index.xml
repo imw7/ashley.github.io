@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>MongoDB on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/MongoDB/</link>
+    <link>https://www.imw7.com/tags/MongoDB/</link>
     <description>Recent content in MongoDB on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/MongoDB/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/MongoDB/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言操作MongoDB</title>
-      <link>https://blog.imw7.com/post/Go/go_mongodb/</link>
+      <link>https://www.imw7.com/post/Go/go_mongodb/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_mongodb/</guid>
+      <guid>https://www.imw7.com/post/Go/go_mongodb/</guid>
       <description>&lt;p&gt;mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。&lt;/p&gt;</description>
     </item>
     

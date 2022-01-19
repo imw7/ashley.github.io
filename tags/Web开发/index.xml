@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web开发 on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/</link>
+    <link>https://www.imw7.com/tags/Web%E5%BC%80%E5%8F%91/</link>
     <description>Recent content in Web开发 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/Web%E5%BC%80%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>gin框架路由拆分与注册</title>
-      <link>https://blog.imw7.com/post/Go/gin_routes_registry/</link>
+      <link>https://www.imw7.com/post/Go/gin_routes_registry/</link>
       <pubDate>Thu, 16 Apr 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/gin_routes_registry/</guid>
+      <guid>https://www.imw7.com/post/Go/gin_routes_registry/</guid>
       <description>&lt;p&gt;本文总结了我平时在项目中积累的关于gin框架路由拆分与注册的若干方法。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Cookie和Session</title>
-      <link>https://blog.imw7.com/post/Go/go_cookie_session/</link>
+      <link>https://www.imw7.com/post/Go/go_cookie_session/</link>
       <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_cookie_session/</guid>
+      <guid>https://www.imw7.com/post/Go/go_cookie_session/</guid>
       <description>&lt;p&gt;Cookie和Session是Web开发绕不开的一个环节，本文介绍了Cookie和Session的原理及在Go语言中如何操作Cookie。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go语言标准库之html/template</title>
-      <link>https://blog.imw7.com/post/Go/go_template/</link>
+      <link>https://www.imw7.com/post/Go/go_template/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/go_template/</guid>
+      <guid>https://www.imw7.com/post/Go/go_template/</guid>
       <description>&lt;p&gt;&lt;code&gt;html/template&lt;/code&gt;包实现了数据驱动的模板，用于生成可防止代码注入的安全的&lt;code&gt;HTML&lt;/code&gt;内容。它提供了和&lt;code&gt;text/template&lt;/code&gt;包相同的接口，&lt;code&gt;Go&lt;/code&gt;语言中输出&lt;code&gt;HTML&lt;/code&gt;的场景都应使用&lt;code&gt;html/template&lt;/code&gt;这个包。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>gin框架介绍及使用</title>
-      <link>https://blog.imw7.com/post/Go/gin_quickstart/</link>
+      <link>https://www.imw7.com/post/Go/gin_quickstart/</link>
       <pubDate>Sat, 24 Aug 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/gin_quickstart/</guid>
+      <guid>https://www.imw7.com/post/Go/gin_quickstart/</guid>
       <description>&lt;p&gt;&lt;code&gt;Gin&lt;/code&gt;是一个用Go语言编写的web框架。它是一个类似于&lt;code&gt;martini&lt;/code&gt;但拥有更好性能的API框架, 由于使用了&lt;code&gt;httprouter&lt;/code&gt;，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上&lt;code&gt;Gin&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     

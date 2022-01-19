@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>基本数据类型 on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
+    <link>https://www.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/</link>
     <description>Recent content in 基本数据类型 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 03 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言基础之基本数据类型</title>
-      <link>https://blog.imw7.com/post/Go/02_datatype/</link>
+      <link>https://www.imw7.com/post/Go/02_datatype/</link>
       <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/02_datatype/</guid>
+      <guid>https://www.imw7.com/post/Go/02_datatype/</guid>
       <description>&lt;p&gt;&lt;code&gt;Go&lt;/code&gt;语言中有丰富的数据类型，除了基本的&lt;code&gt;整型&lt;/code&gt;、&lt;code&gt;浮点型&lt;/code&gt;、&lt;code&gt;布尔型&lt;/code&gt;、&lt;code&gt;字符串&lt;/code&gt;外，还有&lt;code&gt;数组&lt;/code&gt;、&lt;code&gt;切片&lt;/code&gt;、&lt;code&gt;结构体&lt;/code&gt;、&lt;code&gt;函数&lt;/code&gt;、&lt;code&gt;map&lt;/code&gt;和&lt;code&gt;通道(channel)&lt;/code&gt;等。&lt;code&gt;Go&lt;/code&gt; 语言的基本类型和其他语言大同小异。&lt;/p&gt;</description>
     </item>
     

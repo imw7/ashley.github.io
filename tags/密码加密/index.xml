@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>密码加密 on 魏奇的博客</title>
-    <link>https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/</link>
+    <link>https://www.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/</link>
     <description>Recent content in 密码加密 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 23 Dec 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>密码加密</title>
-      <link>https://blog.imw7.com/post/Go/bcrypt/</link>
+      <link>https://www.imw7.com/post/Go/bcrypt/</link>
       <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.imw7.com/post/Go/bcrypt/</guid>
+      <guid>https://www.imw7.com/post/Go/bcrypt/</guid>
       <description>&lt;p&gt;本文介绍的密码加密方式是&lt;code&gt;bcrypt&lt;/code&gt;。&lt;code&gt;bcrypt&lt;/code&gt;是单向&lt;code&gt;Hash&lt;/code&gt;加密算法，类似&lt;code&gt;Pbkdf2&lt;/code&gt;算法，不可反向破解生成明文。&lt;/p&gt;</description>
     </item>
     
