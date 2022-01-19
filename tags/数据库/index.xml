@@ -2,48 +2,48 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>数据库 on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
+    <link>https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/</link>
     <description>Recent content in 数据库 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言操作MongoDB</title>
-      <link>https://www.imw7.com/post/Go/go_mongodb/</link>
+      <link>https://blog.imw7.com/post/Go/go_mongodb/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/go_mongodb/</guid>
+      <guid>https://blog.imw7.com/post/Go/go_mongodb/</guid>
       <description>&lt;p&gt;mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go语言操作Redis</title>
-      <link>https://www.imw7.com/post/Go/go_redis/</link>
+      <link>https://blog.imw7.com/post/Go/go_redis/</link>
       <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/go_redis/</guid>
+      <guid>https://blog.imw7.com/post/Go/go_redis/</guid>
       <description>&lt;p&gt;在项目开发中redis的使用也比较频繁，本文介绍了Go语言中&lt;code&gt;go-redis&lt;/code&gt;库的基本使用。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>sqlx库使用指南</title>
-      <link>https://www.imw7.com/post/Go/sqlx/</link>
+      <link>https://blog.imw7.com/post/Go/sqlx/</link>
       <pubDate>Sat, 20 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/sqlx/</guid>
+      <guid>https://blog.imw7.com/post/Go/sqlx/</guid>
       <description>&lt;p&gt;在项目中我们通常可能会使用&lt;code&gt;database/sql&lt;/code&gt;连接MySQL数据库。本文借助使用&lt;code&gt;sqlx&lt;/code&gt;实现批量插入数据的例子，介绍了&lt;code&gt;sqlx&lt;/code&gt;中可能被你忽视了的&lt;code&gt;sqlx.In&lt;/code&gt;和&lt;code&gt;DB.NamedExec&lt;/code&gt;方法。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go语言操作MySQL</title>
-      <link>https://www.imw7.com/post/Go/go_mysql/</link>
+      <link>https://blog.imw7.com/post/Go/go_mysql/</link>
       <pubDate>Sat, 13 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/go_mysql/</guid>
+      <guid>https://blog.imw7.com/post/Go/go_mysql/</guid>
       <description>&lt;p&gt;MySQL是业界常用的关系型数据库，本文介绍了Go语言如何操作MySQL数据库。&lt;/p&gt;</description>
     </item>
     

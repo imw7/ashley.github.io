@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>fmt on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/fmt/</link>
+    <link>https://blog.imw7.com/tags/fmt/</link>
     <description>Recent content in fmt on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 03 Mar 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/fmt/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/fmt/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言fmt包使用指南</title>
-      <link>https://www.imw7.com/post/Go/go_fmt/</link>
+      <link>https://blog.imw7.com/post/Go/go_fmt/</link>
       <pubDate>Sun, 03 Mar 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/go_fmt/</guid>
+      <guid>https://blog.imw7.com/post/Go/go_fmt/</guid>
       <description>&lt;p&gt;fmt标准库是在学习Go语言过程中接触最早最频繁的一个了，本文介绍了fmt包的一些常用函数。&lt;/p&gt;</description>
     </item>
     

@@ -2,84 +2,84 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on 魏奇的博客</title>
-    <link>https://www.imw7.com/categories/</link>
+    <link>https://blog.imw7.com/categories/</link>
     <description>Recent content in Categories on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 13 Jan 2022 15:31:46 +0800</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>服务器</title>
-      <link>https://www.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
+      <link>https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</link>
       <pubDate>Thu, 13 Jan 2022 15:31:46 +0800</pubDate>
       
-      <guid>https://www.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
+      <guid>https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/</guid>
       <description></description>
     </item>
     
     <item>
       <title>计算机网络</title>
-      <link>https://www.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
+      <link>https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</link>
       <pubDate>Tue, 28 Dec 2021 22:56:50 +0800</pubDate>
       
-      <guid>https://www.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</guid>
+      <guid>https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Go</title>
-      <link>https://www.imw7.com/categories/Go/</link>
+      <link>https://blog.imw7.com/categories/Go/</link>
       <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/categories/Go/</guid>
+      <guid>https://blog.imw7.com/categories/Go/</guid>
       <description></description>
     </item>
     
     <item>
       <title>其他</title>
-      <link>https://www.imw7.com/categories/%E5%85%B6%E4%BB%96/</link>
+      <link>https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/</link>
       <pubDate>Thu, 29 Apr 2021 21:55:28 +0800</pubDate>
       
-      <guid>https://www.imw7.com/categories/%E5%85%B6%E4%BB%96/</guid>
+      <guid>https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/</guid>
       <description></description>
     </item>
     
     <item>
       <title>算法</title>
-      <link>https://www.imw7.com/categories/%E7%AE%97%E6%B3%95/</link>
+      <link>https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/</link>
       <pubDate>Sun, 10 May 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/categories/%E7%AE%97%E6%B3%95/</guid>
+      <guid>https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Docker</title>
-      <link>https://www.imw7.com/categories/Docker/</link>
+      <link>https://blog.imw7.com/categories/Docker/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/categories/Docker/</guid>
+      <guid>https://blog.imw7.com/categories/Docker/</guid>
       <description></description>
     </item>
     
     <item>
       <title>git</title>
-      <link>https://www.imw7.com/categories/git/</link>
+      <link>https://blog.imw7.com/categories/git/</link>
       <pubDate>Sat, 28 Apr 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/categories/git/</guid>
+      <guid>https://blog.imw7.com/categories/git/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Hexo</title>
-      <link>https://www.imw7.com/categories/Hexo/</link>
+      <link>https://blog.imw7.com/categories/Hexo/</link>
       <pubDate>Tue, 16 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/categories/Hexo/</guid>
+      <guid>https://blog.imw7.com/categories/Hexo/</guid>
       <description></description>
     </item>
     

@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Redis on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/Redis/</link>
+    <link>https://blog.imw7.com/tags/Redis/</link>
     <description>Recent content in Redis on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Wed, 12 Jan 2022 12:05:23 +0800</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/Redis/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/Redis/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>CentOS与Redis</title>
-      <link>https://www.imw7.com/post/redis_on_centos/</link>
+      <link>https://blog.imw7.com/post/redis_on_centos/</link>
       <pubDate>Wed, 12 Jan 2022 12:05:23 +0800</pubDate>
       
-      <guid>https://www.imw7.com/post/redis_on_centos/</guid>
+      <guid>https://blog.imw7.com/post/redis_on_centos/</guid>
       <description>&lt;p&gt;本文介绍如何在centos上安装、配置、启动、关闭和卸载redis。&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>Go语言操作Redis</title>
-      <link>https://www.imw7.com/post/Go/go_redis/</link>
+      <link>https://blog.imw7.com/post/Go/go_redis/</link>
       <pubDate>Sat, 27 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/go_redis/</guid>
+      <guid>https://blog.imw7.com/post/Go/go_redis/</guid>
       <description>&lt;p&gt;在项目开发中redis的使用也比较频繁，本文介绍了Go语言中&lt;code&gt;go-redis&lt;/code&gt;库的基本使用。&lt;/p&gt;</description>
     </item>
     

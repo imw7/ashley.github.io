@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>网络编程 on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
+    <link>https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/</link>
     <description>Recent content in 网络编程 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sun, 19 May 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Go语言基础之网络编程</title>
-      <link>https://www.imw7.com/post/Go/15_socket/</link>
+      <link>https://blog.imw7.com/post/Go/15_socket/</link>
       <pubDate>Sun, 19 May 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/15_socket/</guid>
+      <guid>https://blog.imw7.com/post/Go/15_socket/</guid>
       <description>&lt;p&gt;现在我们几乎每天都在使用互联网，我们前面已经学习了如何编写Go语言程序，但是如何才能让我们的程序通过网络互相通信呢？本章我们就一起来学习下Go语言中的网络编程。 关于网络编程其实是一个很庞大的领域，本文只是简单的演示了如何使用net包进行TCP和UDP通信。如需了解更详细的网络编程请自行检索和阅读专业资料。&lt;/p&gt;</description>
     </item>
     

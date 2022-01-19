@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>sqlx on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/sqlx/</link>
+    <link>https://blog.imw7.com/tags/sqlx/</link>
     <description>Recent content in sqlx on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Sat, 20 Jul 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/sqlx/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/sqlx/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>sqlx库使用指南</title>
-      <link>https://www.imw7.com/post/Go/sqlx/</link>
+      <link>https://blog.imw7.com/post/Go/sqlx/</link>
       <pubDate>Sat, 20 Jul 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/sqlx/</guid>
+      <guid>https://blog.imw7.com/post/Go/sqlx/</guid>
       <description>&lt;p&gt;在项目中我们通常可能会使用&lt;code&gt;database/sql&lt;/code&gt;连接MySQL数据库。本文借助使用&lt;code&gt;sqlx&lt;/code&gt;实现批量插入数据的例子，介绍了&lt;code&gt;sqlx&lt;/code&gt;中可能被你忽视了的&lt;code&gt;sqlx.In&lt;/code&gt;和&lt;code&gt;DB.NamedExec&lt;/code&gt;方法。&lt;/p&gt;</description>
     </item>
     

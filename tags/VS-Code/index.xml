@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>VS Code on 魏奇的博客</title>
-    <link>https://www.imw7.com/tags/VS-Code/</link>
+    <link>https://blog.imw7.com/tags/VS-Code/</link>
     <description>Recent content in VS Code on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Tue, 16 Mar 2021 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://www.imw7.com/tags/VS-Code/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://blog.imw7.com/tags/VS-Code/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>VS Code配置Go语言开发环境</title>
-      <link>https://www.imw7.com/post/Go/00_go_in_vscode/</link>
+      <link>https://blog.imw7.com/post/Go/00_go_in_vscode/</link>
       <pubDate>Tue, 16 Mar 2021 00:00:00 +0000</pubDate>
       
-      <guid>https://www.imw7.com/post/Go/00_go_in_vscode/</guid>
+      <guid>https://blog.imw7.com/post/Go/00_go_in_vscode/</guid>
       <description>&lt;p&gt;&lt;code&gt;VS Code&lt;/code&gt;是微软开源的一款编辑器，插件系统十分的丰富。本文就介绍了如何使用&lt;code&gt;VS Code&lt;/code&gt;搭建&lt;code&gt;Go&lt;/code&gt;语言开发环境。&lt;/p&gt;</description>
     </item>
     
