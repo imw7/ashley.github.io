@@ -155,7 +155,11 @@
     <li><a href="#文件下载流程">文件下载流程</a></li>
     <li><a href="#fastdfs安装">FastDFS安装</a>
       <ul>
-        <li><a href="#安装fastdfs依赖包">安装FastDFS依赖包</a></li>
+        <li><a href="#使用的系统软件">使用的系统软件</a></li>
+        <li><a href="#编译环境">编译环境</a></li>
+        <li><a href="#磁盘目录">磁盘目录</a></li>
+        <li><a href="#安装libfastcommon">安装libfastcommon</a></li>
+        <li><a href="#安装fastdfs">安装FastDFS</a></li>
       </ul>
     </li>
   </ul>
@@ -256,10 +260,132 @@
         </a>
     </p>
 <h2 id="fastdfs安装">FastDFS安装</h2>
-<h3 id="安装fastdfs依赖包">安装FastDFS依赖包</h3>
-<blockquote>
-<p>unknown directive “ngx_fastdfs_module” in /data/nginx/conf/nginx.conf:88</p>
-</blockquote>
+<h3 id="使用的系统软件">使用的系统软件</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>centos</td>
+<td>7.x</td>
+</tr>
+<tr>
+<td>libfastcommon</td>
+<td>FastDFS分离出的一些公用函数包</td>
+</tr>
+<tr>
+<td>FastDFS</td>
+<td>FastDFS本体</td>
+</tr>
+<tr>
+<td>fastdfs-nginx-module</td>
+<td>FastDFS和nginx的关联模块</td>
+</tr>
+<tr>
+<td>nginx</td>
+<td>nginx1.20.2</td>
+</tr>
+</tbody>
+</table>
+<h3 id="编译环境">编译环境</h3>
+<p>CentOS</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim -y
+</code></pre></td></tr></table>
+</div>
+</div><p>Debian</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ apt-get -y install git gcc g++ make automake autoconf libtool pcre2-utils libpcre2-dev zlib1g zlib1g-dev openssl libssh-dev wget vim
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="磁盘目录">磁盘目录</h3>
+<table>
+<thead>
+<tr>
+<th>说明</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>所有安装包</td>
+<td>/usr/local/src</td>
+</tr>
+<tr>
+<td>跟踪服务器数据存储位置</td>
+<td>/root/fastdfs/tracker</td>
+</tr>
+<tr>
+<td>存储服务器数据存储位置</td>
+<td>/root/fastdfs/storage</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ mkdir -p /root/fastdfs/tracker <span style="color:#888;font-style:italic">#创建跟踪数据存储目录</span>
+$ mkdir -p /root/fastdfs/storage <span style="color:#888;font-style:italic">#创建存储数据存储目录</span>
+$ <span style="font-weight:bold;font-style:italic">cd</span> /usr/local/src <span style="color:#888;font-style:italic">#切换到安装目录准备下载安装包</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="安装libfastcommon">安装libfastcommon</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ git clone https://github.com/happyfish100/libfastcommon.git --depth 1
+$ <span style="font-weight:bold;font-style:italic">cd</span> libfastcommon/
+$ sudo ./make.sh &amp;&amp; ./make.sh install <span style="color:#888;font-style:italic">#编译安装</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="安装fastdfs">安装FastDFS</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="font-weight:bold;font-style:italic">cd</span> ../ <span style="color:#888;font-style:italic">#返回上一级目录</span>
+git clone https://github.com/happyfish100/fastdfs.git --depth 1
+<span style="font-weight:bold;font-style:italic">cd</span> fastdfs/
+./make.sh &amp;&amp; ./make.sh install <span style="color:#888;font-style:italic">#编译安装</span>
+<span style="color:#888;font-style:italic">#配置文件准备</span>
+cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf
+cp /etc/fdfs/storage.conf.sample /etc/fdfs/storage.conf
+cp /etc/fdfs/client.conf.sample /etc/fdfs/client.conf <span style="color:#888;font-style:italic">#客户端文件，测试用</span>
+cp /usr/local/src/fastdfs/conf/http.conf /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
+cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>unknown directive “ngx_fastdfs_module” in /data/nginx/conf/nginx.conf:88</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
