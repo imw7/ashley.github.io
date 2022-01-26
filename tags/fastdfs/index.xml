@@ -13,10 +13,10 @@
     
     <item>
       <title>FastDFS</title>
-      <link>https://blog.imw7.com/post/fastdfs/</link>
+      <link>https://blog.imw7.com/post/Go/fastdfs/</link>
       <pubDate>Wed, 26 Jan 2022 14:01:14 +0800</pubDate>
       
-      <guid>https://blog.imw7.com/post/fastdfs/</guid>
+      <guid>https://blog.imw7.com/post/Go/fastdfs/</guid>
       <description>&lt;p&gt;本文主要介绍利用 &lt;code&gt;FastDFS&lt;/code&gt; 上传和下载文件的基本流程以及安装过程。&lt;/p&gt;</description>
     </item>
     
