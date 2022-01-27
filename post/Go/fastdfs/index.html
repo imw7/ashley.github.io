@@ -168,6 +168,7 @@
       <ul>
         <li><a href="#tracker配置">tracker配置</a></li>
         <li><a href="#storage配置">storage配置</a></li>
+        <li><a href="#启动tracker和storage">启动tracker和storage</a></li>
         <li><a href="#client测试">client测试</a></li>
         <li><a href="#配置nginx访问">配置nginx访问</a></li>
       </ul>
@@ -483,6 +484,17 @@ $ vim /etc/fdfs/tracker.conf
 http.server_port=8888 <span style="color:#888;font-style:italic">#http访问文件的端口（默认8888，看情况修改，和nginx中保持一致）</span>
 </code></pre></td></tr></table>
 </div>
+</div><h3 id="启动tracker和storage">启动tracker和storage</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo fdfs_trackerd /etc/fdfs/tracker.conf
+$ sudo fdfs_storaged /etc/fdfs/storage.conf
+</code></pre></td></tr></table>
+</div>
 </div><h3 id="client测试">client测试</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -506,7 +518,7 @@ fdfs_upload_file /etc/fdfs/client.conf /root/boy.jpg
 </div>
 </div><p>这一步可能出现的问题有：</p>
 <ol>
-<li><code>unknown directive “ngx_fastdfs_module” in /data/nginx/conf/nginx.conf:88</code></li>
+<li><code>unknown directive “ngx_fastdfs_module” in /usr/local/nginx/conf/nginx.conf:88</code></li>
 </ol>
 <p>解决办法：</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
