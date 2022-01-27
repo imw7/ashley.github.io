@@ -160,6 +160,33 @@
         <li><a href="#磁盘目录">磁盘目录</a></li>
         <li><a href="#安装libfastcommon">安装libfastcommon</a></li>
         <li><a href="#安装fastdfs">安装FastDFS</a></li>
+        <li><a href="#安装fastdfs-nginx-module">安装fastdfs-nginx-module</a></li>
+        <li><a href="#安装nginx">安装nginx</a></li>
+      </ul>
+    </li>
+    <li><a href="#单机部署">单机部署</a>
+      <ul>
+        <li><a href="#tracker配置">tracker配置</a></li>
+        <li><a href="#storage配置">storage配置</a></li>
+        <li><a href="#client测试">client测试</a></li>
+        <li><a href="#配置nginx访问">配置nginx访问</a></li>
+      </ul>
+    </li>
+    <li><a href="#分布式部署">分布式部署</a>
+      <ul>
+        <li><a href="#tracker配置-1">tracker配置</a></li>
+        <li><a href="#storage配置-1">storage配置</a></li>
+        <li><a href="#client测试-1">client测试</a></li>
+        <li><a href="#配置nginx访问-1">配置nginx访问</a></li>
+      </ul>
+    </li>
+    <li><a href="#启动">启动</a>
+      <ul>
+        <li><a href="#防火墙">防火墙</a></li>
+        <li><a href="#tracker">tracker</a></li>
+        <li><a href="#storage">storage</a></li>
+        <li><a href="#nginx">nginx</a></li>
+        <li><a href="#检测集群">检测集群</a></li>
       </ul>
     </li>
   </ul>
@@ -373,19 +400,113 @@ $ sudo ./make.sh &amp;&amp; ./make.sh install <span style="color:#888;font-style
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="font-weight:bold;font-style:italic">cd</span> ../ <span style="color:#888;font-style:italic">#返回上一级目录</span>
-git clone https://github.com/happyfish100/fastdfs.git --depth 1
-<span style="font-weight:bold;font-style:italic">cd</span> fastdfs/
-./make.sh &amp;&amp; ./make.sh install <span style="color:#888;font-style:italic">#编译安装</span>
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="font-weight:bold;font-style:italic">cd</span> ../ <span style="color:#888;font-style:italic">#返回上一级目录</span>
+$ git clone https://github.com/happyfish100/fastdfs.git --depth 1
+$ <span style="font-weight:bold;font-style:italic">cd</span> fastdfs/
+$ sudo ./make.sh &amp;&amp; ./make.sh install <span style="color:#888;font-style:italic">#编译安装</span>
 <span style="color:#888;font-style:italic">#配置文件准备</span>
-cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf
-cp /etc/fdfs/storage.conf.sample /etc/fdfs/storage.conf
-cp /etc/fdfs/client.conf.sample /etc/fdfs/client.conf <span style="color:#888;font-style:italic">#客户端文件，测试用</span>
-cp /usr/local/src/fastdfs/conf/http.conf /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
-cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
+$ sudo cp /etc/fdfs/tracker.conf.sample /etc/fdfs/tracker.conf
+$ sudo cp /etc/fdfs/storage.conf.sample /etc/fdfs/storage.conf
+$ sudo cp /etc/fdfs/client.conf.sample /etc/fdfs/client.conf <span style="color:#888;font-style:italic">#客户端文件，测试用</span>
+$ sudo cp /usr/local/src/fastdfs/conf/http.conf /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
+$ sudo cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;font-style:italic">#供nginx访问使用</span>
 </code></pre></td></tr></table>
 </div>
-</div><p>unknown directive “ngx_fastdfs_module” in /data/nginx/conf/nginx.conf:88</p>
+</div><h3 id="安装fastdfs-nginx-module">安装fastdfs-nginx-module</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="font-weight:bold;font-style:italic">cd</span> ../ <span style="color:#888;font-style:italic">#返回上一级目录</span>
+$ git clone https://github.com/happyfish100/fastdfs-nginx-module.git --depth 1
+$ sudo cp /usr/local/src/fastdfs-nginx-module/src/mod_fastdfs.conf /etc/fdfs
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="安装nginx">安装nginx</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ wget http://nginx.org/download/nginx-1.20.2.tar.gz <span style="color:#888;font-style:italic">#下载nginx压缩包</span>
+$ tar -zxvf nginx-1.20.2.tar.gz <span style="color:#888;font-style:italic">#解压</span>
+$ <span style="font-weight:bold;font-style:italic">cd</span> nginx-1.20.2/
+<span style="color:#888;font-style:italic">#添加fastdfs-nginx-module模块</span>
+$ sudo ./configure --add-module=/usr/local/src/fastdfs-nginx-module/src/
+$ sudo make &amp;&amp; make install <span style="color:#888;font-style:italic">#编译安装</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="单机部署">单机部署</h2>
+<h3 id="tracker配置">tracker配置</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#服务器ip为 120.77.71.67</span>
+$ vim /etc/fdfs/tracker.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">port</span>=22122 <span style="color:#888;font-style:italic">#tracker服务器端口（默认22122，一般不修改）</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/tracker <span style="color:#888;font-style:italic">#存储日志和数据的根目录</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="storage配置">storage配置</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/storage.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">port</span>=23000 <span style="color:#888;font-style:italic">#storage服务端口（默认23000，一般不修改）</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/storage <span style="color:#888;font-style:italic">#数据和日志文件存储根目录</span>
+<span style="color:#666;font-weight:bold;font-style:italic">store_path0</span>=/root/fastdfs/storage <span style="color:#888;font-style:italic">#第一个存储目录</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=120.77.71.67:22122 <span style="color:#888;font-style:italic">#tracker服务器IP和端口</span>
+http.server_port=8888 <span style="color:#888;font-style:italic">#http访问文件的端口（默认8888，看情况修改，和nginx中保持一致）</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="client测试">client测试</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/client.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/tracker
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=120.77.71.67:22122 <span style="color:#888;font-style:italic">#tracker服务器IP和端口</span>
+<span style="color:#888;font-style:italic">#保存后测试，返回ID表示成功 如：group1/M00/00/00/xx.jpg</span>
+fdfs_upload_file /etc/fdfs/client.conf /root/boy.jpg
+</code></pre></td></tr></table>
+</div>
+</div><p>这一步可能出现的问题有：</p>
+<ol>
+<li><code>unknown directive “ngx_fastdfs_module” in /data/nginx/conf/nginx.conf:88</code></li>
+</ol>
+<p>解决办法：</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -394,10 +515,9 @@ cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;fon
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo ./configure --prefix=/usr/local/nginx --sbin-path=/usr/local/nginx/sbin/nginx --conf-path=/usr/local/nginx/conf/nginx.conf --error-log-path=/usr/local/nginx/log/error.log --http-log-path=/usr/local/nginx/log/access.log --pid-path=/usr/local/nginx/log/pid/nginx.pid --lock-path=/usr/local/nginx/log/lock/subsys/nginx --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_gzip_static_module --with-http_stub_status_module --with-http_perl_module --with-ld-opt=<span style="color:#666;font-style:italic">&#34;-Wl,-E&#34;</span> --with-http_image_filter_module --add-module=/usr/local/src/fastdfs-nginx-module/src/
 </code></pre></td></tr></table>
 </div>
-</div><p>出现如下错误：</p>
-<blockquote>
-<p>./configure: error: the HTTP image filter module requires the GD library. You can either do not enable the module or install the libraries.</p>
-</blockquote>
+</div><ol start="2">
+<li><code>./configure: error: the HTTP image filter module requires the GD library. You can either do not enable the module or install the libraries.</code></li>
+</ol>
 <p>解决办法，安装相应组件即可。</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -407,9 +527,10 @@ cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;fon
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ yum install gd gd-devel
 </code></pre></td></tr></table>
 </div>
-</div><blockquote>
-<p>./configure: error: perl module ExtUtils::Embed is required</p>
-</blockquote>
+</div><ol start="3">
+<li><code>./configure: error: perl module ExtUtils::Embed is required</code></li>
+</ol>
+<p>解决办法：</p>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
@@ -418,14 +539,259 @@ cp /usr/local/src/fastdfs/conf/mime.types /etc/fdfs/ <span style="color:#888;fon
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ yum -y install perl-devel perl-ExtUtils-Embed
 </code></pre></td></tr></table>
 </div>
-</div><div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+</div><h3 id="配置nginx访问">配置nginx访问</h3>
+<h4 id="配置mod_fastdfsconf">配置mod_fastdfs.conf</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/mod_fastdfs.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">connect_timeout</span>=10
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=120.77.71.67:22122  <span style="color:#888;font-style:italic">#tracker服务器IP和端口</span>
+<span style="color:#666;font-weight:bold;font-style:italic">url_have_group_name</span>=<span style="font-weight:bold;font-style:italic">true</span>
+<span style="color:#666;font-weight:bold;font-style:italic">store_path0</span>=/root/fastdfs/storage
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="配置nginxconf">配置nginx.conf</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /usr/local/nginx/conf/nginx.conf
+<span style="color:#888;font-style:italic">#添加如下配置</span>
+server {
+    listen       8888;    <span style="color:#888;font-style:italic"># 该端口为storage.conf中的http.server_port相同</span>
+    server_name  localhost;
+    location ~/group[0-9]/ {
+        ngx_fastdfs_module;
+    }
+    error_page   500 502 503 504  /50x.html;
+    <span style="color:#666;font-weight:bold;font-style:italic">location</span> = /50x.html {
+        root   html;
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><p>测试下载，用外部浏览器访问刚才已传过的图片，引用返回的ID。</p>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ fdfs_upload_file /etc/fdfs/client.conf /usr/local/src/ihome.sh
-[2022-01-26 15:08:29] ERROR - file: connection_pool.c, line: 140, connect to server 120.77.71.67:22122 fail, errno: 111, error info: Connection refused
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">http://120.77.71.67:8888/group1/M00/00/00/eE1HQ2Hx-eWAeIkaAAXs_ju6GX8852.jpg
+<span style="color:#888;font-style:italic">#弹出下载单机部署全部跑通</span>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="分布式部署">分布式部署</h2>
+<h3 id="tracker配置-1">tracker配置</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#服务器ip为 192.168.52.2,192.168.52.3,192.168.52.4</span>
+<span style="color:#888;font-style:italic">#建议用ftp下载下来这些文件 本地修改</span>
+$ vim /etc/fdfs/tracker.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">port</span>=22122  <span style="color:#888;font-style:italic"># tracker服务器端口（默认22122,一般不修改）</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/tracker  <span style="color:#888;font-style:italic"># 存储日志和数据的根目录</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="storage配置-1">storage配置</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/storage.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">port</span>=23000  <span style="color:#888;font-style:italic"># storage服务端口（默认23000,一般不修改）</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/storage  <span style="color:#888;font-style:italic"># 数据和日志文件存储根目录</span>
+<span style="color:#666;font-weight:bold;font-style:italic">store_path0</span>=/root/fastdfs/storage  <span style="color:#888;font-style:italic"># 第一个存储目录</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.2:22122  <span style="color:#888;font-style:italic"># 服务器1</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.3:22122  <span style="color:#888;font-style:italic"># 服务器2</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.4:22122  <span style="color:#888;font-style:italic"># 服务器3</span>
+http.server_port=8888  <span style="color:#888;font-style:italic"># http访问文件的端口(默认8888,看情况修改,和nginx中保持一致)</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="client测试-1">client测试</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/client.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/tracker
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.2:22122  <span style="color:#888;font-style:italic"># 服务器1</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.3:22122  <span style="color:#888;font-style:italic"># 服务器2</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.4:22122  <span style="color:#888;font-style:italic"># 服务器3</span>
+<span style="color:#888;font-style:italic">#保存后测试,返回ID表示成功 如：group1/M00/00/00/xx.jpg</span>
+$ fdfs_upload_file /etc/fdfs/client.conf /usr/local/src/boy.jpg
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="配置nginx访问-1">配置nginx访问</h3>
+<h4 id="配置mod_fastdfsconf-1">配置mod_fastdfs.conf</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ vim /etc/fdfs/mod_fastdfs.conf
+<span style="color:#888;font-style:italic">#需要修改的内容如下</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.2:22122  <span style="color:#888;font-style:italic"># 服务器1</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.3:22122  <span style="color:#888;font-style:italic"># 服务器2</span>
+<span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=192.168.52.4:22122  <span style="color:#888;font-style:italic"># 服务器3</span>
+<span style="color:#666;font-weight:bold;font-style:italic">url_have_group_name</span>=<span style="font-weight:bold;font-style:italic">true</span>
+<span style="color:#666;font-weight:bold;font-style:italic">store_path0</span>=/root/fastdfs/storage
+</code></pre></td></tr></table>
+</div>
+</div><h4 id="配置nginxconf-1">配置nginx.conf</h4>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">vim /usr/local/nginx/conf/nginx.conf
+<span style="color:#888;font-style:italic">#添加如下配置</span>
+server {
+    listen       8888;    <span style="color:#888;font-style:italic">## 该端口为storage.conf中的http.server_port相同</span>
+    server_name  localhost;
+    location ~/group[0-9]/ {
+        ngx_fastdfs_module;
+    }
+    error_page   500 502 503 504  /50x.html;
+    <span style="color:#666;font-weight:bold;font-style:italic">location</span> = /50x.html {
+        root   html;
+    }
+}
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="启动">启动</h2>
+<h3 id="防火墙">防火墙</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic">#不关闭防火墙的话无法使用</span>
+$ systemctl stop firewalld.service <span style="color:#888;font-style:italic">#关闭</span>
+$ systemctl restart firewalld.service <span style="color:#888;font-style:italic">#重启</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="tracker">tracker</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ /etc/init.d/fdfs_trackerd start <span style="color:#888;font-style:italic">#启动tracker服务</span>
+$ /etc/init.d/fdfs_trackerd restart <span style="color:#888;font-style:italic">#重启动tracker服务</span>
+$ /etc/init.d/fdfs_trackerd stop <span style="color:#888;font-style:italic">#停止tracker服务</span>
+$ chkconfig fdfs_trackerd on <span style="color:#888;font-style:italic">#自启动tracker服务</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="storage">storage</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ /etc/init.d/fdfs_storaged start <span style="color:#888;font-style:italic">#启动storage服务</span>
+$ /etc/init.d/fdfs_storaged restart <span style="color:#888;font-style:italic">#重动storage服务</span>
+$ /etc/init.d/fdfs_storaged stop <span style="color:#888;font-style:italic">#停止动storage服务</span>
+$ chkconfig fdfs_storaged on <span style="color:#888;font-style:italic">#自启动storage服务</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="nginx">nginx</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ /usr/local/nginx/sbin/nginx <span style="color:#888;font-style:italic">#启动nginx</span>
+$ /usr/local/nginx/sbin/nginx -s reload <span style="color:#888;font-style:italic">#重启nginx</span>
+$ /usr/local/nginx/sbin/nginx -s stop <span style="color:#888;font-style:italic">#停止nginx</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="检测集群">检测集群</h3>
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ /usr/bin/fdfs_monitor /etc/fdfs/storage.conf
+<span style="color:#888;font-style:italic"># 会显示会有几台服务器 有3台就会 显示 Storage 1-Storage 3的详细信息</span>
 </code></pre></td></tr></table>
 </div>
 </div>
