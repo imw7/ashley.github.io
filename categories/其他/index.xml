@@ -12,12 +12,12 @@
     
     
     <item>
-      <title>Ubuntu下Firefox使用HTML5播放器看B站</title>
-      <link>https://blog.imw7.com/post/ubuntu_firefox_blibili/</link>
+      <title>使用Linux遇到的问题</title>
+      <link>https://blog.imw7.com/post/ubuntu_problems/</link>
       <pubDate>Thu, 29 Apr 2021 21:55:28 +0800</pubDate>
       
-      <guid>https://blog.imw7.com/post/ubuntu_firefox_blibili/</guid>
-      <description>&lt;p&gt;在 &lt;code&gt;Ubuntu&lt;/code&gt; 上使用 &lt;code&gt;Firefox&lt;/code&gt; 播放&lt;a href=&#34;https://www.bilibili.com&#34;&gt;B站&lt;/a&gt;时发现需要安装 &lt;code&gt;Flash Player&lt;/code&gt;，非常不方便，而且 &lt;code&gt;Flash Player&lt;/code&gt; 结束支持了。如何解决这个问题呢？&lt;/p&gt;</description>
+      <guid>https://blog.imw7.com/post/ubuntu_problems/</guid>
+      <description>&lt;p&gt;本文记录在&lt;code&gt;Linux&lt;/code&gt;使用过程中，遇到的一些问题。&lt;/p&gt;</description>
     </item>
     
   </channel>

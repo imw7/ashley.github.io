@@ -617,7 +617,13 @@ server {
 <span style="color:#888;font-style:italic">#弹出下载单机部署全部跑通</span>
 </code></pre></td></tr></table>
 </div>
-</div><h2 id="分布式部署">分布式部署</h2>
+</div><p>这里可能出现<code>400 Bad Request</code>的错误，解决办法有两种：</p>
+<ol>
+<li>修改<code>nginx.conf</code>配置文件，在开头加上一行 <code>user root;</code> （实际开发中遇到的问题）</li>
+<li>配置<code>/etc/fdfs/mod_fastdfs.conf</code>文件，将<code>url_have_group_name=false</code>改为<code>url_have_group_name=true</code>。即使用组名访问。</li>
+</ol>
+<p>修改完成后记得重新加载<code>nginx</code>配置文件，使得修改生效。</p>
+<h2 id="分布式部署">分布式部署</h2>
 <h3 id="tracker配置-1">tracker配置</h3>
 <div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
 <table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
@@ -991,13 +997,19 @@ $ /usr/local/nginx/sbin/nginx -s stop <span style="color:#888;font-style:italic"
     
     <a href="https://blog.imw7.com/tags/ES/">ES</a>
     
+    <a href="https://blog.imw7.com/tags/Firefox/">Firefox</a>
+    
     <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/HDMI/">HDMI</a>
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
     <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/Linux/">Linux</a>
     
     <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
     
@@ -1008,6 +1020,8 @@ $ /usr/local/nginx/sbin/nginx -s stop <span style="color:#888;font-style:italic"
     <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
     
     <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/Ubuntu/">Ubuntu</a>
     
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
