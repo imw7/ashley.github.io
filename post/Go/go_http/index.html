@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -176,9 +172,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -196,6 +192,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -216,13 +216,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -236,390 +236,390 @@
 <h2 id="http客户端">HTTP客户端</h2>
 <h3 id="基本的httphttps请求">基本的HTTP/HTTPS请求</h3>
 <p>Get、Head、Post和PostForm函数发出HTTP/HTTPS请求。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/&#34;</span>)
-...
-resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Post</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/upload&#34;</span>, <span style="color:#666;font-style:italic">&#34;image/jpeg&#34;</span>, &amp;buf)
-...
-resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">PostForm</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/form&#34;</span>,
-	url.Values{<span style="color:#666;font-style:italic">&#34;key&#34;</span>: {<span style="color:#666;font-style:italic">&#34;Value&#34;</span>}, <span style="color:#666;font-style:italic">&#34;id&#34;</span>: {<span style="color:#666;font-style:italic">&#34;123&#34;</span>}})
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/&#34;</span>)
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Post</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/upload&#34;</span>, <span style="color:#666;font-style:italic">&#34;image/jpeg&#34;</span>, &amp;buf)
+</span></span><span style="display:flex;"><span>...
+</span></span><span style="display:flex;"><span>resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">PostForm</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/form&#34;</span>,
+</span></span><span style="display:flex;"><span>	url.Values{<span style="color:#666;font-style:italic">&#34;key&#34;</span>: {<span style="color:#666;font-style:italic">&#34;Value&#34;</span>}, <span style="color:#666;font-style:italic">&#34;id&#34;</span>: {<span style="color:#666;font-style:italic">&#34;123&#34;</span>}})
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>程序在使用完response后必须关闭回复的主体。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/&#34;</span>)
-<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-	<span style="color:#888;font-style:italic">// handle error
-</span><span style="color:#888;font-style:italic"></span>}
-<span style="font-weight:bold">defer</span> resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
-body, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
-<span style="color:#888;font-style:italic">// ...
-</span></code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com/&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// handle error
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>}
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">defer</span> resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+</span></span><span style="display:flex;"><span>body, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// ...
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="get请求示例">GET请求示例</h3>
 <p>使用<code>net/http</code>包编写一个简单的发送HTTP请求的Client端，代码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
-
-<span style="font-weight:bold">import</span> (
-	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;io/ioutil&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
-)
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;https://www.baidu.com/&#34;</span>)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
-	body, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;read from resp.Body failed, err:%v\n&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Print</span>(<span style="font-weight:bold;font-style:italic">string</span>(body))
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;io/ioutil&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;https://www.baidu.com/&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+</span></span><span style="display:flex;"><span>	body, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;read from resp.Body failed, err:%v\n&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Print</span>(<span style="font-weight:bold;font-style:italic">string</span>(body))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将上面的代码保存之后编译成可执行文件，执行之后就能在终端打印<code>liwenzhou.com</code>网站首页的内容了，我们的浏览器其实就是一个发送和接收HTTP协议数据的客户端，我们平时通过浏览器访问网页其实就是从网站的服务器接收HTTP数据，然后浏览器会按照HTML、CSS等规则将网页渲染展示出来。</p>
 <h3 id="带参数的get请求示例">带参数的GET请求示例</h3>
 <p>关于GET请求的参数需要使用Go语言内置的<code>net/url</code>这个标准库来处理。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	apiUrl := <span style="color:#666;font-style:italic">&#34;http://127.0.0.1:9090/get&#34;</span>
-	<span style="color:#888;font-style:italic">// URL param
-</span><span style="color:#888;font-style:italic"></span>	data := url.Values{}
-	data.<span style="color:#666;font-weight:bold;font-style:italic">Set</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;小王子&#34;</span>)
-	data.<span style="color:#666;font-weight:bold;font-style:italic">Set</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>, <span style="color:#666;font-style:italic">&#34;18&#34;</span>)
-	u, err := url.<span style="color:#666;font-weight:bold;font-style:italic">ParseRequestURI</span>(apiUrl)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;parse url requestUrl failed, err:&#34;</span>, err)
-	}
-	u.RawQuery = data.<span style="color:#666;font-weight:bold;font-style:italic">Encode</span>() <span style="color:#888;font-style:italic">// URL encode
-</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(u.<span style="color:#666;font-weight:bold;font-style:italic">String</span>())
-	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(u.<span style="color:#666;font-weight:bold;font-style:italic">String</span>())
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;post failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
-	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get resp failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	apiUrl := <span style="color:#666;font-style:italic">&#34;http://127.0.0.1:9090/get&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// URL param
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	data := url.Values{}
+</span></span><span style="display:flex;"><span>	data.<span style="color:#666;font-weight:bold;font-style:italic">Set</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;小王子&#34;</span>)
+</span></span><span style="display:flex;"><span>	data.<span style="color:#666;font-weight:bold;font-style:italic">Set</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>, <span style="color:#666;font-style:italic">&#34;18&#34;</span>)
+</span></span><span style="display:flex;"><span>	u, err := url.<span style="color:#666;font-weight:bold;font-style:italic">ParseRequestURI</span>(apiUrl)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;parse url requestUrl failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	u.RawQuery = data.<span style="color:#666;font-weight:bold;font-style:italic">Encode</span>() <span style="color:#888;font-style:italic">// URL encode
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(u.<span style="color:#666;font-weight:bold;font-style:italic">String</span>())
+</span></span><span style="display:flex;"><span>	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(u.<span style="color:#666;font-weight:bold;font-style:italic">String</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;post failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+</span></span><span style="display:flex;"><span>	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get resp failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>对应的Server端HandlerFunc如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">getHandler</span>(w http.ResponseWriter, r *http.Request) {
-	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = r.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
-	data := r.URL.<span style="color:#666;font-weight:bold;font-style:italic">Query</span>()
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(data.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>))
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(data.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>))
-	answer := <span style="color:#666;font-style:italic">`{&#34;status&#34;: &#34;ok&#34;}`</span>
-	_, _ = w.<span style="color:#666;font-weight:bold;font-style:italic">Write</span>([]<span style="font-weight:bold;font-style:italic">byte</span>(answer))
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">getHandler</span>(w http.ResponseWriter, r *http.Request) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = r.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+</span></span><span style="display:flex;"><span>	data := r.URL.<span style="color:#666;font-weight:bold;font-style:italic">Query</span>()
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(data.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>))
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(data.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>))
+</span></span><span style="display:flex;"><span>	answer := <span style="color:#666;font-style:italic">`{&#34;status&#34;: &#34;ok&#34;}`</span>
+</span></span><span style="display:flex;"><span>	_, _ = w.<span style="color:#666;font-weight:bold;font-style:italic">Write</span>([]<span style="font-weight:bold;font-style:italic">byte</span>(answer))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="post请求示例">Post请求示例</h3>
 <p>上面演示了使用<code>net/http</code>包发送<code>GET</code>请求的示例，发送<code>POST</code>请求的示例代码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
-
-<span style="font-weight:bold">import</span> (
-	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;io/ioutil&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;strings&#34;</span>
-)
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	url := <span style="color:#666;font-style:italic">&#34;http://127.0.0.1:9090/post&#34;</span>
-	<span style="color:#888;font-style:italic">// 表单数据
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// contentType := &#34;application/x-www-form-urlencoded&#34;
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// data := &#34;name=小王子&amp;age=18&#34;
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// json
-</span><span style="color:#888;font-style:italic"></span>	contentType := <span style="color:#666;font-style:italic">&#34;application/json&#34;</span>
-	data := <span style="color:#666;font-style:italic">`{&#34;name&#34;:&#34;小王子&#34;,&#34;age&#34;:18}`</span>
-	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Post</span>(url, contentType, strings.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(data))
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;post failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
-	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get resp failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;io/ioutil&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;net/http&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;strings&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	url := <span style="color:#666;font-style:italic">&#34;http://127.0.0.1:9090/post&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// 表单数据
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// contentType := &#34;application/x-www-form-urlencoded&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// data := &#34;name=小王子&amp;age=18&#34;
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// json
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	contentType := <span style="color:#666;font-style:italic">&#34;application/json&#34;</span>
+</span></span><span style="display:flex;"><span>	data := <span style="color:#666;font-style:italic">`{&#34;name&#34;:&#34;小王子&#34;,&#34;age&#34;:18}`</span>
+</span></span><span style="display:flex;"><span>	resp, err := http.<span style="color:#666;font-weight:bold;font-style:italic">Post</span>(url, contentType, strings.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(data))
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;post failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = resp.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+</span></span><span style="display:flex;"><span>	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(resp.Body)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;get resp failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>对应的Server端HandlerFunc如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">postHandler</span>(w http.ResponseWriter, r *http.Request) {
-	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = r.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
-	<span style="color:#888;font-style:italic">// 1. 请求类型是application/x-www-form-urlencoded时解析form数据
-</span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">ParseForm</span>()
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(r.PostForm) <span style="color:#888;font-style:italic">// 打印form数据
-</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(r.PostForm.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>), r.PostForm.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>))
-	<span style="color:#888;font-style:italic">// 2. 请求类型是application/json时从r.Body读取数据
-</span><span style="color:#888;font-style:italic"></span>	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(r.Body)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;read request.Body failed, err:%v\n&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
-	answer := <span style="color:#666;font-style:italic">`{&#34;status&#34;: &#34;ok&#34;}`</span>
-	_, _ = w.<span style="color:#666;font-weight:bold;font-style:italic">Write</span>([]<span style="font-weight:bold;font-style:italic">byte</span>(answer))
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">postHandler</span>(w http.ResponseWriter, r *http.Request) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>() { _ = r.Body.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>() }()
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// 1. 请求类型是application/x-www-form-urlencoded时解析form数据
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">ParseForm</span>()
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(r.PostForm) <span style="color:#888;font-style:italic">// 打印form数据
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(r.PostForm.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>), r.PostForm.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>))
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// 2. 请求类型是application/json时从r.Body读取数据
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	b, err := ioutil.<span style="color:#666;font-weight:bold;font-style:italic">ReadAll</span>(r.Body)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;read request.Body failed, err:%v\n&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="font-weight:bold;font-style:italic">string</span>(b))
+</span></span><span style="display:flex;"><span>	answer := <span style="color:#666;font-style:italic">`{&#34;status&#34;: &#34;ok&#34;}`</span>
+</span></span><span style="display:flex;"><span>	_, _ = w.<span style="color:#666;font-weight:bold;font-style:italic">Write</span>([]<span style="font-weight:bold;font-style:italic">byte</span>(answer))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="自定义client">自定义Client</h3>
 <p>要管理HTTP客户端的头域、重定向策略和其他设置，创建一个Client：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">client := &amp;http.Client{
-	CheckRedirect: redirectPolicyFunc,
-}
-resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com&#34;</span>)
-<span style="color:#888;font-style:italic">// ...
-</span><span style="color:#888;font-style:italic"></span>req, err := http.<span style="color:#666;font-weight:bold;font-style:italic">NewRequest</span>(<span style="color:#666;font-style:italic">&#34;GET&#34;</span>, <span style="color:#666;font-style:italic">&#34;http://example.com&#34;</span>, <span style="font-weight:bold">nil</span>)
-<span style="color:#888;font-style:italic">// ...
-</span><span style="color:#888;font-style:italic"></span>req.Header.<span style="color:#666;font-weight:bold;font-style:italic">Add</span>(<span style="color:#666;font-style:italic">&#34;If-None-Match&#34;</span>, <span style="color:#666;font-style:italic">`W/&#34;wyzzy&#34;`</span>)
-resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Do</span>(req)
-<span style="color:#888;font-style:italic">// ...
-</span></code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>client := &amp;http.Client{
+</span></span><span style="display:flex;"><span>	CheckRedirect: redirectPolicyFunc,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;http://example.com&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>req, err := http.<span style="color:#666;font-weight:bold;font-style:italic">NewRequest</span>(<span style="color:#666;font-style:italic">&#34;GET&#34;</span>, <span style="color:#666;font-style:italic">&#34;http://example.com&#34;</span>, <span style="font-weight:bold">nil</span>)
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>req.Header.<span style="color:#666;font-weight:bold;font-style:italic">Add</span>(<span style="color:#666;font-style:italic">&#34;If-None-Match&#34;</span>, <span style="color:#666;font-style:italic">`W/&#34;wyzzy&#34;`</span>)
+</span></span><span style="display:flex;"><span>resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Do</span>(req)
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// ...
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="自定义transport">自定义Transport</h3>
 <p>要管理代理、TLS配置、keep-alive、压缩和其他设置，创建一个Transport：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">tr := &amp;http.Transport{
-	TLSClientConfig:    &amp;tls.Config{RootCAs: pool},
-	DisableCompression: <span style="font-weight:bold">true</span>,
-}
-client := &amp;http.Client{Transport: tr}
-resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;https://example.com&#34;</span>)
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>tr := &amp;http.Transport{
+</span></span><span style="display:flex;"><span>	TLSClientConfig:    &amp;tls.Config{RootCAs: pool},
+</span></span><span style="display:flex;"><span>	DisableCompression: <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>client := &amp;http.Client{Transport: tr}
+</span></span><span style="display:flex;"><span>resp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(<span style="color:#666;font-style:italic">&#34;https://example.com&#34;</span>)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Client和Transport类型都可以安全的被多个goroutine同时使用。出于效率考虑，应该一次建立、尽量重用。</p>
 <h2 id="服务端">服务端</h2>
 <h3 id="默认的server">默认的Server</h3>
 <p>ListenAndServe使用指定的监听地址和处理器启动一个HTTP服务端。处理器参数通常是nil，这表示采用包变量DefaultServeMux作为处理器。</p>
 <p>Handle和HandleFunc函数可以向DefaultServeMux添加处理器。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">http.<span style="color:#666;font-weight:bold;font-style:italic">Handle</span>(<span style="color:#666;font-style:italic">&#34;/foo&#34;</span>, fooHandler)
-http.<span style="color:#666;font-weight:bold;font-style:italic">HandleFunc</span>(<span style="color:#666;font-style:italic">&#34;/bar&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(w http.ResponseWriter, r *http.Request) {
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintf</span>(w, <span style="color:#666;font-style:italic">&#34;Hello, %q&#34;</span>, html.<span style="color:#666;font-weight:bold;font-style:italic">EscapeString</span>(r.URL.Path))
-})
-log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(http.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>, <span style="font-weight:bold">nil</span>))
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>http.<span style="color:#666;font-weight:bold;font-style:italic">Handle</span>(<span style="color:#666;font-style:italic">&#34;/foo&#34;</span>, fooHandler)
+</span></span><span style="display:flex;"><span>http.<span style="color:#666;font-weight:bold;font-style:italic">HandleFunc</span>(<span style="color:#666;font-style:italic">&#34;/bar&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(w http.ResponseWriter, r *http.Request) {
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintf</span>(w, <span style="color:#666;font-style:italic">&#34;Hello, %q&#34;</span>, html.<span style="color:#666;font-weight:bold;font-style:italic">EscapeString</span>(r.URL.Path))
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(http.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>, <span style="font-weight:bold">nil</span>))
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="默认的server示例">默认的Server示例</h3>
 <p>使用Go语言中的<code>net/http</code>包来编写一个简单的接收HTTP请求的Server端示例，<code>net/http</code>包是对net包的进一步封装，专门用来处理HTTP协议的数据。具体的代码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// http server
-</span><span style="color:#888;font-style:italic"></span>
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sayHello</span>(w http.ResponseWriter, r *http.Request) {
-	_, _ = fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintln</span>(w, <span style="color:#666;font-style:italic">&#34;Hello 世界！&#34;</span>)
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	http.<span style="color:#666;font-weight:bold;font-style:italic">HandleFunc</span>(<span style="color:#666;font-style:italic">&#34;/&#34;</span>, sayHello)
-	err := http.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>(<span style="color:#666;font-style:italic">&#34;:9090&#34;</span>, <span style="font-weight:bold">nil</span>)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;http server failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// http server
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sayHello</span>(w http.ResponseWriter, r *http.Request) {
+</span></span><span style="display:flex;"><span>	_, _ = fmt.<span style="color:#666;font-weight:bold;font-style:italic">Fprintln</span>(w, <span style="color:#666;font-style:italic">&#34;Hello 世界！&#34;</span>)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	http.<span style="color:#666;font-weight:bold;font-style:italic">HandleFunc</span>(<span style="color:#666;font-style:italic">&#34;/&#34;</span>, sayHello)
+</span></span><span style="display:flex;"><span>	err := http.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>(<span style="color:#666;font-style:italic">&#34;:9090&#34;</span>, <span style="font-weight:bold">nil</span>)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;http server failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将上面的代码编译之后执行，打开你电脑上的浏览器在地址栏输入<code>127.0.0.1:9090</code>回车，此时就能够看到如下页面了。</p>
 <p>
@@ -629,27 +629,27 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(htt
     </p>
 <h3 id="自定义server">自定义Server</h3>
 <p>要管理服务端的行为，可以创建一个自定义的Server：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">s := &amp;http.Server{
-	Addr:           <span style="color:#666;font-style:italic">&#34;:8080&#34;</span>,
-	Handler:        myHandler,
-	ReadTimeout:    10 * time.Second,
-	WriteTimeout:   10 * time.Second,
-	MaxHeaderBytes: 1 &lt;&lt; 20,
-}
-log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>())
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>s := &amp;http.Server{
+</span></span><span style="display:flex;"><span>	Addr:           <span style="color:#666;font-style:italic">&#34;:8080&#34;</span>,
+</span></span><span style="display:flex;"><span>	Handler:        myHandler,
+</span></span><span style="display:flex;"><span>	ReadTimeout:    10 * time.Second,
+</span></span><span style="display:flex;"><span>	WriteTimeout:   10 * time.Second,
+</span></span><span style="display:flex;"><span>	MaxHeaderBytes: 1 &lt;&lt; 20,
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>())
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
         </div>
@@ -660,7 +660,7 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/go_strconv/">Go语言标准库之strconv</a></li>
@@ -694,13 +694,16 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -708,7 +711,9 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -716,6 +721,7 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -725,13 +731,10 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -739,12 +742,11 @@ log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(s.<
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

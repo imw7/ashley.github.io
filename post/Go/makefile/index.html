@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -161,9 +157,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -181,6 +177,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -201,13 +201,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -222,19 +222,19 @@
 <h3 id="规则概述">规则概述</h3>
 <p><code>Makefile</code>由多条规则组成，每条规则主要由两个部分组成，分别是依赖的关系和执行的命令。</p>
 <p>其结构如下所示：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#666;font-weight:bold;font-style:italic">[target] ... </span>: [prerequisites] ...
-<span style="">&lt;tab&gt;[command]</span>
-    <span style="">...</span>
-    <span style="">...</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">[target] ... </span>: [prerequisites] ...
+</span></span><span style="display:flex;"><span><span style="">&lt;tab&gt;[command]</span>
+</span></span><span style="display:flex;"><span>    <span style="">...</span>
+</span></span><span style="display:flex;"><span>    <span style="">...</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中：</p>
 <ul>
@@ -243,72 +243,72 @@
 <li>command：make 需要执行的命令（任意的 shell 命令）。可以有多条命令，每一条命令占一行。</li>
 </ul>
 <p>举个例子：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#666;font-weight:bold;font-style:italic">build</span>:
-	<span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build -o xx
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">build</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build -o xx
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="示例">示例</h2>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-makefile" data-lang="makefile"><span style="color:#666;font-weight:bold;font-style:italic">.PHONY</span>: all build run gotool clean help
-
-<span style="color:#666;font-weight:bold;font-style:italic">BINARY</span>=<span style="color:#666;font-style:italic">&#34;bluebell&#34;</span>
-
-<span style="color:#666;font-weight:bold;font-style:italic">all</span>: gotool build
-
-<span style="color:#666;font-weight:bold;font-style:italic">build</span>:
-	<span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build -o <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span>
-
-<span style="color:#666;font-weight:bold;font-style:italic">run</span>:
-	@go run ./
-
-<span style="color:#666;font-weight:bold;font-style:italic">gotool</span>:
-	go fmt ./
-	go vet ./
-
-<span style="color:#666;font-weight:bold;font-style:italic">clean</span>:
-	@if [ -f <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span> ] ; <span style="font-weight:bold">then</span> rm <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span> ; <span style="font-weight:bold">fi</span>
-
-<span style="color:#666;font-weight:bold;font-style:italic">help</span>:
-	@echo <span style="color:#666;font-style:italic">&#34;make - 格式化 Go 代码, 并编译生成二进制文件&#34;</span>
-	@echo <span style="color:#666;font-style:italic">&#34;make build - 编译 Go 代码, 生成二进制文件&#34;</span>
-	@echo <span style="color:#666;font-style:italic">&#34;make run - 直接运行 Go 代码&#34;</span>
-	@echo <span style="color:#666;font-style:italic">&#34;make clean - 移除二进制文件和 vim swap files&#34;</span>
-	@echo <span style="color:#666;font-style:italic">&#34;make gotool - 运行 Go 工具 &#39;fmt&#39; and &#39;vet&#39;&#34;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-makefile" data-lang="makefile"><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">.PHONY</span>: all build run gotool clean help
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span>=<span style="color:#666;font-style:italic">&#34;bluebell&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">all</span>: gotool build
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">build</span>:
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build -o <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">run</span>:
+</span></span><span style="display:flex;"><span>	@go run ./
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">gotool</span>:
+</span></span><span style="display:flex;"><span>	go fmt ./
+</span></span><span style="display:flex;"><span>	go vet ./
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">clean</span>:
+</span></span><span style="display:flex;"><span>	@if [ -f <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span> ] ; <span style="font-weight:bold">then</span> rm <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">BINARY</span><span style="color:#666;font-style:italic">}</span> ; <span style="font-weight:bold">fi</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#666;font-weight:bold;font-style:italic">help</span>:
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#666;font-style:italic">&#34;make - 格式化 Go 代码, 并编译生成二进制文件&#34;</span>
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#666;font-style:italic">&#34;make build - 编译 Go 代码, 生成二进制文件&#34;</span>
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#666;font-style:italic">&#34;make run - 直接运行 Go 代码&#34;</span>
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#666;font-style:italic">&#34;make clean - 移除二进制文件和 vim swap files&#34;</span>
+</span></span><span style="display:flex;"><span>	@echo <span style="color:#666;font-style:italic">&#34;make gotool - 运行 Go 工具 &#39;fmt&#39; and &#39;vet&#39;&#34;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>其中：</p>
 <ul>
@@ -323,7 +323,7 @@
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/go_micro/">go-micro</a></li>
@@ -357,13 +357,16 @@
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -371,7 +374,9 @@
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -379,6 +384,7 @@
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -388,13 +394,10 @@
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -402,12 +405,11 @@
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

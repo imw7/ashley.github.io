@@ -6,11 +6,7 @@
     <description>Recent content in gin on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/gin/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Thu, 16 Apr 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/gin/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>gin框架路由拆分与注册</title>
       <link>https://blog.imw7.com/post/Go/gin_routes_registry/</link>

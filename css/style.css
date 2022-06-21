@@ -96,7 +96,7 @@ a:hover, a:active {
 }
 mark {
     padding: 3px 3px 3px 5px;
-    background: #ceccb0;
+    background: #fffdd1;
 }
 pre, code {
     font-family:Menlo, Monaco, Consolas, "Lucida Console", "Courier New", monospace;
@@ -373,7 +373,7 @@ textarea {
     overflow: hidden;
 }
 .post-content pre{
-    padding: 0.5em;
+    padding: 1em;
 }
 .post-content code{
     display:inline;

@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -164,9 +160,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -184,6 +180,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -206,13 +206,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -221,500 +221,500 @@
             <p>本文介绍了Go语言版经典的排序算法–选择排序、冒泡排序、插入排序、快速排序、归并排序和堆排序。</p>
 <h2 id="排序算法">排序算法</h2>
 <h3 id="选择排序">选择排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">selectionSort</span>(data []<span style="font-weight:bold">int</span>) {
-    <span style="font-weight:bold">if</span> <span style="font-weight:bold;font-style:italic">len</span>(data) &lt; 2 || data == <span style="font-weight:bold">nil</span> {
-        <span style="font-weight:bold">return</span>
-    }
-    <span style="font-weight:bold">for</span> i := 0; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(data)-1; i++ { <span style="color:#888;font-style:italic">// i ~ N-1
-</span><span style="color:#888;font-style:italic"></span>        minIndex := i
-        <span style="font-weight:bold">for</span> j := i + 1; j &lt; <span style="font-weight:bold;font-style:italic">len</span>(data); j++ { <span style="color:#888;font-style:italic">// i ~ N-1上找最小值的下标
-</span><span style="color:#888;font-style:italic"></span>            <span style="font-weight:bold">if</span> data[j] &lt; data[minIndex] {
-                minIndex = j
-            }
-        }
-        <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(data, i, minIndex)
-    }
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(data []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
-    tmp := data[i]
-    data[i] = data[j]
-    data[j] = tmp
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-    s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-    <span style="color:#666;font-weight:bold;font-style:italic">selectionSort</span>(s)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">selectionSort</span>(data []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">if</span> <span style="font-weight:bold;font-style:italic">len</span>(data) &lt; 2 || data == <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold">for</span> i := 0; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(data)-1; i++ { <span style="color:#888;font-style:italic">// i ~ N-1
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>        minIndex := i
+</span></span><span style="display:flex;"><span>        <span style="font-weight:bold">for</span> j := i + 1; j &lt; <span style="font-weight:bold;font-style:italic">len</span>(data); j++ { <span style="color:#888;font-style:italic">// i ~ N-1上找最小值的下标
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>            <span style="font-weight:bold">if</span> data[j] &lt; data[minIndex] {
+</span></span><span style="display:flex;"><span>                minIndex = j
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(data, i, minIndex)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(data []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>    tmp := data[i]
+</span></span><span style="display:flex;"><span>    data[i] = data[j]
+</span></span><span style="display:flex;"><span>    data[j] = tmp
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>    s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>    <span style="color:#666;font-weight:bold;font-style:italic">selectionSort</span>(s)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="冒泡排序">冒泡排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">bubbleSort</span>(arr []<span style="font-weight:bold">int</span>) {
-	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="font-weight:bold">for</span> e := <span style="font-weight:bold;font-style:italic">len</span>(arr) - 1; e &gt; 0; e-- { <span style="color:#888;font-style:italic">// 0 ~ e
-</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">for</span> i := 0; i &lt; e; i++ {
-			<span style="font-weight:bold">if</span> arr[i] &gt; arr[i+1] {
-				<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, i, i+1)
-			}
-		}
-	}
-}
-
-<span style="color:#888;font-style:italic">// 交换arr的i和j位置上的值
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
-	<span style="color:#888;font-style:italic">// arr[i] = arr[i] ^ arr[j]
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// arr[j] = arr[i] ^ arr[j]
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// arr[i] = arr[i] ^ arr[j]
-</span><span style="color:#888;font-style:italic"></span>	tmp := arr[i]
-	arr[i] = arr[j]
-	arr[j] = tmp
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-	<span style="color:#666;font-weight:bold;font-style:italic">bubbleSort</span>(s)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">bubbleSort</span>(arr []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> e := <span style="font-weight:bold;font-style:italic">len</span>(arr) - 1; e &gt; 0; e-- { <span style="color:#888;font-style:italic">// 0 ~ e
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">for</span> i := 0; i &lt; e; i++ {
+</span></span><span style="display:flex;"><span>			<span style="font-weight:bold">if</span> arr[i] &gt; arr[i+1] {
+</span></span><span style="display:flex;"><span>				<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, i, i+1)
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 交换arr的i和j位置上的值
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// arr[i] = arr[i] ^ arr[j]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// arr[j] = arr[i] ^ arr[j]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// arr[i] = arr[i] ^ arr[j]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	tmp := arr[i]
+</span></span><span style="display:flex;"><span>	arr[i] = arr[j]
+</span></span><span style="display:flex;"><span>	arr[j] = tmp
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">bubbleSort</span>(s)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="插入排序">插入排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">insertSort</span>(arr []<span style="font-weight:bold">int</span>) {
-	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="color:#888;font-style:italic">// 0~0有序的
-</span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 0~i想有序
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(arr); i++ { <span style="color:#888;font-style:italic">// 0 ~ i 做到有序
-</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">for</span> j := i - 1; j &gt;= 0; j-- {
-			<span style="font-weight:bold">if</span> arr[j] &gt; arr[j+1] {
-				<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, j, j+1)
-			}
-		}
-	}
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
-	tmp := arr[i]
-	arr[i] = arr[j]
-	arr[j] = tmp
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-	<span style="color:#666;font-weight:bold;font-style:italic">insertSort</span>(s)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">insertSort</span>(arr []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// 0~0有序的
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 0~i想有序
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> i := 1; i &lt; <span style="font-weight:bold;font-style:italic">len</span>(arr); i++ { <span style="color:#888;font-style:italic">// 0 ~ i 做到有序
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">for</span> j := i - 1; j &gt;= 0; j-- {
+</span></span><span style="display:flex;"><span>			<span style="font-weight:bold">if</span> arr[j] &gt; arr[j+1] {
+</span></span><span style="display:flex;"><span>				<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, j, j+1)
+</span></span><span style="display:flex;"><span>			}
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	tmp := arr[i]
+</span></span><span style="display:flex;"><span>	arr[i] = arr[j]
+</span></span><span style="display:flex;"><span>	arr[j] = tmp
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">insertSort</span>(s)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="快速排序">快速排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">quickSort</span>(arr []<span style="font-weight:bold">int</span>) {
-	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
-		<span style="font-weight:bold">return</span>
-	}
-	<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, 0, <span style="font-weight:bold;font-style:italic">len</span>(arr)-1)
-}
-
-<span style="color:#888;font-style:italic">// arr[l..r]排好序
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr []<span style="font-weight:bold">int</span>, L, R <span style="font-weight:bold">int</span>) {
-	<span style="font-weight:bold">if</span> L &lt; R {
-		rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-		<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, L+rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(R-L+1), R)
-		p := <span style="color:#666;font-weight:bold;font-style:italic">partition</span>(arr, L, R)
-		<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, L, p[0]-1) <span style="color:#888;font-style:italic">// &lt; 区
-</span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, p[1]+1, R) <span style="color:#888;font-style:italic">// &gt; 区
-</span><span style="color:#888;font-style:italic"></span>	}
-}
-
-<span style="color:#888;font-style:italic">// 这是一个处理arr[l..r]的函数
-</span><span style="color:#888;font-style:italic">// 默认以arr[r]做划分，arr[r] -&gt; p    &lt;p   ==p   &gt;p
-</span><span style="color:#888;font-style:italic">// 返回等于区域(左边界, 右边界)，所以返回一个长度为2的数组res，res[0] res[1]
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">partition</span>(arr []<span style="font-weight:bold">int</span>, L, R <span style="font-weight:bold">int</span>) []<span style="font-weight:bold">int</span> {
-	less := L - 1  <span style="color:#888;font-style:italic">// &lt;区右边界
-</span><span style="color:#888;font-style:italic"></span>	more := R      <span style="color:#888;font-style:italic">// &gt;区左边界
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> L &lt; more { <span style="color:#888;font-style:italic">// L表示当前数的位置 arr[R] -&gt; 划分值
-</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> arr[L] &lt; arr[R] { <span style="color:#888;font-style:italic">// 当前数 &lt; 划分值
-</span><span style="color:#888;font-style:italic"></span>			less++
-			<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, less, L)
-			L++
-		} <span style="font-weight:bold">else</span> <span style="font-weight:bold">if</span> arr[L] &gt; arr[R] { <span style="color:#888;font-style:italic">// 当前数 &gt; 划分值
-</span><span style="color:#888;font-style:italic"></span>			more--
-			<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, more, L)
-		} <span style="font-weight:bold">else</span> {
-			L++
-		}
-	}
-	<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, more, R)
-	<span style="font-weight:bold">return</span> []<span style="font-weight:bold">int</span>{less + 1, more}
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
-	tmp := arr[i]
-	arr[i] = arr[j]
-	arr[j] = tmp
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	arr := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-	rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		arr = <span style="font-weight:bold;font-style:italic">append</span>(arr, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(arr)
-	<span style="color:#666;font-weight:bold;font-style:italic">quickSort</span>(arr)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(arr)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">quickSort</span>(arr []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> arr == <span style="font-weight:bold">nil</span> || <span style="font-weight:bold;font-style:italic">len</span>(arr) &lt; 2 {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, 0, <span style="font-weight:bold;font-style:italic">len</span>(arr)-1)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// arr[l..r]排好序
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr []<span style="font-weight:bold">int</span>, L, R <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> L &lt; R {
+</span></span><span style="display:flex;"><span>		rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>		<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, L+rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(R-L+1), R)
+</span></span><span style="display:flex;"><span>		p := <span style="color:#666;font-weight:bold;font-style:italic">partition</span>(arr, L, R)
+</span></span><span style="display:flex;"><span>		<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, L, p[0]-1) <span style="color:#888;font-style:italic">// &lt; 区
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		<span style="color:#666;font-weight:bold;font-style:italic">sort</span>(arr, p[1]+1, R) <span style="color:#888;font-style:italic">// &gt; 区
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 这是一个处理arr[l..r]的函数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 默认以arr[r]做划分，arr[r] -&gt; p    &lt;p   ==p   &gt;p
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 返回等于区域(左边界, 右边界)，所以返回一个长度为2的数组res，res[0] res[1]
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">partition</span>(arr []<span style="font-weight:bold">int</span>, L, R <span style="font-weight:bold">int</span>) []<span style="font-weight:bold">int</span> {
+</span></span><span style="display:flex;"><span>	less := L - 1  <span style="color:#888;font-style:italic">// &lt;区右边界
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	more := R      <span style="color:#888;font-style:italic">// &gt;区左边界
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> L &lt; more { <span style="color:#888;font-style:italic">// L表示当前数的位置 arr[R] -&gt; 划分值
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">if</span> arr[L] &lt; arr[R] { <span style="color:#888;font-style:italic">// 当前数 &lt; 划分值
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>			less++
+</span></span><span style="display:flex;"><span>			<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, less, L)
+</span></span><span style="display:flex;"><span>			L++
+</span></span><span style="display:flex;"><span>		} <span style="font-weight:bold">else</span> <span style="font-weight:bold">if</span> arr[L] &gt; arr[R] { <span style="color:#888;font-style:italic">// 当前数 &gt; 划分值
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>			more--
+</span></span><span style="display:flex;"><span>			<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, more, L)
+</span></span><span style="display:flex;"><span>		} <span style="font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>			L++
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr, more, R)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span> []<span style="font-weight:bold">int</span>{less + 1, more}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">swap</span>(arr []<span style="font-weight:bold">int</span>, i, j <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	tmp := arr[i]
+</span></span><span style="display:flex;"><span>	arr[i] = arr[j]
+</span></span><span style="display:flex;"><span>	arr[j] = tmp
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	arr := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>	rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		arr = <span style="font-weight:bold;font-style:italic">append</span>(arr, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(arr)
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">quickSort</span>(arr)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(arr)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="归并排序">归并排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data []<span style="font-weight:bold">int</span>) []<span style="font-weight:bold">int</span> {
-	length := <span style="font-weight:bold;font-style:italic">len</span>(data)
-	<span style="font-weight:bold">if</span> length &lt;= 1 {
-		<span style="font-weight:bold">return</span> data
-	}
-	num := length / 2
-	left := <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data[:num])
-	right := <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data[num:])
-	<span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">merge</span>(left, right)
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">merge</span>(left, right []<span style="font-weight:bold">int</span>) (result []<span style="font-weight:bold">int</span>) {
-	l, r := 0, 0
-	<span style="font-weight:bold">for</span> l &lt; <span style="font-weight:bold;font-style:italic">len</span>(left) &amp;&amp; r &lt; <span style="font-weight:bold;font-style:italic">len</span>(right) {
-		<span style="font-weight:bold">if</span> left[l] &lt; right[r] {
-			result = <span style="font-weight:bold;font-style:italic">append</span>(result, left[l])
-			l++
-		} <span style="font-weight:bold">else</span> {
-			result = <span style="font-weight:bold;font-style:italic">append</span>(result, right[r])
-			r++
-		}
-	}
-	result = <span style="font-weight:bold;font-style:italic">append</span>(result, left[l:]...)
-	result = <span style="font-weight:bold;font-style:italic">append</span>(result, right[r:]...)
-	<span style="font-weight:bold">return</span>
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-	s = <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(s)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data []<span style="font-weight:bold">int</span>) []<span style="font-weight:bold">int</span> {
+</span></span><span style="display:flex;"><span>	length := <span style="font-weight:bold;font-style:italic">len</span>(data)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> length &lt;= 1 {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span> data
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	num := length / 2
+</span></span><span style="display:flex;"><span>	left := <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data[:num])
+</span></span><span style="display:flex;"><span>	right := <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(data[num:])
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">merge</span>(left, right)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">merge</span>(left, right []<span style="font-weight:bold">int</span>) (result []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	l, r := 0, 0
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> l &lt; <span style="font-weight:bold;font-style:italic">len</span>(left) &amp;&amp; r &lt; <span style="font-weight:bold;font-style:italic">len</span>(right) {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">if</span> left[l] &lt; right[r] {
+</span></span><span style="display:flex;"><span>			result = <span style="font-weight:bold;font-style:italic">append</span>(result, left[l])
+</span></span><span style="display:flex;"><span>			l++
+</span></span><span style="display:flex;"><span>		} <span style="font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span>			result = <span style="font-weight:bold;font-style:italic">append</span>(result, right[r])
+</span></span><span style="display:flex;"><span>			r++
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	result = <span style="font-weight:bold;font-style:italic">append</span>(result, left[l:]...)
+</span></span><span style="display:flex;"><span>	result = <span style="font-weight:bold;font-style:italic">append</span>(result, right[r:]...)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>	s = <span style="color:#666;font-weight:bold;font-style:italic">mergeSort</span>(s)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="堆排序">堆排序</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">heapSort</span>(array []<span style="font-weight:bold">int</span>) {
-	m := <span style="font-weight:bold;font-style:italic">len</span>(array)
-	s := m / 2
-	<span style="font-weight:bold">for</span> i := s; i &gt; -1; i-- {
-		<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, i, m-1)
-	}
-	<span style="font-weight:bold">for</span> i := m - 1; i &gt; 0; i-- {
-		array[i], array[0] = array[0], array[i]
-		<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, 0, i-1)
-	}
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array []<span style="font-weight:bold">int</span>, i, end <span style="font-weight:bold">int</span>) {
-	l := 2*i + 1
-	<span style="font-weight:bold">if</span> l &gt; end {
-		<span style="font-weight:bold">return</span>
-	}
-	n := l
-	r := 2*i + 2
-	<span style="font-weight:bold">if</span> r &lt;= end &amp;&amp; array[r] &gt; array[l] {
-		n = r
-	}
-	<span style="font-weight:bold">if</span> array[i] &gt; array[n] {
-		<span style="font-weight:bold">return</span>
-	}
-	array[n], array[i] = array[i], array[n]
-	<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, n, end)
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
-    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
-	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
-		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
-	}
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-	<span style="color:#666;font-weight:bold;font-style:italic">heapSort</span>(s)
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">heapSort</span>(array []<span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	m := <span style="font-weight:bold;font-style:italic">len</span>(array)
+</span></span><span style="display:flex;"><span>	s := m / 2
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := s; i &gt; -1; i-- {
+</span></span><span style="display:flex;"><span>		<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, i, m-1)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := m - 1; i &gt; 0; i-- {
+</span></span><span style="display:flex;"><span>		array[i], array[0] = array[0], array[i]
+</span></span><span style="display:flex;"><span>		<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, 0, i-1)
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array []<span style="font-weight:bold">int</span>, i, end <span style="font-weight:bold">int</span>) {
+</span></span><span style="display:flex;"><span>	l := 2*i + 1
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> l &gt; end {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	n := l
+</span></span><span style="display:flex;"><span>	r := 2*i + 2
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> r &lt;= end &amp;&amp; array[r] &gt; array[l] {
+</span></span><span style="display:flex;"><span>		n = r
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> array[i] &gt; array[n] {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	array[n], array[i] = array[i], array[n]
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">heap</span>(array, n, end)
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	s := <span style="font-weight:bold;font-style:italic">make</span>([]<span style="font-weight:bold">int</span>, 0, 16)
+</span></span><span style="display:flex;"><span>    rand.<span style="color:#666;font-weight:bold;font-style:italic">Seed</span>(time.<span style="color:#666;font-weight:bold;font-style:italic">Now</span>().<span style="color:#666;font-weight:bold;font-style:italic">UnixNano</span>())
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">for</span> i := 0; i &lt; 16; i++ {
+</span></span><span style="display:flex;"><span>		s = <span style="font-weight:bold;font-style:italic">append</span>(s, rand.<span style="color:#666;font-weight:bold;font-style:italic">Intn</span>(100))
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-weight:bold;font-style:italic">heapSort</span>(s)
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(s)
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
         </div>
@@ -725,7 +725,7 @@
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/gin_routes_registry/">gin框架路由拆分与注册</a></li>
@@ -757,13 +757,16 @@
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -771,7 +774,9 @@
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -779,6 +784,7 @@
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -788,13 +794,10 @@
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -802,12 +805,11 @@
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

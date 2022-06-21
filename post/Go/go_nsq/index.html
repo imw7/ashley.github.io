@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -186,9 +182,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -206,6 +202,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -226,13 +226,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -277,70 +277,70 @@
 </li>
 <li>
 <p>in one shell, start <code>nsqlookupd</code>:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ nsqlookupd
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ nsqlookupd
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
 <p>in another shell, start <code>nsqd</code>:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ nsqd --lookupd-tcp-address=127.0.0.1:4160
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ nsqd --lookupd-tcp-address=127.0.0.1:4160
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
 <p>in another shell, start <code>nsqadmin</code>:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ nsqadmin --lookupd-http-address=127.0.0.1:4161
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ nsqadmin --lookupd-http-address=127.0.0.1:4161
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
 <p>publish an initial message (creates the topic in the cluster, too):</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 1&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 1&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
 <p>finally, in another shell, start <code>nsq_to_file</code>:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ nsq_to_file --topic=<span style="font-weight:bold;font-style:italic">test</span> --output-dir=/tmp --lookupd-http-address=127.0.0.1:4161
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ nsq_to_file --topic=<span style="font-weight:bold;font-style:italic">test</span> --output-dir=/tmp --lookupd-http-address=127.0.0.1:4161
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
 <p>publish more messages to <code>nsqd</code>:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 2&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
-$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 2&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
+</span></span><span style="display:flex;"><span>$ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</span> <span style="color:#666;font-style:italic">&#39;http://127.0.0.1:4151/pub?topic=test&#39;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></li>
 <li>
@@ -352,257 +352,257 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
 <h3 id="nsqd">nsqd</h3>
 <p>nsqd是一个守护进程，它接收、排队并向客户端发送消息。</p>
 <p>启动<code>nsqd</code>，指定<code>-broadcast-address=127.0.0.1</code>来配置广播地址</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">./nsqd -broadcast-address=127.0.0.1
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>./nsqd -broadcast-address=127.0.0.1
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果是在搭配<code>nsqlookupd</code>使用的模式下需要还指定<code>nsqlookupd</code>地址:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./nsqd -broadcast-address=127.0.0.1 -lookupd-tcp-address=127.0.0.1:4160
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./nsqd -broadcast-address=127.0.0.1 -lookupd-tcp-address=127.0.0.1:4160
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>如果是部署了多个<code>nsqlookupd</code>节点的集群，那还可以指定多个<code>-lookupd-tcp-address</code>。</p>
 <p><code>nsqdq</code>相关配置项如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">70
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">71
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">72
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">73
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">74
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">75
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">78
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">79
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">80
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">81
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">82
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">83
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">84
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">85
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">86
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">-auth-http-address value
-    &lt;addr&gt;:&lt;port&gt; to query auth <span style="color:#666;font-weight:bold;font-style:italic">server</span> (may be given multiple times)
--broadcast-address <span style="font-weight:bold">string</span>
-    address that will be registered with <span style="color:#666;font-weight:bold;font-style:italic">lookupd</span> (defaults to the OS hostname) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;PROSNAKES.local&#34;</span>)
--config <span style="font-weight:bold">string</span>
-    path to config file
--data-path <span style="font-weight:bold">string</span>
-    path to store disk-backed messages
--deflate
-    enable deflate feature <span style="color:#666;font-weight:bold;font-style:italic">negotiation</span> (client compression) (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
--e2e-processing-latency-percentile value
-    message processing time <span style="color:#666;font-weight:bold;font-style:italic">percentiles</span> (as <span style="font-weight:bold">float</span> (0, 1.0]) to <span style="color:#666;font-weight:bold;font-style:italic">track</span> (can be specified multiple times or comma separated <span style="">&#39;</span>1.0,0.99,0.95<span style="">&#39;</span>, <span style="font-weight:bold">default</span> none)
--e2e-processing-latency-window-time duration
-    calculate end to end latency quantiles <span style="font-weight:bold">for</span> this duration of <span style="color:#666;font-weight:bold;font-style:italic">time</span> (ie: 60s would only show quantile calculations from the past 60 seconds) (<span style="font-weight:bold">default</span> 10m0s)
--http-address <span style="font-weight:bold">string</span>
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4151&#34;</span>)
--http-client-connect-timeout duration
-    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">connect</span> (<span style="font-weight:bold">default</span> 2s)
--http-client-request-timeout duration
-    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">request</span> (<span style="font-weight:bold">default</span> 5s)
--https-address <span style="font-weight:bold">string</span>
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTPS <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4152&#34;</span>)
--log-prefix <span style="font-weight:bold">string</span>
-    log message <span style="color:#666;font-weight:bold;font-style:italic">prefix</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;[nsqd] &#34;</span>)
--lookupd-tcp-address value
-    lookupd TCP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
--max-body-size <span style="font-weight:bold">int</span>
-    maximum size of a single command <span style="color:#666;font-weight:bold;font-style:italic">body</span> (<span style="font-weight:bold">default</span> 5242880)
--max-bytes-per-file <span style="font-weight:bold">int</span>
-    number of bytes per diskqueue file before <span style="color:#666;font-weight:bold;font-style:italic">rolling</span> (<span style="font-weight:bold">default</span> 104857600)
--max-deflate-level <span style="font-weight:bold">int</span>
-    max deflate compression level a client can <span style="color:#666;font-weight:bold;font-style:italic">negotiate</span> (&gt; values == &gt; nsqd CPU usage) (<span style="font-weight:bold">default</span> 6)
--max-heartbeat-interval duration
-    maximum client configurable duration of time between client <span style="color:#666;font-weight:bold;font-style:italic">heartbeats</span> (<span style="font-weight:bold">default</span> 1m0s)
--max-msg-size <span style="font-weight:bold">int</span>
-    maximum size of a single message in <span style="color:#666;font-weight:bold;font-style:italic">bytes</span> (<span style="font-weight:bold">default</span> 1048576)
--max-msg-timeout duration
-    maximum duration before a message will <span style="color:#666;font-weight:bold;font-style:italic">timeout</span> (<span style="font-weight:bold">default</span> 15m0s)
--max-output-buffer-size <span style="font-weight:bold">int</span>
-    maximum client configurable <span style="color:#666;font-weight:bold;font-style:italic">size</span> (in bytes) <span style="font-weight:bold">for</span> a client output <span style="color:#666;font-weight:bold;font-style:italic">buffer</span> (<span style="font-weight:bold">default</span> 65536)
--max-output-buffer-timeout duration
-    maximum client configurable duration of time between flushing to a <span style="color:#666;font-weight:bold;font-style:italic">client</span> (<span style="font-weight:bold">default</span> 1s)
--max-rdy-count <span style="font-weight:bold">int</span>
-    maximum RDY count <span style="font-weight:bold">for</span> a <span style="color:#666;font-weight:bold;font-style:italic">client</span> (<span style="font-weight:bold">default</span> 2500)
--max-req-timeout duration
-    maximum requeuing timeout <span style="font-weight:bold">for</span> a <span style="color:#666;font-weight:bold;font-style:italic">message</span> (<span style="font-weight:bold">default</span> 1h0m0s)
--mem-queue-size <span style="font-weight:bold">int</span>
-    number of messages to keep in <span style="color:#666;font-weight:bold;font-style:italic">memory</span> (per topic/channel) (<span style="font-weight:bold">default</span> 10000)
--msg-timeout <span style="font-weight:bold">string</span>
-    duration to wait before auto-requeing a <span style="color:#666;font-weight:bold;font-style:italic">message</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;1m0s&#34;</span>)
--node-id <span style="font-weight:bold">int</span>
-    unique part <span style="font-weight:bold">for</span> message IDs, (<span style="font-weight:bold">int</span>) in <span style="font-weight:bold">range</span> [0,1024) (<span style="font-weight:bold">default</span> is hash of hostname) (<span style="font-weight:bold">default</span> 616)
--snappy
-    enable snappy feature <span style="color:#666;font-weight:bold;font-style:italic">negotiation</span> (client compression) (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
--statsd-address <span style="font-weight:bold">string</span>
-    UDP &lt;addr&gt;:&lt;port&gt; of a statsd daemon <span style="font-weight:bold">for</span> pushing stats
--statsd-interval <span style="font-weight:bold">string</span>
-    duration between pushing to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;1m0s&#34;</span>)
--statsd-mem-stats
-    toggle sending memory and GC stats to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
--statsd-prefix <span style="font-weight:bold">string</span>
-    prefix used <span style="font-weight:bold">for</span> keys sent to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (%s <span style="font-weight:bold">for</span> host replacement) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;nsq.%s&#34;</span>)
--sync-every <span style="font-weight:bold">int</span>
-    number of messages per diskqueue <span style="color:#666;font-weight:bold;font-style:italic">fsync</span> (<span style="font-weight:bold">default</span> 2500)
--sync-timeout duration
-    duration of time per diskqueue <span style="color:#666;font-weight:bold;font-style:italic">fsync</span> (<span style="font-weight:bold">default</span> 2s)
--tcp-address <span style="font-weight:bold">string</span>
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> TCP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4150&#34;</span>)
--tls-cert <span style="font-weight:bold">string</span>
-    path to certificate file
--tls-client-auth-policy <span style="font-weight:bold">string</span>
-    client certificate auth <span style="color:#666;font-weight:bold;font-style:italic">policy</span> (<span style="">&#39;</span>require<span style="">&#39;</span> or <span style="">&#39;</span>require-verify<span style="">&#39;</span>)
--tls-key <span style="font-weight:bold">string</span>
-    path to key file
--tls-min-version value
-    minimum SSL/TLS version <span style="color:#666;font-weight:bold;font-style:italic">acceptable</span> (<span style="">&#39;</span>ssl3.0<span style="">&#39;</span>, <span style="">&#39;</span>tls1.0<span style="">&#39;</span>, <span style="">&#39;</span>tls1.1<span style="">&#39;</span>, or <span style="">&#39;</span>tls1.2<span style="">&#39;</span>) (<span style="font-weight:bold">default</span> 769)
--tls-required
-    require TLS <span style="font-weight:bold">for</span> client <span style="color:#666;font-weight:bold;font-style:italic">connections</span> (<span style="font-weight:bold">true</span>, <span style="font-weight:bold">false</span>, tcp-https)
--tls-root-ca-file <span style="font-weight:bold">string</span>
-    path to certificate authority file
--verbose
-    enable verbose logging
--version
-    print version <span style="font-weight:bold">string</span>
--worker-id
-    do NOT use this, use --node-id
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>-auth-http-address value
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to query auth <span style="color:#666;font-weight:bold;font-style:italic">server</span> (may be given multiple times)
+</span></span><span style="display:flex;"><span>-broadcast-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    address that will be registered with <span style="color:#666;font-weight:bold;font-style:italic">lookupd</span> (defaults to the OS hostname) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;PROSNAKES.local&#34;</span>)
+</span></span><span style="display:flex;"><span>-config <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to config file
+</span></span><span style="display:flex;"><span>-data-path <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to store disk-backed messages
+</span></span><span style="display:flex;"><span>-deflate
+</span></span><span style="display:flex;"><span>    enable deflate feature <span style="color:#666;font-weight:bold;font-style:italic">negotiation</span> (client compression) (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>-e2e-processing-latency-percentile value
+</span></span><span style="display:flex;"><span>    message processing time <span style="color:#666;font-weight:bold;font-style:italic">percentiles</span> (as <span style="font-weight:bold">float</span> (0, 1.0]) to <span style="color:#666;font-weight:bold;font-style:italic">track</span> (can be specified multiple times or comma separated <span style="">&#39;</span>1.0,0.99,0.95<span style="">&#39;</span>, <span style="font-weight:bold">default</span> none)
+</span></span><span style="display:flex;"><span>-e2e-processing-latency-window-time duration
+</span></span><span style="display:flex;"><span>    calculate end to end latency quantiles <span style="font-weight:bold">for</span> this duration of <span style="color:#666;font-weight:bold;font-style:italic">time</span> (ie: 60s would only show quantile calculations from the past 60 seconds) (<span style="font-weight:bold">default</span> 10m0s)
+</span></span><span style="display:flex;"><span>-http-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4151&#34;</span>)
+</span></span><span style="display:flex;"><span>-http-client-connect-timeout duration
+</span></span><span style="display:flex;"><span>    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">connect</span> (<span style="font-weight:bold">default</span> 2s)
+</span></span><span style="display:flex;"><span>-http-client-request-timeout duration
+</span></span><span style="display:flex;"><span>    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">request</span> (<span style="font-weight:bold">default</span> 5s)
+</span></span><span style="display:flex;"><span>-https-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTPS <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4152&#34;</span>)
+</span></span><span style="display:flex;"><span>-log-prefix <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    log message <span style="color:#666;font-weight:bold;font-style:italic">prefix</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;[nsqd] &#34;</span>)
+</span></span><span style="display:flex;"><span>-lookupd-tcp-address value
+</span></span><span style="display:flex;"><span>    lookupd TCP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
+</span></span><span style="display:flex;"><span>-max-body-size <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    maximum size of a single command <span style="color:#666;font-weight:bold;font-style:italic">body</span> (<span style="font-weight:bold">default</span> 5242880)
+</span></span><span style="display:flex;"><span>-max-bytes-per-file <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    number of bytes per diskqueue file before <span style="color:#666;font-weight:bold;font-style:italic">rolling</span> (<span style="font-weight:bold">default</span> 104857600)
+</span></span><span style="display:flex;"><span>-max-deflate-level <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    max deflate compression level a client can <span style="color:#666;font-weight:bold;font-style:italic">negotiate</span> (&gt; values == &gt; nsqd CPU usage) (<span style="font-weight:bold">default</span> 6)
+</span></span><span style="display:flex;"><span>-max-heartbeat-interval duration
+</span></span><span style="display:flex;"><span>    maximum client configurable duration of time between client <span style="color:#666;font-weight:bold;font-style:italic">heartbeats</span> (<span style="font-weight:bold">default</span> 1m0s)
+</span></span><span style="display:flex;"><span>-max-msg-size <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    maximum size of a single message in <span style="color:#666;font-weight:bold;font-style:italic">bytes</span> (<span style="font-weight:bold">default</span> 1048576)
+</span></span><span style="display:flex;"><span>-max-msg-timeout duration
+</span></span><span style="display:flex;"><span>    maximum duration before a message will <span style="color:#666;font-weight:bold;font-style:italic">timeout</span> (<span style="font-weight:bold">default</span> 15m0s)
+</span></span><span style="display:flex;"><span>-max-output-buffer-size <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    maximum client configurable <span style="color:#666;font-weight:bold;font-style:italic">size</span> (in bytes) <span style="font-weight:bold">for</span> a client output <span style="color:#666;font-weight:bold;font-style:italic">buffer</span> (<span style="font-weight:bold">default</span> 65536)
+</span></span><span style="display:flex;"><span>-max-output-buffer-timeout duration
+</span></span><span style="display:flex;"><span>    maximum client configurable duration of time between flushing to a <span style="color:#666;font-weight:bold;font-style:italic">client</span> (<span style="font-weight:bold">default</span> 1s)
+</span></span><span style="display:flex;"><span>-max-rdy-count <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    maximum RDY count <span style="font-weight:bold">for</span> a <span style="color:#666;font-weight:bold;font-style:italic">client</span> (<span style="font-weight:bold">default</span> 2500)
+</span></span><span style="display:flex;"><span>-max-req-timeout duration
+</span></span><span style="display:flex;"><span>    maximum requeuing timeout <span style="font-weight:bold">for</span> a <span style="color:#666;font-weight:bold;font-style:italic">message</span> (<span style="font-weight:bold">default</span> 1h0m0s)
+</span></span><span style="display:flex;"><span>-mem-queue-size <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    number of messages to keep in <span style="color:#666;font-weight:bold;font-style:italic">memory</span> (per topic/channel) (<span style="font-weight:bold">default</span> 10000)
+</span></span><span style="display:flex;"><span>-msg-timeout <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    duration to wait before auto-requeing a <span style="color:#666;font-weight:bold;font-style:italic">message</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;1m0s&#34;</span>)
+</span></span><span style="display:flex;"><span>-node-id <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    unique part <span style="font-weight:bold">for</span> message IDs, (<span style="font-weight:bold">int</span>) in <span style="font-weight:bold">range</span> [0,1024) (<span style="font-weight:bold">default</span> is hash of hostname) (<span style="font-weight:bold">default</span> 616)
+</span></span><span style="display:flex;"><span>-snappy
+</span></span><span style="display:flex;"><span>    enable snappy feature <span style="color:#666;font-weight:bold;font-style:italic">negotiation</span> (client compression) (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>-statsd-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    UDP &lt;addr&gt;:&lt;port&gt; of a statsd daemon <span style="font-weight:bold">for</span> pushing stats
+</span></span><span style="display:flex;"><span>-statsd-interval <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    duration between pushing to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;1m0s&#34;</span>)
+</span></span><span style="display:flex;"><span>-statsd-mem-stats
+</span></span><span style="display:flex;"><span>    toggle sending memory and GC stats to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (<span style="font-weight:bold">default</span> <span style="font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span>-statsd-prefix <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    prefix used <span style="font-weight:bold">for</span> keys sent to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (%s <span style="font-weight:bold">for</span> host replacement) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;nsq.%s&#34;</span>)
+</span></span><span style="display:flex;"><span>-sync-every <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>    number of messages per diskqueue <span style="color:#666;font-weight:bold;font-style:italic">fsync</span> (<span style="font-weight:bold">default</span> 2500)
+</span></span><span style="display:flex;"><span>-sync-timeout duration
+</span></span><span style="display:flex;"><span>    duration of time per diskqueue <span style="color:#666;font-weight:bold;font-style:italic">fsync</span> (<span style="font-weight:bold">default</span> 2s)
+</span></span><span style="display:flex;"><span>-tcp-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> TCP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4150&#34;</span>)
+</span></span><span style="display:flex;"><span>-tls-cert <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to certificate file
+</span></span><span style="display:flex;"><span>-tls-client-auth-policy <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    client certificate auth <span style="color:#666;font-weight:bold;font-style:italic">policy</span> (<span style="">&#39;</span>require<span style="">&#39;</span> or <span style="">&#39;</span>require-verify<span style="">&#39;</span>)
+</span></span><span style="display:flex;"><span>-tls-key <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to key file
+</span></span><span style="display:flex;"><span>-tls-min-version value
+</span></span><span style="display:flex;"><span>    minimum SSL/TLS version <span style="color:#666;font-weight:bold;font-style:italic">acceptable</span> (<span style="">&#39;</span>ssl3.0<span style="">&#39;</span>, <span style="">&#39;</span>tls1.0<span style="">&#39;</span>, <span style="">&#39;</span>tls1.1<span style="">&#39;</span>, or <span style="">&#39;</span>tls1.2<span style="">&#39;</span>) (<span style="font-weight:bold">default</span> 769)
+</span></span><span style="display:flex;"><span>-tls-required
+</span></span><span style="display:flex;"><span>    require TLS <span style="font-weight:bold">for</span> client <span style="color:#666;font-weight:bold;font-style:italic">connections</span> (<span style="font-weight:bold">true</span>, <span style="font-weight:bold">false</span>, tcp-https)
+</span></span><span style="display:flex;"><span>-tls-root-ca-file <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to certificate authority file
+</span></span><span style="display:flex;"><span>-verbose
+</span></span><span style="display:flex;"><span>    enable verbose logging
+</span></span><span style="display:flex;"><span>-version
+</span></span><span style="display:flex;"><span>    print version <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>-worker-id
+</span></span><span style="display:flex;"><span>    do NOT use this, use --node-id
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="nsqlookupd">nsqlookupd</h3>
 <p>nsqlookupd是维护所有nsqd状态、提供服务发现的守护进程。它能为消费者查找特定<code>topic</code>下的nsqd提供了运行时的自动发现服务。 它不维持持久状态，也不需要与任何其他nsqlookupd实例协调以满足查询。因此根据你系统的冗余要求尽可能多地部署<code>nsqlookupd</code>节点。它们小豪的资源很少，可以与其他服务共存。我们的建议是为每个数据中心运行至少3个集群。</p>
 <p><code>nsqlookupd</code>相关配置项如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">-broadcast-address string
-    address of this lookupd node, (default to the OS hostname) (default <span style="color:#666;font-style:italic">&#34;PROSNAKES.local&#34;</span>)
--config string
-    path to config file
--http-address string
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP clients (default <span style="color:#666;font-style:italic">&#34;0.0.0.0:4161&#34;</span>)
--inactive-producer-timeout duration
-    duration of <span style="font-weight:bold;font-style:italic">time</span> a producer will remain in the active list since its last ping (default 5m0s)
--log-prefix string
-    log message prefix (default <span style="color:#666;font-style:italic">&#34;[nsqlookupd] &#34;</span>)
--tcp-address string
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> TCP clients (default <span style="color:#666;font-style:italic">&#34;0.0.0.0:4160&#34;</span>)
--tombstone-lifetime duration
-    duration of <span style="font-weight:bold;font-style:italic">time</span> a producer will remain tombstoned <span style="font-weight:bold">if</span> registration remains (default 45s)
--verbose
-    <span style="font-weight:bold;font-style:italic">enable</span> verbose logging
--version
-    print version string
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>-broadcast-address string
+</span></span><span style="display:flex;"><span>    address of this lookupd node, (default to the OS hostname) (default <span style="color:#666;font-style:italic">&#34;PROSNAKES.local&#34;</span>)
+</span></span><span style="display:flex;"><span>-config string
+</span></span><span style="display:flex;"><span>    path to config file
+</span></span><span style="display:flex;"><span>-http-address string
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP clients (default <span style="color:#666;font-style:italic">&#34;0.0.0.0:4161&#34;</span>)
+</span></span><span style="display:flex;"><span>-inactive-producer-timeout duration
+</span></span><span style="display:flex;"><span>    duration of <span style="font-weight:bold;font-style:italic">time</span> a producer will remain in the active list since its last ping (default 5m0s)
+</span></span><span style="display:flex;"><span>-log-prefix string
+</span></span><span style="display:flex;"><span>    log message prefix (default <span style="color:#666;font-style:italic">&#34;[nsqlookupd] &#34;</span>)
+</span></span><span style="display:flex;"><span>-tcp-address string
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> TCP clients (default <span style="color:#666;font-style:italic">&#34;0.0.0.0:4160&#34;</span>)
+</span></span><span style="display:flex;"><span>-tombstone-lifetime duration
+</span></span><span style="display:flex;"><span>    duration of <span style="font-weight:bold;font-style:italic">time</span> a producer will remain tombstoned <span style="font-weight:bold">if</span> registration remains (default 45s)
+</span></span><span style="display:flex;"><span>-verbose
+</span></span><span style="display:flex;"><span>    <span style="font-weight:bold;font-style:italic">enable</span> verbose logging
+</span></span><span style="display:flex;"><span>-version
+</span></span><span style="display:flex;"><span>    print version string
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="nsqadmin">nsqadmin</h3>
 <p>一个实时监控集群状态、执行各种管理任务的Web管理平台。 启动<code>nsqadmin</code>，指定<code>nsqlookupd</code>地址:</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">./nsqadmin -lookupd-http-address=127.0.0.1:4161
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>./nsqadmin -lookupd-http-address=127.0.0.1:4161
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>我们可以使用浏览器打开<code>http://127.0.0.1:4171/</code>访问如下管理界面。
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/nsq/nsqadmin0.png">
@@ -610,91 +610,91 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
         </a>
     </p>
 <p><code>nsqadmin</code>相关的配置项如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">-allow-config-from-cidr <span style="font-weight:bold">string</span>
-    A CIDR from which to allow HTTP requests to the /config <span style="color:#666;font-weight:bold;font-style:italic">endpoint</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;127.0.0.1/8&#34;</span>)
--config <span style="font-weight:bold">string</span>
-    path to config file
--graphite-url <span style="font-weight:bold">string</span>
-    graphite HTTP address
--http-address <span style="font-weight:bold">string</span>
-    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4171&#34;</span>)
--http-client-connect-timeout duration
-    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">connect</span> (<span style="font-weight:bold">default</span> 2s)
--http-client-request-timeout duration
-    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">request</span> (<span style="font-weight:bold">default</span> 5s)
--http-client-tls-cert <span style="font-weight:bold">string</span>
-    path to certificate file <span style="font-weight:bold">for</span> the HTTP client
--http-client-tls-insecure-skip-verify
-    configure the HTTP client to skip verification of TLS certificates
--http-client-tls-key <span style="font-weight:bold">string</span>
-    path to key file <span style="font-weight:bold">for</span> the HTTP client
--http-client-tls-root-ca-file <span style="font-weight:bold">string</span>
-    path to CA file <span style="font-weight:bold">for</span> the HTTP client
--log-prefix <span style="font-weight:bold">string</span>
-    log message <span style="color:#666;font-weight:bold;font-style:italic">prefix</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;[nsqadmin] &#34;</span>)
--lookupd-http-address value
-    lookupd HTTP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
--notification-http-endpoint <span style="font-weight:bold">string</span>
-    HTTP <span style="color:#666;font-weight:bold;font-style:italic">endpoint</span> (fully qualified) to which POST notifications of admin actions will be sent
--nsqd-http-address value
-    nsqd HTTP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
--proxy-graphite
-    proxy HTTP requests to graphite
--statsd-counter-format <span style="font-weight:bold">string</span>
-    The counter stats key formatting applied by the implementation of statsd. If no formatting is desired, set this to an empty <span style="font-weight:bold">string</span>. (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;stats.counters.%s.count&#34;</span>)
--statsd-gauge-format <span style="font-weight:bold">string</span>
-    The gauge stats key formatting applied by the implementation of statsd. If no formatting is desired, set this to an empty <span style="font-weight:bold">string</span>. (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;stats.gauges.%s&#34;</span>)
--statsd-interval duration
-    time interval nsqd is configured to push to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (must match nsqd) (<span style="font-weight:bold">default</span> 1m0s)
--statsd-prefix <span style="font-weight:bold">string</span>
-    prefix used <span style="font-weight:bold">for</span> keys sent to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (%s <span style="font-weight:bold">for</span> host replacement, must match nsqd) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;nsq.%s&#34;</span>)
--version
-    print version <span style="font-weight:bold">string</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>-allow-config-from-cidr <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    A CIDR from which to allow HTTP requests to the /config <span style="color:#666;font-weight:bold;font-style:italic">endpoint</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;127.0.0.1/8&#34;</span>)
+</span></span><span style="display:flex;"><span>-config <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to config file
+</span></span><span style="display:flex;"><span>-graphite-url <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    graphite HTTP address
+</span></span><span style="display:flex;"><span>-http-address <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    &lt;addr&gt;:&lt;port&gt; to listen on <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">clients</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;0.0.0.0:4171&#34;</span>)
+</span></span><span style="display:flex;"><span>-http-client-connect-timeout duration
+</span></span><span style="display:flex;"><span>    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">connect</span> (<span style="font-weight:bold">default</span> 2s)
+</span></span><span style="display:flex;"><span>-http-client-request-timeout duration
+</span></span><span style="display:flex;"><span>    timeout <span style="font-weight:bold">for</span> HTTP <span style="color:#666;font-weight:bold;font-style:italic">request</span> (<span style="font-weight:bold">default</span> 5s)
+</span></span><span style="display:flex;"><span>-http-client-tls-cert <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to certificate file <span style="font-weight:bold">for</span> the HTTP client
+</span></span><span style="display:flex;"><span>-http-client-tls-insecure-skip-verify
+</span></span><span style="display:flex;"><span>    configure the HTTP client to skip verification of TLS certificates
+</span></span><span style="display:flex;"><span>-http-client-tls-key <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to key file <span style="font-weight:bold">for</span> the HTTP client
+</span></span><span style="display:flex;"><span>-http-client-tls-root-ca-file <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    path to CA file <span style="font-weight:bold">for</span> the HTTP client
+</span></span><span style="display:flex;"><span>-log-prefix <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    log message <span style="color:#666;font-weight:bold;font-style:italic">prefix</span> (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;[nsqadmin] &#34;</span>)
+</span></span><span style="display:flex;"><span>-lookupd-http-address value
+</span></span><span style="display:flex;"><span>    lookupd HTTP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
+</span></span><span style="display:flex;"><span>-notification-http-endpoint <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    HTTP <span style="color:#666;font-weight:bold;font-style:italic">endpoint</span> (fully qualified) to which POST notifications of admin actions will be sent
+</span></span><span style="display:flex;"><span>-nsqd-http-address value
+</span></span><span style="display:flex;"><span>    nsqd HTTP <span style="color:#666;font-weight:bold;font-style:italic">address</span> (may be given multiple times)
+</span></span><span style="display:flex;"><span>-proxy-graphite
+</span></span><span style="display:flex;"><span>    proxy HTTP requests to graphite
+</span></span><span style="display:flex;"><span>-statsd-counter-format <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    The counter stats key formatting applied by the implementation of statsd. If no formatting is desired, set this to an empty <span style="font-weight:bold">string</span>. (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;stats.counters.%s.count&#34;</span>)
+</span></span><span style="display:flex;"><span>-statsd-gauge-format <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    The gauge stats key formatting applied by the implementation of statsd. If no formatting is desired, set this to an empty <span style="font-weight:bold">string</span>. (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;stats.gauges.%s&#34;</span>)
+</span></span><span style="display:flex;"><span>-statsd-interval duration
+</span></span><span style="display:flex;"><span>    time interval nsqd is configured to push to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (must match nsqd) (<span style="font-weight:bold">default</span> 1m0s)
+</span></span><span style="display:flex;"><span>-statsd-prefix <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>    prefix used <span style="font-weight:bold">for</span> keys sent to <span style="color:#666;font-weight:bold;font-style:italic">statsd</span> (%s <span style="font-weight:bold">for</span> host replacement, must match nsqd) (<span style="font-weight:bold">default</span> <span style="color:#666;font-style:italic">&#34;nsq.%s&#34;</span>)
+</span></span><span style="display:flex;"><span>-version
+</span></span><span style="display:flex;"><span>    print version <span style="font-weight:bold">string</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="nsq架构">NSQ架构</h2>
 <h3 id="nsq工作模式">NSQ工作模式</h3>
@@ -733,142 +733,142 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
 <h2 id="go操作nsq">Go操作NSQ</h2>
 <p>官方提供了Go语言版的客户端：<a href="https://github.com/nsqio/go-nsq">go-nsq</a>，更多客户端支持请查看<a href="https://nsq.io/clients/client_libraries.html">CLIENT LIBRARIES</a>。</p>
 <h3 id="安装-1">安装</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">go get -u github.com/nsqio/go-nsq
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>go get -u github.com/nsqio/go-nsq
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="生产者">生产者</h3>
 <p>一个简单的生产者示例代码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// nsq_producer/main.go
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">package</span> main
-
-<span style="font-weight:bold">import</span> (
-	<span style="color:#666;font-style:italic">&#34;bufio&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;github.com/nsqio/go-nsq&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;strings&#34;</span>
-)
-
-<span style="color:#888;font-style:italic">// NSQ Producer Demo
-</span><span style="color:#888;font-style:italic"></span>
-<span style="font-weight:bold;font-style:italic">var</span> producer *nsq.Producer
-
-<span style="color:#888;font-style:italic">// 初始化生产者
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">initProducer</span>(str <span style="font-weight:bold">string</span>) (err <span style="font-weight:bold">error</span>) {
-	config := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
-	producer, err = nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewProducer</span>(str, config)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;create producer failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span> err
-	}
-	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	nsqAddress := <span style="color:#666;font-style:italic">&#34;127.0.0.1:4150&#34;</span>
-	err := <span style="color:#666;font-weight:bold;font-style:italic">initProducer</span>(nsqAddress)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;init producer failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-
-	reader := bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(os.Stdin) <span style="color:#888;font-style:italic">// 从标准输入读取
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> {
-		data, err := reader.<span style="color:#666;font-weight:bold;font-style:italic">ReadString</span>(<span style="color:#666;font-style:italic">&#39;\n&#39;</span>)
-		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read string from stdin failed, err:&#34;</span>, err)
-			<span style="font-weight:bold">continue</span>
-		}
-		data = strings.<span style="color:#666;font-weight:bold;font-style:italic">TrimSpace</span>(data)
-		<span style="font-weight:bold">if</span> strings.<span style="color:#666;font-weight:bold;font-style:italic">ToUpper</span>(data) == <span style="color:#666;font-style:italic">&#34;Q&#34;</span> { <span style="color:#888;font-style:italic">// 输入q退出
-</span><span style="color:#888;font-style:italic"></span>			<span style="font-weight:bold">break</span>
-		}
-		<span style="color:#888;font-style:italic">// 向 &#39;topic_demo&#39; publish 数据
-</span><span style="color:#888;font-style:italic"></span>		err = producer.<span style="color:#666;font-weight:bold;font-style:italic">Publish</span>(<span style="color:#666;font-style:italic">&#34;topic_demo&#34;</span>, []<span style="font-weight:bold;font-style:italic">byte</span>(data))
-		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;publish msg to nsq failed, err:&#34;</span>, err)
-			<span style="font-weight:bold">continue</span>
-		}
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// nsq_producer/main.go
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;bufio&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;github.com/nsqio/go-nsq&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;strings&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// NSQ Producer Demo
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">var</span> producer *nsq.Producer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 初始化生产者
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">initProducer</span>(str <span style="font-weight:bold">string</span>) (err <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span>	config := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
+</span></span><span style="display:flex;"><span>	producer, err = nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewProducer</span>(str, config)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;create producer failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span> err
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	nsqAddress := <span style="color:#666;font-style:italic">&#34;127.0.0.1:4150&#34;</span>
+</span></span><span style="display:flex;"><span>	err := <span style="color:#666;font-weight:bold;font-style:italic">initProducer</span>(nsqAddress)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;init producer failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	reader := bufio.<span style="color:#666;font-weight:bold;font-style:italic">NewReader</span>(os.Stdin) <span style="color:#888;font-style:italic">// 从标准输入读取
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">for</span> {
+</span></span><span style="display:flex;"><span>		data, err := reader.<span style="color:#666;font-weight:bold;font-style:italic">ReadString</span>(<span style="color:#666;font-style:italic">&#39;\n&#39;</span>)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;read string from stdin failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>			<span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		data = strings.<span style="color:#666;font-weight:bold;font-style:italic">TrimSpace</span>(data)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">if</span> strings.<span style="color:#666;font-weight:bold;font-style:italic">ToUpper</span>(data) == <span style="color:#666;font-style:italic">&#34;Q&#34;</span> { <span style="color:#888;font-style:italic">// 输入q退出
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>			<span style="font-weight:bold">break</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>		<span style="color:#888;font-style:italic">// 向 &#39;topic_demo&#39; publish 数据
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		err = producer.<span style="color:#666;font-weight:bold;font-style:italic">Publish</span>(<span style="color:#666;font-style:italic">&#34;topic_demo&#34;</span>, []<span style="font-weight:bold;font-style:italic">byte</span>(data))
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;publish msg to nsq failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>			<span style="font-weight:bold">continue</span>
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将上面的代码编译执行，然后在终端输入两条数据<code>123</code>和<code>456</code>：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./nsq_producer 
-123
-2021/04/03 18:33:59 INF    1 (127.0.0.1:4150) connecting to nsqd
-456
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./nsq_producer 
+</span></span><span style="display:flex;"><span>123
+</span></span><span style="display:flex;"><span>2021/04/03 18:33:59 INF    1 (127.0.0.1:4150) connecting to nsqd
+</span></span><span style="display:flex;"><span>456
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>使用浏览器打开<code>http://127.0.0.1:4171/</code>可以查看到类似下面的页面： 在下面这个页面能看到当前的<code>topic</code>信息：
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/nsq/nsqadmin1.png">
@@ -897,136 +897,136 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
     </p>
 <h3 id="消费者">消费者</h3>
 <p>一个简单的消费者示例代码如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#888;font-style:italic">// nsq_consumer/main.go
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">import</span> (
-	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;github.com/nsqio/go-nsq&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;os/signal&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;syscall&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
-)
-
-<span style="color:#888;font-style:italic">// NSQ Consumer Demo
-</span><span style="color:#888;font-style:italic"></span>
-<span style="color:#888;font-style:italic">// MyHandler 是一个消费者类型
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> MyHandler <span style="font-weight:bold;font-style:italic">struct</span> {
-	Title <span style="font-weight:bold">string</span>
-}
-
-<span style="color:#888;font-style:italic">// HandleMessage 是需要实现的处理消息的方法
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (m *MyHandler) <span style="color:#666;font-weight:bold;font-style:italic">HandleMessage</span>(msg *nsq.Message) (err <span style="font-weight:bold">error</span>) {
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;%s recv from %v, msg:%v\n&#34;</span>, m.Title, msg.NSQDAddress, <span style="font-weight:bold;font-style:italic">string</span>(msg.Body))
-	<span style="font-weight:bold">return</span> err
-}
-
-<span style="color:#888;font-style:italic">// 初始化消费者
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">initConsumer</span>(topic <span style="font-weight:bold">string</span>, channel <span style="font-weight:bold">string</span>, address <span style="font-weight:bold">string</span>) (err <span style="font-weight:bold">error</span>) {
-	config := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
-	config.LookupdPollInterval = 15 * time.Second
-	c, err := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConsumer</span>(topic, channel, config)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;create consumer failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	consumer := &amp;MyHandler{
-		Title: <span style="color:#666;font-style:italic">&#34;东方红1号&#34;</span>,
-	}
-	c.<span style="color:#666;font-weight:bold;font-style:italic">AddHandler</span>(consumer)
-
-	<span style="color:#888;font-style:italic">// if err := c.ConnectToNSQD(address); err != nil { // 直接连NSQD
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := c.<span style="color:#666;font-weight:bold;font-style:italic">ConnectToNSQLookupd</span>(address); err != <span style="font-weight:bold">nil</span> { <span style="color:#888;font-style:italic">// 通过lookupd查询
-</span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">return</span> err
-	}
-	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
-}
-
-<span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	err := <span style="color:#666;font-weight:bold;font-style:italic">initConsumer</span>(<span style="color:#666;font-style:italic">&#34;topic_demo&#34;</span>, <span style="color:#666;font-style:italic">&#34;first&#34;</span>, <span style="color:#666;font-style:italic">&#34;127.0.0.1:4161&#34;</span>)
-	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;init consumer failed, err:&#34;</span>, err)
-		<span style="font-weight:bold">return</span>
-	}
-	c := <span style="font-weight:bold;font-style:italic">make</span>(<span style="font-weight:bold;font-style:italic">chan</span> os.Signal)        <span style="color:#888;font-style:italic">// 定义一个信号的通道
-</span><span style="color:#888;font-style:italic"></span>	signal.<span style="color:#666;font-weight:bold;font-style:italic">Notify</span>(c, syscall.SIGINT) <span style="color:#888;font-style:italic">// 转发键盘中断信号到c
-</span><span style="color:#888;font-style:italic"></span>	&lt;-c                              <span style="color:#888;font-style:italic">// 阻塞
-</span><span style="color:#888;font-style:italic"></span>}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="color:#888;font-style:italic">// nsq_consumer/main.go
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;github.com/nsqio/go-nsq&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;os/signal&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;syscall&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;time&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// NSQ Consumer Demo
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// MyHandler 是一个消费者类型
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> MyHandler <span style="font-weight:bold;font-style:italic">struct</span> {
+</span></span><span style="display:flex;"><span>	Title <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// HandleMessage 是需要实现的处理消息的方法
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (m *MyHandler) <span style="color:#666;font-weight:bold;font-style:italic">HandleMessage</span>(msg *nsq.Message) (err <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;%s recv from %v, msg:%v\n&#34;</span>, m.Title, msg.NSQDAddress, <span style="font-weight:bold;font-style:italic">string</span>(msg.Body))
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span> err
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">// 初始化消费者
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">initConsumer</span>(topic <span style="font-weight:bold">string</span>, channel <span style="font-weight:bold">string</span>, address <span style="font-weight:bold">string</span>) (err <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span>	config := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
+</span></span><span style="display:flex;"><span>	config.LookupdPollInterval = 15 * time.Second
+</span></span><span style="display:flex;"><span>	c, err := nsq.<span style="color:#666;font-weight:bold;font-style:italic">NewConsumer</span>(topic, channel, config)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;create consumer failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	consumer := &amp;MyHandler{
+</span></span><span style="display:flex;"><span>		Title: <span style="color:#666;font-style:italic">&#34;东方红1号&#34;</span>,
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	c.<span style="color:#666;font-weight:bold;font-style:italic">AddHandler</span>(consumer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">// if err := c.ConnectToNSQD(address); err != nil { // 直接连NSQD
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := c.<span style="color:#666;font-weight:bold;font-style:italic">ConnectToNSQLookupd</span>(address); err != <span style="font-weight:bold">nil</span> { <span style="color:#888;font-style:italic">// 通过lookupd查询
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>		<span style="font-weight:bold">return</span> err
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	err := <span style="color:#666;font-weight:bold;font-style:italic">initConsumer</span>(<span style="color:#666;font-style:italic">&#34;topic_demo&#34;</span>, <span style="color:#666;font-style:italic">&#34;first&#34;</span>, <span style="color:#666;font-style:italic">&#34;127.0.0.1:4161&#34;</span>)
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span>		fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;init consumer failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	c := <span style="font-weight:bold;font-style:italic">make</span>(<span style="font-weight:bold;font-style:italic">chan</span> os.Signal)        <span style="color:#888;font-style:italic">// 定义一个信号的通道
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	signal.<span style="color:#666;font-weight:bold;font-style:italic">Notify</span>(c, syscall.SIGINT) <span style="color:#888;font-style:italic">// 转发键盘中断信号到c
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	&lt;-c                              <span style="color:#888;font-style:italic">// 阻塞
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将上面的代码保存之后编译执行，就能够获取之前我们publish的两条消息了：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./nsq_consumer 
-2021/04/03 18:39:14 INF    1 [topic_demo/first] querying nsqlookupd http://127.0.0.1:4161/lookup?topic=topic_demo
-2021/04/03 18:39:14 INF    1 [topic_demo/first] (ubuntu:4150) connecting to nsqd
-东方红1号 recv from ubuntu:4150, msg:123
-东方红1号 recv from ubuntu:4150, msg:456
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./nsq_consumer 
+</span></span><span style="display:flex;"><span>2021/04/03 18:39:14 INF    1 [topic_demo/first] querying nsqlookupd http://127.0.0.1:4161/lookup?topic=topic_demo
+</span></span><span style="display:flex;"><span>2021/04/03 18:39:14 INF    1 [topic_demo/first] (ubuntu:4150) connecting to nsqd
+</span></span><span style="display:flex;"><span>东方红1号 recv from ubuntu:4150, msg:123
+</span></span><span style="display:flex;"><span>东方红1号 recv from ubuntu:4150, msg:456
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>同时在nsqadmin的<code>/counter</code>页面查看到处理的数据数量为2。
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/nsq/nsqadmin6.png">
@@ -1042,7 +1042,7 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/preformance_optimisation/">Go性能调优</a></li>
@@ -1076,13 +1076,16 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -1090,7 +1093,9 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -1098,6 +1103,7 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -1107,13 +1113,10 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -1121,12 +1124,11 @@ $ curl -d <span style="color:#666;font-style:italic">&#39;hello world 3&#39;</sp
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

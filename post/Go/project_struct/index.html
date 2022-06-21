@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -160,9 +156,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -180,6 +176,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -200,13 +200,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -215,170 +215,170 @@
             <p>实际项目业务功能和模块会很多，我们不可能把所有代码都写在一个go文件里面或者写在一个main入口函数里面；我们需要对项目结构做一些规划，方便维护代码以及扩展。</p>
 <h2 id="1项目结构">1.项目结构</h2>
 <h4 id="有视图模板">有视图模板</h4>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-│   └── config.toml         <span style="color:#888;font-style:italic">#可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
-├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-│   └── user.go
-├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-│   ├── food.go
-│   └── user.go
-├── static                  <span style="color:#888;font-style:italic">#静态资源目录，包括Js，css，jpg等等，可以通过Gin框架配置，直接让用户访问。</span>
-│   ├── css
-│   ├── images
-│   └── js
-└── views                   <span style="color:#888;font-style:italic">#视图模板目录，存放各个模块的视图模板，当然有些项目只有api，是不需要视图部分，可以忽略这个目录</span>
-    └── index.html
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
+</span></span><span style="display:flex;"><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span>│   └── user.go
+</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span>│   ├── food.go
+</span></span><span style="display:flex;"><span>│   └── user.go
+</span></span><span style="display:flex;"><span>├── static                  <span style="color:#888;font-style:italic">#静态资源目录，包括Js，css，jpg等等，可以通过Gin框架配置，直接让用户访问。</span>
+</span></span><span style="display:flex;"><span>│   ├── css
+</span></span><span style="display:flex;"><span>│   ├── images
+</span></span><span style="display:flex;"><span>│   └── js
+</span></span><span style="display:flex;"><span>└── views                   <span style="color:#888;font-style:italic">#视图模板目录，存放各个模块的视图模板，当然有些项目只有api，是不需要视图部分，可以忽略这个目录</span>
+</span></span><span style="display:flex;"><span>    └── index.html
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="api开发">api开发</h4>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
-├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-│   └── user.go
-├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-│   ├── food.go
-│   ├── user.go
-│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
-├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
+</span></span><span style="display:flex;"><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span>│   └── user.go
+</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span>│   ├── food.go
+</span></span><span style="display:flex;"><span>│   ├── user.go
+</span></span><span style="display:flex;"><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
+</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>以上两种目录结构基本上大同小异，一般的项目构建都可以使用这样的项目结构，清晰明了。</p>
 <h2 id="2项目结构扩展">2.项目结构扩展</h2>
 <p>对于一般的项目都是使用上面的目录结构，但是有时候项目复杂了，会进一步拆分，把数据校验，模型定义，数据操作，服务，响应进行解耦。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">数据校验 -&gt; 控制器 -&gt; 调用服务 -&gt; 数据操作 -&gt; 数据模型 -&gt; 数据响应
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>数据校验 -&gt; 控制器 -&gt; 调用服务 -&gt; 数据操作 -&gt; 数据模型 -&gt; 数据响应
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>目录结构如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml、ini等等</span>
-├── requests                <span style="color:#888;font-style:italic">#定义入参即入参校验规则</span>
-│   └── user_request.go
-│   └── food_request.go
-├── responses               <span style="color:#888;font-style:italic">#定义响应的数据</span>
-│   └── user_response.go
-│   └── food_response.go
-├── services                <span style="color:#888;font-style:italic">#服务定义目录</span>
-|	└── v1					<span style="color:#888;font-style:italic">#服务v1版本</span>
-│   |	└── user_service.go
-│   |	└── food_service.go
-|	└── v2					<span style="color:#888;font-style:italic">#服务v2版本</span>
-│   |	└── user_service.go
-│   |	└── food_service.go
-├── api             		<span style="color:#888;font-style:italic">#api目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-│   └── v1					<span style="color:#888;font-style:italic">#apiv1版本</span>
-│   |	└── user.go
-│   |	└── food.go
-│   └── v2					<span style="color:#888;font-style:italic">#apiv2版本</span>
-│   |	└── user.go
-│   |	└── food.go
-├── router					<span style="color:#888;font-style:italic">#路由目录</span>
-│   └── v1					<span style="color:#888;font-style:italic">#路由v1版本</span>
-│   |	└── user.go
-│   |	└── food.go
-│   └── v2					<span style="color:#888;font-style:italic">#路由v2版本</span>
-│   |	└── user.go
-│   |	└── food.go
-├── init.go					<span style="color:#888;font-style:italic">#路由初始化</span>
-├── pkg						<span style="color:#888;font-style:italic">#自定义的工具类等</span>
-│   └── e					<span style="color:#888;font-style:italic">#项目统一的响应定义，如错误码，通用的错误信息，响应的结构体</span>
-│   └── util				<span style="color:#888;font-style:italic">#工具类目录</span>
-├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-│   ├── food.go
-│   ├── user.go
-│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
-├── repositories            <span style="color:#888;font-style:italic">#数据操作层，定义各种数据操作。</span>
-│   └── user_repository.go
-│   └── food_repository.go
-├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml、ini等等</span>
+</span></span><span style="display:flex;"><span>├── requests                <span style="color:#888;font-style:italic">#定义入参即入参校验规则</span>
+</span></span><span style="display:flex;"><span>│   └── user_request.go
+</span></span><span style="display:flex;"><span>│   └── food_request.go
+</span></span><span style="display:flex;"><span>├── responses               <span style="color:#888;font-style:italic">#定义响应的数据</span>
+</span></span><span style="display:flex;"><span>│   └── user_response.go
+</span></span><span style="display:flex;"><span>│   └── food_response.go
+</span></span><span style="display:flex;"><span>├── services                <span style="color:#888;font-style:italic">#服务定义目录</span>
+</span></span><span style="display:flex;"><span>|	└── v1					<span style="color:#888;font-style:italic">#服务v1版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user_service.go
+</span></span><span style="display:flex;"><span>│   |	└── food_service.go
+</span></span><span style="display:flex;"><span>|	└── v2					<span style="color:#888;font-style:italic">#服务v2版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user_service.go
+</span></span><span style="display:flex;"><span>│   |	└── food_service.go
+</span></span><span style="display:flex;"><span>├── api             		<span style="color:#888;font-style:italic">#api目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span>│   └── v1					<span style="color:#888;font-style:italic">#apiv1版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span>│   └── v2					<span style="color:#888;font-style:italic">#apiv2版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span>├── router					<span style="color:#888;font-style:italic">#路由目录</span>
+</span></span><span style="display:flex;"><span>│   └── v1					<span style="color:#888;font-style:italic">#路由v1版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span>│   └── v2					<span style="color:#888;font-style:italic">#路由v2版本</span>
+</span></span><span style="display:flex;"><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span>├── init.go					<span style="color:#888;font-style:italic">#路由初始化</span>
+</span></span><span style="display:flex;"><span>├── pkg						<span style="color:#888;font-style:italic">#自定义的工具类等</span>
+</span></span><span style="display:flex;"><span>│   └── e					<span style="color:#888;font-style:italic">#项目统一的响应定义，如错误码，通用的错误信息，响应的结构体</span>
+</span></span><span style="display:flex;"><span>│   └── util				<span style="color:#888;font-style:italic">#工具类目录</span>
+</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span>│   ├── food.go
+</span></span><span style="display:flex;"><span>│   ├── user.go
+</span></span><span style="display:flex;"><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
+</span></span><span style="display:flex;"><span>├── repositories            <span style="color:#888;font-style:italic">#数据操作层，定义各种数据操作。</span>
+</span></span><span style="display:flex;"><span>│   └── user_repository.go
+</span></span><span style="display:flex;"><span>│   └── food_repository.go
+</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>通过上面的项目结构扩展，增加了代码量，但是把各层的职责界定了，每一层的只做每一层的事情，数据解耦。</p>
         </div>
@@ -389,7 +389,7 @@
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/bcrypt/">密码加密</a></li>
@@ -421,13 +421,16 @@
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -435,7 +438,9 @@
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -443,6 +448,7 @@
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -452,13 +458,10 @@
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -466,12 +469,11 @@
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

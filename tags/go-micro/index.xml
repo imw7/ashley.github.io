@@ -6,11 +6,7 @@
     <description>Recent content in go-micro on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 11 Aug 2021 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/go-micro/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 11 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/go-micro/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>go-micro</title>
       <link>https://blog.imw7.com/post/Go/go_micro/</link>

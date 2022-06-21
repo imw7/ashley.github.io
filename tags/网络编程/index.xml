@@ -6,11 +6,7 @@
     <description>Recent content in 网络编程 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 19 May 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 19 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言基础之网络编程</title>
       <link>https://blog.imw7.com/post/Go/15_socket/</link>

@@ -6,11 +6,7 @@
     <description>Recent content in Posts on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 26 Jan 2022 14:01:14 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 26 Jan 2022 14:01:14 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>FastDFS</title>
       <link>https://blog.imw7.com/post/Go/fastdfs/</link>

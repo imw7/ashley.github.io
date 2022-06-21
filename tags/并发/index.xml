@@ -6,11 +6,7 @@
     <description>Recent content in 并发 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 04 May 2019 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sat, 04 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言基础之并发</title>
       <link>https://blog.imw7.com/post/Go/14_concurrence/</link>

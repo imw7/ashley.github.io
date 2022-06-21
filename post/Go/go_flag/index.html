@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -79,11 +78,9 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: absolute;
-        top: 0;
-        right: 0;
+        position: fixed;
         width: 200px;
-        margin-right: 0px;
+        margin-left: -210px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -99,38 +96,37 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 45%;
+        max-height: 70%;
         overflow-y: auto;
         overflow-x: hidden;
-        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 8px 0;
+        margin: 10px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 10px;
-        list-style: none;
+        padding-left: 20px;
+        list-style: square;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul ul ul ul {
-        margin-right: 10px;
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
         display: none;
     }
 
@@ -141,7 +137,7 @@
         }
     }
 </style>
-<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+<div class="post-toc" style="position: absolute; top: 188px;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -170,9 +166,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var rightPos = window.screenX+$("#main").offset().left;
-            if(rightPos<220){
-                postToc.css({"width":rightPos+10,"margin-right":0})
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
             }
 
             var t = postToc.offset().top - 20,
@@ -190,6 +186,10 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
         }
     })
 </script>
@@ -210,13 +210,13 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
-        <div class="clear" style="display: none;">
-            <div class="toc-article" style="float: right;">
+        <div class="clear" style="display: none">
+            <div class="toc-article">
                 <div class="toc-title">文章目录</div>
             </div>
         </div>
@@ -225,104 +225,104 @@
             <p>Go语言内置的<code>flag</code>包实现了命令行参数的解析，<code>flag</code>包使得开发命令行工具更为简单。</p>
 <h1 id="osargs">os.Args</h1>
 <p>如果你只是简单的想要获取命令行参数，可以像下面的代码示例一样使用<code>os.Args</code>来获取命令行参数。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">package</span> main
-
-<span style="font-weight:bold">import</span> (
-	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
-	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
-)
-
-<span style="color:#888;font-style:italic">//os.Args demo
-</span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	<span style="color:#888;font-style:italic">//os.Args是一个[]string
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> <span style="font-weight:bold;font-style:italic">len</span>(os.Args) &gt; 0 {
-		<span style="font-weight:bold">for</span> index, arg := <span style="font-weight:bold">range</span> os.Args {
-			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;args[%d]=%v\n&#34;</span>, index, arg)
-		}
-	}
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#666;font-style:italic">&#34;os&#34;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic">//os.Args demo
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//os.Args是一个[]string
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> <span style="font-weight:bold;font-style:italic">len</span>(os.Args) &gt; 0 {
+</span></span><span style="display:flex;"><span>		<span style="font-weight:bold">for</span> index, arg := <span style="font-weight:bold">range</span> os.Args {
+</span></span><span style="display:flex;"><span>			fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;args[%d]=%v\n&#34;</span>, index, arg)
+</span></span><span style="display:flex;"><span>		}
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>将上面的代码执行<code>go build -o &quot;args_demo&quot;</code>编译之后，执行：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./args_demo a b c d
-args[0]=./args_demo
-args[1]=a
-args[2]=b
-args[3]=c
-args[4]=d
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./args_demo a b c d
+</span></span><span style="display:flex;"><span>args[0]=./args_demo
+</span></span><span style="display:flex;"><span>args[1]=a
+</span></span><span style="display:flex;"><span>args[2]=b
+</span></span><span style="display:flex;"><span>args[3]=c
+</span></span><span style="display:flex;"><span>args[4]=d
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><code>os.Args</code>是一个存储命令行参数的字符串切片，它的第一个元素是执行文件的名称。</p>
 <h1 id="flag包基本使用">flag包基本使用</h1>
 <p>本文介绍了flag包的常用函数和基本用法，更详细的内容请查看<a href="https://studygolang.com/pkgdoc">官方文档</a>。</p>
 <h2 id="导入flag包">导入flag包</h2>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold">import</span> flag
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold">import</span> flag
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="flag参数类型">flag参数类型</h2>
 <p>flag包支持的命令行参数类型有<code>bool</code>、<code>int</code>、<code>int64</code>、<code>uint</code>、<code>uint64</code>、<code>float</code> <code>float64</code>、<code>string</code>、<code>duration</code>。</p>
 <table>
 <thead>
 <tr>
-<th align="center">flag参数</th>
-<th align="center">有效值</th>
+<th style="text-align:center">flag参数</th>
+<th style="text-align:center">有效值</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">字符串flag</td>
-<td align="center">合法字符串</td>
+<td style="text-align:center">字符串flag</td>
+<td style="text-align:center">合法字符串</td>
 </tr>
 <tr>
-<td align="center">整数flag</td>
-<td align="center">1234、0664、0x1234等类型，也可以是负数。</td>
+<td style="text-align:center">整数flag</td>
+<td style="text-align:center">1234、0664、0x1234等类型，也可以是负数。</td>
 </tr>
 <tr>
-<td align="center">浮点数flag</td>
-<td align="center">合法浮点数</td>
+<td style="text-align:center">浮点数flag</td>
+<td style="text-align:center">合法浮点数</td>
 </tr>
 <tr>
-<td align="center">bool类型flag</td>
-<td align="center">1, 0, t, f, T, F, true, false, TRUE, FALSE, True, False。</td>
+<td style="text-align:center">bool类型flag</td>
+<td style="text-align:center">1, 0, t, f, T, F, true, false, TRUE, FALSE, True, False。</td>
 </tr>
 <tr>
-<td align="center">时间段flag</td>
-<td align="center">任何合法的时间段字符串。如”300ms”、”-1.5h”、”2h45m”。 合法的单位有”ns”、”us” /“µs”、”ms”、”s”、”m”、”h”。</td>
+<td style="text-align:center">时间段flag</td>
+<td style="text-align:center">任何合法的时间段字符串。如”300ms”、”-1.5h”、”2h45m”。 合法的单位有”ns”、”us” /“µs”、”ms”、”s”、”m”、”h”。</td>
 </tr>
 </tbody>
 </table>
@@ -331,44 +331,44 @@ args[4]=d
 <h3 id="flagtype">flag.Type()</h3>
 <p>基本格式如下：</p>
 <p><code>flag.Type(flag名, 默认值, 帮助信息)*Type</code> 例如我们要定义姓名、年龄、婚否三个命令行参数，我们可以按如下方式定义：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">name := flag.<span style="color:#666;font-weight:bold;font-style:italic">String</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
-age := flag.<span style="color:#666;font-weight:bold;font-style:italic">Int</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
-married := flag.<span style="color:#666;font-weight:bold;font-style:italic">Bool</span>(<span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
-delay := flag.<span style="color:#666;font-weight:bold;font-style:italic">Duration</span>(<span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;时间间隔&#34;</span>)
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>name := flag.<span style="color:#666;font-weight:bold;font-style:italic">String</span>(<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
+</span></span><span style="display:flex;"><span>age := flag.<span style="color:#666;font-weight:bold;font-style:italic">Int</span>(<span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
+</span></span><span style="display:flex;"><span>married := flag.<span style="color:#666;font-weight:bold;font-style:italic">Bool</span>(<span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
+</span></span><span style="display:flex;"><span>delay := flag.<span style="color:#666;font-weight:bold;font-style:italic">Duration</span>(<span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;时间间隔&#34;</span>)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>需要注意的是，此时<code>name</code>、<code>age</code>、<code>married</code>、<code>delay</code>均为对应类型的指针。</p>
 <h3 id="flagtypevar">flag.TypeVar()</h3>
 <p>基本格式如下： <code>flag.TypeVar(Type指针, flag名, 默认值, 帮助信息)</code> 例如我们要定义姓名、年龄、婚否三个命令行参数，我们可以按如下方式定义：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">var</span> name <span style="font-weight:bold">string</span>
-<span style="font-weight:bold;font-style:italic">var</span> age <span style="font-weight:bold">int</span>
-<span style="font-weight:bold;font-style:italic">var</span> married <span style="font-weight:bold">bool</span>
-<span style="font-weight:bold;font-style:italic">var</span> delay time.Duration
-flag.<span style="color:#666;font-weight:bold;font-style:italic">StringVar</span>(&amp;name, <span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
-flag.<span style="color:#666;font-weight:bold;font-style:italic">IntVar</span>(&amp;age, <span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
-flag.<span style="color:#666;font-weight:bold;font-style:italic">BoolVar</span>(&amp;married, <span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
-flag.<span style="color:#666;font-weight:bold;font-style:italic">DurationVar</span>(&amp;delay, <span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;时间间隔&#34;</span>)
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">var</span> name <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">var</span> age <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">var</span> married <span style="font-weight:bold">bool</span>
+</span></span><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">var</span> delay time.Duration
+</span></span><span style="display:flex;"><span>flag.<span style="color:#666;font-weight:bold;font-style:italic">StringVar</span>(&amp;name, <span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
+</span></span><span style="display:flex;"><span>flag.<span style="color:#666;font-weight:bold;font-style:italic">IntVar</span>(&amp;age, <span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
+</span></span><span style="display:flex;"><span>flag.<span style="color:#666;font-weight:bold;font-style:italic">BoolVar</span>(&amp;married, <span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
+</span></span><span style="display:flex;"><span>flag.<span style="color:#666;font-weight:bold;font-style:italic">DurationVar</span>(&amp;delay, <span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;时间间隔&#34;</span>)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="flagparse">flag.Parse()</h2>
 <p>通过以上两种方法定义好命令行flag参数后，需要通过调用<code>flag.Parse()</code>来对命令行参数进行解析。</p>
@@ -382,129 +382,129 @@ flag.<span style="color:#666;font-weight:bold;font-style:italic">DurationVar</sp
 <p>其中，布尔类型的参数必须使用等号的方式指定。</p>
 <p>Flag解析在第一个非flag参数（单个”-“不是flag参数）之前停止，或者在终止符”–“之后停止。</p>
 <h2 id="flag其他函数">flag其他函数</h2>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go">flag.<span style="color:#666;font-weight:bold;font-style:italic">Args</span>()  <span style="color:#888;font-style:italic">//返回命令行参数后的其他参数，以[]string类型
-</span><span style="color:#888;font-style:italic"></span>flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>()  <span style="color:#888;font-style:italic">//返回命令行参数后的其他参数个数
-</span><span style="color:#888;font-style:italic"></span>flag.<span style="color:#666;font-weight:bold;font-style:italic">NFlag</span>() <span style="color:#888;font-style:italic">//返回使用的命令行参数个数
-</span></code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span>flag.<span style="color:#666;font-weight:bold;font-style:italic">Args</span>()  <span style="color:#888;font-style:italic">//返回命令行参数后的其他参数，以[]string类型
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>()  <span style="color:#888;font-style:italic">//返回命令行参数后的其他参数个数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>flag.<span style="color:#666;font-weight:bold;font-style:italic">NFlag</span>() <span style="color:#888;font-style:italic">//返回使用的命令行参数个数
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><h2 id="完整示例">完整示例</h2>
 <h3 id="定义">定义</h3>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
-	<span style="color:#888;font-style:italic">//定义命令行参数方式1
-</span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> name <span style="font-weight:bold">string</span>
-	<span style="font-weight:bold;font-style:italic">var</span> age <span style="font-weight:bold">int</span>
-	<span style="font-weight:bold;font-style:italic">var</span> married <span style="font-weight:bold">bool</span>
-	<span style="font-weight:bold;font-style:italic">var</span> delay time.Duration
-	flag.<span style="color:#666;font-weight:bold;font-style:italic">StringVar</span>(&amp;name, <span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
-	flag.<span style="color:#666;font-weight:bold;font-style:italic">IntVar</span>(&amp;age, <span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
-	flag.<span style="color:#666;font-weight:bold;font-style:italic">BoolVar</span>(&amp;married, <span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
-	flag.<span style="color:#666;font-weight:bold;font-style:italic">DurationVar</span>(&amp;delay, <span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;延迟的时间间隔&#34;</span>)
-
-	<span style="color:#888;font-style:italic">//解析命令行参数
-</span><span style="color:#888;font-style:italic"></span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">Parse</span>()
-	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(name, age, married, delay)
-	<span style="color:#888;font-style:italic">//返回命令行参数后的其他参数
-</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">Args</span>())
-	<span style="color:#888;font-style:italic">//返回命令行参数后的其他参数个数
-</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>())
-	<span style="color:#888;font-style:italic">//返回使用的命令行参数个数
-</span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">NFlag</span>())
-}
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//定义命令行参数方式1
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold;font-style:italic">var</span> name <span style="font-weight:bold">string</span>
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold;font-style:italic">var</span> age <span style="font-weight:bold">int</span>
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold;font-style:italic">var</span> married <span style="font-weight:bold">bool</span>
+</span></span><span style="display:flex;"><span>	<span style="font-weight:bold;font-style:italic">var</span> delay time.Duration
+</span></span><span style="display:flex;"><span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">StringVar</span>(&amp;name, <span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;姓名&#34;</span>)
+</span></span><span style="display:flex;"><span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">IntVar</span>(&amp;age, <span style="color:#666;font-style:italic">&#34;age&#34;</span>, 18, <span style="color:#666;font-style:italic">&#34;年龄&#34;</span>)
+</span></span><span style="display:flex;"><span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">BoolVar</span>(&amp;married, <span style="color:#666;font-style:italic">&#34;married&#34;</span>, <span style="font-weight:bold">false</span>, <span style="color:#666;font-style:italic">&#34;婚否&#34;</span>)
+</span></span><span style="display:flex;"><span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">DurationVar</span>(&amp;delay, <span style="color:#666;font-style:italic">&#34;d&#34;</span>, 0, <span style="color:#666;font-style:italic">&#34;延迟的时间间隔&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//解析命令行参数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	flag.<span style="color:#666;font-weight:bold;font-style:italic">Parse</span>()
+</span></span><span style="display:flex;"><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(name, age, married, delay)
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//返回命令行参数后的其他参数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">Args</span>())
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//返回命令行参数后的其他参数个数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">NArg</span>())
+</span></span><span style="display:flex;"><span>	<span style="color:#888;font-style:italic">//返回使用的命令行参数个数
+</span></span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(flag.<span style="color:#666;font-weight:bold;font-style:italic">NFlag</span>())
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="使用">使用</h3>
 <p>命令行参数使用提示：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./flag_demo -help
-Usage of ./flag_demo:
-  -age int
-        年龄 (default 18)
-  -d duration
-        时间间隔
-  -married
-        婚否
-  -name string
-        姓名 (default <span style="color:#666;font-style:italic">&#34;张三&#34;</span>)
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./flag_demo -help
+</span></span><span style="display:flex;"><span>Usage of ./flag_demo:
+</span></span><span style="display:flex;"><span>  -age int
+</span></span><span style="display:flex;"><span>        年龄 (default 18)
+</span></span><span style="display:flex;"><span>  -d duration
+</span></span><span style="display:flex;"><span>        时间间隔
+</span></span><span style="display:flex;"><span>  -married
+</span></span><span style="display:flex;"><span>        婚否
+</span></span><span style="display:flex;"><span>  -name string
+</span></span><span style="display:flex;"><span>        姓名 (default <span style="color:#666;font-style:italic">&#34;张三&#34;</span>)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>正常使用命令行flag参数：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./flag_demo -name Eric --age 28 -married=<span style="font-weight:bold;font-style:italic">false</span> -d=1h30m
-Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
-[]
-0
-4
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./flag_demo -name Eric --age 28 -married=<span style="font-weight:bold;font-style:italic">false</span> -d=1h30m
+</span></span><span style="display:flex;"><span>Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
+</span></span><span style="display:flex;"><span>[]
+</span></span><span style="display:flex;"><span>0
+</span></span><span style="display:flex;"><span>4
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>使用非flag命令行参数：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ ./flag_demo a b c
-张三 18 <span style="font-weight:bold;font-style:italic">false</span> 0s
-[a b c]
-3
-0
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ ./flag_demo a b c
+</span></span><span style="display:flex;"><span>张三 18 <span style="font-weight:bold;font-style:italic">false</span> 0s
+</span></span><span style="display:flex;"><span>[a b c]
+</span></span><span style="display:flex;"><span>3
+</span></span><span style="display:flex;"><span>0
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
         </div>
@@ -515,7 +515,7 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/go_context/">Go语言标准库之Context</a></li>
@@ -551,13 +551,16 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -565,7 +568,9 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -573,6 +578,7 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -582,13 +588,10 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -596,12 +599,11 @@ Eric 28 <span style="font-weight:bold;font-style:italic">false</span> 1h30m0s
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">

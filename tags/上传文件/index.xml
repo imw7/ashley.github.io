@@ -6,11 +6,7 @@
     <description>Recent content in 上传文件 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>ssh使用scp或rsync上传和下载文件</title>
       <link>https://blog.imw7.com/post/ssh_upload_download/</link>

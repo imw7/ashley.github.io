@@ -6,11 +6,7 @@
     <description>Recent content in Redis on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 12 Jan 2022 12:05:23 +0800</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/tags/Redis/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 12 Jan 2022 12:05:23 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Redis/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>CentOS与Redis</title>
       <link>https://blog.imw7.com/post/redis_on_centos/</link>

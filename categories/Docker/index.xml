@@ -6,11 +6,7 @@
     <description>Recent content in Docker on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 04 Mar 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://blog.imw7.com/categories/Docker/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Wed, 04 Mar 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/categories/Docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker的安装与使用</title>
       <link>https://blog.imw7.com/post/about_docker/</link>

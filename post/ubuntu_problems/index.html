@@ -43,7 +43,6 @@
     
 </head>
 
-
 <body>
     <header id="header" class="clearfix">
     <div class="container">
@@ -95,8 +94,8 @@
         
         
         <div class="post-meta">
-            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
-                     
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
         </div>
         
         
@@ -105,157 +104,157 @@
 <h2 id="问题1">问题1</h2>
 <p>在 <code>Ubuntu</code> 上使用 <code>Firefox</code> 播放<a href="https://www.bilibili.com">B站</a>时发现需要安装 <code>Flash Player</code>，非常不方便，而且 <code>Flash Player</code> 结束支持了。如何解决这个问题呢？<!-- raw HTML omitted --></p>
 <p>幸好在 <code>Ubuntu</code> 上还能使用 <code>html 5</code>，使用 <code>html 5</code> 播放B站视频的方法。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">sudo apt install ubuntu-restricted-extras
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>sudo apt install ubuntu-restricted-extras
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>意外收获，不知道为什么竟然同时解决了 <code>Google Chrome</code> 浏览器不显示博客代码的问题，这个问题可是困扰我很久了呀，真是开心。</p>
 <h2 id="问题2">问题2</h2>
 <p><code>NVIDIA</code>显卡通过<code>HDMI</code>连接电脑和显示器后，显示器不能正常显示画面。</p>
 <p>解决办法是通过英伟达<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn">驱动</a>官网，根据自己的显卡型号下载相对应的显卡驱动。比如下载的是：<code>NVIDIA-Linux-x86_64-510.60.02.run</code>。执行：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ sudo bash NVIDIA-Linux-x86_64-510.60.02.run
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ sudo bash NVIDIA-Linux-x86_64-510.60.02.run
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>在弹出的界面中，一直选“继续”就可以了。安装完成后，显示器就能正常显示画面了。</p>
 <h2 id="问题3">问题3</h2>
 <p>当问题2解决之后，会发现单独使用笔记本电脑时无法显示界面，只需要在<code>/etc/X11</code>目录下将<code>xorg.conf</code>中的内容清空即可。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="font-weight:bold;font-style:italic">cd</span> /etc/X11
-$ sudo cp xorg.conf xorg.conf.tv // 备份
-$ sudo rm xorg.conf
-$ sudo mv xorg.conf.nvidia-xconfig-original xorg.conf
-$ reboot
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /etc/X11
+</span></span><span style="display:flex;"><span>$ sudo cp xorg.conf xorg.conf.tv // 备份
+</span></span><span style="display:flex;"><span>$ sudo rm xorg.conf
+</span></span><span style="display:flex;"><span>$ sudo mv xorg.conf.nvidia-xconfig-original xorg.conf
+</span></span><span style="display:flex;"><span>$ reboot
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>重启电脑后，笔记本电脑就可以正常显示画面了。</p>
 <p>要想让外接显示器正常显示，只需要将 <code>xorg.conf.tv</code> 中的内容赋值到 <code>xorg.conf</code> 中，然后重启电脑就可以了。</p>
 <p>能使显示正常显示画面，同时让笔记本电脑不显示画面的文件<code>xorg.conf.tv</code>中的内容是：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
-</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#888;font-style:italic"># nvidia-xconfig: X configuration file generated by nvidia-xconfig</span>
-<span style="color:#888;font-style:italic"># nvidia-xconfig:  version 510.60.02</span>
-
-Section <span style="color:#666;font-style:italic">&#34;ServerLayout&#34;</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Layout0&#34;</span>
-    Screen      0  <span style="color:#666;font-style:italic">&#34;Screen0&#34;</span>
-    InputDevice    <span style="color:#666;font-style:italic">&#34;Keyboard0&#34;</span> <span style="color:#666;font-style:italic">&#34;CoreKeyboard&#34;</span>
-    InputDevice    <span style="color:#666;font-style:italic">&#34;Mouse0&#34;</span> <span style="color:#666;font-style:italic">&#34;CorePointer&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;Files&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;InputDevice&#34;</span>
-    <span style="color:#888;font-style:italic"># generated from default</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Mouse0&#34;</span>
-    Driver         <span style="color:#666;font-style:italic">&#34;mouse&#34;</span>
-    Option         <span style="color:#666;font-style:italic">&#34;Protocol&#34;</span> <span style="color:#666;font-style:italic">&#34;auto&#34;</span>
-    Option         <span style="color:#666;font-style:italic">&#34;Device&#34;</span> <span style="color:#666;font-style:italic">&#34;/dev/psaux&#34;</span>
-    Option         <span style="color:#666;font-style:italic">&#34;Emulate3Buttons&#34;</span> <span style="color:#666;font-style:italic">&#34;no&#34;</span>
-    Option         <span style="color:#666;font-style:italic">&#34;ZAxisMapping&#34;</span> <span style="color:#666;font-style:italic">&#34;4 5&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;InputDevice&#34;</span>
-    <span style="color:#888;font-style:italic"># generated from default</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Keyboard0&#34;</span>
-    Driver         <span style="color:#666;font-style:italic">&#34;kbd&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;Monitor&#34;</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Monitor0&#34;</span>
-    VendorName     <span style="color:#666;font-style:italic">&#34;Unknown&#34;</span>
-    ModelName      <span style="color:#666;font-style:italic">&#34;Unknown&#34;</span>
-    Option         <span style="color:#666;font-style:italic">&#34;DPMS&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;Device&#34;</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Device0&#34;</span>
-    Driver         <span style="color:#666;font-style:italic">&#34;nvidia&#34;</span>
-    VendorName     <span style="color:#666;font-style:italic">&#34;NVIDIA Corporation&#34;</span>
-    BusID          <span style="color:#666;font-style:italic">&#34;PCI:1:0:0&#34;</span>
-EndSection
-
-Section <span style="color:#666;font-style:italic">&#34;Screen&#34;</span>
-    Identifier     <span style="color:#666;font-style:italic">&#34;Screen0&#34;</span>
-    Device         <span style="color:#666;font-style:italic">&#34;Device0&#34;</span>
-    Monitor        <span style="color:#666;font-style:italic">&#34;Monitor0&#34;</span>
-    DefaultDepth    24
-    SubSection     <span style="color:#666;font-style:italic">&#34;Display&#34;</span>
-        Depth       24
-    EndSubSection
-EndSection
-</code></pre></td></tr></table>
+<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#888;font-style:italic"># nvidia-xconfig: X configuration file generated by nvidia-xconfig</span>
+</span></span><span style="display:flex;"><span><span style="color:#888;font-style:italic"># nvidia-xconfig:  version 510.60.02</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;ServerLayout&#34;</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Layout0&#34;</span>
+</span></span><span style="display:flex;"><span>    Screen      0  <span style="color:#666;font-style:italic">&#34;Screen0&#34;</span>
+</span></span><span style="display:flex;"><span>    InputDevice    <span style="color:#666;font-style:italic">&#34;Keyboard0&#34;</span> <span style="color:#666;font-style:italic">&#34;CoreKeyboard&#34;</span>
+</span></span><span style="display:flex;"><span>    InputDevice    <span style="color:#666;font-style:italic">&#34;Mouse0&#34;</span> <span style="color:#666;font-style:italic">&#34;CorePointer&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;Files&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;InputDevice&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic"># generated from default</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Mouse0&#34;</span>
+</span></span><span style="display:flex;"><span>    Driver         <span style="color:#666;font-style:italic">&#34;mouse&#34;</span>
+</span></span><span style="display:flex;"><span>    Option         <span style="color:#666;font-style:italic">&#34;Protocol&#34;</span> <span style="color:#666;font-style:italic">&#34;auto&#34;</span>
+</span></span><span style="display:flex;"><span>    Option         <span style="color:#666;font-style:italic">&#34;Device&#34;</span> <span style="color:#666;font-style:italic">&#34;/dev/psaux&#34;</span>
+</span></span><span style="display:flex;"><span>    Option         <span style="color:#666;font-style:italic">&#34;Emulate3Buttons&#34;</span> <span style="color:#666;font-style:italic">&#34;no&#34;</span>
+</span></span><span style="display:flex;"><span>    Option         <span style="color:#666;font-style:italic">&#34;ZAxisMapping&#34;</span> <span style="color:#666;font-style:italic">&#34;4 5&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;InputDevice&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#888;font-style:italic"># generated from default</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Keyboard0&#34;</span>
+</span></span><span style="display:flex;"><span>    Driver         <span style="color:#666;font-style:italic">&#34;kbd&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;Monitor&#34;</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Monitor0&#34;</span>
+</span></span><span style="display:flex;"><span>    VendorName     <span style="color:#666;font-style:italic">&#34;Unknown&#34;</span>
+</span></span><span style="display:flex;"><span>    ModelName      <span style="color:#666;font-style:italic">&#34;Unknown&#34;</span>
+</span></span><span style="display:flex;"><span>    Option         <span style="color:#666;font-style:italic">&#34;DPMS&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;Device&#34;</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Device0&#34;</span>
+</span></span><span style="display:flex;"><span>    Driver         <span style="color:#666;font-style:italic">&#34;nvidia&#34;</span>
+</span></span><span style="display:flex;"><span>    VendorName     <span style="color:#666;font-style:italic">&#34;NVIDIA Corporation&#34;</span>
+</span></span><span style="display:flex;"><span>    BusID          <span style="color:#666;font-style:italic">&#34;PCI:1:0:0&#34;</span>
+</span></span><span style="display:flex;"><span>EndSection
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Section <span style="color:#666;font-style:italic">&#34;Screen&#34;</span>
+</span></span><span style="display:flex;"><span>    Identifier     <span style="color:#666;font-style:italic">&#34;Screen0&#34;</span>
+</span></span><span style="display:flex;"><span>    Device         <span style="color:#666;font-style:italic">&#34;Device0&#34;</span>
+</span></span><span style="display:flex;"><span>    Monitor        <span style="color:#666;font-style:italic">&#34;Monitor0&#34;</span>
+</span></span><span style="display:flex;"><span>    DefaultDepth    24
+</span></span><span style="display:flex;"><span>    SubSection     <span style="color:#666;font-style:italic">&#34;Display&#34;</span>
+</span></span><span style="display:flex;"><span>        Depth       24
+</span></span><span style="display:flex;"><span>    EndSubSection
+</span></span><span style="display:flex;"><span>EndSection
+</span></span></code></pre></td></tr></table>
 </div>
 </div>
         </div>
@@ -266,7 +265,7 @@ EndSection
         
 
 <div class="post-archive">
-    <h2>请参阅</h2>
+    <h2>See Also</h2>
     <ul class="listing">
         
         <li><a href="/post/Go/go_install_dev/">安装Go语言及搭建Go语言开发环境</a></li>
@@ -304,13 +303,16 @@ EndSection
 
     
     
+    
+    
+
 </div>
 
                     <footer id="footer">
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
-        | <a rel="nofollow" target="_blank" href="https://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
         
     </div>
     <br />
@@ -318,7 +320,9 @@ EndSection
         <div class="github-badge">
             <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
         </div>
-        
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
         <div class="github-badge">
             <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
         </div>
@@ -326,6 +330,7 @@ EndSection
 </footer>
 
 
+    
     
     <script type="text/javascript">
         window.MathJax = {
@@ -335,13 +340,10 @@ EndSection
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
-
-
-
     <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
@@ -349,12 +351,11 @@ EndSection
 
     <script src='/js/douban.js'></script>
 
-
                 </div>
 
                 <div id="secondary">
     <section class="widget">
-        <form id="search" action='https://blog.imw7.com/search/' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
       
       <input type="text" name="q" maxlength="20" placeholder="Search">
       <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
