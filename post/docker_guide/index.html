@@ -371,26 +371,26 @@
 <h4 id="获得加速器地址连接">获得加速器地址连接</h4>
 <h5 id="登陆阿里云开发者平台">登陆阿里云开发者平台</h5>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_login.png">
-            <img class="mx-auto" alt="aliyun_login" src="https://blog.imw7.com/images/aliyun_login.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_login.png">
+            <img class="mx-auto" alt="aliyun_login" src="https://blog.imw7.com/images/docker/aliyun_login.png" />
         </a>
     </p>
 <h5 id="点击控制台">点击控制台</h5>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_console.png">
-            <img class="mx-auto" alt="aliyun_console" src="https://blog.imw7.com/images/aliyun_console.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_console.png">
+            <img class="mx-auto" alt="aliyun_console" src="https://blog.imw7.com/images/docker/aliyun_console.png" />
         </a>
     </p>
 <h5 id="选择容器镜像服务">选择容器镜像服务</h5>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_mirror1.png">
-            <img class="mx-auto" alt="aliyun_mirror1" src="https://blog.imw7.com/images/aliyun_mirror1.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_mirror1.png">
+            <img class="mx-auto" alt="aliyun_mirror1" src="https://blog.imw7.com/images/docker/aliyun_mirror1.png" />
         </a>
     </p>
 <h5 id="获取加速器地址">获取加速器地址</h5>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_mirror2.png">
-            <img class="mx-auto" alt="aliyun_mirror2" src="https://blog.imw7.com/images/aliyun_mirror2.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_mirror2.png">
+            <img class="mx-auto" alt="aliyun_mirror2" src="https://blog.imw7.com/images/docker/aliyun_mirror2.png" />
         </a>
     </p>
 <h4 id="粘贴脚本直接执行">粘贴脚本直接执行</h4>
@@ -1686,8 +1686,8 @@
 <p>bootfs（boot file system）主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在<strong>Docker镜像的最底层是引导文件系统bootfs</strong>。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p>
 <p>rootfs（root file system），在bootfs之上，包含的就是典型Linux系统中的/dev，/proc，/bin，/etc 等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，CentOS等等。</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/linux_file_system.png">
-            <img class="mx-auto" alt="linux_file_system" src="https://blog.imw7.com/images/linux_file_system.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/linux_file_system.png">
+            <img class="mx-auto" alt="linux_file_system" src="https://blog.imw7.com/images/docker/linux_file_system.png" />
         </a>
     </p>
 <p>平时我们安装进虚拟机的Ubuntu都是好几个G，为什么docker这里才77.8M？</p>
@@ -1711,8 +1711,8 @@
 <p><strong>Docker镜像层都是只读的，容器层是可写的</strong>。</p>
 <p>当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作”容器层”，”容器层”之下的都叫”镜像层”。</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker_container_image.png">
-            <img class="mx-auto" alt="docker_container_image" src="https://blog.imw7.com/images/docker_container_image.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/docker_container_image.png">
+            <img class="mx-auto" alt="docker_container_image" src="https://blog.imw7.com/images/docker/docker_container_image.png" />
         </a>
     </p>
 <p>所有对容器的改动，无论添加、删除、还是修改文件都只会发生在容器层钟。只有容器层是可写的，容器层下面的所有镜像层都是只读的。</p>
@@ -1816,15 +1816,15 @@
 <p>Docker中的镜像分层，<strong>支持通过扩展现有镜像，创建新的镜像</strong>。类似Java继承于一个Base基础类，自己再按需扩展。</p>
 <p>新镜像是从base镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker_layer.png">
-            <img class="mx-auto" alt="docker_layer" src="https://blog.imw7.com/images/docker_layer.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/docker_layer.png">
+            <img class="mx-auto" alt="docker_layer" src="https://blog.imw7.com/images/docker/docker_layer.png" />
         </a>
     </p>
 <h2 id="本地镜像发布到阿里云">本地镜像发布到阿里云</h2>
 <h3 id="本地镜像发布到阿里云流程">本地镜像发布到阿里云流程</h3>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_docker_pull_push.png">
-            <img class="mx-auto" alt="aliyun_docker_pull_push" src="https://blog.imw7.com/images/aliyun_docker_pull_push.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_docker_pull_push.png">
+            <img class="mx-auto" alt="aliyun_docker_pull_push" src="https://blog.imw7.com/images/docker/aliyun_docker_pull_push.png" />
         </a>
     </p>
 <h3 id="镜像的生成方法">镜像的生成方法</h3>
@@ -1861,37 +1861,37 @@
 <h4 id="创建仓库镜像">创建仓库镜像</h4>
 <p>1、选择控制台，进入容器镜像服务</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/aliyun_console2.png">
-            <img class="mx-auto" alt="aliyun_console2" src="https://blog.imw7.com/images/aliyun_console2.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_console2.png">
+            <img class="mx-auto" alt="aliyun_console2" src="https://blog.imw7.com/images/docker/aliyun_console2.png" />
         </a>
     </p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/container_image_service.png">
-            <img class="mx-auto" alt="container_image_service" src="https://blog.imw7.com/images/container_image_service.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/container_image_service.png">
+            <img class="mx-auto" alt="container_image_service" src="https://blog.imw7.com/images/docker/container_image_service.png" />
         </a>
     </p>
 <p>选择个人实例</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/personal_instance.png">
-            <img class="mx-auto" alt="personal_instance" src="https://blog.imw7.com/images/personal_instance.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/personal_instance.png">
+            <img class="mx-auto" alt="personal_instance" src="https://blog.imw7.com/images/docker/personal_instance.png" />
         </a>
     </p>
 <p>命名空间</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/namespace.png">
-            <img class="mx-auto" alt="namespace" src="https://blog.imw7.com/images/namespace.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/namespace.png">
+            <img class="mx-auto" alt="namespace" src="https://blog.imw7.com/images/docker/namespace.png" />
         </a>
     </p>
 <p>仓库名称</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/image_hub.png">
-            <img class="mx-auto" alt="image_hub" src="https://blog.imw7.com/images/image_hub.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/image_hub.png">
+            <img class="mx-auto" alt="image_hub" src="https://blog.imw7.com/images/docker/image_hub.png" />
         </a>
     </p>
 <p>进入管理界面获得脚本</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/get_script.png">
-            <img class="mx-auto" alt="get_script" src="https://blog.imw7.com/images/get_script.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/get_script.png">
+            <img class="mx-auto" alt="get_script" src="https://blog.imw7.com/images/docker/get_script.png" />
         </a>
     </p>
 <h4 id="将镜像推送到阿里云">将镜像推送到阿里云</h4>
