@@ -78,9 +78,11 @@
 <div class="res-cons">
     <style type="text/css">
     .post-toc {
-        position: fixed;
+        position: absolute;
+        top: 0;
+        right: 0;
         width: 200px;
-        margin-left: -210px;
+        margin-right: 0px;
         padding: 5px 10px;
         font-family: Athelas, STHeiti, Microsoft Yahei, serif;
         font-size: 12px;
@@ -96,37 +98,38 @@
         box-sizing: border-box;
         z-index: 999;
         cursor: pointer;
-        max-height: 70%;
+        max-height: 45%;
         overflow-y: auto;
         overflow-x: hidden;
+        float: right;
     }
 
     .post-toc .post-toc-title {
         width: 100%;
         margin: 0 auto;
-        font-size: 20px;
+        font-size: 18px;
         font-weight: 400;
         text-transform: uppercase;
         text-align: center;
     }
 
     .post-toc .post-toc-content {
-        font-size: 15px;
+        font-size: 12px;
     }
 
     .post-toc .post-toc-content>nav>ul {
-        margin: 10px 0;
+        margin: 8px 0;
     }
 
     .post-toc .post-toc-content ul {
-        padding-left: 20px;
-        list-style: square;
+        padding-left: 10px;
+        list-style: none;
         margin: 0.5em;
         line-height: 1.8em;
     }
 
-    .post-toc .post-toc-content ul ul {
-        padding-left: 15px;
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
         display: none;
     }
 
@@ -137,7 +140,7 @@
         }
     }
 </style>
-<div class="post-toc" style="position: absolute; top: 188px;">
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
     <h2 class="post-toc-title">文章目录</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
@@ -198,9 +201,9 @@
     $(document).ready(function () {
         var postToc = $(".post-toc");
         if (postToc.length) {
-            var leftPos = $("#main").offset().left;
-            if (leftPos < 220) {
-                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
             }
 
             var t = postToc.offset().top - 20,
@@ -218,10 +221,6 @@
                 var e = $(window).scrollTop();
                 e < t ? postToc.css(a.start) : postToc.css(a.process)
             })
-        }
-
-        if ($("#TableOfContents").children().length < 1) {
-            $(".post-toc").remove();
         }
     })
 </script>
