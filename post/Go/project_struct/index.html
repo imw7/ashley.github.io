@@ -214,172 +214,80 @@
             <p>实际项目业务功能和模块会很多，我们不可能把所有代码都写在一个go文件里面或者写在一个main入口函数里面；我们需要对项目结构做一些规划，方便维护代码以及扩展。</p>
 <h2 id="1项目结构">1.项目结构</h2>
 <h4 id="有视图模板">有视图模板</h4>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
-</span></span><span style="display:flex;"><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-</span></span><span style="display:flex;"><span>│   └── user.go
-</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-</span></span><span style="display:flex;"><span>│   ├── food.go
-</span></span><span style="display:flex;"><span>│   └── user.go
-</span></span><span style="display:flex;"><span>├── static                  <span style="color:#888;font-style:italic">#静态资源目录，包括Js，css，jpg等等，可以通过Gin框架配置，直接让用户访问。</span>
-</span></span><span style="display:flex;"><span>│   ├── css
-</span></span><span style="display:flex;"><span>│   ├── images
-</span></span><span style="display:flex;"><span>│   └── js
-</span></span><span style="display:flex;"><span>└── views                   <span style="color:#888;font-style:italic">#视图模板目录，存放各个模块的视图模板，当然有些项目只有api，是不需要视图部分，可以忽略这个目录</span>
-</span></span><span style="display:flex;"><span>    └── index.html
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="api开发">api开发</h4>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
-</span></span><span style="display:flex;"><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-</span></span><span style="display:flex;"><span>│   └── user.go
-</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-</span></span><span style="display:flex;"><span>│   ├── food.go
-</span></span><span style="display:flex;"><span>│   ├── user.go
-</span></span><span style="display:flex;"><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
-</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>以上两种目录结构基本上大同小异，一般的项目构建都可以使用这样的项目结构，清晰明了。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>│   └── config.toml         <span style="color:#888;font-style:italic">#可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>│   └── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>│   ├── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>│   └── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>├── static                  <span style="color:#888;font-style:italic">#静态资源目录，包括Js，css，jpg等等，可以通过Gin框架配置，直接让用户访问。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>│   ├── css
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>│   ├── images
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>│   └── js
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>└── views                   <span style="color:#888;font-style:italic">#视图模板目录，存放各个模块的视图模板，当然有些项目只有api，是不需要视图部分，可以忽略这个目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    └── index.html
+</span></span></code></pre></div><h4 id="api开发">api开发</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml等等</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>├── controllers             <span style="color:#888;font-style:italic">#控制器目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>│   └── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>│   ├── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>│   ├── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span></code></pre></div><p>以上两种目录结构基本上大同小异，一般的项目构建都可以使用这样的项目结构，清晰明了。</p>
 <h2 id="2项目结构扩展">2.项目结构扩展</h2>
 <p>对于一般的项目都是使用上面的目录结构，但是有时候项目复杂了，会进一步拆分，把数据校验，模型定义，数据操作，服务，响应进行解耦。</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>数据校验 -&gt; 控制器 -&gt; 调用服务 -&gt; 数据操作 -&gt; 数据模型 -&gt; 数据响应
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>目录结构如下：</p>
-<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
-<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
-</span><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
-</span></span><span style="display:flex;"><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml、ini等等</span>
-</span></span><span style="display:flex;"><span>├── requests                <span style="color:#888;font-style:italic">#定义入参即入参校验规则</span>
-</span></span><span style="display:flex;"><span>│   └── user_request.go
-</span></span><span style="display:flex;"><span>│   └── food_request.go
-</span></span><span style="display:flex;"><span>├── responses               <span style="color:#888;font-style:italic">#定义响应的数据</span>
-</span></span><span style="display:flex;"><span>│   └── user_response.go
-</span></span><span style="display:flex;"><span>│   └── food_response.go
-</span></span><span style="display:flex;"><span>├── services                <span style="color:#888;font-style:italic">#服务定义目录</span>
-</span></span><span style="display:flex;"><span>|	└── v1					<span style="color:#888;font-style:italic">#服务v1版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user_service.go
-</span></span><span style="display:flex;"><span>│   |	└── food_service.go
-</span></span><span style="display:flex;"><span>|	└── v2					<span style="color:#888;font-style:italic">#服务v2版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user_service.go
-</span></span><span style="display:flex;"><span>│   |	└── food_service.go
-</span></span><span style="display:flex;"><span>├── api             		<span style="color:#888;font-style:italic">#api目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
-</span></span><span style="display:flex;"><span>│   └── v1					<span style="color:#888;font-style:italic">#apiv1版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user.go
-</span></span><span style="display:flex;"><span>│   |	└── food.go
-</span></span><span style="display:flex;"><span>│   └── v2					<span style="color:#888;font-style:italic">#apiv2版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user.go
-</span></span><span style="display:flex;"><span>│   |	└── food.go
-</span></span><span style="display:flex;"><span>├── router					<span style="color:#888;font-style:italic">#路由目录</span>
-</span></span><span style="display:flex;"><span>│   └── v1					<span style="color:#888;font-style:italic">#路由v1版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user.go
-</span></span><span style="display:flex;"><span>│   |	└── food.go
-</span></span><span style="display:flex;"><span>│   └── v2					<span style="color:#888;font-style:italic">#路由v2版本</span>
-</span></span><span style="display:flex;"><span>│   |	└── user.go
-</span></span><span style="display:flex;"><span>│   |	└── food.go
-</span></span><span style="display:flex;"><span>├── init.go					<span style="color:#888;font-style:italic">#路由初始化</span>
-</span></span><span style="display:flex;"><span>├── pkg						<span style="color:#888;font-style:italic">#自定义的工具类等</span>
-</span></span><span style="display:flex;"><span>│   └── e					<span style="color:#888;font-style:italic">#项目统一的响应定义，如错误码，通用的错误信息，响应的结构体</span>
-</span></span><span style="display:flex;"><span>│   └── util				<span style="color:#888;font-style:italic">#工具类目录</span>
-</span></span><span style="display:flex;"><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
-</span></span><span style="display:flex;"><span>│   ├── food.go
-</span></span><span style="display:flex;"><span>│   ├── user.go
-</span></span><span style="display:flex;"><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
-</span></span><span style="display:flex;"><span>├── repositories            <span style="color:#888;font-style:italic">#数据操作层，定义各种数据操作。</span>
-</span></span><span style="display:flex;"><span>│   └── user_repository.go
-</span></span><span style="display:flex;"><span>│   └── food_repository.go
-</span></span><span style="display:flex;"><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
-</span></span><span style="display:flex;"><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>通过上面的项目结构扩展，增加了代码量，但是把各层的职责界定了，每一层的只做每一层的事情，数据解耦。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>数据校验 -&gt; 控制器 -&gt; 调用服务 -&gt; 数据操作 -&gt; 数据模型 -&gt; 数据响应
+</span></span></code></pre></div><p>目录结构如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>├── conf                    <span style="color:#888;font-style:italic">#项目配置文件目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>│   └── config.toml         <span style="color:#888;font-style:italic">#大家可以选择自己熟悉的配置文件管理工具包例如：toml、xml、ini等等</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>├── requests                <span style="color:#888;font-style:italic">#定义入参即入参校验规则</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>│   └── user_request.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>│   └── food_request.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>├── responses               <span style="color:#888;font-style:italic">#定义响应的数据</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>│   └── user_response.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>│   └── food_response.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>├── services                <span style="color:#888;font-style:italic">#服务定义目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>|	└── v1					<span style="color:#888;font-style:italic">#服务v1版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>│   |	└── user_service.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>│   |	└── food_service.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>|	└── v2					<span style="color:#888;font-style:italic">#服务v2版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>│   |	└── user_service.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>│   |	└── food_service.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>├── api             		<span style="color:#888;font-style:italic">#api目录，按模块存放控制器（或者叫控制器函数），必要的时候可以继续划分子目录。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>│   └── v1					<span style="color:#888;font-style:italic">#apiv1版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>│   └── v2					<span style="color:#888;font-style:italic">#apiv2版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>├── router					<span style="color:#888;font-style:italic">#路由目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>│   └── v1					<span style="color:#888;font-style:italic">#路由v1版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>│   └── v2					<span style="color:#888;font-style:italic">#路由v2版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>│   |	└── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>│   |	└── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>├── init.go					<span style="color:#888;font-style:italic">#路由初始化</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>├── pkg						<span style="color:#888;font-style:italic">#自定义的工具类等</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>│   └── e					<span style="color:#888;font-style:italic">#项目统一的响应定义，如错误码，通用的错误信息，响应的结构体</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>│   └── util				<span style="color:#888;font-style:italic">#工具类目录</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>├── models                  <span style="color:#888;font-style:italic">#模型目录，负责项目的数据存储部分，例如各个模块的Mysql表的读写模型。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>│   ├── food.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>│   ├── user.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>│	└── init.go				<span style="color:#888;font-style:italic">#模型初始化</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>├── repositories            <span style="color:#888;font-style:italic">#数据操作层，定义各种数据操作。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>│   └── user_repository.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>│   └── food_repository.go
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>├── logs                    <span style="color:#888;font-style:italic">#日志文件目录，主要保存项目运行过程中产生的日志。</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>├── main.go                 <span style="color:#888;font-style:italic">#项目入口，这里负责Gin框架的初始化，注册路由信息，关联控制器函数等。</span>
+</span></span></code></pre></div><p>通过上面的项目结构扩展，增加了代码量，但是把各层的职责界定了，每一层的只做每一层的事情，数据解耦。</p>
         </div>
 
         
@@ -735,7 +643,7 @@
     <ul class="widget-list">
         
         <li>
-            <a target="_blank" href="https://www.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+            <a target="_blank" href="https://blog.imw7.com/" title="魏奇的博客">魏奇的博客</a>
         </li>
         
     </ul>
