@@ -173,6 +173,19 @@
         <li><a href="#将阿里云上的镜像下载到本地">将阿里云上的镜像下载到本地</a></li>
       </ul>
     </li>
+    <li><a href="#本地镜像发布到私有库">本地镜像发布到私有库</a>
+      <ul>
+        <li><a href="#本地镜像发布到私有库流程">本地镜像发布到私有库流程</a></li>
+        <li><a href="#是什么-1">是什么</a></li>
+        <li><a href="#将本地镜像推送到私有库">将本地镜像推送到私有库</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker容器数据卷">Docker容器数据卷</a>
+      <ul>
+        <li><a href="#是什么-2">是什么</a></li>
+        <li><a href="#能干嘛">能干嘛</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
     </div>
@@ -347,7 +360,7 @@
 </span></span></code></pre></div><h3 id="镜像命令">镜像命令</h3>
 <h4 id="docker-images-options-repositorytag">docker images [OPTIONS] [REPOSITORY[:TAG]]</h4>
 <p>1、列出本地主机上的镜像</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ubuntu        latest    27941809078c   2 weeks ago    77.8MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>hello-world   latest    feb5d9fea6a5   9 months ago   13.3kB
@@ -392,7 +405,7 @@
 <p>2、命令</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker search [OPTIONS] 镜像名字
 </span></span></code></pre></div><p>例子：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker search redis</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker search redis
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>NAME  DESCRIPTION        							  STARS     OFFICIAL   AUTOMATED
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>redis Redis is an open <span style="font-weight:bold;font-style:italic">source</span> key-value store that…   11050     [OK]       
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>...
@@ -405,7 +418,7 @@
 </span></span></code></pre></div><p>注：没有TAG就是最新版，等价于<code>docker pull 镜像名字:latest</code></p>
 <h4 id="docker-system-df">docker system df</h4>
 <p>查看镜像/容器/数据卷所占的空间</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker system df</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker system df
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Images          2         2         77.83MB   0B (0%)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Containers      3         0         49B       49B (100%)
@@ -464,11 +477,11 @@
 </tbody>
 </table>
 <p>2、启动交互式容器（前台命令行）</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY    TAG       IMAGE ID       CREATED        SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ubuntu        latest    27941809078c   2 weeks ago    77.8MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>hello-world   latest    feb5d9fea6a5   9 months ago   13.3kB
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@aeea6c8ac772:/# ps -ef
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>UID        PID  PPID  C STIME TTY          TIME CMD
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>root         1     0  0 05:04 pts/0    00:00:00 /bin/bash
@@ -485,7 +498,7 @@
 <p>1、命令</p>
 <pre tabindex="0"><code class="language-2\" data-lang="2\">$ docker ps [OPTIONS]
 </code></pre><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID  IMAGE   COMMAND      CREATED        STATUS       PORTS  NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>0de077b13a8b  ubuntu  <span style="color:#666;font-style:italic">&#34;/bin/bash&#34;</span>  6 minutes ago  Up 6 minutes        youthful_ja
 </span></span></code></pre></div><p>2、OPTIONS说明</p>
@@ -534,7 +547,7 @@
 </span></span></code></pre></div><h5 id="查看容器日志">查看容器日志</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker logs [OPTIONS] CONTAINER
 </span></span></code></pre></div><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker logs 8616a62e0639</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker logs 8616a62e0639
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>1:C 21 Jun 2022 06:41:38.228 <span style="color:#888;font-style:italic"># oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>1:C 21 Jun 2022 06:41:38.228 <span style="color:#888;font-style:italic"># Redis version=6.0.8, bits=64, commit=00000000, modified=0, pid=1, just started</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>1:C 21 Jun 2022 06:41:38.228 <span style="color:#888;font-style:italic"># Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf</span>
@@ -547,13 +560,13 @@
 </span></span></code></pre></div><h5 id="查看容器内运行的进程">查看容器内运行的进程</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker top CONTAINER [ps OPTIONS]
 </span></span></code></pre></div><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker top 8616a62e0639</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker top 8616a62e0639
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>UID      PID    PPID   C       STIME       TTY    TIME        CMD
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>polkitd  26537  26518  0       14:41       ?      00:00:02    redis-server *:6379
 </span></span></code></pre></div><h5 id="查看容器内部细节">查看容器内部细节</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker inspect [OPTIONS] NAME|ID [NAME|ID...]
 </span></span></code></pre></div><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker inspect 8616a62e0639</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  1</span><span>$ docker inspect 8616a62e0639
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  2</span><span>[
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  3</span><span>    {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">  4</span><span>        <span style="color:#666;font-style:italic">&#34;Id&#34;</span>: <span style="color:#666;font-style:italic">&#34;8616a62e06394d8d64fe64ec14396b50990f29480e2805198b0948548770a717&#34;</span>,
@@ -781,12 +794,12 @@
 <p>第一种：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> [OPTIONS] CONTAINER COMMAND [ARG...] 
 </span></span></code></pre></div><p>重新进入正在运行的容器中：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker exec -it 8616a62e0639 /bin/bash</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 8616a62e0639 /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@8616a62e0639:/data#
 </span></span></code></pre></div><p>第二种：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker attach [OPTIONS] CONTAINER
 </span></span></code></pre></div><p>重新进入正在运行的容器：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker attach 8616a62e0639</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker attach 8616a62e0639
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@8616a62e0639:/data#
 </span></span></code></pre></div><p><strong>上述两种方法的区别</strong></p>
 <p>① attach 直接进入容器启动命令的终端，不会启动新的进程。用exit退出，会导致容器的停止。</p>
@@ -798,13 +811,13 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 容器ID redis-cli
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"># 一般用-d后台启动程序，再用exec进入对应容器实例	</span>
 </span></span></code></pre></div><p>例如：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED         STATUS         PORTS      NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>71fd743e48fa   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   3 minutes ago   Up 3 minutes   6379/tcp   sleepy_gould
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker exec -it 71fd743e48fa /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 71fd743e48fa /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>root@71fd743e48fa:/data# <span style="font-weight:bold;font-style:italic">exit</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="font-weight:bold;font-style:italic">exit</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker exec -it 71fd743e48fa redis-cli</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 71fd743e48fa redis-cli
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>127.0.0.1:6379&gt; ping
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>PONG
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold;font-style:italic">set</span> name eric
@@ -816,7 +829,7 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
 </span></span></code></pre></div><p>公式：<code>docker cp 容器ID:容器内路径 目的地主机路径</code></p>
 <p>1、在容器创建文件</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker exec -it 71fd743e48fa /bin/bash</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 71fd743e48fa /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@71fd743e48fa:/data# <span style="font-weight:bold;font-style:italic">cd</span> /tmp
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@71fd743e48fa:/tmp# touch a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@71fd743e48fa:/tmp# ls
@@ -831,7 +844,7 @@
 <p>1、export 导出容器的内容作为一个tar归档文件[对应import命令]</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">export</span> 容器ID &gt; 文件名.tar
 </span></span></code></pre></div><p>在容器端创建文件a.txt，并按ctrl+p+q退出</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@06fa2250f3e6:/# <span style="font-weight:bold;font-style:italic">cd</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@06fa2250f3e6:~# ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@06fa2250f3e6:~# clear
@@ -839,32 +852,32 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@06fa2250f3e6:~# <span style="font-weight:bold;font-style:italic">echo</span> <span style="color:#666;font-style:italic">&#34;Hello, world!&#34;</span> &gt; a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>root@06fa2250f3e6:~# // ctrl+p+q 退出界面，不退出进程
 </span></span></code></pre></div><p>在主机端导出整个容器成tar包</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker export 06fa2250f3e6 &gt; abcd.tar</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># ls</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">export</span> 06fa2250f3e6 &gt; abcd.tar
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>abcd.tar
 </span></span></code></pre></div><p>2、import 从tar包中的内容创建一个新的文件系统再导入为镜像[对应export]</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cat 文件名.tar | docker import - 镜像用户/镜像名:镜像版本号
-</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS              PORTS      NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>06fa2250f3e6   ubuntu        <span style="color:#666;font-style:italic">&#34;/bin/bash&#34;</span>              About a minute ago   Up About a minute              ecstatic_nobel
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>71fd743e48fa   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   About an hour ago    Up About an hour    6379/tcp   sleepy_gould
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker rm -f 06fa2250f3e6</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>$ docker rm -f 06fa2250f3e6
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>06fa2250f3e6
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED       STATUS       PORTS      NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>71fd743e48fa   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   2 hours ago   Up 2 hours   6379/tcp   sleepy_gould
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># cat abcd.tar | docker import - ashley/ubuntu:1.0.0</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>$ cat abcd.tar | docker import - ashley/ubuntu:1.0.0
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>sha256:daa7fecb01e3e80143aa665fbc41abcc683d8531eeae4387598f84ad1a1d5fa9
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED       STATUS       PORTS      NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>71fd743e48fa   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   2 hours ago   Up 2 hours   6379/tcp   sleepy_gould
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>ashley/ubuntu   1.0.0     daa7fecb01e3   16 seconds ago   77.8MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>ubuntu          latest    27941809078c   2 weeks ago      77.8MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>hello-world     latest    feb5d9fea6a5   9 months ago     13.3kB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>redis           6.0.8     16ecd2772934   20 months ago    104MB
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it daa7fecb01e3 /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>$ docker run -it daa7fecb01e3 /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>root@ae152bad6453:/# <span style="font-weight:bold;font-style:italic">cd</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>root@ae152bad6453:~# ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>a.txt
@@ -878,7 +891,7 @@
 <p>只有通过这个镜像文件才能生成Docker容器实例（类似Go中new出来一个对象）。</p>
 <h4 id="分层的镜像">分层的镜像</h4>
 <p><strong>镜像是分层的</strong>，以我们的pull为例，在下载过程中我们可以看到docker的镜像好像是在一层一层的下载。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker pull mysql</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker pull mysql
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Using default tag: latest
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>72a69066d2fe: Pulling fs layer 
@@ -906,7 +919,7 @@
         </a>
     </p>
 <p>平时我们安装进虚拟机的Ubuntu都是好几个G，为什么docker这里才77.8M？</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images ubuntu</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images ubuntu
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ubuntu       latest    27941809078c   2 weeks ago   77.8MB
 </span></span></code></pre></div><p>对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用Host的kernel，自己只需要提供rootfs就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。</p>
@@ -929,7 +942,7 @@
 <p>1、从Hub上下载ubuntu镜像到本地并成功运行</p>
 <p>2、原始的默认ubuntu镜像是不带着vim命令的</p>
 <p>3、外网连通的情况下，安装vim</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>root@f840a57094ad:/# vim a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>bash: vim: <span style="font-weight:bold;font-style:italic">command</span> not found
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>root@b06b07b5c64f:/# apt-get update
@@ -942,23 +955,23 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>......
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Processing triggers <span style="font-weight:bold">for</span> libc-bin (2.35-0ubuntu3) ...
 </span></span></code></pre></div><p>4、安装完成后，commit成自己的新镜像</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker commit -m=&#34;vim cmd add ok&#34; -a=&#34;ashley&#34; f840a57094ad imw7/myubuntu:1.1</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;vim cmd add ok&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;ashley&#34;</span> f840a57094ad imw7/myubuntu:1.1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>sha256:1e9b0351af1f8fe4a7863a4cfd0b0d1146fdfae61f8ea56d0fcdef9c1ba73f3c
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>imw7/myubuntu   1.1       1e9b0351af1f   30 seconds ago   180MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>ubuntu          latest    27941809078c   2 weeks ago      77.8MB
 </span></span></code></pre></div><p>5、启动新镜像并和原来的对比</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>imw7/myubuntu   1.1       1e9b0351af1f   11 minutes ago   180MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>ubuntu          latest    27941809078c   2 weeks ago      77.8MB
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>root@ec7727e9390c:/# vim a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>bash: vim: <span style="font-weight:bold;font-style:italic">command</span> not found
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>root@ec7727e9390c:/# <span style="font-weight:bold;font-style:italic">exit</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="font-weight:bold;font-style:italic">exit</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it 1e9b0351af1f /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>$ docker run -it 1e9b0351af1f /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>root@0e3310eed3ba:/# vim a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>root@0e3310eed3ba:/# cat a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>This is Docker!
@@ -987,7 +1000,7 @@
 <p>后续章节介绍</p>
 <h3 id="将本地镜像推送到阿里云">将本地镜像推送到阿里云</h3>
 <h4 id="本地镜像素材原型">本地镜像素材原型</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker images</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY      TAG       IMAGE ID       CREATED          SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>imw7/myubuntu   1.1       1e9b0351af1f   11 minutes ago   180MB
 </span></span></code></pre></div><h4 id="阿里云开发者平台">阿里云开发者平台</h4>
@@ -1004,25 +1017,25 @@
             <img class="mx-auto" alt="container_image_service" src="https://blog.imw7.com/images/docker/container_image_service.png" />
         </a>
     </p>
-<p>选择个人实例</p>
+<p>2、选择个人实例</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/personal_instance.png">
             <img class="mx-auto" alt="personal_instance" src="https://blog.imw7.com/images/docker/personal_instance.png" />
         </a>
     </p>
-<p>命名空间</p>
+<p>3、命名空间</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/namespace.png">
             <img class="mx-auto" alt="namespace" src="https://blog.imw7.com/images/docker/namespace.png" />
         </a>
     </p>
-<p>仓库名称</p>
+<p>4、仓库名称</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/image_hub.png">
             <img class="mx-auto" alt="image_hub" src="https://blog.imw7.com/images/docker/image_hub.png" />
         </a>
     </p>
-<p>进入管理界面获得脚本</p>
+<p>5、进入管理界面获得脚本</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/get_script.png">
             <img class="mx-auto" alt="get_script" src="https://blog.imw7.com/images/docker/get_script.png" />
@@ -1031,8 +1044,151 @@
 <h4 id="将镜像推送到阿里云">将镜像推送到阿里云</h4>
 <h5 id="将镜像推送到阿里云registry">将镜像推送到阿里云registry</h5>
 <p>1、管理界面脚本</p>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/script.png">
+            <img class="mx-auto" alt="script" src="https://blog.imw7.com/images/docker/script.png" />
+        </a>
+    </p>
 <p>2、脚本实例</p>
-<h3 id="将阿里云上的镜像下载到本地">将阿里云上的镜像下载到本地</h3>
+<p>使用 <code>docker tag</code> 命令重命名镜像，并将它通过专有网络地址推送至Registry。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY      TAG       IMAGE ID       CREATED         SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>imw7/myubuntu   1.1       1e9b0351af1f   19 hours ago    180MB
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ docker tag 1e9b0351af1f registry.cn-shenzhen.aliyuncs.com/imw7/myubuntu:1.1
+</span></span></code></pre></div><p>使用  <code>docker push</code> 命令将该镜像推送至远程。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker push registry.cn-shenzhen.aliyuncs.com/imw7/myubuntu:1.1
+</span></span></code></pre></div><h3 id="将阿里云上的镜像下载到本地">将阿里云上的镜像下载到本地</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull registry.cn-shenzhen.aliyuncs.com/imw7/myubuntu:1.1
+</span></span></code></pre></div><h2 id="本地镜像发布到私有库">本地镜像发布到私有库</h2>
+<h3 id="本地镜像发布到私有库流程">本地镜像发布到私有库流程</h3>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/aliyun_docker_pull_push.png">
+            <img class="mx-auto" alt="aliyun_docker_pull_push" src="https://blog.imw7.com/images/docker/aliyun_docker_pull_push.png" />
+        </a>
+    </p>
+<h3 id="是什么-1">是什么</h3>
+<p>1、官方Docker Hub地址：https://hub.docker.com/，中国大陆访问太慢了且有被阿里云取代的趋势，不太主流。</p>
+<p>2、Dockerhub、阿里云这样的公共镜像仓库可能不太方便，涉及公司机密的不可能提供镜像给公网，所以需要创建一个本地私人仓库供给团队使用，基于公司内部项目构建镜像。</p>
+<h4 id="docker-registry">Docker Registry</h4>
+<p><code>Docker Registry</code>是官方提供的工具，可以用于构建私有镜像仓库。</p>
+<h3 id="将本地镜像推送到私有库">将本地镜像推送到私有库</h3>
+<h4 id="下载镜像docker-registry">下载镜像Docker Registry</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull registry
+</span></span></code></pre></div><h4 id="运行私有库registry相当于本地有个私有docker-hub">运行私有库Registry，相当于本地有个私有Docker Hub</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 5000:5000 -v /root/myregistry/:/tmp/registry --privileged=<span style="font-weight:bold;font-style:italic">true</span> registry
+</span></span></code></pre></div><p>默认情况下，仓库被创建在容器的/var/lib/registry目录下，建议自行用容器卷映射，方便于宿主机联调。</p>
+<h4 id="案例演示创建一个新镜像ubuntu安装ifconifg命令">案例演示创建一个新镜像，ubuntu安装ifconifg命令</h4>
+<p>1、从Hub上下载ubuntu镜像到本地并成功运行</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull ubuntu
+</span></span></code></pre></div><p>2、原始的ubuntu镜像是不带ifconfig命令的</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@fa41e46960f0:/# ifconfig
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>bash: ifconfig: <span style="font-weight:bold;font-style:italic">command</span> not found
+</span></span></code></pre></div><p>3、外网连通的情况下，安装ifconfig命令并测试通过</p>
+<p>①docker容器内执行下述两条命令</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ apt-get update
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ apt-get install net-tools
+</span></span></code></pre></div><p>②测试通过</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>root@fa41e46960f0:/# ifconfig
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>eth0: <span style="color:#666;font-weight:bold;font-style:italic">flags</span>=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        inet 172.17.0.3  netmask 255.255.0.0  broadcast 172.17.255.255
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        ether 02:42:ac:11:00:03  txqueuelen 0  (Ethernet)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        RX packets 8987  bytes 22503087 (22.5 MB)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        TX packets 8949  bytes 769069 (769.0 KB)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>lo: <span style="color:#666;font-weight:bold;font-style:italic">flags</span>=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        inet 127.0.0.1  netmask 255.0.0.0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        loop  txqueuelen 1000  (Local Loopback)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        RX packets 0  bytes 0 (0.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        TX packets 0  bytes 0 (0.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span></code></pre></div><p>按<code>ctrl+p+q</code>退出，执行后续操作。</p>
+<p>4、安装完成后，commit自己的新镜像</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;提交的描述信息&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;作者&#34;</span> 容器ID 要创建的目标镜像名:[标签名]
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;ifconfig cmd add&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;ashley&#34;</span> fa41e46960f0 imw7/myubuntu:1.2
+</span></span></code></pre></div><h4 id="curl验证私服库上有什么镜像">curl验证私服库上有什么镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl -XGET http://宿主机IP地址:5000/v2/_catalog
+</span></span></code></pre></div><p>通过ifconfig可以查看宿主机IP地址</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl -XGET http://172.30.108.127:5000/v2/_catalog
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{<span style="color:#666;font-style:italic">&#34;repositories&#34;</span>:[]} // 空的
+</span></span></code></pre></div><h4 id="将新镜像-imw7myubuntu12-修改符合私服规范的tag">将新镜像 imw7/myubuntu:1.2 修改符合私服规范的Tag</h4>
+<p>按照公式：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker tag 镜像:Tag Host:Port/Repository:Tag
+</span></span></code></pre></div><p><strong>注</strong>：填写自己的host主机IP地址</p>
+<p>使用命令<code>docker tag</code>将<code>imw7/myubuntu:1.2</code>这个镜像修改为<code>172.30.108.127:5000/imw7/myubuntu:1.2</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker tag imw7/myubuntu:1.2 172.30.108.127:5000/imw7/myubuntu:1.2
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>REPOSITORY                            TAG       IMAGE ID       CREATED          SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>172.30.108.127:5000/imw7/myubuntu     1.2       def83a58fbd8   53 minutes ago   114MB
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>imw7/myubuntu                         1.2       def83a58fbd8   53 minutes ago   114MB
+</span></span></code></pre></div><h4 id="修改配置文件使之支持http">修改配置文件使之支持http</h4>
+<p>由于docker默认不允许http方式推送镜像，通过配置选项来取消这个限制。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cat /etc/docker/daemon.json
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#666;font-style:italic">&#34;registry-mirrors&#34;</span>: [<span style="color:#666;font-style:italic">&#34;https://wivds1wh.mirror.aliyuncs.com&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
+</span></span></code></pre></div><p>使用vim命令新增内容：<code>vim /etc/docker/daemon.json</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#666;font-style:italic">&#34;registry-mirrors&#34;</span>: [<span style="color:#666;font-style:italic">&#34;https://wivds1wh.mirror.aliyuncs.com&#34;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#666;font-style:italic">&#34;insecure-registries&#34;</span>:[<span style="color:#666;font-style:italic">&#34;172.30.108.127:5000&#34;</span>]
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
+</span></span></code></pre></div><p>注：修改后如果不生效，建议重启docker。</p>
+<h4 id="push推送到私服库">push推送到私服库</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker push 172.30.108.127:5000/imw7/myubuntu:1.2
+</span></span></code></pre></div><h4 id="curl验证私服库上有什么镜像2">curl验证私服库上有什么镜像2</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl -XGET http://172.30.108.127:5000/v2/_catalog
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{<span style="color:#666;font-style:italic">&#34;repositories&#34;</span>:[<span style="color:#666;font-style:italic">&#34;imw7/myubuntu&#34;</span>]}
+</span></span></code></pre></div><h4 id="pull到本地并运行">pull到本地并运行</h4>
+<p>1、删除本地的镜像文件</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY                          TAG   IMAGE ID       CREATED       SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>172.30.108.127:5000/imw7/myubuntu   1.2   def83a58fbd8   2 hours ago   114MB
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>imw7/myubuntu                       1.2   def83a58fbd8   2 hours ago   114MB
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ docker rmi -f 172.30.108.127:5000/imw7/myubuntu:1.2
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>$ docker rmi -f imw7/myubuntu:1.2
+</span></span></code></pre></div><p>2、拉取到本地</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull 172.30.108.127:5000/imw7/myubuntu:1.2
+</span></span></code></pre></div><p>查看镜像</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY                                        TAG       IMAGE ID       CREATED         SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>imw7/myubuntu                                     1.2       def83a58fbd8   2 hours ago     114MB
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>172.30.108.127:5000/imw7/myubuntu                 1.2       def83a58fbd8   2 hours ago     114MB
+</span></span></code></pre></div><p>3、运行</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -it 172.30.108.127:5000/imw7/myubuntu:1.2 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>root@93472ebdd6c2:/# ifconfig
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>eth0: <span style="color:#666;font-weight:bold;font-style:italic">flags</span>=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        inet 172.17.0.3  netmask 255.255.0.0  broadcast 172.17.255.255
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        ether 02:42:ac:11:00:03  txqueuelen 0  (Ethernet)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>        RX packets 7  bytes 586 (586.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        TX packets 0  bytes 0 (0.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>lo: <span style="color:#666;font-weight:bold;font-style:italic">flags</span>=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>        inet 127.0.0.1  netmask 255.0.0.0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>        loop  txqueuelen 1000  (Local Loopback)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        RX packets 0  bytes 0 (0.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        RX errors 0  dropped 0  overruns 0  frame 0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        TX packets 0  bytes 0 (0.0 B)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+</span></span></code></pre></div><h2 id="docker容器数据卷">Docker容器数据卷</h2>
+<p><strong>注</strong>：容器卷记得加入 <code>--privileged=true</code>。</p>
+<p>Docker挂载主机目录访问<strong>如果出现<code>cannot open directory .: Permission denied</code></strong>，怎么解决呢？</p>
+<p>解决办法：在挂载目录后多加一个 <code>--privileged=true</code> 参数即可。</p>
+<p>如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为。</p>
+<p>在SELinux里面挂载目录被禁止掉了，如果要开启，一般使用<code>--privileged=true</code>命令，扩大容器的权限解决挂载目录没有权限的问题，也即使用该参数，container内的root拥有真正的root权限，否则，container内的root只是外部的一个普通用户权限。</p>
+<h3 id="是什么-2">是什么</h3>
+<p>卷就是目录或文件，存在于一个或多个容器中，由docker挂载到 容器，但不属于联合文件系统，因此能够绕过Union File System提供一些用于持续存储或共享数据的特性。</p>
+<p>卷的设计目的就是<strong>数据的持久化</strong>，完全独立于容器的生存周期，因此Docker不会在容器删除时删除其挂载的数据卷。</p>
+<p>1、一句话：有点类似Redis里面的rdb和aof文件</p>
+<p>2、将docker容器内的数据保存进宿主机的磁盘中</p>
+<p>3、运行一个带有容器卷存储功能的容器实例</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录 镜像名
+</span></span></code></pre></div><h3 id="能干嘛">能干嘛</h3>
         </div>
 
         
