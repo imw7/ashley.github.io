@@ -184,6 +184,16 @@
       <ul>
         <li><a href="#是什么-2">是什么</a></li>
         <li><a href="#能干嘛">能干嘛</a></li>
+        <li><a href="#数据卷案例">数据卷案例</a></li>
+      </ul>
+    </li>
+    <li><a href="#docker常规安装简介">Docker常规安装简介</a>
+      <ul>
+        <li><a href="#总体步骤">总体步骤</a></li>
+        <li><a href="#安装tomcat">安装Tomcat</a></li>
+        <li><a href="#安装mysql">安装MySQL</a></li>
+        <li><a href="#安装redis">安装Redis</a></li>
+        <li><a href="#安装nginx">安装Nginx</a></li>
       </ul>
     </li>
   </ul>
@@ -1045,8 +1055,10 @@
 <h5 id="将镜像推送到阿里云registry">将镜像推送到阿里云registry</h5>
 <p>1、管理界面脚本</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/script.png">
-            <img class="mx-auto" alt="script" src="https://blog.imw7.com/images/docker/script.png" />
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cscript.png">
+            <img class="mx-auto" alt="script" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cscript.png" />
         </a>
     </p>
 <p>2、脚本实例</p>
@@ -1189,6 +1201,417 @@
 <p>3、运行一个带有容器卷存储功能的容器实例</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录 镜像名
 </span></span></code></pre></div><h3 id="能干嘛">能干嘛</h3>
+<h4 id="需求描述">需求描述</h4>
+<p>将运用与运行的环境打包镜像，run后形成容器实例运行，但是对数据的要求希望是持久化的。</p>
+<h4 id="作用">作用</h4>
+<p>Docker容器产生的数据，如果不备份，那么当容器实例删除后，容器内的数据自然也就没有了。为了能保存数据在docker中我们使用卷。</p>
+<h4 id="特点">特点</h4>
+<p>1、数据卷可在容器之间共享或重用数据</p>
+<p>2、卷中的更改可以直接实时生效</p>
+<p>3、数据卷中的更改不会包含在镜像的更新中</p>
+<p>4、数据卷的生命周期一直持续到没有容器使用它为止</p>
+<h3 id="数据卷案例">数据卷案例</h3>
+<h4 id="宿主vs容器之间映射添加容器卷">宿主vs容器之间映射添加容器卷</h4>
+<h5 id="直接命令添加">直接命令添加</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录 镜像名
+</span></span></code></pre></div><p>在docker中创建命名为u1的ubuntu镜像，并实现文件的映射：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /tmp/host_data:/tmp/docker_data --name=u1 ubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@10f4b9049f6f:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp/docker_data/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@10f4b9049f6f:/tmp/docker_data# touch dockerin.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>dockerin.txt
+</span></span></code></pre></div><p>在宿主机的对应目录中，可以<strong>实时</strong>查看到刚刚在docker中创建的文件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /tmp/host_data/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>dockerin.txt
+</span></span></code></pre></div><p>同样的，在主机创建文件，也可以实时在docker容器中获得对应的文件。</p>
+<h5 id="查看数据卷是否挂载成功">查看数据卷是否挂载成功</h5>
+<p>可以通过如下命令，查看数据卷是否挂载成功</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker inspect 容器ID
+</span></span></code></pre></div><p>举个例子：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker ps 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS          PORTS     NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>10f4b9049f6f   ubuntu    <span style="color:#666;font-style:italic">&#34;bash&#34;</span>    15 minutes ago   Up 15 minutes             u1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>$ docker inspect 10f4b9049f6f
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>[
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        ...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        <span style="color:#666;font-style:italic">&#34;Mounts&#34;</span>: [
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>            {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>                <span style="color:#666;font-style:italic">&#34;Type&#34;</span>: <span style="color:#666;font-style:italic">&#34;bind&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>                <span style="color:#666;font-style:italic">&#34;Source&#34;</span>: <span style="color:#666;font-style:italic">&#34;/tmp/host_data&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>                <span style="color:#666;font-style:italic">&#34;Destination&#34;</span>: <span style="color:#666;font-style:italic">&#34;/tmp/docker_data&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>                <span style="color:#666;font-style:italic">&#34;Mode&#34;</span>: <span style="color:#666;font-style:italic">&#34;&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>                <span style="color:#666;font-style:italic">&#34;RW&#34;</span>: true,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>                <span style="color:#666;font-style:italic">&#34;Propagation&#34;</span>: <span style="color:#666;font-style:italic">&#34;rprivate&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>            }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        ],
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        ...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>]
+</span></span></code></pre></div><p>通过<code>docker inspect</code>命令查看<code>Mounts</code>模块判断是否数据卷挂载成功。</p>
+<h5 id="容器和宿主机之间数据共享">容器和宿主机之间数据共享</h5>
+<p>首先在宿主机停掉正在运行的容器。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS          PORTS     NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>10f4b9049f6f   ubuntu    <span style="color:#666;font-style:italic">&#34;bash&#34;</span>    29 minutes ago   Up 29 minutes             u1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker stop 10f4b9049f6f</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>10f4b9049f6f
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+</span></span></code></pre></div><p>在宿主机的<code>/tmp/host_data/</code>文件夹下写入文件。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /tmp/host_data/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ touch c.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>c.txt  dockerin.txt  hostin.txt
+</span></span></code></pre></div><p>然后在宿主机重新启动刚停止的容器。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker start 10f4b9049f6f
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>10f4b9049f6f
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 10f4b9049f6f /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@10f4b9049f6f:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp/docker_data/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>c.txt  dockerin.txt  hostin.txt
+</span></span></code></pre></div><p>可以看到在容器停止运行的情况下，在宿主机写入的数据，当容器重新运行后也能够同步。</p>
+<p>总结：</p>
+<ol>
+<li>
+<p>docker修改，主机同步获得</p>
+</li>
+<li>
+<p>主机修改，docker同步获得</p>
+</li>
+<li>
+<p>docker容器stop，主机修改，docker容器重启后也能同步获得</p>
+</li>
+</ol>
+<h4 id="读写规则映射添加说明">读写规则映射添加说明</h4>
+<h5 id="读写默认">读写（默认）</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录:rw 镜像名
+</span></span></code></pre></div><p>默认就是<code>rw</code>，因此可以省略。</p>
+<h5 id="只读">只读</h5>
+<p>如果要让容器实例内部被限制，只能读取不能写，可以通过 <code>/容器内目录:ro 镜像名</code>，实现功能：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录:ro 镜像名
+</span></span></code></pre></div><p>注：ro = read only</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /mydocker/u:/tmp:ro ubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@b7d1f80b47c5:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@b7d1f80b47c5:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@b7d1f80b47c5:/tmp# touch c.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>touch: cannot touch <span style="color:#666;font-style:italic">&#39;c.txt&#39;</span>: Read-only file system
+</span></span></code></pre></div><p>可以看出，在容器内写入内容失败，因为是只读的文件系统。</p>
+<p>此时如果宿主机写入内容，可以同步给容器内，容器可以读取到。</p>
+<p>宿主机写入内容：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /mydocker/u/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ touch a.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>a.txt
+</span></span></code></pre></div><p>容器内可以读到：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@b7d1f80b47c5:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>a.txt
+</span></span></code></pre></div><h4 id="卷的继承和共享">卷的继承和共享</h4>
+<p>1、容器1完成和宿主机的映射</p>
+<p>容器1：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /mydocker/u:/tmp --name u1 ubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@5a8ae43aa393:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@5a8ae43aa393:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@5a8ae43aa393:/tmp# touch u1_data.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@5a8ae43aa393:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>u1_data.txt
+</span></span></code></pre></div><p>宿主机：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /mydocker/u
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>u1_data.txt
+</span></span></code></pre></div><p>2、容器2继承容器1的卷规则</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> --volumes-from 父类 --name u2 ubuntu
+</span></span></code></pre></div><p>容器2：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> --volumes-from u1 --name u2 ubuntu
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@43f70de5eb61:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@43f70de5eb61:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>u1_data.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@43f70de5eb61:/tmp# touch u2_data.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@43f70de5eb61:/tmp# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>u1_data.txt  u2_data.txt
+</span></span></code></pre></div><p>宿主机：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /mydocker/u/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>u1_data.txt  u2_data.txt
+</span></span></code></pre></div><p><strong>注</strong>：停掉容器1，容器2也能和宿主机互联互通。恢复容器1之后，容器2和宿主机在容器1停掉期间产生的数据也能在容器1中同步。</p>
+<h2 id="docker常规安装简介">Docker常规安装简介</h2>
+<h3 id="总体步骤">总体步骤</h3>
+<h4 id="搜索镜像">搜索镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker search [OPTIONS] TERM
+</span></span></code></pre></div><h4 id="拉取镜像">拉取镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull [OPTIONS] NAME[:TAG|@DIGEST]
+</span></span></code></pre></div><h4 id="查看镜像">查看镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images [OPTIONS] [REPOSITORY[:TAG]]
+</span></span></code></pre></div><h4 id="启动镜像">启动镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+</span></span></code></pre></div><h5 id="服务端口映射">服务端口映射</h5>
+<p>格式：<code>-p port:port</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 6379:6379 redis:6.0.8
+</span></span></code></pre></div><h4 id="停止容器-1">停止容器</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker stop [OPTIONS] CONTAINER [CONTAINER...]
+</span></span></code></pre></div><h4 id="移除容器">移除容器</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker rm [OPTIONS] CONTAINER [CONTAINER...]
+</span></span></code></pre></div><h3 id="安装tomcat">安装Tomcat</h3>
+<h4 id="dockerhub上面查找tomcat镜像">DockerHub上面查找Tomcat镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker search tomcat
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>NAME    DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>tomcat  Apache Tomcat is an open <span style="font-weight:bold;font-style:italic">source</span> implementati…   3344      [OK]             
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>...
+</span></span></code></pre></div><h4 id="从dockerhub上拉取tomcat到本地">从DockerHub上拉取Tomcat到本地</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull tomcat
+</span></span></code></pre></div><h4 id="查看是否有拉取到的tomcat">查看是否有拉取到的Tomcat</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images tomcat
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>tomcat       latest    fb5657adc892   6 months ago   680MB
+</span></span></code></pre></div><h4 id="使用tomcat镜像创建容器实例也叫运行镜像">使用Tomcat镜像创建容器实例（也叫运行镜像）</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 8080:8080 tomcat
+</span></span></code></pre></div><p><code>-p</code>：小写，<code>主机端口:docker容器端口</code></p>
+<p><code>-P</code>：大写，<strong>随机分配端口</strong></p>
+<p><code>i</code>：交互</p>
+<p><code>t</code>：终端</p>
+<p><code>d</code>：后台</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 8080:8080 --name t1 tomcat
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>788f39f0635eb7925652422217a9c6273f970926c55aef15d17c0c3d9d95ee6a
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>CONTAINER ID   IMAGE     COMMAND             CREATED          STATUS          PORTS                                       NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>788f39f0635e   tomcat    <span style="color:#666;font-style:italic">&#34;catalina.sh run&#34;</span>   12 seconds ago   Up 11 seconds   0.0.0.0:8080-&gt;8080/tcp, :::8080-&gt;8080/tcp   t1
+</span></span></code></pre></div><h4 id="访问猫首页">访问猫首页</h4>
+<h5 id="问题">问题</h5>
+<p>因为新版设置，导致无法访问。</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat1.png">
+            <img class="mx-auto" alt="tomcat1" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat1.png" />
+        </a>
+    </p>
+<h5 id="解决">解决</h5>
+<p>1、可能没有映射端口或者没有关闭防火墙</p>
+<p>因为是在阿里云云服务器ECS上的docker里安装的tomcat，所以需要访问<code>120.77.71.67:8080</code>。<strong>需要在安全组中放开8080端口</strong>。</p>
+<p>2、把webapps.dist目录换成webapps</p>
+<ul>
+<li>先成功启动tomcat</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID   IMAGE     COMMAND             CREATED         STATUS         PORTS                                       NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>788f39f0635e   tomcat    <span style="color:#666;font-style:italic">&#34;catalina.sh run&#34;</span>   6 minutes ago   Up 6 minutes   0.0.0.0:8080-&gt;8080/tcp, :::8080-&gt;8080/tcp   t1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it t1 /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@788f39f0635e:/usr/local/tomcat# 
+</span></span></code></pre></div><ul>
+<li>查看webapps文件夹，为空</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@788f39f0635e:/usr/local/tomcat# <span style="font-weight:bold;font-style:italic">cd</span> webapps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@788f39f0635e:/usr/local/tomcat/webapps# ls -l
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>total 0
+</span></span></code></pre></div><ul>
+<li>把webapps.dist目录换成webapps</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@788f39f0635e:/usr/local/tomcat/webapps# <span style="font-weight:bold;font-style:italic">cd</span> ..
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@788f39f0635e:/usr/local/tomcat# rm -r webapps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@788f39f0635e:/usr/local/tomcat# mv webapps.dist webapps
+</span></span></code></pre></div><p>修改完成后，可成功访问tomcat首页。</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat2.png">
+            <img class="mx-auto" alt="tomcat2" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat2.png" />
+        </a>
+    </p>
+<h4 id="免修改版说明">免修改版说明</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull billygoo/tomcat8-jdk8
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ docker run -d -p 8080:8080 --name mytomcat8 billygoo/tomcat8-jdk8
+</span></span></code></pre></div><p>使用特定版本可以免去最新版的修改过程，简化构建程序。</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat3.png">
+            <img class="mx-auto" alt="tomcat2" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5ctomcat3.png" />
+        </a>
+    </p>
+<h3 id="安装mysql">安装MySQL</h3>
+<h4 id="dockerhub上查找mysql镜像">DockerHub上查找MySQL镜像</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker search mysql
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>NAME    DESCRIPTION                                     STARS     OFFICIAL   AUTOMATED
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>mysql   MySQL is a widely used, open-source relation…   12767     [OK] 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>...
+</span></span></code></pre></div><h4 id="从dockerhub上阿里云加速器拉取mysql57镜像到本地">从DockerHub上（阿里云加速器）拉取MySQL5.7镜像到本地</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull mysql:5.7
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ docker images mysql:5.7
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>REPOSITORY   TAG       IMAGE ID       CREATED        SIZE
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>mysql        5.7       c20987f18b13   6 months ago   448MB
+</span></span></code></pre></div><h4 id="使用mysql57镜像创建容器也叫运行镜像">使用MySQL5.7镜像创建容器（也叫运行镜像）</h4>
+<h5 id="命令出处">命令出处</h5>
+<p>参见DockerHub官网<a href="https://hub.docker.com/_/mysql?tab=description">MySQL界面</a>。</p>
+<h5 id="简单版">简单版</h5>
+<p>1、使用MySQL镜像</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -p 3306:3306 -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 -d mysql:5.7
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>65ae64574e4e6b301cb30744156d1c46b14e24a6e89f6d01943939da566689e8
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID   IMAGE       COMMAND                  CREATED          STATUS          PORTS                                                  NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>65ae64574e4e   mysql:5.7   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   18 seconds ago   Up 17 seconds   0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   objective_satoshi
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 65ae64574e4e /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@65ae64574e4e:/# mysql -uroot -p
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Enter password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>Welcome to the MySQL monitor.  Commands end with ; or <span style="color:#666;font-style:italic">\g</span>.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Your MySQL connection id is 2
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Server version: 5.7.36 MySQL Community Server (GPL)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>mysql&gt;
+</span></span></code></pre></div><p>2、建库表插入数据</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>mysql&gt; show databases;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>+--------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>| Database           |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>+--------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>| information_schema |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>| mysql              |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>| performance_schema |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>| sys                |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>+--------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>4 rows in <span style="font-weight:bold;font-style:italic">set</span> (0.00 sec)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>mysql&gt; create database db01;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>Query OK, 1 row affected (0.00 sec)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>mysql&gt; use db01;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>Database changed
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>mysql&gt; create table t1(id int, name varchar(20));
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>Query OK, 0 rows affected (0.03 sec)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>mysql&gt; insert into t1 values(1, <span style="color:#666;font-style:italic">&#39;z3&#39;</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>Query OK, 1 row affected (0.01 sec)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>mysql&gt; <span style="font-weight:bold">select</span> * from t1;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>+------+------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>| id   | name |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>+------+------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>|    1 | z3   |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>+------+------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>1 row in <span style="font-weight:bold;font-style:italic">set</span> (0.00 sec)
+</span></span></code></pre></div><p>3、外部Windows也来连接运行在docker上的MySQL容器实例服务</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cworkbench_connect.png">
+            <img class="mx-auto" alt="workbench_connect" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cworkbench_connect.png" />
+        </a>
+    </p>
+<p>4、问题</p>
+<p>① <strong>插入中文报错</strong></p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cmysql_problem.png">
+            <img class="mx-auto" alt="mysql_problem" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cmysql_problem.png" />
+        </a>
+    </p>
+<p>为什么报错？</p>
+<p><strong>docker 上默认字符集编码隐患</strong></p>
+<p>通过如下命令查看字符集编码：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">SHOW</span> VARIABLES <span style="font-weight:bold">LIKE</span> <span style="color:#666;font-style:italic">&#39;character%&#39;</span>;
+</span></span></code></pre></div><p>在MySQL Workbench查看：</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cworkbench_encoding.png">
+            <img class="mx-auto" alt="workbench_encoding" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cworkbench_encoding.png" />
+        </a>
+    </p>
+<p>在docker中的MySQL命令行查看：</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cdocker_encoding.png">
+            <img class="mx-auto" alt="docker_encoding" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cdocker_encoding.png" />
+        </a>
+    </p>
+<p>可以看出，编码有所不同，docker 中文字体默认编码为<code>latin1</code>。需要将它修改为<code>utf8</code>编码，中文才能正常插入和显示。</p>
+<p>② <strong>删除容器后，里面的MySQL数据怎么办</strong></p>
+<p>容器实例一删除，mysql数据也会丢失。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@65ae64574e4e:/# <span style="font-weight:bold;font-style:italic">exit</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold;font-style:italic">exit</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>CONTAINER ID   IMAGE       COMMAND                  CREATED             STATUS             PORTS                                                  NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>65ae64574e4e   mysql:5.7   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   About an hour ago   Up About an hour   0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   objective_satoshi
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ docker rm -f 65ae64574e4e
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>65ae64574e4e
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+</span></span></code></pre></div><p>这是很显然的道理，容器被删除后，容器里面的MySQL也就被删除了，数据自然消失了。</p>
+<h5 id="实战版">实战版</h5>
+<p>1、新建MySQL容器实例</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /ashley/mysql/log:/var/log/mysql -v /ashley/mysql/data:/var/lib/mysql -v /ashley/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
+</span></span></code></pre></div><p>实现docker上的mysql数据同步到宿主机的功能。</p>
+<p>2、新建my.cnf</p>
+<p>通过容器卷同步给mysql容器实例，解决中文字符编码问题。</p>
+<p>将下面的配置代码写入my.cnf文件中，可以将中文编码改为utf8。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">[client]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>default_character_set=<span style="color:#666;font-style:italic">utf8</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">[mysqld]</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>collation_server = <span style="color:#666;font-style:italic">utf8_general_ci</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>character_set_server = <span style="color:#666;font-style:italic">utf8</span>
+</span></span></code></pre></div><p>在宿主机进行如下操作：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /ashley/mysql/conf/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ vim my.cnf
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ cat my.cnf
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>[client]
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#666;font-weight:bold;font-style:italic">default_character_set</span>=utf8
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>[mysqld]
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#666;font-weight:bold;font-style:italic">collation_server</span> = utf8_general_ci
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#666;font-weight:bold;font-style:italic">character_set_server</span> = utf8
+</span></span></code></pre></div><p>3、重新启动MySQL容器实例再重新进入并查看字符编码</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker restart mysql
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>mysql
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID  IMAGE      COMMAND  CREATED        STATUS         PORTS   NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>8044e666f6ff  mysql:5.7  ...      3 minutes ago  Up 8 seconds   ...     mysql
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 8044e666f6ff /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@8044e666f6ff:/# mysql -uroot -p
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Enter password: 
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>...
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>mysql&gt; SHOW VARIABLES LIKE <span style="color:#666;font-style:italic">&#39;character%&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>+--------------------------+----------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>| Variable_name            | Value                      |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>+--------------------------+----------------------------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>| character_set_client     | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>| character_set_connection | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>| character_set_database   | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>| character_set_filesystem | binary                     |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>| character_set_results    | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>| character_set_server     | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>| character_set_system     | utf8                       |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>| character_sets_dir       | /usr/share/mysql/charsets/ |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>+--------------------------+----------------------------+
+</span></span></code></pre></div><p>可以看到字符集编码从<code>latin1</code>修改为了<code>utf8</code>。</p>
+<p>4、再新建库新建表再插入中文测试</p>
+<p>
+    
+    
+        <a data-fancybox="gallery" href="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cwb_succ.png">
+            <img class="mx-auto" alt="wb_succ" src="https://cdn.jsdelivr.net/gh/imw7/imw7.github.io/post/docker_guide/C:%5cUsers%5cEDZ%5cDocuments%5cwb_succ.png" />
+        </a>
+    </p>
+<p>可以看到成功插入了中文，没有出现错误。</p>
+<p>也可在docker中的mysql查询：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">select</span> * <span style="font-weight:bold">from</span> t1;
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>+------+--------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>| id   | name   |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>+------+--------+
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>|    1 | z3     |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>|    2 | li4    |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>|    3 | <span style="">王五</span>   |
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>+------+--------+
+</span></span></code></pre></div><p>成功插入中文，没有问题。</p>
+<p>5、结论</p>
+<p>6、假如将当前容器实例删除，再重新来一次，之前建的db01</p>
+<h3 id="安装redis">安装Redis</h3>
+<h3 id="安装nginx">安装Nginx</h3>
         </div>
 
         
