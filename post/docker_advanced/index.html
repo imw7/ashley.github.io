@@ -145,7 +145,12 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#docker复杂安装详说">Docker复杂安装详说</a></li>
+    <li><a href="#docker复杂安装详说">Docker复杂安装详说</a>
+      <ul>
+        <li><a href="#安装mysql主从复制">安装MySQL主从复制</a></li>
+        <li><a href="#安装redis集群">安装Redis集群</a></li>
+      </ul>
+    </li>
     <li><a href="#dockerfile解析">DockerFile解析</a></li>
     <li><a href="#docker微服务实战">Docker微服务实战</a></li>
     <li><a href="#docker网络">Docker网络</a></li>
@@ -215,6 +220,141 @@
         <div class="post-content">
             <p>本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。</p>
 <h2 id="docker复杂安装详说">Docker复杂安装详说</h2>
+<h3 id="安装mysql主从复制">安装MySQL主从复制</h3>
+<h4 id="主从复制">主从复制</h4>
+<h5 id="主从复制的含义">主从复制的含义</h5>
+<p>在<code>MySQL</code>多服务器的架构中，至少要有一个主节点（master），跟主节点相对的，我们把它叫做从节点（slave）。主从复制，就是把主节点的数据复制到一个或者多个从节点。主服务器和从服务器可以在不同的IP上，通过远程连接来同步数据，这个是异步的过程。</p>
+<h5 id="主从复制的形式">主从复制的形式</h5>
+<p>1、一主一从/一主多从</p>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/mysql1.png">
+            <img class="mx-auto" alt="mysql1" src="https://blog.imw7.com/images/docker/mysql1.png" />
+        </a>
+    </p>
+<p>2、多主一从</p>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/mysql2.png">
+            <img class="mx-auto" alt="mysql2" src="https://blog.imw7.com/images/docker/mysql2.png" />
+        </a>
+    </p>
+<p>3、双主复制</p>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/mysql3.png">
+            <img class="mx-auto" alt="mysql3" src="https://blog.imw7.com/images/docker/mysql3.png" />
+        </a>
+    </p>
+<p>4、级联复制</p>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/mysql4.png">
+            <img class="mx-auto" alt="mysql4" src="https://blog.imw7.com/images/docker/mysql4.png" />
+        </a>
+    </p>
+<h5 id="主从复制的用途">主从复制的用途</h5>
+<p>数据备份：把数据复制到不同的机器上，以免单台服务器发生故障时数据丢失。</p>
+<p>读写分离：让主库负责写，从库负责读，从而提高读写的并发度。</p>
+<p>高可用 HA：当节点故障时，自动转移到其他节点，提高可用性。</p>
+<p>扩展：结合负载的机制，均摊所有的应用访问请求，降低单机 IO。</p>
+<p>主从复制是怎么实现的呢？</p>
+<ul>
+<li><strong>binlog</strong></li>
+</ul>
+<p>客户端对 MySQL 数据库进行操作的时候，包括 DDL 和 DML 语句，服务端会在日志文件中用事件的形式记录所有的操作记录，这个文件就是 binlog 文件（属于逻辑日志，跟 Redis 的 AOF 文件类似）。</p>
+<p>基于 binlog，我们可以实现主从复制和数据恢复。</p>
+<p>Binlog 默认是不开启的，需要在服务端手动配置。注意有一定的性能损耗。</p>
+<ul>
+<li><strong>binlog 配置</strong></li>
+</ul>
+<p>编辑 /etc/my.cnf：</p>
+<pre tabindex="0"><code>log-bin=/var/lib/mysql/mysql-bin
+server-id=1
+</code></pre><p>重启 MySQL 服务 ：</p>
+<pre tabindex="0"><code>service mysqld stop
+service mysqld start
+## 如果出错查看日志 3
+vi /var/log/mysqld.log
+cd /var/lib/mysql
+</code></pre><p>是否开启</p>
+<pre tabindex="0"><code>binlog show variables like &#39;log_bin%&#39;;
+</code></pre><p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917171644560-713489561.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917171644560-713489561.png" />
+        </a>
+    </p>
+<ul>
+<li><strong>binlog 格式</strong></li>
+</ul>
+<p>STATEMENT：记录每一条修改数据的 SQL 语句（减少日志量，节约 IO）。</p>
+<p>ROW：记录哪条数据被修改了，修改成什么样子了（5.7 以后默认）。</p>
+<p>MIXED：结合两种方式，一般的语句用 STATEMENT，函数之类的用 ROW。</p>
+<ul>
+<li><strong>查看 binlog 格式：</strong></li>
+</ul>
+<pre tabindex="0"><code>show global variables like &#39;%binlog_format%&#39;；
+</code></pre><p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172050990-2078888091.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172050990-2078888091.png" />
+        </a>
+    </p>
+<ul>
+<li><strong>查看 binlog 列表：</strong></li>
+</ul>
+<pre tabindex="0"><code>show binary logs;
+</code></pre><p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172313773-2034524840.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172313773-2034524840.png" />
+        </a>
+    </p>
+<ul>
+<li><strong>查看binlog内容：</strong></li>
+</ul>
+<pre tabindex="0"><code>show binlog events in &#39;mysql-bin.000001&#39;;
+</code></pre><p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172610371-339097106.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917172610371-339097106.png" />
+        </a>
+    </p>
+<p>用mysqlbinlog工具，基于时间查看binlog：</p>
+<p>（注意这个是Linux命令,不是SQL）</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ /usr/bin/mysqlbinlog --start-datetime=<span style="color:#666;font-style:italic">&#39;2019-08-2213:30:00&#39;</span> --stop-datetime=<span style="color:#666;font-style:italic">&#39;2019-08-2214:01:01&#39;</span>-d <span style="font-weight:bold;font-style:italic">test</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ /var/lib/mysql/mysql-bin.000001
+</span></span></code></pre></div><p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917173745042-85006942.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917173745042-85006942.png" />
+        </a>
+    </p>
+<h5 id="主从复制原理">主从复制原理</h5>
+<ul>
+<li><strong>主从复制配置</strong></li>
+</ul>
+<p>1、主库开启 binlog，设置 server-id</p>
+<p>2、在主库创建具有复制权限的用户，允许从库连接</p>
+<pre tabindex="0"><code>GRANT REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO ``&#39;repl&#39;``@``&#39;192.168.8.147&#39;` `IDENTIFIED BY ``&#39;123456&#39;``; &lt;br&gt;FLUSH PRIVILEGES;
+</code></pre><p>3、从库/etc/my.cnf 配置，重启数据库</p>
+<pre tabindex="0"><code>server-id=``2` `&lt;br&gt;log-bin=mysql-bin &lt;br&gt;relay-log=mysql-relay-bin &lt;br&gt;read-only=``1` `&lt;br&gt;log-slave-updates=``1
+</code></pre><p>log-slave-updates 决定了在从 binlog 读取数据时，是否记录 binlog，实现双主和级联的关键。</p>
+<p>4、在从库执行</p>
+<pre tabindex="0"><code>stop slave; &lt;br&gt;change master to &lt;br&gt;master_host=``&#39;192.168.8.146&#39;``,master_user=``&#39;repl&#39;``,master_password=``&#39;123456&#39;``,master_log_file=``&#39;mysql-bin.000001&#39;``, &lt;br&gt;master_log_pos=``4``; &lt;br&gt;start slave;
+</code></pre><p>5、查看同步状态</p>
+<pre tabindex="0"><code>SHOW SLAVE STATUS \G
+</code></pre><p>以下为正常：</p>
+<p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917234325281-1733017354.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200917234325281-1733017354.png" />
+        </a>
+    </p>
+<p>主从复制原理这里面涉及到几个线程：</p>
+<p>
+        <a data-fancybox="gallery" href="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200927165102228-282496150.png">
+            <img class="mx-auto" alt="img" src="https://img2020.cnblogs.com/blog/1585156/202009/1585156-20200927165102228-282496150.png" />
+        </a>
+    </p>
+<ul>
+<li>1、slave 服务器执行 start slave，开启主从复制开关， slave 服务器的 IO 线程请求从 master 服务器读取 binlog（如果该线程追赶上了主库，会进入睡眠状态）。</li>
+<li>2、master 服务器创建 Log Dump 线程，把 binlog 发送给 slave 服务器。slave 服务器把读取到的 binlog 日志内容写入中继日志 relay log（会记录位置信息，以便下次继续读取）。</li>
+<li>3、slave 服务器的 SQL 线程会实时检测 relay log 中新增的日志内容，把 relay log解析成 SQL 语句，并执行。</li>
+</ul>
+<h4 id="主从搭建步骤">主从搭建步骤</h4>
+<h3 id="安装redis集群">安装Redis集群</h3>
 <h2 id="dockerfile解析">DockerFile解析</h2>
 <h2 id="docker微服务实战">Docker微服务实战</h2>
 <h2 id="docker网络">Docker网络</h2>
