@@ -77,6 +77,31 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://blog.imw7.com/post/Go/go_context/" title="Go语言标准库之Context">Go语言标准库之Context</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年6月22日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <p>在 Go http包的Server中，每一个请求都有一个对应的 goroutine 去处理。请求处理函数通常会启动额外的 goroutine 用来访问后端服务，比如数据库和RPC服务。用来处理一个请求的 goroutine 通常需要访问一些与请求特定的数据，比如终端用户的身份认证信息、验证相关的token、请求的截止时间。 当一个请求被取消或超时时，所有用来处理该请求的 goroutine 都应该迅速退出，然后系统才能释放这些 goroutine 占用的资源。</p>……
+        </div>
+        <p class="readmore"><a href="https://blog.imw7.com/post/Go/go_context/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://blog.imw7.com/post/Go/go_log/" title="Go语言标准库之log">Go语言标准库之log</a>
             </h1>
         </header>
@@ -299,31 +324,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.imw7.com/post/Go/09_function/" title="Go语言基础之函数">Go语言基础之函数</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2019年3月23日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <p>函数是组织好的、可重复使用的、用于执行指定任务的代码块。本文介绍了Go语言中函数的相关内容。</p>……
-        </div>
-        <p class="readmore"><a href="https://blog.imw7.com/post/Go/09_function/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -424,6 +424,10 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/docker_guide/" title="Docker简易指南">Docker简易指南</a>
     </li>
     
@@ -459,10 +463,6 @@
         <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
     </li>
     
-    <li>
-        <a href="https://blog.imw7.com/post/Go/go_micro/" title="go-micro">go-micro</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -472,7 +472,7 @@
         <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (2)</a></li>
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (3)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/Go/">Go (53)</a></li>
     

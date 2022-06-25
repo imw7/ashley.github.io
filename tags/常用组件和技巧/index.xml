@@ -6,7 +6,16 @@
     <description>Recent content in 常用组件和技巧 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 22 Jun 2022 10:42:36 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jun 2022 13:39:22 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Docker进阶指南</title>
+      <link>https://blog.imw7.com/post/docker_advanced/</link>
+      <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/docker_advanced/</guid>
+      <description>&lt;p&gt;本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Docker简易指南</title>
       <link>https://blog.imw7.com/post/docker_guide/</link>
