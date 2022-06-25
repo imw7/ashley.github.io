@@ -1605,8 +1605,8 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /ashley/mysql/log:/var/log/mysql -v /ashley/mysql/data:/var/lib/mysql -v /ashley/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>3944d05f9ef3dad023b77dc2626a2ff0ca7db02a71cab875c478a3ff7021cf1b
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID   IMAGE       COMMAND                  CREATED         STATUS         PORTS                                                  NAMES
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>3944d05f9ef3   mysql:5.7   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   3 seconds ago   Up 3 seconds   0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp   mysql
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID  IMAGE      COMMAND                 CREATED        STATUS        PORTS                                                 NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>3944d05f9ef3  mysql:5.7  <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>  3 seconds ago  Up 3 seconds  0.0.0.0:3306-&gt;3306/tcp, :::3306-&gt;3306/tcp, 33060/tcp  mysql
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it mysql /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@3944d05f9ef3:/# mysql -uroot -p
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Enter password: 
@@ -1626,7 +1626,98 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>+------+--------+
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>3 rows in <span style="font-weight:bold;font-style:italic">set</span> (0.00 sec)
 </span></span></code></pre></div><h3 id="安装redis">安装Redis</h3>
-<h3 id="安装nginx">安装Nginx</h3>
+<h4 id="拉取镜像-1">拉取镜像</h4>
+<p>从dokcer hub上（阿里云加速器）拉取redis镜像到本地标签为6.0.8</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull redis:6.0.8
+</span></span></code></pre></div><h4 id="入门命令">入门命令</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 6379:6379 redis:6.0.8
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>165eb674ce4fa94494958a77e179fe7f8a933b01acaf3897dc8c7e7e9e39eeff
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID  IMAGE        COMMAND                 CREATED        STATUS        PORTS                                      NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>165eb674ce4f  redis:6.0.8  <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>  5 seconds ago  Up 4 seconds  0.0.0.0:6379-&gt;6379/tcp, :::6379-&gt;6379/tcp  amazing_chebyshev
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 165eb674ce4f /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@165eb674ce4f:/data# redis-cli
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>127.0.0.1:6379&gt; ping
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>PONG
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold;font-style:italic">set</span> k1 v1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>127.0.0.1:6379&gt; get k1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#666;font-style:italic">&#34;v1&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>127.0.0.1:6379&gt;
+</span></span></code></pre></div><h4 id="命令提醒容器卷记得加入--privilegedtrue">命令提醒：容器卷记得加入&ndash;privileged=true</h4>
+<p>Docker挂在主机目录Docker访问出现<code>cannot open directory .: Permission denied</code>。</p>
+<p><strong>解决办法</strong>：在挂载目录后多加一个<code>--privileged=true</code>参数即可。</p>
+<h4 id="新建目录">新建目录</h4>
+<p>在CentOS宿主机下新建目录<code>/app/redis</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir -p /app/redis
+</span></span></code></pre></div><h4 id="拷贝配置文件">拷贝配置文件</h4>
+<p>将准备好的<code>redis.conf</code>文件放进宿主机的<code>/app/redis</code>目录，默认出厂的原始<a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /myredis/redis.conf /app/redis/
+</span></span></code></pre></div><h4 id="修改配置文件">修改配置文件</h4>
+<p>在<code>/app/redis</code>目录下修改<code>redis.conf</code>文件：</p>
+<p>1、开启redis验证（可选）</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>requirepass foobared
+</span></span></code></pre></div><p>2、允许redis外地连接</p>
+<p>注释掉 <code>bind 127.0.0.1</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># bind 127.0.0.1</span>
+</span></span></code></pre></div><p>3、daemonize no</p>
+<p>将 <code>daemonize yes</code> 注释掉或设置为 <code>daemonize no</code>，因为该配置和 <code>docker run</code> 中 <code>-d</code> 参数冲突，会导致一直启动失败。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># daemonize yes</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"># 或</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>daemonize no
+</span></span></code></pre></div><p>4、开启redis数据持久化（可选）</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>appendonly yes
+</span></span></code></pre></div><h4 id="创建容器">创建容器</h4>
+<p>使用<code>redis:6.0.8</code>镜像创建容器（也叫运行镜像）：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 6379:6379 --name myrds --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /app/redis/redis.conf:/etc/redis/redis.conf -v /app/redis/data:/data -d redis:6.0.8 redis-server /etc/redis/redis.conf
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>d8a9a2a820193a31675fcacec2ced5e025b5f22dc63634637e4e5a86e2a1b2b8
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>d8a9a2a82019   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   24 seconds ago   Up 23 seconds   0.0.0.0:6379-&gt;6379/tcp, :::6379-&gt;6379/tcp   myrds
+</span></span></code></pre></div><h4 id="测试redis-cli连接">测试redis-cli连接</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>d8a9a2a82019   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   24 seconds ago   Up 23 seconds   0.0.0.0:6379-&gt;6379/tcp, :::6379-&gt;6379/tcp   myrds
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it myrds /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>root@d8a9a2a82019:/data# redis-cli -a password
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>Warning: Using a password with <span style="color:#666;font-style:italic">&#39;-a&#39;</span> or <span style="color:#666;font-style:italic">&#39;-u&#39;</span> option on the <span style="font-weight:bold;font-style:italic">command</span> line interface may not be safe.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>127.0.0.1:6379&gt; ping
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>PONG
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold;font-style:italic">set</span> k1 v1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>OK
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>127.0.0.1:6379&gt; get k1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#666;font-style:italic">&#34;v1&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>127.0.0.1:6379&gt; 
+</span></span></code></pre></div><h4 id="请证明docker启动使用了自己指定的配置文件">请证明docker启动使用了自己指定的配置文件</h4>
+<h5 id="修改前">修改前</h5>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it myrds /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@d8a9a2a82019:/data# redis-cli -a password
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Warning: Using a password with <span style="color:#666;font-style:italic">&#39;-a&#39;</span> or <span style="color:#666;font-style:italic">&#39;-u&#39;</span> option on the <span style="font-weight:bold;font-style:italic">command</span> line interface may not be safe.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold">select</span> 15
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>OK
+</span></span></code></pre></div><p>这里用的配置文件，数据库默认是16个。</p>
+<h5 id="修改后">修改后</h5>
+<p><strong>注</strong>：修改后记得重启服务。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># 宿主机/app/redis/redis.conf</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"># Set the number of databases. The default database is DB 0, you can select</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#888;font-style:italic"># a different one on a per-connection basis using SELECT &lt;dbid&gt; where</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"># dbid is a number between 0 and &#39;databases&#39;-1</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>databases 10
+</span></span></code></pre></div><p>宿主机的修改会同步给docker容器里面的配置。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker restart myrds
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>myrds
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS         PORTS                                       NAMES
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>d8a9a2a82019   redis:6.0.8   <span style="color:#666;font-style:italic">&#34;docker-entrypoint.s…&#34;</span>   23 minutes ago   Up 7 seconds   0.0.0.0:6379-&gt;6379/tcp, :::6379-&gt;6379/tcp   myrds
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it myrds /bin/bash
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>root@d8a9a2a82019:/data# redis-cli -a password
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>Warning: Using a password with <span style="color:#666;font-style:italic">&#39;-a&#39;</span> or <span style="color:#666;font-style:italic">&#39;-u&#39;</span> option on the <span style="font-weight:bold;font-style:italic">command</span> line interface may not be safe.
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>127.0.0.1:6379&gt; get k1
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#666;font-style:italic">&#34;v1&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold">select</span> 15
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>(error) ERR DB index is out of range
+</span></span></code></pre></div><h3 id="安装nginx">安装Nginx</h3>
+<p>见高级篇Portainer</p>
         </div>
 
         
