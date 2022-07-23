@@ -140,7 +140,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>&lt;/style&gt;
 </span></span></code></pre></div><p>然后在 <code>layouts/partials/footer.html</code> 文件头部写入下面的代码，因为我知道我的每篇博客都有 <code>footer</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{{ partial &#34;mathjax.html&#34; . }}
-</span></span></code></pre></div><p>这样 <code>Hugo</code> 就能正常解析数学公式了。</p>
+</span></span></code></pre></div><p><strong>注意</strong>：上面的语句最后的括号前面有个 <code>.</code></p>
+<p>这样 <code>Hugo</code> 就能正常解析数学公式了。</p>
         </div>
 
         
