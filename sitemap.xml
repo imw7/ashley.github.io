@@ -3,7 +3,28 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://blog.imw7.com/categories/</loc>
-    <lastmod>2022-06-25T13:39:22+08:00</lastmod>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/Hugo/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/categories/Hugo/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/post/hugo_guide/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/post/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/</loc>
+    <lastmod>2022-07-01T21:23:51+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/tags/Docker/</loc>
     <lastmod>2022-06-25T13:39:22+08:00</lastmod>
@@ -12,18 +33,6 @@
     <lastmod>2022-06-25T13:39:22+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/post/docker_advanced/</loc>
-    <lastmod>2022-06-25T13:39:22+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/post/</loc>
-    <lastmod>2022-06-25T13:39:22+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/tags/</loc>
-    <lastmod>2022-06-25T13:39:22+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2022-06-25T13:39:22+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/</loc>
     <lastmod>2022-06-25T13:39:22+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/post/docker_guide/</loc>
@@ -59,10 +68,13 @@
     <loc>https://blog.imw7.com/tags/ssh/</loc>
     <lastmod>2022-01-02T11:36:55+08:00</lastmod>
   </url><url>
-    <loc>https://blog.imw7.com/post/ssh_upload_download/</loc>
+    <loc>https://blog.imw7.com/post/ssh/</loc>
     <lastmod>2022-01-02T11:36:55+08:00</lastmod>
   </url><url>
-    <loc>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/</loc>
+    <loc>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/</loc>
+    <lastmod>2022-01-02T11:36:55+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/</loc>
     <lastmod>2022-01-02T11:36:55+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/tags/http/</loc>

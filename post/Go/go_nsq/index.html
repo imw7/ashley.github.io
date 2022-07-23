@@ -708,6 +708,42 @@
 </div>
 
                     <footer id="footer">
+    <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
@@ -750,6 +786,7 @@
 
     <script src='/js/douban.js'></script>
 
+
                 </div>
 
                 <div id="secondary">
@@ -765,6 +802,10 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/hugo_guide/" title="Hugo使用指南">Hugo使用指南</a>
+    </li>
     
     <li>
         <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
@@ -787,7 +828,7 @@
     </li>
     
     <li>
-        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+        <a href="https://blog.imw7.com/post/ssh/" title="ssh使用指南">ssh使用指南</a>
     </li>
     
     <li>
@@ -800,10 +841,6 @@
     
     <li>
         <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
     </li>
     
 </ul>
@@ -820,6 +857,8 @@
     <li><a href="https://blog.imw7.com/categories/Go/">Go (53)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hugo/">Hugo (1)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
     
@@ -853,6 +892,8 @@
     <a href="https://blog.imw7.com/tags/HDMI/">HDMI</a>
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -948,7 +989,9 @@
     
     <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
     
-    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/">上传</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/">下载</a>
     
     <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
     

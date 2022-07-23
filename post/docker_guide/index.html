@@ -299,6 +299,24 @@
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo rm -rf /var/lib/docker
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ sudo rm -rf /var/lib/containerd
+</span></span></code></pre></div><h4 id="docker免sudo权限">Docker免sudo权限</h4>
+<p>安装完 <code>docker</code>，每次必须用 <code>sudo</code> 权限操作，比较麻烦。将 <code>docker</code> 加入 <code>sudo</code> 用户组，即可默认 <code>sudo</code> 权限运行，而不用 <code>sudo</code>。具体步骤如下：</p>
+<ol>
+<li>添加 <code>docker group</code></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo groupadd docker
+</span></span></code></pre></div><ol start="2">
+<li>将当前用户添加到 <code>docker</code> 组</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo gpasswd -a <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">USER</span><span style="color:#666;font-style:italic">}</span> docker
+</span></span></code></pre></div><ol start="3">
+<li>重启 <code>docker</code> 服务</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ systemctl restart docker
+</span></span></code></pre></div><ol start="4">
+<li>刷新 <code>docker</code> 组成员</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ newgrp - docker
 </span></span></code></pre></div><h3 id="阿里云镜像加速">阿里云镜像加速</h3>
 <p>是什么 <a href="https://promotion.aliyun.com/ntms/act/kubernetes.html">https://promotion.aliyun.com/ntms/act/kubernetes.html</a></p>
 <p>注册一个属于自己的阿里云账户（可复用支付宝账号）</p>
@@ -1528,7 +1546,7 @@
 </span></span></code></pre></div><p>这是很显然的道理，容器被删除后，容器里面的MySQL也就被删除了，数据自然消失了。</p>
 <h5 id="实战版">实战版</h5>
 <p>1、新建MySQL容器实例</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /ashley/mysql/log:/var/log/mysql -v /ashley/mysql/data:/var/lib/mysql -v /ashley/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/mysql/log:/var/log/mysql -v /data/mysql/data:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
 </span></span></code></pre></div><p>实现docker上的mysql数据同步到宿主机的功能。</p>
 <p>2、新建my.cnf</p>
 <p>通过容器卷同步给mysql容器实例，解决中文字符编码问题。</p>
@@ -1539,7 +1557,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>collation_server = <span style="color:#666;font-style:italic">utf8_general_ci</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>character_set_server = <span style="color:#666;font-style:italic">utf8</span>
 </span></span></code></pre></div><p>在宿主机进行如下操作：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /ashley/mysql/conf/
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /data/mysql/conf/
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ vim my.cnf
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ cat my.cnf
@@ -1602,7 +1620,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>mysql&gt; <span style="font-weight:bold">create</span> <span style="font-weight:bold">table</span> <span style="color:#666;font-weight:bold;font-style:italic">t1</span>(id <span style="font-weight:bold">int</span>, name <span style="font-weight:bold">varchar</span>(20));
 </span></span></code></pre></div><p>6、假如将当前容器实例删除，再重新来一次，之前建的db01还有吗？</p>
 <p><strong>答案是有的</strong>。重新启动一个mysql容器，进入数据库查看数据，因为挂载了容器数据卷，所以数据会从宿主机中恢复到当前docker容器中。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /ashley/mysql/log:/var/log/mysql -v /ashley/mysql/data:/var/lib/mysql -v /ashley/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/mysql/log:/var/log/mysql -v /data/mysql/data:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>3944d05f9ef3dad023b77dc2626a2ff0ca7db02a71cab875c478a3ff7021cf1b
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>CONTAINER ID  IMAGE      COMMAND                 CREATED        STATUS        PORTS                                                 NAMES
@@ -1648,13 +1666,13 @@
 <p>Docker挂在主机目录Docker访问出现<code>cannot open directory .: Permission denied</code>。</p>
 <p><strong>解决办法</strong>：在挂载目录后多加一个<code>--privileged=true</code>参数即可。</p>
 <h4 id="新建目录">新建目录</h4>
-<p>在CentOS宿主机下新建目录<code>/app/redis</code>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir -p /app/redis
+<p>在CentOS宿主机下新建目录<code>/data/redis</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir -p /data/redis
 </span></span></code></pre></div><h4 id="拷贝配置文件">拷贝配置文件</h4>
 <p>将准备好的<code>redis.conf</code>文件放进宿主机的<code>/app/redis</code>目录，默认出厂的原始<a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /myredis/redis.conf /app/redis/
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /myredis/redis.conf /data/redis/
 </span></span></code></pre></div><h4 id="修改配置文件">修改配置文件</h4>
-<p>在<code>/app/redis</code>目录下修改<code>redis.conf</code>文件：</p>
+<p>在<code>/data/redis</code>目录下修改<code>redis.conf</code>文件：</p>
 <p>1、开启redis验证（可选）</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>requirepass foobared
 </span></span></code></pre></div><p>2、允许redis外地连接</p>
@@ -1669,7 +1687,7 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>appendonly yes
 </span></span></code></pre></div><h4 id="创建容器">创建容器</h4>
 <p>使用<code>redis:6.0.8</code>镜像创建容器（也叫运行镜像）：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 6379:6379 --name myrds --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /app/redis/redis.conf:/etc/redis/redis.conf -v /app/redis/data:/data -d redis:6.0.8 redis-server /etc/redis/redis.conf
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 6379:6379 --name myrds --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/redis/redis.conf:/etc/redis/redis.conf -v /data/redis/data:/data -d redis:6.0.8 redis-server /etc/redis/redis.conf
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>d8a9a2a820193a31675fcacec2ced5e025b5f22dc63634637e4e5a86e2a1b2b8
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS          PORTS                                       NAMES
@@ -1717,7 +1735,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold">select</span> 15
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>(error) ERR DB index is out of range
 </span></span></code></pre></div><h3 id="安装nginx">安装Nginx</h3>
-<p>见高级篇Portainer</p>
+<p>见Docker进阶指南<a href="https://blog.imw7.com/post/docker_advanced/#%E7%99%BB%E9%99%86%E5%B9%B6%E6%BC%94%E7%A4%BA%E4%BB%8B%E7%BB%8D%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E6%A1%88%E4%BE%8B">Portainer</a></p>
         </div>
 
         
@@ -1766,6 +1784,42 @@
 </div>
 
                     <footer id="footer">
+    <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
@@ -1808,6 +1862,7 @@
 
     <script src='/js/douban.js'></script>
 
+
                 </div>
 
                 <div id="secondary">
@@ -1823,6 +1878,10 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/hugo_guide/" title="Hugo使用指南">Hugo使用指南</a>
+    </li>
     
     <li>
         <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
@@ -1845,7 +1904,7 @@
     </li>
     
     <li>
-        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+        <a href="https://blog.imw7.com/post/ssh/" title="ssh使用指南">ssh使用指南</a>
     </li>
     
     <li>
@@ -1858,10 +1917,6 @@
     
     <li>
         <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
     </li>
     
 </ul>
@@ -1878,6 +1933,8 @@
     <li><a href="https://blog.imw7.com/categories/Go/">Go (53)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hugo/">Hugo (1)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
     
@@ -1911,6 +1968,8 @@
     <a href="https://blog.imw7.com/tags/HDMI/">HDMI</a>
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -2006,7 +2065,9 @@
     
     <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
     
-    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/">上传</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/">下载</a>
     
     <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
     

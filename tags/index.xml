@@ -6,22 +6,31 @@
     <description>Recent content in Tags on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 25 Jun 2022 13:39:22 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Jul 2022 21:23:51 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Docker</title>
-      <link>https://blog.imw7.com/tags/Docker/</link>
-      <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
+      <title>Hugo</title>
+      <link>https://blog.imw7.com/tags/Hugo/</link>
+      <pubDate>Fri, 01 Jul 2022 21:23:51 +0800</pubDate>
       
-      <guid>https://blog.imw7.com/tags/Docker/</guid>
+      <guid>https://blog.imw7.com/tags/Hugo/</guid>
       <description></description>
     </item>
     
     <item>
       <title>常用组件和技巧</title>
       <link>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</link>
-      <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
+      <pubDate>Fri, 01 Jul 2022 21:23:51 +0800</pubDate>
       
       <guid>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Docker</title>
+      <link>https://blog.imw7.com/tags/Docker/</link>
+      <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/tags/Docker/</guid>
       <description></description>
     </item>
     
@@ -71,11 +80,20 @@
     </item>
     
     <item>
-      <title>上传文件</title>
-      <link>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/</link>
+      <title>上传</title>
+      <link>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/</link>
       <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
       
-      <guid>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/</guid>
+      <guid>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>下载</title>
+      <link>https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/</link>
+      <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/</guid>
       <description></description>
     </item>
     

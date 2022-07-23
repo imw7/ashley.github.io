@@ -6,14 +6,23 @@
     <description>Recent content on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 25 Jun 2022 13:39:22 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Jul 2022 21:23:51 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo使用指南</title>
+      <link>https://blog.imw7.com/post/hugo_guide/</link>
+      <pubDate>Fri, 01 Jul 2022 21:23:51 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/hugo_guide/</guid>
+      <description>&lt;p&gt;本文介绍的是在 &lt;code&gt;Hugo&lt;/code&gt; 的使用过程中遇到的一些问题。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Docker进阶指南</title>
       <link>https://blog.imw7.com/post/docker_advanced/</link>
       <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
       
       <guid>https://blog.imw7.com/post/docker_advanced/</guid>
-      <description>&lt;p&gt;本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。&lt;/p&gt;</description>
+      <description>本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。 Docker复杂安装详说 安装MySQL主从复制 主从复制 主从复制的含义 在MySQL多服务器的架构中，至少要有一个主节点（master），跟主节点相对的，我们把它叫做从节点（slave）。主从复制</description>
     </item>
     
     <item>
@@ -53,12 +62,12 @@
     </item>
     
     <item>
-      <title>ssh使用scp或rsync上传和下载文件</title>
-      <link>https://blog.imw7.com/post/ssh_upload_download/</link>
+      <title>ssh使用指南</title>
+      <link>https://blog.imw7.com/post/ssh/</link>
       <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
       
-      <guid>https://blog.imw7.com/post/ssh_upload_download/</guid>
-      <description>&lt;p&gt;本文主要介绍，如何向远程服务器上传文件，以及如何从远程服务器上下载文件。&lt;/p&gt;</description>
+      <guid>https://blog.imw7.com/post/ssh/</guid>
+      <description>&lt;p&gt;本文主要介绍使用&lt;code&gt;ssh&lt;/code&gt;远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。&lt;/p&gt;</description>
     </item>
     
     <item>

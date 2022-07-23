@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>上传 on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/</link>
+    <description>Recent content in 上传 on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>ssh使用指南</title>
+      <link>https://blog.imw7.com/post/ssh/</link>
+      <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/ssh/</guid>
+      <description>&lt;p&gt;本文主要介绍使用&lt;code&gt;ssh&lt;/code&gt;远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

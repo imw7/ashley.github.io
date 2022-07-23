@@ -77,6 +77,31 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://blog.imw7.com/post/hugo_guide/" title="Hugo使用指南">Hugo使用指南</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2022年7月1日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/Hugo'>Hugo</a></span>
+            
+        </div>
+        
+        <div class="post-content">
+            <p>本文介绍的是在 <code>Hugo</code> 的使用过程中遇到的一些问题。</p>……
+        </div>
+        <p class="readmore"><a href="https://blog.imw7.com/post/hugo_guide/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
             </h1>
         </header>
@@ -92,7 +117,7 @@
         </div>
         
         <div class="post-content">
-            <p>本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。</p>……
+            本文是Docker的进阶篇，通过本文能够更好的对Docker的高级功能有一个清楚的认识。 Docker复杂安装详说 安装MySQL主从复制 主从复制 主从复制的含义 在MySQL多服务器的架构中，至少要有一个主节点（master），跟主节点相对的，我们把它叫做从节点（slave）。主从复制……
         </div>
         <p class="readmore"><a href="https://blog.imw7.com/post/docker_advanced/">阅读全文</a></p>
     </article>
@@ -202,7 +227,7 @@
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+                <a href="https://blog.imw7.com/post/ssh/" title="ssh使用指南">ssh使用指南</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
@@ -217,9 +242,9 @@
         </div>
         
         <div class="post-content">
-            <p>本文主要介绍，如何向远程服务器上传文件，以及如何从远程服务器上下载文件。</p>……
+            <p>本文主要介绍使用<code>ssh</code>远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。</p>……
         </div>
-        <p class="readmore"><a href="https://blog.imw7.com/post/ssh_upload_download/">阅读全文</a></p>
+        <p class="readmore"><a href="https://blog.imw7.com/post/ssh/">阅读全文</a></p>
     </article>
     
     
@@ -299,31 +324,6 @@
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2021年9月10日
-        </date>
-        
-        <div class="post-meta">
-            <span>|</span>
-            
-            <span class="meta-category"><a href='/categories/Go'>Go</a></span>
-            
-        </div>
-        
-        <div class="post-content">
-            <p>借助<code>Makefile</code>我们在编译过程中不再需要每次手动输入编译的命令和编译的参数，可以极大简化项目编译过程。</p>……
-        </div>
-        <p class="readmore"><a href="https://blog.imw7.com/post/Go/makefile/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -372,6 +372,42 @@
 </div>
 
                     <footer id="footer">
+    <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
     <div>
         &copy; 2022 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
         
@@ -403,6 +439,7 @@
 
     <script src='/js/douban.js'></script>
 
+
                 </div>
 
                 <div id="secondary">
@@ -418,6 +455,10 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/hugo_guide/" title="Hugo使用指南">Hugo使用指南</a>
+    </li>
     
     <li>
         <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
@@ -440,7 +481,7 @@
     </li>
     
     <li>
-        <a href="https://blog.imw7.com/post/ssh_upload_download/" title="ssh使用scp或rsync上传和下载文件">ssh使用scp或rsync上传和下载文件</a>
+        <a href="https://blog.imw7.com/post/ssh/" title="ssh使用指南">ssh使用指南</a>
     </li>
     
     <li>
@@ -453,10 +494,6 @@
     
     <li>
         <a href="https://blog.imw7.com/post/Go/bcrypt/" title="密码加密">密码加密</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/Go/makefile/" title="为Go项目编写Makefile">为Go项目编写Makefile</a>
     </li>
     
 </ul>
@@ -473,6 +510,8 @@
     <li><a href="https://blog.imw7.com/categories/Go/">Go (53)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hugo/">Hugo (1)</a></li>
     
     <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
     
@@ -506,6 +545,8 @@
     <a href="https://blog.imw7.com/tags/HDMI/">HDMI</a>
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -601,7 +642,9 @@
     
     <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
     
-    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6/">上传文件</a>
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/">上传</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/">下载</a>
     
     <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
     

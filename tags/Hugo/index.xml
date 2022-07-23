@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on 魏奇的博客</title>
+    <link>https://blog.imw7.com/tags/Hugo/</link>
+    <description>Recent content in Hugo on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 01 Jul 2022 21:23:51 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Hugo/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo使用指南</title>
+      <link>https://blog.imw7.com/post/hugo_guide/</link>
+      <pubDate>Fri, 01 Jul 2022 21:23:51 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/hugo_guide/</guid>
+      <description>&lt;p&gt;本文介绍的是在 &lt;code&gt;Hugo&lt;/code&gt; 的使用过程中遇到的一些问题。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
