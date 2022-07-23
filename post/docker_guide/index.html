@@ -256,9 +256,9 @@
         </div>
         
         <div class="post-content">
-            <p>本文是Docker的简易使用指南，包含方方面面的知识，争取通过本文能够对Docker有个全面的了解。</p>
+            <p>本文是 <code>Docker</code> 的简易使用指南，包含方方面面的知识，争取通过本文能够对 <code>Docker</code> 有个初步的了解。</p>
 <h2 id="docker安装">Docker安装</h2>
-<p>这部分以CentOS为例，根据Docker官网给出的<a href="https://docs.docker.com/engine/install/centos/">安装教程</a>进行整理和总结。</p>
+<p>这部分以 <code>CentOS</code> 为例，根据 <code>Docker</code> 官网给出的<a href="https://docs.docker.com/engine/install/centos/">安装教程</a>进行整理和总结。</p>
 <h3 id="安装步骤">安装步骤</h3>
 <h4 id="确定你是centos7及以上版本">确定你是CentOS7及以上版本</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cat /etc/redhat-release
@@ -291,7 +291,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ sudo docker run hello-world
 </span></span></code></pre></div><h4 id="卸载docker引擎">卸载Docker引擎</h4>
 <ol>
-<li>卸载 Docker Engine、CLI、Containerd 和 Docker Compose 软件包：</li>
+<li>卸载 <code>Docker Engine</code>、<code>CLI</code>、<code>Containerd</code> 和 <code>Docker Compose</code> 软件包：</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo yum remove docker-ce docker-ce-cli containerd.io docker-compose-plugin
 </span></span></code></pre></div><ol start="2">
@@ -300,7 +300,7 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo rm -rf /var/lib/docker
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ sudo rm -rf /var/lib/containerd
 </span></span></code></pre></div><h4 id="docker免sudo权限">Docker免sudo权限</h4>
-<p>安装完 <code>docker</code>，每次必须用 <code>sudo</code> 权限操作，比较麻烦。将 <code>docker</code> 加入 <code>sudo</code> 用户组，即可默认 <code>sudo</code> 权限运行，而不用 <code>sudo</code>。具体步骤如下：</p>
+<p>安装完 <code>Docker</code>，每次必须用 <code>sudo</code> 权限操作，比较麻烦。将 <code>Docker</code> 加入 <code>sudo</code> 用户组，即可默认 <code>sudo</code> 权限运行，而不用 <code>sudo</code>。具体步骤如下：</p>
 <ol>
 <li>添加 <code>docker group</code></li>
 </ol>
@@ -317,7 +317,8 @@
 <li>刷新 <code>docker</code> 组成员</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ newgrp - docker
-</span></span></code></pre></div><h3 id="阿里云镜像加速">阿里云镜像加速</h3>
+</span></span></code></pre></div><p>这样，再次使用 <code>docker</code> 命令，无需添加 <code>sudo</code>。</p>
+<h3 id="阿里云镜像加速">阿里云镜像加速</h3>
 <p>是什么 <a href="https://promotion.aliyun.com/ntms/act/kubernetes.html">https://promotion.aliyun.com/ntms/act/kubernetes.html</a></p>
 <p>注册一个属于自己的阿里云账户（可复用支付宝账号）</p>
 <h4 id="获得加速器地址连接">获得加速器地址连接</h4>
@@ -347,10 +348,9 @@
     </p>
 <h4 id="粘贴脚本直接执行">粘贴脚本直接执行</h4>
 <h5 id="安装升级docker客户端">安装／升级Docker客户端</h5>
-<p>推荐安装1.10.0以上版本的Docker客户端，参考文档<a href="https://yq.aliyun.com/articles/110806">docker-ce</a></p>
+<p>推荐安装 <code>1.10.0</code> 以上版本的 <code>Docker</code> 客户端，参考文档<a href="https://yq.aliyun.com/articles/110806">docker-ce</a>。</p>
 <h5 id="配置镜像加速器">配置镜像加速器</h5>
-<p>针对Docker客户端版本大于 1.10.0 的用户</p>
-<p>您可以通过修改daemon配置文件/etc/docker/daemon.json来使用加速器</p>
+<p>针对 <code>Docker</code> 客户端版本大于 <code>1.10.0</code> 的用户，可以通过修改 <code>daemon</code> 配置文件 <code>/etc/docker/daemon.json</code> 来使用加速器。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>sudo mkdir -p /etc/docker
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>sudo tee /etc/docker/daemon.json <span style="color:#666;font-style:italic">&lt;&lt;-&#39;EOF&#39;
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic">{
@@ -423,10 +423,10 @@
 </tr>
 </tbody>
 </table>
-<p>注：同一仓库源可以有多个TAG版本，代表这个仓库源的不同版本，我们使用 <code>REPOSITORY:TAG</code> 来定义不同的镜像。如果你不指定一个镜像的版本标签，例如你只使用ubuntu，docker将默认使用 <code>ubuntu:latest</code> 镜像。</p>
-<p>2、OPTIONS说明</p>
+<p>注：同一仓库源可以有多个 <code>TAG</code> 版本，代表这个仓库源的不同版本，我们使用 <code>REPOSITORY:TAG</code> 来定义不同的镜像。如果你不指定一个镜像的版本标签，例如你只使用 <code>ubuntu</code>，<code>Docker</code> 将默认使用 <code>ubuntu:latest</code> 镜像。</p>
+<p>2、<code>OPTIONS</code> 说明</p>
 <p><code>-a</code>：列出本地所有的镜像（含历史影像层）</p>
-<p><code>-q</code>：只显示镜像ID</p>
+<p><code>-q</code>：只显示镜像 <code>ID</code></p>
 <h4 id="docker-search-options-term">docker search [OPTIONS] TERM</h4>
 <p>1、网站</p>
 <p><a href="https://hub.docker.com">https://hub.docker.com</a></p>
@@ -443,7 +443,7 @@
 </span></span></code></pre></div><h4 id="docker-pull-options-nametagdigest">docker pull [OPTIONS] NAME[:TAG|@DIGEST]</h4>
 <p>下载镜像命令</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull 镜像名字[:TAG]
-</span></span></code></pre></div><p>注：没有TAG就是最新版，等价于<code>docker pull 镜像名字:latest</code></p>
+</span></span></code></pre></div><p>注：没有 <code>TAG</code> 就是最新版，等价于 <code>docker pull 镜像名字:latest</code></p>
 <h4 id="docker-system-df">docker system df</h4>
 <p>查看镜像/容器/数据卷所占的空间</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker system df
@@ -460,20 +460,20 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker rmi -f 镜像名1:TAG 镜像名2:TAG
 </span></span></code></pre></div><p>3、删除全部</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker rmi -f <span style="font-weight:bold">$(</span>docker images -qa<span style="font-weight:bold">)</span>
-</span></span></code></pre></div><p>面试题：谈谈docker虚悬镜像是什么？</p>
-<p>仓库名、标签都是<code>&lt;none&gt;</code>的镜像，俗称虚悬镜像<code>dangling image</code></p>
+</span></span></code></pre></div><p>面试题：谈谈 <code>Docker</code> 虚悬镜像是什么？</p>
+<p>仓库名、标签都是 <code>&lt;none&gt;</code> 的镜像，俗称虚悬镜像 <code>dangling image</code>。</p>
 <h3 id="容器命令">容器命令</h3>
 <h4 id="新建启动容器">新建+启动容器</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
-</span></span></code></pre></div><p>1、OPTIONS说明</p>
+</span></span></code></pre></div><p>1、<code>OPTIONS</code> 说明</p>
 <p>有些是一个减号，有些是两个减号</p>
 <p><code>--name=&quot;容器新名字&quot;</code>：为容器指定一个名称</p>
-<p><code>-d</code>：后台运行容器并返回容器ID，也即启动守护式容器（后台运行）</p>
-<p><strong><code>-i</code>：以交互模式运行容器，通常与<code>-t</code>同时使用</strong></p>
-<p><strong><code>-t</code>：为容器重新分配一个伪输入终端，通常与<code>-i</code>同时使用</strong></p>
+<p><code>-d</code>：后台运行容器并返回容器 <code>ID</code>，也即启动守护式容器（后台运行）</p>
+<p><strong><code>-i</code>：以交互模式运行容器，通常与 <code>-t</code> 同时使用</strong></p>
+<p><strong><code>-t</code>：为容器重新分配一个伪输入终端，通常与 <code>-i</code> 同时使用</strong></p>
 <p>也即<strong>启动交互式容器（前台有伪终端，等待交互）</strong></p>
-<p><code>-P</code>：<strong>随机</strong>端口映射，大写P</p>
-<p><code>-p</code>：<strong>指定</strong>端口映射，小写p</p>
+<p><code>-P</code>：<strong>随机</strong>端口映射，大写 <code>P</code></p>
+<p><code>-p</code>：<strong>指定</strong>端口映射，小写 <code>p</code></p>
 <table>
 <thead>
 <tr>
@@ -514,14 +514,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>UID        PID  PPID  C STIME TTY          TIME CMD
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>root         1     0  0 05:04 pts/0    00:00:00 /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>root         9     1  0 05:04 pts/0    00:00:00 ps -ef
-</span></span></code></pre></div><p>使用镜像ubuntu:latest以交互模式启动一个容器，在容器内执行/bin/bash命令：</p>
+</span></span></code></pre></div><p>使用镜像 <code>ubuntu:latest</code> 以交互模式启动一个容器，在容器内执行 <code>/bin/bash</code> 命令：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it ubuntu /bin/bash
 </span></span></code></pre></div><p><strong>参数说明</strong>：</p>
 <p><code>-i</code>：交互式操作</p>
 <p><code>-t</code>：终端</p>
-<p><code>ubuntu</code>：ubuntu镜像</p>
-<p><code>/bin/bash</code>：放在镜像名后的是命令，这里我们希望有个交互式Shell，因此用的是 /bin/bash</p>
-<p>要退出终端，直接输入<code>exit</code></p>
+<p><code>ubuntu</code>：<code>Ubuntu</code>镜像</p>
+<p><code>/bin/bash</code>：放在镜像名后的是命令，这里我们希望有个交互式<code>Shell</code>，因此用的是 <code>/bin/bash</code></p>
+<p>要退出终端，直接输入 <code>exit</code></p>
 <h4 id="列出当前所有正在运行的容器">列出当前所有正在运行的容器</h4>
 <p>1、命令</p>
 <pre tabindex="0"><code class="language-2\" data-lang="2\">$ docker ps [OPTIONS]
@@ -529,17 +529,17 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID  IMAGE   COMMAND      CREATED        STATUS       PORTS  NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>0de077b13a8b  ubuntu  <span style="color:#666;font-style:italic">&#34;/bin/bash&#34;</span>  6 minutes ago  Up 6 minutes        youthful_ja
-</span></span></code></pre></div><p>2、OPTIONS说明</p>
+</span></span></code></pre></div><p>2、<code>OPTIONS</code> 说明</p>
 <p><code>-a</code>：列出当前所在<strong>正在运行</strong>的容器+<strong>历史上运行过的</strong>容器</p>
 <p><code>-l</code>：显示最近创建的容器</p>
 <p><code>-n</code>：显示最近n个创建的容器</p>
 <p><code>-q</code>：<strong>静默模式，只显示容器编号</strong></p>
 <h4 id="退出容器">退出容器</h4>
 <p>两种退出方式</p>
-<p>1、exit</p>
-<p><code>run</code>进去容器，<code>exit</code>退出，<strong>容器停止</strong></p>
-<p>2、ctrl+p+q</p>
-<p><code>run</code>进去容器，<code>ctrl+p+q</code>退出，<strong>容器不停止</strong></p>
+<p>1、<code>exit</code></p>
+<p><code>run</code> 进去容器，<code>exit </code>退出，<strong>容器停止</strong></p>
+<p>2、<code>ctrl+p+q</code></p>
+<p><code>run</code> 进去容器，<code>ctrl+p+q</code> 退出，<strong>容器不停止</strong></p>
 <h4 id="启动已停止运行的容器">启动已停止运行的容器</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker start 容器ID或者容器名
 </span></span></code></pre></div><h4 id="重启容器">重启容器</h4>
@@ -555,19 +555,19 @@
 </span></span></code></pre></div><p>或者</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps -a -q | xargs docker rm
 </span></span></code></pre></div><h4 id="重要">重要</h4>
-<p>有镜像才能创建容器，这是根本前提（下载一个Redis6.0.8镜像演示）</p>
+<p>有镜像才能创建容器，这是根本前提（下载一个 <code>Redis:6.0.8</code> 镜像演示）</p>
 <h5 id="启动守护式容器后台服务器">启动守护式容器（后台服务器）</h5>
-<p>在大部分的场景下，我们希望docker的服务是在后台运行的，我们可以通过<code>-d</code>指定容器的后台运行模式。</p>
+<p>在大部分的场景下，我们希望docker的服务是在后台运行的，我们可以通过 <code>-d</code> 指定容器的后台运行模式。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d 容器名
-</span></span></code></pre></div><p>使用镜像<code>ubuntu:latest</code>以后台模式启动一个容器：</p>
+</span></span></code></pre></div><p>使用镜像 <code>ubuntu:latest</code> 以后台模式启动一个容器：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d ubuntu
-</span></span></code></pre></div><p><em><strong>问题</strong></em>：然后<code>docker ps -a</code>进行查看，<strong>会发现容器已经退出</strong>。</p>
-<p>很重要的要说明一点：<strong>Docker容器后台运行，就必须有一个前台进程</strong>。</p>
-<p>容器运行的命令如果不是那些<strong>一直挂起的命令</strong>（比如运行top，tail），就是会自动退出的。</p>
-<p>这个是docker的机制问题，比如你的web容器，我们以nginx为例，正常情况夏，我们配置启动服务只需要启动响应的service即可。例如<code>service nginx start</code>。</p>
-<p>但是，这样做，nginx为后台进程模式运行，就导致docker前台没有运行的应用，这样的容器后台启动后，会立即自杀，因为它觉得自己没事可做了。</p>
+</span></span></code></pre></div><p><em><strong>问题</strong></em>：然后 <code>docker ps -a</code> 进行查看，<strong>会发现容器已经退出</strong>。</p>
+<p>很重要的要说明一点：<strong><code>Docker</code> 容器后台运行，就必须有一个前台进程</strong>。</p>
+<p>容器运行的命令如果不是那些<strong>一直挂起的命令</strong>（比如运行 <code>top</code>，<code>tail</code>），就是会自动退出的。</p>
+<p>这个是 <code>Docker</code> 的机制问题，比如你的 <code>Web</code> 容器，我们以 <code>Nginx</code> 为例，正常情况下，我们配置启动服务只需要启动响应的 <code>service</code> 即可。例如 <code>service nginx start</code>。</p>
+<p>但是，这样做，<code>Nginx</code> 为后台进程模式运行，就导致 <code>Docker</code> 前台没有运行的应用，这样的容器后台启动后，会立即自杀，因为它觉得自己没事可做了。</p>
 <p>所以，最佳的解决方案是，<strong>将你要运行的程序以前台进程的形式运行，常见就是命令行模式，表示我还有交互操作，别中断，O(∩_∩)O哈哈~</strong>。</p>
-<h6 id="redis前后台启动演示例子">redis前后台启动演示例子</h6>
+<h5 id="redis前后台启动演示例子">Redis前后台启动演示例子</h5>
 <p>①前台交互式启动</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it redis:6.0.8
 </span></span></code></pre></div><p>②后台守护式启动</p>
@@ -830,10 +830,10 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker attach 8616a62e0639
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@8616a62e0639:/data#
 </span></span></code></pre></div><p><strong>上述两种方法的区别</strong></p>
-<p>① attach 直接进入容器启动命令的终端，不会启动新的进程。用exit退出，会导致容器的停止。</p>
-<p>② exec 是在容器中打开新的终端，并且可以启动新的进程。用exit退出，不会导致容器的停止。</p>
-<p>推荐使用<code>docker exec</code>命令，因为退出容器终端不会导致容器的停止。</p>
-<h5 id="用之前的redis容器实例进入试试">用之前的redis容器实例进入试试</h5>
+<p>① <code>attach</code> 直接进入容器启动命令的终端，不会启动新的进程。用 <code>exit</code> 退出，会导致容器的停止。</p>
+<p>② <code>exec</code> 是在容器中打开新的终端，并且可以启动新的进程。用 <code>exit</code> 退出，不会导致容器的停止。</p>
+<p>推荐使用 <code>docker exec</code> 命令，因为退出容器终端不会导致容器的停止。</p>
+<h5 id="用之前的redis容器实例进入试试">用之前的Redis容器实例进入试试</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># 进入redis服务</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 容器ID /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it 容器ID redis-cli
@@ -853,7 +853,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>127.0.0.1:6379&gt; get name
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#666;font-style:italic">&#34;eric&#34;</span>
 </span></span></code></pre></div><h5 id="从容器内拷贝文件到主机上">从容器内拷贝文件到主机上</h5>
-<p>容器&ndash;&gt;主机</p>
+<p><code>容器--&gt;主机</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
 </span></span></code></pre></div><p>公式：<code>docker cp 容器ID:容器内路径 目的地主机路径</code></p>
 <p>1、在容器创建文件</p>
@@ -863,15 +863,15 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@71fd743e48fa:/tmp# ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>a.txt
 </span></span></code></pre></div><p>2、将文件复制到主机</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos]<span style="color:#888;font-style:italic"># docker cp 71fd743e48fa:/tmp/a.txt /root/c.txt</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>[root@centos]<span style="color:#888;font-style:italic"># ls</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker cp 71fd743e48fa:/tmp/a.txt /root/c.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>c.txt
-</span></span></code></pre></div><p>主机&ndash;&gt;容器</p>
+</span></span></code></pre></div><p><code>主机--&gt;容器</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker cp [OPTIONS] SRC_PATH|- CONTAINER:DEST_PATH
 </span></span></code></pre></div><h5 id="导入和导出容器">导入和导出容器</h5>
-<p>1、export 导出容器的内容作为一个tar归档文件[对应import命令]</p>
+<p>1、<code>export</code> 导出容器的内容作为一个 <code>tar</code> 归档文件[对应 <code>import</code> 命令]</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">export</span> 容器ID &gt; 文件名.tar
-</span></span></code></pre></div><p>在容器端创建文件a.txt，并按ctrl+p+q退出</p>
+</span></span></code></pre></div><p>在容器端创建文件 <code>a.txt</code>，并按 <code>ctrl+p+q</code> 退出</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@06fa2250f3e6:/# <span style="font-weight:bold;font-style:italic">cd</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@06fa2250f3e6:~# ls
@@ -879,11 +879,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@06fa2250f3e6:~# touch a.txt 
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@06fa2250f3e6:~# <span style="font-weight:bold;font-style:italic">echo</span> <span style="color:#666;font-style:italic">&#34;Hello, world!&#34;</span> &gt; a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>root@06fa2250f3e6:~# // ctrl+p+q 退出界面，不退出进程
-</span></span></code></pre></div><p>在主机端导出整个容器成tar包</p>
+</span></span></code></pre></div><p>在主机端导出整个容器成 <code>tar</code> 包</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">export</span> 06fa2250f3e6 &gt; abcd.tar
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>abcd.tar
-</span></span></code></pre></div><p>2、import 从tar包中的内容创建一个新的文件系统再导入为镜像[对应export]</p>
+</span></span></code></pre></div><p>2、<code>import</code> 从 <code>tar</code> 包中的内容创建一个新的文件系统再导入为镜像[对应 <code>export</code>]</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cat 文件名.tar | docker import - 镜像用户/镜像名:镜像版本号
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>CONTAINER ID   IMAGE         COMMAND                  CREATED              STATUS              PORTS      NAMES
@@ -915,10 +915,10 @@
 </span></span></code></pre></div><h2 id="docker镜像">Docker镜像</h2>
 <h3 id="是什么">是什么</h3>
 <h4 id="概念">概念</h4>
-<p>镜像是一种轻量级、可执行的独立软件包，它包含运行某个软件所需的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时需要的库、环境变量和配置文件等），这个打包好的运行环境就是image镜像文件。</p>
-<p>只有通过这个镜像文件才能生成Docker容器实例（类似Go中new出来一个对象）。</p>
+<p>镜像是一种轻量级、可执行的独立软件包，它包含运行某个软件所需的所有内容，我们把应用程序和配置依赖打包好形成一个可交付的运行环境（包括代码、运行时需要的库、环境变量和配置文件等），这个打包好的运行环境就是 <code>image</code> 镜像文件。</p>
+<p>只有通过这个镜像文件才能生成 <code>Docker</code> 容器实例（类似 <code>Go</code> 中 <code>new</code> 出来一个对象）。</p>
 <h4 id="分层的镜像">分层的镜像</h4>
-<p><strong>镜像是分层的</strong>，以我们的pull为例，在下载过程中我们可以看到docker的镜像好像是在一层一层的下载。</p>
+<p><strong>镜像是分层的</strong>，以我们的 <code>pull</code> 为例，在下载过程中我们可以看到 <code>Docker</code> 的镜像好像是在一层一层的下载。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker pull mysql
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Using default tag: latest
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
@@ -935,25 +935,25 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>4d7cfa90e6ea: Download <span style="font-weight:bold;font-style:italic">complete</span> 
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>e0431212d27d: Download <span style="font-weight:bold;font-style:italic">complete</span>
 </span></span></code></pre></div><h4 id="unionfs联合文件系统">UnionFS（联合文件系统）</h4>
-<p>UnionFS是一种分层、轻量级并且高性能的文件系统，它支持<strong>对文件系统的修改作为一次提交来一层层的叠加</strong>，同时可以将不同且目录挂载到同一个虚拟文件系统下（unite several directories into a single virtual filesystem）。Union文件系统是Docker镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像。</p>
+<p><code>UnionFS</code> 是一种分层、轻量级并且高性能的文件系统，它支持<strong>对文件系统的修改作为一次提交来一层层的叠加</strong>，同时可以将不同且目录挂载到同一个虚拟文件系统下 「<code>unite several directories into a single virtual filesystem</code>」。<code>Union</code> 文件系统是 <code>Docker</code> 镜像的基础。镜像可以通过分层来进行继承，基于基础镜像（没有父镜像），可以制作各种具体的应用镜像。</p>
 <p>特性：一次同时加载多个文件系统，但从外面看起来，只能看到一个文件系统，联合加载会把各层文件系统叠加起来，这样最终的文件系统会包含所有底层的文件和目录。</p>
 <h4 id="docker镜像加载原理">Docker镜像加载原理</h4>
-<p>docker的镜像实际上由一层一层的文件系统组成，这种层级的文件系统叫UnionFS。</p>
-<p>bootfs（boot file system）主要包含bootloader和kernel，bootloader主要是引导加载kernel，Linux刚启动时会加载bootfs文件系统，在<strong>Docker镜像的最底层是引导文件系统bootfs</strong>。这一层与我们典型的Linux/Unix系统是一样的，包含boot加载器和内核。当boot加载完成之后整个内核就都在内存中了，此时内存的使用权已由bootfs转交给内核，此时系统也会卸载bootfs。</p>
-<p>rootfs（root file system），在bootfs之上，包含的就是典型Linux系统中的/dev，/proc，/bin，/etc 等标准目录和文件。rootfs就是各种不同的操作系统发行版，比如Ubuntu，CentOS等等。</p>
+<p><code>Docker</code> 的镜像实际上由一层一层的文件系统组成，这种层级的文件系统叫 <code>UnionFS</code>。</p>
+<p><code>bootfs</code>「<code>boot file system</code> 」主要包含 <code>bootloader</code> 和 <code>kernel</code>，<code>bootloader</code> 主要是引导加载 <code>kernel</code>，<code>Linux</code> 刚启动时会加载 <code>bootfs</code> 文件系统，在 <strong><code>Docker</code> 镜像的最底层是引导文件系统 <code>bootfs</code></strong>。这一层与我们典型的 <code>Linux/Unix</code> 系统是一样的，包含 <code>boot</code> 加载器和内核。当 <code>boot</code> 加载完成之后整个内核就都在内存中了，此时内存的使用权已由 <code>bootfs</code> 转交给内核，此时系统也会卸载 <code>bootfs</code>。</p>
+<p><code>rootfs</code>「<code>root file system</code> 」，在 <code>bootfs</code> 之上，包含的就是典型 <code>Linux</code> 系统中的 <code>/dev</code>，<code>/proc</code>，<code>/bin</code>，<code>/etc</code> 等标准目录和文件。<code>rootfs</code> 就是各种不同的操作系统发行版，比如 <code>Ubuntu</code>，<code>CentOS</code> 等等。</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/linux_file_system.png">
             <img class="mx-auto" alt="linux_file_system" src="https://blog.imw7.com/images/docker/linux_file_system.png" />
         </a>
     </p>
-<p>平时我们安装进虚拟机的Ubuntu都是好几个G，为什么docker这里才77.8M？</p>
+<p>平时我们安装进虚拟机的 <code>Ubuntu</code> 都是好几个G，为什么 <code>Docker</code> 这里才 <code>77.8M</code>？</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker images ubuntu
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>REPOSITORY   TAG       IMAGE ID       CREATED       SIZE
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ubuntu       latest    27941809078c   2 weeks ago   77.8MB
-</span></span></code></pre></div><p>对于一个精简的OS，rootfs可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用Host的kernel，自己只需要提供rootfs就行了。由此可见对于不同的linux发行版，bootfs基本是一致的，rootfs会有差别，因此不同的发行版可以公用bootfs。</p>
+</span></span></code></pre></div><p>对于一个精简的<code>OS</code>，<code>rootfs</code> 可以很小，只需要包括最基本的命令、工具和程序库就可以了，因为底层直接用 <code>Host</code> 的 <code>kernel</code>，自己只需要提供 <code>rootfs</code> 就行了。由此可见对于不同的 <code>Linux</code> 发行版，<code>bootfs</code> 基本是一致的，<code>rootfs</code> 会有差别，因此不同的发行版可以公用 <code>bootfs</code>。</p>
 <h4 id="为什么docker镜像要采用这种分层结构呢">为什么Docker镜像要采用这种分层结构呢</h4>
 <p>采用镜像分层最大的一个好处就是共享资源，方便复制迁移。之所以采用这种分层结构为的就是方便复用。</p>
-<p>比如说有多个镜像都从相同的 base 镜像构建而来，那么 Docker Host 只需在磁盘上保存一份 base 镜像；同时内存中也只需加载一份 base 镜像，就可以为所有容器服务了，而且镜像的每一层都可以共享。</p>
+<p>比如说有多个镜像都从相同的 <code>base</code> 镜像构建而来，那么 <code>Docker Host</code> 只需在磁盘上保存一份 <code>base</code> 镜像；同时内存中也只需加载一份 <code>base</code> 镜像，就可以为所有容器服务了，而且镜像的每一层都可以共享。</p>
 <h3 id="重点理解">重点理解</h3>
 <p><strong>Docker镜像层都是只读的，容器层是可写的</strong>。</p>
 <p>当容器启动时，一个新的可写层被加载到镜像的顶部。这一层通常被称作”容器层”，”容器层”之下的都叫”镜像层”。</p>
@@ -967,9 +967,9 @@
 <h4 id="docker-commit提交容器副本使之成为一个新的镜像">docker commit提交容器副本使之成为一个新的镜像</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;提交的描述信息&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;作者&#34;</span> 容器ID 要创建的目标镜像名:[标签名]
 </span></span></code></pre></div><h4 id="案例演示ubuntu安装vim">案例演示ubuntu安装vim</h4>
-<p>1、从Hub上下载ubuntu镜像到本地并成功运行</p>
-<p>2、原始的默认ubuntu镜像是不带着vim命令的</p>
-<p>3、外网连通的情况下，安装vim</p>
+<p>1、从 <code>Hub</code> 上下载 <code>ubuntu</code> 镜像到本地并成功运行</p>
+<p>2、原始的默认 <code>ubuntu</code> 镜像是不带着 <code>vim</code> 命令的</p>
+<p>3、外网连通的情况下，安装 <code>vim</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -it ubuntu /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>root@f840a57094ad:/# vim a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>bash: vim: <span style="font-weight:bold;font-style:italic">command</span> not found
@@ -982,7 +982,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>Reading package lists... Done
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>......
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>Processing triggers <span style="font-weight:bold">for</span> libc-bin (2.35-0ubuntu3) ...
-</span></span></code></pre></div><p>4、安装完成后，commit成自己的新镜像</p>
+</span></span></code></pre></div><p>4、安装完成后，<code>commit</code> 成自己的新镜像</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;vim cmd add ok&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;ashley&#34;</span> f840a57094ad imw7/myubuntu:1.1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>sha256:1e9b0351af1f8fe4a7863a4cfd0b0d1146fdfae61f8ea56d0fcdef9c1ba73f3c
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker images
@@ -1004,8 +1004,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>root@0e3310eed3ba:/# cat a.txt
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>This is Docker!
 </span></span></code></pre></div><h4 id="小总结">小总结</h4>
-<p>Docker中的镜像分层，<strong>支持通过扩展现有镜像，创建新的镜像</strong>。类似Java继承于一个Base基础类，自己再按需扩展。</p>
-<p>新镜像是从base镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p>
+<p><code>Docker</code> 中的镜像分层，<strong>支持通过扩展现有镜像，创建新的镜像</strong>。类似 <code>Java</code> 继承于一个 <code>Base</code> 基础类，自己再按需扩展。</p>
+<p>新镜像是从 <code>base</code> 镜像一层一层叠加生成的，每安装一个软件，就在现有镜像的基础上增加一层。</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/docker_layer.png">
             <img class="mx-auto" alt="docker_layer" src="https://blog.imw7.com/images/docker/docker_layer.png" />
@@ -1021,7 +1021,7 @@
 <h3 id="镜像的生成方法">镜像的生成方法</h3>
 <h4 id="基于当前容器创建一个新的镜像新功能增强">基于当前容器创建一个新的镜像，新功能增强</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit [OPTIONS] 容器ID [REPOSITORY[:TAG]]
-</span></span></code></pre></div><p>OPTIONS说明：</p>
+</span></span></code></pre></div><p><code>OPTIONS</code> 说明：</p>
 <p><code>-a</code>：提交的镜像作者</p>
 <p><code>-m</code>：提交时的说明名字</p>
 <h4 id="dockerfile">Dockerfile</h4>
@@ -1095,28 +1095,28 @@
         </a>
     </p>
 <h3 id="是什么-1">是什么</h3>
-<p>1、官方Docker Hub地址：https://hub.docker.com/，中国大陆访问太慢了且有被阿里云取代的趋势，不太主流。</p>
-<p>2、Dockerhub、阿里云这样的公共镜像仓库可能不太方便，涉及公司机密的不可能提供镜像给公网，所以需要创建一个本地私人仓库供给团队使用，基于公司内部项目构建镜像。</p>
+<p>1、官方 <code>Docker Hub</code> 地址：https://hub.docker.com/，中国大陆访问太慢了且有被阿里云取代的趋势，不太主流。</p>
+<p>2、<code>Dockerhub</code>、阿里云这样的公共镜像仓库可能不太方便，涉及公司机密的不可能提供镜像给公网，所以需要创建一个本地私人仓库供给团队使用，基于公司内部项目构建镜像。</p>
 <h4 id="docker-registry">Docker Registry</h4>
-<p><code>Docker Registry</code>是官方提供的工具，可以用于构建私有镜像仓库。</p>
+<p><code>Docker Registry</code> 是官方提供的工具，可以用于构建私有镜像仓库。</p>
 <h3 id="将本地镜像推送到私有库">将本地镜像推送到私有库</h3>
 <h4 id="下载镜像docker-registry">下载镜像Docker Registry</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull registry
 </span></span></code></pre></div><h4 id="运行私有库registry相当于本地有个私有docker-hub">运行私有库Registry，相当于本地有个私有Docker Hub</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 5000:5000 -v /root/myregistry/:/tmp/registry --privileged=<span style="font-weight:bold;font-style:italic">true</span> registry
-</span></span></code></pre></div><p>默认情况下，仓库被创建在容器的/var/lib/registry目录下，建议自行用容器卷映射，方便于宿主机联调。</p>
+</span></span></code></pre></div><p>默认情况下，仓库被创建在容器的 <code>/var/lib/registry</code> 目录下，建议自行用容器卷映射，方便于宿主机联调。</p>
 <h4 id="案例演示创建一个新镜像ubuntu安装ifconifg命令">案例演示创建一个新镜像，ubuntu安装ifconifg命令</h4>
-<p>1、从Hub上下载ubuntu镜像到本地并成功运行</p>
+<p>1、从 <code>Hub</code> 上下载 <code>Ubuntu</code> 镜像到本地并成功运行</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull ubuntu
-</span></span></code></pre></div><p>2、原始的ubuntu镜像是不带ifconfig命令的</p>
+</span></span></code></pre></div><p>2、原始的 <code>Ubuntu</code> 镜像是不带 <code>ifconfig</code> 命令的</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker run -it ubuntu /bin/bash</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@fa41e46960f0:/# ifconfig
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>bash: ifconfig: <span style="font-weight:bold;font-style:italic">command</span> not found
-</span></span></code></pre></div><p>3、外网连通的情况下，安装ifconfig命令并测试通过</p>
-<p>①docker容器内执行下述两条命令</p>
+</span></span></code></pre></div><p>3、外网连通的情况下，安装 <code>ifconfig</code> 命令并测试通过</p>
+<p>① <code>Docker</code> 容器内执行下述两条命令</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ apt-get update
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ apt-get install net-tools
-</span></span></code></pre></div><p>②测试通过</p>
+</span></span></code></pre></div><p>② 测试通过</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>root@fa41e46960f0:/# ifconfig
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>eth0: <span style="color:#666;font-weight:bold;font-style:italic">flags</span>=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        inet 172.17.0.3  netmask 255.255.0.0  broadcast 172.17.255.255
@@ -1133,19 +1133,19 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>        RX errors 0  dropped 0  overruns 0  frame 0
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>        TX packets 0  bytes 0 (0.0 B)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-</span></span></code></pre></div><p>按<code>ctrl+p+q</code>退出，执行后续操作。</p>
-<p>4、安装完成后，commit自己的新镜像</p>
+</span></span></code></pre></div><p>按 <code>ctrl+p+q</code> 退出，执行后续操作。</p>
+<p>4、安装完成后，<code>commit</code> 自己的新镜像</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;提交的描述信息&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;作者&#34;</span> 容器ID 要创建的目标镜像名:[标签名]
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker commit -m=<span style="color:#666;font-style:italic">&#34;ifconfig cmd add&#34;</span> -a=<span style="color:#666;font-style:italic">&#34;ashley&#34;</span> fa41e46960f0 imw7/myubuntu:1.2
 </span></span></code></pre></div><h4 id="curl验证私服库上有什么镜像">curl验证私服库上有什么镜像</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl -XGET http://宿主机IP地址:5000/v2/_catalog
-</span></span></code></pre></div><p>通过ifconfig可以查看宿主机IP地址</p>
+</span></span></code></pre></div><p>通过 <code>ifconfig</code> 可以查看宿主机IP地址</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl -XGET http://172.30.108.127:5000/v2/_catalog
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{<span style="color:#666;font-style:italic">&#34;repositories&#34;</span>:[]} // 空的
 </span></span></code></pre></div><h4 id="将新镜像-imw7myubuntu12-修改符合私服规范的tag">将新镜像 imw7/myubuntu:1.2 修改符合私服规范的Tag</h4>
 <p>按照公式：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker tag 镜像:Tag Host:Port/Repository:Tag
-</span></span></code></pre></div><p><strong>注</strong>：填写自己的host主机IP地址</p>
+</span></span></code></pre></div><p><strong>注</strong>：填写自己的 <code>host</code> 主机 <code>IP</code> 地址</p>
 <p>使用命令<code>docker tag</code>将<code>imw7/myubuntu:1.2</code>这个镜像修改为<code>172.30.108.127:5000/imw7/myubuntu:1.2</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker tag imw7/myubuntu:1.2 172.30.108.127:5000/imw7/myubuntu:1.2
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ docker images
@@ -1153,17 +1153,17 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>172.30.108.127:5000/imw7/myubuntu     1.2       def83a58fbd8   53 minutes ago   114MB
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>imw7/myubuntu                         1.2       def83a58fbd8   53 minutes ago   114MB
 </span></span></code></pre></div><h4 id="修改配置文件使之支持http">修改配置文件使之支持http</h4>
-<p>由于docker默认不允许http方式推送镜像，通过配置选项来取消这个限制。</p>
+<p>由于 <code>Docker</code> 默认不允许 <code>http</code> 方式推送镜像，通过配置选项来取消这个限制。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cat /etc/docker/daemon.json
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#666;font-style:italic">&#34;registry-mirrors&#34;</span>: [<span style="color:#666;font-style:italic">&#34;https://wivds1wh.mirror.aliyuncs.com&#34;</span>]
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
-</span></span></code></pre></div><p>使用vim命令新增内容：<code>vim /etc/docker/daemon.json</code></p>
+</span></span></code></pre></div><p>使用 <code>vim</code> 命令新增内容：<code>vim /etc/docker/daemon.json</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>  <span style="color:#666;font-style:italic">&#34;registry-mirrors&#34;</span>: [<span style="color:#666;font-style:italic">&#34;https://wivds1wh.mirror.aliyuncs.com&#34;</span>],
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>  <span style="color:#666;font-style:italic">&#34;insecure-registries&#34;</span>:[<span style="color:#666;font-style:italic">&#34;172.30.108.127:5000&#34;</span>]
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
-</span></span></code></pre></div><p>注：修改后如果不生效，建议重启docker。</p>
+</span></span></code></pre></div><p>注：修改后如果不生效，建议重启 <code>Docker</code>。</p>
 <h4 id="push推送到私服库">push推送到私服库</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker push 172.30.108.127:5000/imw7/myubuntu:1.2
 </span></span></code></pre></div><h4 id="curl验证私服库上有什么镜像2">curl验证私服库上有什么镜像2</h4>
@@ -1205,22 +1205,22 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 </span></span></code></pre></div><h2 id="docker容器数据卷">Docker容器数据卷</h2>
 <p><strong>注</strong>：容器卷记得加入 <code>--privileged=true</code>。</p>
-<p>Docker挂载主机目录访问<strong>如果出现<code>cannot open directory .: Permission denied</code></strong>，怎么解决呢？</p>
+<p><code>Docker</code> 挂载主机目录访问<strong>如果出现 <code>cannot open directory .: Permission denied</code></strong>，怎么解决呢？</p>
 <p>解决办法：在挂载目录后多加一个 <code>--privileged=true</code> 参数即可。</p>
-<p>如果是CentOS7安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为。</p>
-<p>在SELinux里面挂载目录被禁止掉了，如果要开启，一般使用<code>--privileged=true</code>命令，扩大容器的权限解决挂载目录没有权限的问题，也即使用该参数，container内的root拥有真正的root权限，否则，container内的root只是外部的一个普通用户权限。</p>
+<p>如果是 <code>CentOS7</code> 安全模块会比之前系统版本加强，不安全的会先禁止，所以目录挂载的情况被默认为不安全的行为。</p>
+<p>在 <code>SELinux</code> 里面挂载目录被禁止掉了，如果要开启，一般使用 <code>--privileged=true</code> 命令，扩大容器的权限解决挂载目录没有权限的问题，也即使用该参数，<code>Container</code> 内的 <code>root</code> 拥有真正的 <code>root</code> 权限，否则，<code>Container</code> 内的 <code>root</code> 只是外部的一个普通用户权限。</p>
 <h3 id="是什么-2">是什么</h3>
-<p>卷就是目录或文件，存在于一个或多个容器中，由docker挂载到 容器，但不属于联合文件系统，因此能够绕过Union File System提供一些用于持续存储或共享数据的特性。</p>
-<p>卷的设计目的就是<strong>数据的持久化</strong>，完全独立于容器的生存周期，因此Docker不会在容器删除时删除其挂载的数据卷。</p>
-<p>1、一句话：有点类似Redis里面的rdb和aof文件</p>
-<p>2、将docker容器内的数据保存进宿主机的磁盘中</p>
+<p>卷就是目录或文件，存在于一个或多个容器中，由 <code>Docker</code> 挂载到容器，但不属于联合文件系统，因此能够绕过 <code>Union File System</code> 提供一些用于持续存储或共享数据的特性。</p>
+<p>卷的设计目的就是<strong>数据的持久化</strong>，完全独立于容器的生存周期，因此 <code>Docker</code> 不会在容器删除时删除其挂载的数据卷。</p>
+<p>1、一句话：有点类似 <code>Redis</code> 里面的 <code>rdb</code> 和 <code>aof</code> 文件</p>
+<p>2、将 <code>Docker</code> 容器内的数据保存进宿主机的磁盘中</p>
 <p>3、运行一个带有容器卷存储功能的容器实例</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录 镜像名
 </span></span></code></pre></div><h3 id="能干嘛">能干嘛</h3>
 <h4 id="需求描述">需求描述</h4>
-<p>将运用与运行的环境打包镜像，run后形成容器实例运行，但是对数据的要求希望是持久化的。</p>
+<p>将运用与运行的环境打包镜像，<code>run</code> 后形成容器实例运行，但是对数据的要求希望是持久化的。</p>
 <h4 id="作用">作用</h4>
-<p>Docker容器产生的数据，如果不备份，那么当容器实例删除后，容器内的数据自然也就没有了。为了能保存数据在docker中我们使用卷。</p>
+<p><code>Docker</code> 容器产生的数据，如果不备份，那么当容器实例删除后，容器内的数据自然也就没有了。为了能保存数据在 <code>Docker</code> 中我们使用卷。</p>
 <h4 id="特点">特点</h4>
 <p>1、数据卷可在容器之间共享或重用数据</p>
 <p>2、卷中的更改可以直接实时生效</p>
@@ -1230,19 +1230,18 @@
 <h4 id="宿主vs容器之间映射添加容器卷">宿主vs容器之间映射添加容器卷</h4>
 <h5 id="直接命令添加">直接命令添加</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录 镜像名
-</span></span></code></pre></div><p>在docker中创建命名为u1的ubuntu镜像，并实现文件的映射：</p>
+</span></span></code></pre></div><p>在 <code>Docker</code> 中创建命名为 <code>u1</code> 的 <code>Ubuntu</code> 镜像，并实现文件的映射：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /tmp/host_data:/tmp/docker_data --name=u1 ubuntu
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@10f4b9049f6f:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp/docker_data/
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@10f4b9049f6f:/tmp/docker_data# touch dockerin.txt
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>dockerin.txt
-</span></span></code></pre></div><p>在宿主机的对应目录中，可以<strong>实时</strong>查看到刚刚在docker中创建的文件：</p>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@10f4b9049f6f:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp/docker_data/
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>root@10f4b9049f6f:/tmp/docker_data# touch dockerin.txt
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@10f4b9049f6f:/tmp/docker_data# ls
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>dockerin.txt
+</span></span></code></pre></div><p>在宿主机的对应目录中，可以<strong>实时</strong>查看到刚刚在 <code>Docker</code> 中创建的文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /tmp/host_data/
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>dockerin.txt
-</span></span></code></pre></div><p>同样的，在主机创建文件，也可以实时在docker容器中获得对应的文件。</p>
+</span></span></code></pre></div><p>同样的，在主机创建文件，也可以实时在 <code>Docker</code> 容器中获得对应的文件。</p>
 <h5 id="查看数据卷是否挂载成功">查看数据卷是否挂载成功</h5>
 <p>可以通过如下命令，查看数据卷是否挂载成功</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker inspect 容器ID
@@ -1267,17 +1266,17 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>        ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>]
-</span></span></code></pre></div><p>通过<code>docker inspect</code>命令查看<code>Mounts</code>模块判断是否数据卷挂载成功。</p>
+</span></span></code></pre></div><p>通过 <code>docker inspect</code> 命令查看 <code>Mounts</code> 模块判断是否数据卷挂载成功。</p>
 <h5 id="容器和宿主机之间数据共享">容器和宿主机之间数据共享</h5>
 <p>首先在宿主机停掉正在运行的容器。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS          PORTS     NAMES
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>10f4b9049f6f   ubuntu    <span style="color:#666;font-style:italic">&#34;bash&#34;</span>    29 minutes ago   Up 29 minutes             u1
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker stop 10f4b9049f6f</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ docker stop 10f4b9049f6f
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>10f4b9049f6f
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>[root@centos ~]<span style="color:#888;font-style:italic"># docker ps</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-</span></span></code></pre></div><p>在宿主机的<code>/tmp/host_data/</code>文件夹下写入文件。</p>
+</span></span></code></pre></div><p>在宿主机的 <code>/tmp/host_data/</code> 文件夹下写入文件。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> /tmp/host_data/
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ ls
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ touch c.txt
@@ -1294,23 +1293,23 @@
 <p>总结：</p>
 <ol>
 <li>
-<p>docker修改，主机同步获得</p>
+<p><code>Docker</code> 修改，主机同步获得</p>
 </li>
 <li>
-<p>主机修改，docker同步获得</p>
+<p>主机修改，<code>Docker</code> 同步获得</p>
 </li>
 <li>
-<p>docker容器stop，主机修改，docker容器重启后也能同步获得</p>
+<p><code>Docker</code> 容器 <code>stop</code>，主机修改，<code>Docker</code> 容器重启后也能同步获得</p>
 </li>
 </ol>
 <h4 id="读写规则映射添加说明">读写规则映射添加说明</h4>
 <h5 id="读写默认">读写（默认）</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录:rw 镜像名
-</span></span></code></pre></div><p>默认就是<code>rw</code>，因此可以省略。</p>
+</span></span></code></pre></div><p>默认就是 <code>rw</code>，因此可以省略。</p>
 <h5 id="只读">只读</h5>
 <p>如果要让容器实例内部被限制，只能读取不能写，可以通过 <code>/容器内目录:ro 镜像名</code>，实现功能：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /宿主机绝对路径目录:/容器内目录:ro 镜像名
-</span></span></code></pre></div><p>注：ro = read only</p>
+</span></span></code></pre></div><p>注：<code>ro = read only</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -it --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /mydocker/u:/tmp:ro ubuntu
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@b7d1f80b47c5:/# <span style="font-weight:bold;font-style:italic">cd</span> /tmp
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@b7d1f80b47c5:/tmp# ls
@@ -1406,10 +1405,10 @@
     </p>
 <h5 id="解决">解决</h5>
 <p>1、可能没有映射端口或者没有关闭防火墙</p>
-<p>因为是在阿里云云服务器ECS上的docker里安装的tomcat，所以需要访问<code>120.77.71.67:8080</code>。<strong>需要在安全组中放开8080端口</strong>。</p>
-<p>2、把webapps.dist目录换成webapps</p>
+<p>因为是在阿里云云服务器 <code>ECS</code> 上的 <code>Docker</code> 里安装的 <code>Tomcat</code>，所以需要访问 <code>120.77.71.67:8080</code>。<strong>需要在安全组中放开8080端口</strong>。</p>
+<p>2、把 <code>webapps.dist</code> 目录换成 <code>webapps</code></p>
 <ul>
-<li>先成功启动tomcat</li>
+<li>先成功启动 <code>Tomcat</code></li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>CONTAINER ID   IMAGE     COMMAND             CREATED         STATUS         PORTS                                       NAMES
@@ -1417,18 +1416,18 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it t1 /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>root@788f39f0635e:/usr/local/tomcat# 
 </span></span></code></pre></div><ul>
-<li>查看webapps文件夹，为空</li>
+<li>查看 <code>webapps</code> 文件夹，为空</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@788f39f0635e:/usr/local/tomcat# <span style="font-weight:bold;font-style:italic">cd</span> webapps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@788f39f0635e:/usr/local/tomcat/webapps# ls -l
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>total 0
 </span></span></code></pre></div><ul>
-<li>把webapps.dist目录换成webapps</li>
+<li>把 <code>webapps.dist</code> 目录换成 <code>webapps</code></li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@788f39f0635e:/usr/local/tomcat/webapps# <span style="font-weight:bold;font-style:italic">cd</span> ..
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@788f39f0635e:/usr/local/tomcat# rm -r webapps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>root@788f39f0635e:/usr/local/tomcat# mv webapps.dist webapps
-</span></span></code></pre></div><p>修改完成后，可成功访问tomcat首页。</p>
+</span></span></code></pre></div><p>修改完成后，可成功访问 <code>Tomcat</code> 首页。</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/tomcat2.png">
             <img class="mx-auto" alt="tomcat2" src="https://blog.imw7.com/images/docker/tomcat2.png" />
@@ -1456,9 +1455,9 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>mysql        5.7       c20987f18b13   6 months ago   448MB
 </span></span></code></pre></div><h4 id="使用mysql57镜像创建容器也叫运行镜像">使用MySQL5.7镜像创建容器（也叫运行镜像）</h4>
 <h5 id="命令出处">命令出处</h5>
-<p>参见DockerHub官网<a href="https://hub.docker.com/_/mysql?tab=description">MySQL界面</a>。</p>
+<p>参见 <code>DockerHub</code> 官网<a href="https://hub.docker.com/_/mysql?tab=description">MySQL界面</a>。</p>
 <h5 id="简单版">简单版</h5>
-<p>1、使用MySQL镜像</p>
+<p>1、使用 <code>MySQL</code> 镜像</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -p 3306:3306 -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 -d mysql:5.7
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>65ae64574e4e6b301cb30744156d1c46b14e24a6e89f6d01943939da566689e8
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
@@ -1502,10 +1501,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>|    1 | z3   |
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>+------+------+
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>1 row in <span style="font-weight:bold;font-style:italic">set</span> (0.00 sec)
-</span></span></code></pre></div><p>3、外部Windows也来连接运行在docker上的MySQL容器实例服务</p>
+</span></span></code></pre></div><p>3、外部使用 <code>Navicat</code> 连接运行在 <code>Docker</code> 上的 <code>MySQL</code> 容器实例服务</p>
+<p>和下图一样填入正确的 「主机<code>IP</code>地址」，「<code>MySQL</code> 端口号」，「用户名」和「密码」。点击「测试连接」，如果弹出「连接成功」窗口的，即表明连接是通的。点击 「确定」即可实现 <code>Navicat</code> 和 <code>Docker</code> 中的 <code>MySQL</code>容器的连接。</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/workbench_connect.png">
-            <img class="mx-auto" alt="workbench_connect" src="https://blog.imw7.com/images/docker/workbench_connect.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/navicat_connect.png">
+            <img class="mx-auto" alt="navicat_connect" src="https://blog.imw7.com/images/docker/navicat_connect.png" />
         </a>
     </p>
 <p>4、问题</p>
@@ -1516,24 +1516,24 @@
         </a>
     </p>
 <p>为什么报错？</p>
-<p><strong>docker 上默认字符集编码隐患</strong></p>
+<p><strong>Docker 上默认字符集编码隐患</strong></p>
 <p>通过如下命令查看字符集编码：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">SHOW</span> VARIABLES <span style="font-weight:bold">LIKE</span> <span style="color:#666;font-style:italic">&#39;character%&#39;</span>;
-</span></span></code></pre></div><p>在MySQL Workbench查看：</p>
+</span></span></code></pre></div><p>在 <code>Navicat</code> 上查看：</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/workbench_encoding.png">
-            <img class="mx-auto" alt="workbench_encoding" src="https://blog.imw7.com/images/docker/workbench_encoding.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/navicat_encoding.png">
+            <img class="mx-auto" alt="navicat_encoding" src="https://blog.imw7.com/images/docker/navicat_encoding.png" />
         </a>
     </p>
-<p>在docker中的MySQL命令行查看：</p>
+<p>在 <code>Docker</code> 中的 <code>MySQL</code> 命令行查看：</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/docker_encoding.png">
             <img class="mx-auto" alt="docker_encoding" src="https://blog.imw7.com/images/docker/docker_encoding.png" />
         </a>
     </p>
-<p>可以看出，编码有所不同，docker 中文字体默认编码为<code>latin1</code>。需要将它修改为<code>utf8</code>编码，中文才能正常插入和显示。</p>
+<p>可以看出，编码有所不同，<code>Docker</code> 中文字体默认编码为 <code>latin1</code>。需要将它修改为 <code>utf8</code> 编码，中文才能正常插入和显示。</p>
 <p>② <strong>删除容器后，里面的MySQL数据怎么办</strong></p>
-<p>容器实例一删除，mysql数据也会丢失。</p>
+<p>容器实例一删除，<code>mysql</code> 数据也会丢失。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>root@65ae64574e4e:/# <span style="font-weight:bold;font-style:italic">exit</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold;font-style:italic">exit</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
@@ -1543,14 +1543,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>65ae64574e4e
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>$ docker ps
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-</span></span></code></pre></div><p>这是很显然的道理，容器被删除后，容器里面的MySQL也就被删除了，数据自然消失了。</p>
+</span></span></code></pre></div><p>这是很显然的道理，容器被删除后，容器里面的 <code>MySQL</code> 也就被删除了，数据自然消失了。</p>
 <h5 id="实战版">实战版</h5>
-<p>1、新建MySQL容器实例</p>
+<p>1、新建 <code>MySQL</code> 容器实例</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/mysql/log:/var/log/mysql -v /data/mysql/data:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
-</span></span></code></pre></div><p>实现docker上的mysql数据同步到宿主机的功能。</p>
-<p>2、新建my.cnf</p>
-<p>通过容器卷同步给mysql容器实例，解决中文字符编码问题。</p>
-<p>将下面的配置代码写入my.cnf文件中，可以将中文编码改为utf8。</p>
+</span></span></code></pre></div><p>实现 <code>Docker</code> 上的 <code>mysql</code> 数据同步到宿主机的功能。</p>
+<p>2、新建 <code>my.cnf</code></p>
+<p>通过容器卷同步给 <code>mysql</code> 容器实例，解决中文字符编码问题。</p>
+<p>将下面的配置代码写入 <code>my.cnf</code> 文件中，可以将中文编码改为 <code>utf8</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-ini" data-lang="ini"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">[client]</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>default_character_set=<span style="color:#666;font-style:italic">utf8</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">[mysqld]</span>
@@ -1566,7 +1566,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>[mysqld]
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#666;font-weight:bold;font-style:italic">collation_server</span> = utf8_general_ci
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#666;font-weight:bold;font-style:italic">character_set_server</span> = utf8
-</span></span></code></pre></div><p>3、重新启动MySQL容器实例再重新进入并查看字符编码</p>
+</span></span></code></pre></div><p>3、重新启动 <code>MySQL</code> 容器实例再重新进入并查看字符编码</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker restart mysql
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>mysql
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
@@ -1590,15 +1590,15 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>| character_set_system     | utf8                       |
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>| character_sets_dir       | /usr/share/mysql/charsets/ |
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>+--------------------------+----------------------------+
-</span></span></code></pre></div><p>可以看到字符集编码从<code>latin1</code>修改为了<code>utf8</code>。</p>
+</span></span></code></pre></div><p>可以看到字符集编码从 <code>latin1 </code>修改为了 <code>utf8</code>。</p>
 <p>4、再新建库新建表再插入中文测试</p>
 <p>
-        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/wb_succ.png">
-            <img class="mx-auto" alt="wb_succ" src="https://blog.imw7.com/images/docker/wb_succ.png" />
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/insert_chinese_success.png">
+            <img class="mx-auto" alt="insert_chinese_success" src="https://blog.imw7.com/images/docker/insert_chinese_success.png" />
         </a>
     </p>
 <p>可以看到成功插入了中文，没有出现错误。</p>
-<p>也可在docker中的mysql查询：</p>
+<p>也可在 <code>Docker</code> 中的 <code>mysql</code> 查询：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">select</span> * <span style="font-weight:bold">from</span> t1;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>+------+--------+
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>| id   | name   |
@@ -1614,12 +1614,12 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>修改字符集操作+重启MySQL容器实例
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>之后的DB有效，需要新建
-</span></span></code></pre></div><p>结论：<strong>docker安装完MySQL并run出容器后，建议先修改完字符集编码，再新建mysql库-表-插数据</strong>。</p>
+</span></span></code></pre></div><p>结论：<strong><code>Docker</code> 安装完 <code>MySQL</code> 并 <code>run</code> 出容器后，建议先修改完字符集编码，再<code>新建mysql库-表-插数据</code></strong>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">create</span> <span style="font-weight:bold">database</span> db02;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>mysql&gt; <span style="font-weight:bold">use</span> db02;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>mysql&gt; <span style="font-weight:bold">create</span> <span style="font-weight:bold">table</span> <span style="color:#666;font-weight:bold;font-style:italic">t1</span>(id <span style="font-weight:bold">int</span>, name <span style="font-weight:bold">varchar</span>(20));
-</span></span></code></pre></div><p>6、假如将当前容器实例删除，再重新来一次，之前建的db01还有吗？</p>
-<p><strong>答案是有的</strong>。重新启动一个mysql容器，进入数据库查看数据，因为挂载了容器数据卷，所以数据会从宿主机中恢复到当前docker容器中。</p>
+</span></span></code></pre></div><p>6、假如将当前容器实例删除，再重新来一次，之前建的 <code>db01</code> 还有吗？</p>
+<p><strong>答案是有的</strong>。重新启动一个 <code>mysql</code> 容器，进入数据库查看数据，因为挂载了容器数据卷，所以数据会从宿主机中恢复到当前 <code>Docker</code> 容器中。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 3306:3306 --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/mysql/log:/var/log/mysql -v /data/mysql/data:/var/lib/mysql -v /data/mysql/conf:/etc/mysql/conf.d -e <span style="color:#666;font-weight:bold;font-style:italic">MYSQL_ROOT_PASSWORD</span>=123456 --name mysql mysql:5.7
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>3944d05f9ef3dad023b77dc2626a2ff0ca7db02a71cab875c478a3ff7021cf1b
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
@@ -1645,7 +1645,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>3 rows in <span style="font-weight:bold;font-style:italic">set</span> (0.00 sec)
 </span></span></code></pre></div><h3 id="安装redis">安装Redis</h3>
 <h4 id="拉取镜像-1">拉取镜像</h4>
-<p>从dokcer hub上（阿里云加速器）拉取redis镜像到本地标签为6.0.8</p>
+<p>从 <code>Dokcer Hub</code> 上（阿里云加速器）拉取 <code>Redis</code> 镜像到本地标签为 <code>6.0.8</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker pull redis:6.0.8
 </span></span></code></pre></div><h4 id="入门命令">入门命令</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker run -d -p 6379:6379 redis:6.0.8
@@ -1663,30 +1663,30 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#666;font-style:italic">&#34;v1&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>127.0.0.1:6379&gt;
 </span></span></code></pre></div><h4 id="命令提醒容器卷记得加入--privilegedtrue">命令提醒：容器卷记得加入&ndash;privileged=true</h4>
-<p>Docker挂在主机目录Docker访问出现<code>cannot open directory .: Permission denied</code>。</p>
-<p><strong>解决办法</strong>：在挂载目录后多加一个<code>--privileged=true</code>参数即可。</p>
+<p><code>Docker</code> 挂在主机目录 <code>Docker</code> 访问出现<code>cannot open directory .: Permission denied</code>。</p>
+<p><strong>解决办法</strong>：在挂载目录后多加一个 <code>--privileged=true</code> 参数即可。</p>
 <h4 id="新建目录">新建目录</h4>
-<p>在CentOS宿主机下新建目录<code>/data/redis</code>。</p>
+<p>在 <code>CentOS</code> 宿主机下新建目录 <code>/data/redis</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir -p /data/redis
 </span></span></code></pre></div><h4 id="拷贝配置文件">拷贝配置文件</h4>
-<p>将准备好的<code>redis.conf</code>文件放进宿主机的<code>/app/redis</code>目录，默认出厂的原始<a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /myredis/redis.conf /data/redis/
+<p>将准备好的 <code>redis.conf</code> 文件放进宿主机的 <code>/app/redis</code> 目录，默认出厂的原始 <a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /tmp/redis.conf /data/redis/
 </span></span></code></pre></div><h4 id="修改配置文件">修改配置文件</h4>
-<p>在<code>/data/redis</code>目录下修改<code>redis.conf</code>文件：</p>
-<p>1、开启redis验证（可选）</p>
+<p>在 <code>/data/redis</code> 目录下修改 <code>redis.conf</code> 文件：</p>
+<p>1、开启 <code>Redis</code> 验证（可选）</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>requirepass foobared
-</span></span></code></pre></div><p>2、允许redis外地连接</p>
+</span></span></code></pre></div><p>2、允许 <code>Redis</code> 外地连接</p>
 <p>注释掉 <code>bind 127.0.0.1</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># bind 127.0.0.1</span>
-</span></span></code></pre></div><p>3、daemonize no</p>
+</span></span></code></pre></div><p>3、<code>daemonize no</code></p>
 <p>将 <code>daemonize yes</code> 注释掉或设置为 <code>daemonize no</code>，因为该配置和 <code>docker run</code> 中 <code>-d</code> 参数冲突，会导致一直启动失败。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># daemonize yes</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"># 或</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>daemonize no
-</span></span></code></pre></div><p>4、开启redis数据持久化（可选）</p>
+</span></span></code></pre></div><p>4、开启 <code>Redis</code> 数据持久化（可选）</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>appendonly yes
 </span></span></code></pre></div><h4 id="创建容器">创建容器</h4>
-<p>使用<code>redis:6.0.8</code>镜像创建容器（也叫运行镜像）：</p>
+<p>使用 <code>redis:6.0.8</code> 镜像创建容器（也叫运行镜像）：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 6379:6379 --name myrds --privileged=<span style="font-weight:bold;font-style:italic">true</span> -v /data/redis/redis.conf:/etc/redis/redis.conf -v /data/redis/data:/data -d redis:6.0.8 redis-server /etc/redis/redis.conf
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>d8a9a2a820193a31675fcacec2ced5e025b5f22dc63634637e4e5a86e2a1b2b8
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ docker ps
@@ -1706,7 +1706,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>127.0.0.1:6379&gt; get k1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#666;font-style:italic">&#34;v1&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>127.0.0.1:6379&gt; 
-</span></span></code></pre></div><h4 id="请证明docker启动使用了自己指定的配置文件">请证明docker启动使用了自己指定的配置文件</h4>
+</span></span></code></pre></div><h4 id="请证明docker启动使用了自己指定的配置文件">请证明Docker启动使用了自己指定的配置文件</h4>
 <h5 id="修改前">修改前</h5>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it myrds /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>root@d8a9a2a82019:/data# redis-cli -a password
@@ -1721,7 +1721,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#888;font-style:italic"># a different one on a per-connection basis using SELECT &lt;dbid&gt; where</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"># dbid is a number between 0 and &#39;databases&#39;-1</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>databases 10
-</span></span></code></pre></div><p>宿主机的修改会同步给docker容器里面的配置。</p>
+</span></span></code></pre></div><p>宿主机的修改会同步给 <code>Docker</code> 容器里面的配置。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ docker restart myrds
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>myrds
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ docker ps
@@ -1735,7 +1735,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold">select</span> 15
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>(error) ERR DB index is out of range
 </span></span></code></pre></div><h3 id="安装nginx">安装Nginx</h3>
-<p>见Docker进阶指南<a href="https://blog.imw7.com/post/docker_advanced/#%E7%99%BB%E9%99%86%E5%B9%B6%E6%BC%94%E7%A4%BA%E4%BB%8B%E7%BB%8D%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E6%A1%88%E4%BE%8B">Portainer</a></p>
+<p>见<code>Docker</code> 进阶指南 <a href="https://blog.imw7.com/post/docker_advanced/#%E7%99%BB%E9%99%86%E5%B9%B6%E6%BC%94%E7%A4%BA%E4%BB%8B%E7%BB%8D%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E6%A1%88%E4%BE%8B">Portainer</a>。</p>
         </div>
 
         
