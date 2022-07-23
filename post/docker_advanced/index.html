@@ -403,7 +403,7 @@
 <li>3、<code>slave</code> 服务器的 <code>SQL</code> 线程会实时检测 <code>relay log</code> 中新增的日志内容，把 <code>relay log</code> 解析成 <code>SQL</code> 语句，并执行。</li>
 </ul>
 <h4 id="主从搭建步骤">主从搭建步骤</h4>
-<p>1、新建主服务器容器实例3307</p>
+<p>1、新建主服务器容器实例 <code>3307</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 3307:3306 --name master --restart always <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>-v /data/mysql/master/log:/var/log/mysql <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>-v /data/mysql/master/data:/var/lib/mysql <span style="color:#666;font-style:italic">\
@@ -445,13 +445,13 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>secure_file_priv=<span style="color:#666;font-style:italic">&#39;&#39;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#888;font-style:italic">## 身份验证插件</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>default_authentication_plugin=<span style="color:#666;font-style:italic">mysql_native_password</span>
-</span></span></code></pre></div><p><strong>注</strong>：使用 <code>vim</code> 粘贴时，需要先按<code>i</code>进入插入模式，然后再粘贴，否则会有粘贴不全的情况。<strong>不能有错误</strong>，否则重启会失败。</p>
+</span></span></code></pre></div><p><strong>注</strong>：使用 <code>vim</code> 粘贴时，需要先按 <code>i</code> 进入插入模式，然后再粘贴，否则会有粘贴不全的情况。<strong>不能有错误</strong>，否则重启会失败。</p>
 <p>3、修改完配置后重启 <code>master</code> 实例</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker restart master
 </span></span></code></pre></div><p>4、进入 <code>master</code> 容器</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker <span style="font-weight:bold;font-style:italic">exec</span> -it master /bin/bash
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ mysql -uroot -proot
-</span></span></code></pre></div><p><strong>注意</strong>：<code>mysql8.0</code>以后的版本进入<code>master</code>容器之后，直接输入以下命令：</p>
+</span></span></code></pre></div><p><strong>注意</strong>：<code>mysql8.0 </code>以后的版本进入 <code>master</code> 容器之后，直接输入以下命令：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mysql
 </span></span></code></pre></div><p>即可进入容器内的 <code>MySQL</code> 数据库。连接数据库后需要进行以下操作已修改密码：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">#使用mysql库
@@ -470,7 +470,7 @@
 <p>5、<code>master</code> 容器实例内创建数据同步用户</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-mysql" data-lang="mysql"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mysql&gt; <span style="font-weight:bold">CREATE</span> <span style="font-weight:bold">USER</span> <span style="color:#666;font-style:italic">&#39;slave&#39;</span>@<span style="color:#666;font-style:italic">&#39;%&#39;</span> <span style="font-weight:bold">IDENTIFIED</span> <span style="font-weight:bold">WITH</span> mysql_native_password <span style="font-weight:bold">BY</span> <span style="color:#666;font-style:italic">&#39;Root@123456&#39;</span>;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>mysql&gt; <span style="font-weight:bold">GRANT</span> REPLICATION SLAVE, REPLICATION CLIENT <span style="font-weight:bold">ON</span> *.* <span style="font-weight:bold">to</span> <span style="color:#666;font-style:italic">&#39;slave&#39;</span>@<span style="color:#666;font-style:italic">&#39;%&#39;</span>;
-</span></span></code></pre></div><p>6、新建从服务器容器实例3308</p>
+</span></span></code></pre></div><p>6、新建从服务器容器实例 <code>3308</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run -p 3308:3306 --name slave --restart always <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>-v /data/mysql/slave/log:/var/log/mysql <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>-v /data/mysql/slave/data:/var/lib/mysql <span style="color:#666;font-style:italic">\
@@ -746,7 +746,7 @@
 <p>1、是什么</p>
 <p>一致性哈希算法在1997年由麻省理工学院提出，设计目标是解决分布式缓存数据<strong>变动和映射问题</strong>。某个机器宕机了，分母数量改变了，自然取余数就不行了。</p>
 <p>2、能干嘛</p>
-<p>提出一致性Hash解决方案。目的是当服务器个数发生变动时，尽量减少影响客户端到服务端的映射关系。</p>
+<p>提出一致性 <code>Hash</code> 解决方案。目的是当服务器个数发生变动时，尽量减少影响客户端到服务端的映射关系。</p>
 <p>3、<strong>三步骤</strong></p>
 <p>step 1：算法构建一致性哈希环</p>
 <p>一致性哈希算法必然有一个 <code>hash</code> 函数并按照算法产生 <code>hash</code> 值，这个算法的所有可能哈希值会构成一个全量集，这个集合可以成为一个 <code>hash</code> 空间 [0,$2^{32}−1$]，这个是一个线性空间，但是在算法钟，我们通过适当的逻辑控制将它首尾相连(0=$2^{32}$)，这样让它逻辑上形成了一个环形空间。</p>
@@ -758,7 +758,7 @@
     </p>
 <p>step 2：服务器 <code>IP</code> 节点映射</p>
 <p>将集群中各个 <code>IP</code> 节点映射到环上的某一个位置。</p>
-<p>将各个服务器使用 <code>Hash</code> 进行一个哈希，具体可以选择服务器的 <code>IP</code> 或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置。假如4个节点<code>Node A</code>、<code>Node B</code>、<code>Node C</code>、<code>Node D</code>，经过<code> IP</code> 地址的<strong>哈希函数</strong>计算「<code>hash(ip)</code>」，使用 <code>IP</code> 地址哈希后在环空间的位置如下：</p>
+<p>将各个服务器使用 <code>Hash</code> 进行一个哈希，具体可以选择服务器的 <code>IP</code> 或主机名作为关键字进行哈希，这样每台机器就能确定其在哈希环上的位置。假如4个节点<code>Node A</code>、<code>Node B</code>、<code>Node C</code>、<code>Node D</code>，经过 <code>IP</code> 地址的<strong>哈希函数</strong>计算「<code>hash(ip)</code>」，使用 <code>IP</code> 地址哈希后在环空间的位置如下：</p>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/docker/hash_ring2.jpg">
             <img class="mx-auto" alt="hash_ring2" src="https://blog.imw7.com/images/docker/hash_ring2.jpg" />
