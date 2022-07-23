@@ -9,8 +9,8 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
     
 
-    <title>ssh使用指南 | 魏奇的博客</title>
-    <meta property="og:title" content="ssh使用指南 - 魏奇的博客">
+    <title>SSH使用指南 | 魏奇的博客</title>
+    <meta property="og:title" content="SSH使用指南 - 魏奇的博客">
     <meta property="og:type" content="article">
         
     <meta property="article:published_time" content='2022-01-02T11:36:55&#43;08:00'>
@@ -19,7 +19,7 @@
     <meta property="article:modified_time" content='2022-01-02T11:36:55&#43;08:00'>
         
     <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
-    <meta name="description" content="ssh使用指南">
+    <meta name="description" content="SSH使用指南">
         
     <meta name="author" content="魏奇">
     <meta property="og:url" content="https://blog.imw7.com/post/ssh/">
@@ -197,7 +197,7 @@
 </script>
     <article class="post">
         <header>
-            <h1 class="post-title">ssh使用指南</h1>
+            <h1 class="post-title">SSH使用指南</h1>
         </header>
         <date class="post-meta meta-date">
             2022年1月2日
@@ -224,14 +224,14 @@
         </div>
         
         <div class="post-content">
-            <p>本文主要介绍使用<code>ssh</code>远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。</p>
+            <p>本文主要介绍使用 <code>SSH</code> 远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。</p>
 <h2 id="免密登录">免密登录</h2>
-<p>本节介绍如何实现<code>ssh</code>免密码连接，通过以下两个步骤省去每次连接都要输入密码的麻烦。</p>
+<p>本节介绍如何实现 <code>ssh</code> 免密码连接，通过以下两个步骤省去每次连接都要输入密码的麻烦。</p>
 <h3 id="生成rsa密钥和公钥">生成RSA密钥和公钥</h3>
-<p>第一步，在本机上使用<code>ssh-keygen</code>命令来生成<code>RSA</code>密钥和公钥（如果已经生成过，跳过该步骤）。</p>
+<p>第一步，在本机上使用 <code>ssh-keygen</code> 命令来生成 <code>RSA</code> 密钥和公钥（如果已经生成过，跳过该步骤）。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ssh-keygen -t rsa
-</span></span></code></pre></div><p><strong>注</strong>：<code>-t</code>表示<code>type</code>，就是说要生成<code>RSA</code>加密的钥匙。<code>RSA</code>也是默认的加密模型，所以也可以只输入<code>ssh-keygen</code>。默认的<code>RSA</code>长度是2048位。</p>
-<p>生成<code>SSH Key</code>的过程中会要求你指定一个文件来保存密钥，按<code>Enter</code>键使用默认的文件就行了。然后需要输入一个密码来加密你的<code>SSH Key</code>。密码至少要20位长度(可以不输入)。<code>SSH</code>密钥会保存在<code>home</code>目录下的<code>.ssh/id_rsa</code>文件中。<code>SSH</code>公钥保存在<code>.ssh/id_rsa.pub</code>文件中。</p>
+</span></span></code></pre></div><p><strong>注</strong>：<code>-t</code> 表示 <code>type</code>，就是说要生成 <code>RSA</code> 加密的钥匙。<code>RSA</code> 也是默认的加密模型，所以也可以只输入 <code>ssh-keygen</code>。默认的 <code>RSA</code> 长度是2048位。</p>
+<p>生成 <code>SSH Key</code> 的过程中会要求你指定一个文件来保存密钥，按 <code>Enter</code> 键使用默认的文件就行了。然后需要输入一个密码来加密你的 <code>SSH Key</code>。密码至少要20位长度(可以不输入)。<code>SSH</code> 密钥会保存在 <code>home</code> 目录下的 <code>.ssh/id_rsa</code> 文件中。<code>SSH</code> 公钥保存在 <code>.ssh/id_rsa.pub</code> 文件中。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ ssh-keygen -t rsa                              
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>Generating public/private rsa key pair.
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>Enter file in which to save the key (/home/ashley/.ssh/id_rsa): <span style="color:#888;font-style:italic"># 指定一个文件来保存密钥，可以不输入</span>
@@ -255,7 +255,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>|    . . .        |
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>+----[SHA256]-----+
 </span></span></code></pre></div><h3 id="上传ssh公钥">上传SSH公钥</h3>
-<p>第二步，使用<code>ssh-copy-id</code>命令将<code>SSH</code>公钥上传到<code>Linux</code>服务器。</p>
+<p>第二步，使用 <code>ssh-copy-id</code> 命令将 <code>SSH</code> 公钥上传到 <code>Linux</code> 服务器。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ssh-copy-id username@remote-server
 </span></span></code></pre></div><p>例如：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>$ ssh-copy-id root@120.77.71.67
@@ -270,8 +270,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>Now try logging into the machine, with:   <span style="color:#666;font-style:italic">&#34;ssh &#39;root@120.77.71.67&#39;&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>and check to make sure that only the key(s) you wanted were added.
-</span></span></code></pre></div><p>输入远程用户的密码后，<code>SSH</code>公钥就会自动上传了。<code>SSH</code>公钥保存在远程<code>Linux</code>服务器的<code>.ssh/authorized_keys</code>文件中。</p>
-<p>上传成功后，再次使用<code>ssh</code>远程连接服务器，就不用再输入密码了。</p>
+</span></span></code></pre></div><p>输入远程用户的密码后，<code>SSH</code> 公钥就会自动上传了。<code>SSH</code> 公钥保存在远程 <code>Linux</code> 服务器的 <code>.ssh/authorized_keys </code>文件中。</p>
+<p>上传成功后，再次使用 <code>ssh</code> 远程连接服务器，就不用再输入密码了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ssh root@120.77.71.67        
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Last login: Sun Jul  3 00:30:12 2022 from 222.209.72.69
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
@@ -281,18 +281,18 @@
 </span></span></code></pre></div><h2 id="上传和下载文件">上传和下载文件</h2>
 <p>本节介绍如何向远程服务器上传文件，以及如何从远程服务器上下载文件。</p>
 <p>在 <code>Linux</code> 下一般用 <code>scp</code> 或者 <code>rsync</code> 命令来通过 <code>ssh</code> 传输文件。</p>
-<p><strong>注意</strong>：用户要有目标的响应权限，下载需要有读权限，上传需要有写权限，否则会提示错误：<code>Permission denied</code></p>
+<p><strong>注意</strong>：用户要有目标的响应权限，下载需要有读权限，上传需要有写权限，否则会提示错误：<code>Permission denied</code>。</p>
 <h3 id="下载文件">下载文件</h3>
-<p>有两种方法，用<code>scp</code>和用<code>rsync</code>命令都可以实现。</p>
+<p>有两种方法，用 <code>scp</code> 和用 <code>rsync</code> 命令都可以实现。</p>
 <h4 id="用scp">用scp</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>scp username@servername:/path/filename /var/www/local_dir 
-</span></span></code></pre></div><p>以上命令，可以实现将远程文件下载到本地<code>local_dir</code>目录，例如：</p>
+</span></span></code></pre></div><p>以上命令，可以实现将远程文件下载到本地 <code>local_dir</code> 目录，例如：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>scp root@192.168.0.101:/var/www/test.txt /var/www/local_dir
-</span></span></code></pre></div><p>这条命令实现了把<code>192.168.0.101</code>上的 <code>/var/www/test.txt</code> 的文件下载到 <code>/var/www/local_dir</code>（本地目录）。</p>
+</span></span></code></pre></div><p>这条命令实现了把 <code>192.168.0.101</code> 上的 <code>/var/www/test.txt</code> 的文件下载到 <code>/var/www/local_dir</code>（本地目录）。</p>
 <h4 id="用rsync">用rsync</h4>
-<p>其中<code>-P</code>用于显示进度：</p>
+<p>其中 <code>-P</code> 用于显示进度：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>rsync -P -e <span style="color:#666;font-style:italic">&#39;ssh -p 12345&#39;</span> username@servername:/path/filename /var/www/local_dir
-</span></span></code></pre></div><p>用<code>rsync</code>命令还可以实现自动重连：</p>
+</span></span></code></pre></div><p>用 <code>rsync</code> 命令还可以实现自动重连：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">RC</span>=1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold">while</span> [[ <span style="color:#666;font-weight:bold;font-style:italic">$RC</span> -ne 0 ]]
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">do</span>
@@ -321,21 +321,21 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>scp -P 8000 -r <span style="font-weight:bold;font-style:italic">test</span> root@192.168.0.101:/var/www/
 </span></span></code></pre></div><p>这里指定 <code>8000</code> 端口。</p>
 <h2 id="连接超时">连接超时</h2>
-<p>本节介绍<code>ssh</code>连接超时的解决方法和步骤。</p>
+<p>本节介绍 <code>ssh</code> 连接超时的解决方法和步骤。</p>
 <h4 id="方法1">方法1</h4>
-<p>修改<code>server</code>的<code>/etc/ssh/sshd_config</code>，添加下面两个选项：</p>
+<p>修改 <code>server</code> 的 <code>/etc/ssh/sshd_config</code>，添加下面两个选项：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ vi /etc/ssh/sshd_config
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic">#在文件末尾添加</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>ClientAliveInterval 60 <span style="color:#888;font-style:italic">#server每隔60秒发送一次请求给client，然后client响应，从而保持连接</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>ClientAliveCountMax 3 <span style="color:#888;font-style:italic">#server发出请求后，client没有响应次数达到3，就自动断开连接，一般client会响应。</span>
-</span></span></code></pre></div><p>添加完成后，重启系统ssh服务：</p>
+</span></span></code></pre></div><p>添加完成后，重启系统 <code>ssh</code> 服务：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ service sshd restart
 </span></span></code></pre></div><h3 id="方法2">方法2</h3>
-<p>修改<code>client</code>的<code>/etc/ssh/ssh_config</code>，添加下面两个选项：</p>
+<p>修改 <code>client</code> 的 <code>/etc/ssh/ssh_config</code>，添加下面两个选项：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>ServerAliveInterval 60 <span style="color:#888;font-style:italic">#client每隔60秒发送一次请求给server</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>ServerAliveCountMax 3 <span style="color:#888;font-style:italic">#client发出请求后，server没有响应次数达到3，就自动断开连接，一般server会响应。</span>
 </span></span></code></pre></div><h3 id="方法3">方法3</h3>
-<p>在连接时加上参数<code>-o ServerAliveInterval=60</code>，例如：</p>
+<p>在连接时加上参数 <code>-o ServerAliveInterval=60</code>，例如：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ssh -o <span style="color:#666;font-weight:bold;font-style:italic">ServerAliveInterval</span>=60 root@120.77.71.67
 </span></span></code></pre></div><p>这样就能在连接中保持持久连接。</p>
         </div>
@@ -508,7 +508,7 @@ code.has-jax {
     </li>
     
     <li>
-        <a href="https://blog.imw7.com/post/ssh/" title="ssh使用指南">ssh使用指南</a>
+        <a href="https://blog.imw7.com/post/ssh/" title="SSH使用指南">SSH使用指南</a>
     </li>
     
     <li>
