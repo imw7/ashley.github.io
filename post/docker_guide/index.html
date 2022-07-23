@@ -1669,7 +1669,7 @@
 <p>在 <code>CentOS</code> 宿主机下新建目录 <code>/data/redis</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir -p /data/redis
 </span></span></code></pre></div><h4 id="拷贝配置文件">拷贝配置文件</h4>
-<p>将准备好的 <code>redis.conf</code> 文件放进宿主机的 <code>/app/redis</code> 目录，默认出厂的原始 <a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
+<p>将准备好的 <code>redis.conf</code> 文件放进宿主机的 <code>/tmp</code> 目录，默认出厂的原始 <a href="https://raw.githubusercontent.com/redis/redis/6.0/redis.conf">redis.conf</a>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ cp /tmp/redis.conf /data/redis/
 </span></span></code></pre></div><h4 id="修改配置文件">修改配置文件</h4>
 <p>在 <code>/data/redis</code> 目录下修改 <code>redis.conf</code> 文件：</p>
@@ -1713,7 +1713,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Warning: Using a password with <span style="color:#666;font-style:italic">&#39;-a&#39;</span> or <span style="color:#666;font-style:italic">&#39;-u&#39;</span> option on the <span style="font-weight:bold;font-style:italic">command</span> line interface may not be safe.
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>127.0.0.1:6379&gt; <span style="font-weight:bold">select</span> 15
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>OK
-</span></span></code></pre></div><p>这里用的配置文件，数据库默认是16个。</p>
+</span></span></code></pre></div><p>这里用的配置文件，数据库默认是 <code>16</code> 个。</p>
 <h5 id="修改后">修改后</h5>
 <p><strong>注</strong>：修改后记得重启服务。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># 宿主机/app/redis/redis.conf</span>
