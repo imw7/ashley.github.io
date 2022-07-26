@@ -237,28 +237,28 @@
         </div>
         
         <div class="post-content">
-            <p>本文介绍 go-micro 框架，该框架是微服务的基础框架。</p>
+            <p>本文介绍 <code>go-micro</code> 框架，该框架是微服务的基础框架。</p>
 <h2 id="go-micro-简介与设计理念">go-micro 简介与设计理念</h2>
-<p>Go Micro 是一个基于 Go 语言编写的、用于构建微服务的基础框架，提供了分布式开发所需的核心组件，包括 RPC 和事件驱动通信等。</p>
-<p>它的设计哲学是「可插拔」的插件化架构，其核心专注于提供底层的接口定义和基础工具，这些底层接口可以兼容各种实现。例如 Go Micro 默认通过 consul 进行服务发现（2019年源码修改了默认使用 mdns），通过 HTTP 协议进行通信，通过 protobuf 和 json 进行编解码，以便你可以基于这些开箱提供的组件快速启动，但是如果需要的话，你也可以通过符合底层接口定义的其他组件替换默认组件，比如通过 etcd 或 zookeeper 进行服务发现，这也是插件化架构的优势所在：不需要修改任何底层代码即可实现上层组件的替换。</p>
+<p><code>Go Micro</code> 是一个基于 <code>Go</code> 语言编写的、用于构建微服务的基础框架，提供了分布式开发所需的核心组件，包括 <code>RPC</code> 和事件驱动通信等。</p>
+<p>它的设计哲学是「可插拔」的插件化架构，其核心专注于提供底层的接口定义和基础工具，这些底层接口可以兼容各种实现。例如 <code>Go Micro</code> 默认通过 <code>consul</code> 进行服务发现（2019年源码修改了默认使用 <code>mdns</code>），通过 <code>HTTP</code> 协议进行通信，通过 <code>protobuf</code> 和 <code>json</code> 进行编解码，以便你可以基于这些开箱提供的组件快速启动，但是如果需要的话，你也可以通过符合底层接口定义的其他组件替换默认组件，比如通过 <code>etcd</code> 或 <code>zookeeper</code> 进行服务发现，这也是插件化架构的优势所在：不需要修改任何底层代码即可实现上层组件的替换。</p>
 <h2 id="go-micro-基础架构介绍">go-micro 基础架构介绍</h2>
-<p>go-micro之所以可以高度订制和它的框架结构是分不开的，go-micro 由 8 个关键的 interface 组成，每一个 interface 都可以根据自己的需求重新实现，这 8 个主要的 interface 也构成了 go-micro 的框架结构：</p>
+<p><code>go-micro</code> 之所以可以高度订制和它的框架结构是分不开的，<code>go-micro</code> 由 8 个关键的 <code>interface</code> 组成，每一个 <code>interface</code> 都可以根据自己的需求重新实现，这 8 个主要的 <code>interface</code> 也构成了 <code>go-micro</code> 的框架结构：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/framework.png">
             <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/go_micro/framework.png" />
         </a>
     </p>
 <ul>
-<li>最顶层的 <strong>Service</strong> 接口是构建服务的主要组件，它把底层的各个包需要实现的接口，做了一次封装，包含了一系列用于初始化 Service 和 Client 的方法，使我们可以很简单的创建一个 RPC 服务；</li>
-<li><strong>Client</strong> 是请求服务的接口，从 Registry 中获取 Server 信息，然后封装了 Transport 和 Codec 进行 RPC 调用，也封装了 Brocker 进行消息发布，默认通过 RPC 协议进行通信，也可以基于 HTTP 或 gRPC；</li>
-<li><strong>Server</strong> 是监听服务调用的接口，也将以接收 Broker 推送过来的消息，需要向 Registry 注册自己的存在与否，以便客户端发起请求，和 Client 一样，默认基于 RPC 协议通信，也可以替换为 HTTP 或 gRPC；</li>
-<li><strong>Broker</strong> 是消息发布和订阅的接口，默认实现是基于 HTTP，在生产环境可以替换为 Kafka、RabbitMQ 等其他组件实现；</li>
-<li><strong>Codec</strong> 用于解决传输过程中的编码和解码，默认实现是 protobuf，也可以替换成 json、mercury 等；</li>
-<li><strong>Registry</strong> 用于实现服务的注册和发现，当有新的 Service 发布时，需要向 Registry 注册，然后 Registry 通知客户端进行更新，Go Micro 默认基于 consul 实现服务注册与发现，当然，也可以替换成 etcd、zookeeper、kuberpackage mainnetes 等；</li>
-<li><strong>Selector</strong> 是客户端级别的负载均衡，当有客户端向服务端发送请求时，Selector 根据不同的算法从 Registery 的主机列表中得到可用的 Service 节点进行通信。目前的实现有循环算法和随机算法，默认使用随机算法，另外，Selector 还有缓存机制，默认是本地缓存，还支持 label、blacklist 等方式；</li>
-<li><strong>Transport</strong> 是服务之间通信的接口，也就是服务发送和接收的最终实现方式，默认使用 HTTP 同步通信，也可以支持 TCP、UDP、NATS、gRPC 等其他方式。</li>
+<li>最顶层的 <strong><code>Service</code></strong> 接口是构建服务的主要组件，它把底层的各个包需要实现的接口，做了一次封装，包含了一系列用于初始化 <code>Service</code> 和 <code>Client</code> 的方法，使我们可以很简单的创建一个 <code>RPC</code> 服务；</li>
+<li><strong><code>Client</code></strong> 是请求服务的接口，从 <code>Registry</code> 中获取 <code>Server</code> 信息，然后封装了 <code>Transport</code> 和 <code>Codec</code> 进行 <code>RPC</code> 调用，也封装了 <code>Brocker</code> 进行消息发布，默认通过 <code>RPC</code> 协议进行通信，也可以基于 <code>HTTP</code> 或 <code>gRPC</code>；</li>
+<li><strong><code>Server</code></strong> 是监听服务调用的接口，也将以接收 <code>Broker</code> 推送过来的消息，需要向 <code>Registry</code> 注册自己的存在与否，以便客户端发起请求，和 <code>Client</code> 一样，默认基于 <code>RPC</code> 协议通信，也可以替换为 <code>HTTP</code> 或 <code>gRPC</code>；</li>
+<li><strong><code>Broker</code></strong> 是消息发布和订阅的接口，默认实现是基于 <code>HTTP</code>，在生产环境可以替换为 <code>Kafka</code>、<code>RabbitMQ</code> 等其他组件实现；</li>
+<li><strong><code>Codec</code></strong> 用于解决传输过程中的编码和解码，默认实现是 <code>protobuf</code>，也可以替换成 <code>json</code>、<code>mercury</code> 等；</li>
+<li><strong><code>Registry</code></strong> 用于实现服务的注册和发现，当有新的 <code>Service</code> 发布时，需要向 <code>Registry</code> 注册，然后 <code>Registry</code> 通知客户端进行更新，<code>Go Micro</code> 默认基于 <code>consul</code> 实现服务注册与发现，当然，也可以替换成 <code>etcd</code>、<code>zookeeper</code>、<code>kuberpackage mainnetes</code> 等；</li>
+<li><strong><code>Selector</code></strong> 是客户端级别的负载均衡，当有客户端向服务端发送请求时，<code>Selector</code> 根据不同的算法从 <code>Registery</code> 的主机列表中得到可用的 <code>Service</code> 节点进行通信。目前的实现有循环算法和随机算法，默认使用随机算法，另外，<code>Selector</code> 还有缓存机制，默认是本地缓存，还支持 <code>label</code>、<code>blacklist</code> 等方式；</li>
+<li><strong><code>Transport</code></strong> 是服务之间通信的接口，也就是服务发送和接收的最终实现方式，默认使用 <code>HTTP</code> 同步通信，也可以支持 <code>TCP</code>、<code>UDP</code>、<code>NATS</code>、<code>gRPC</code> 等其他方式。</li>
 </ul>
-<p>Go Micro 官方创建了一个 <a href="https://github.com/microhq/go-plugins">Plugins</a> 仓库，用于维护 Go Micro 核心接口支持的可替换插件：</p>
+<p><code>Go Micro</code> 官方创建了一个 <a href="https://github.com/go-micro/plugins">Plugins</a> 仓库，用于维护 <code>Go Micro</code> 核心接口支持的可替换插件：</p>
 <table>
 <thead>
 <tr>
@@ -304,30 +304,43 @@
         </a>
     </p>
 <h2 id="go-micro-主要功能">go-micro 主要功能</h2>
-<p><strong>服务发现</strong>：自动服务注册和名称解析。服务发现是微服务开发的核心。当服务 A 需要与服务 B 通话时，它需要该服务的位置。默认发现机制是多播 DNS（mdns），一种零配置系统。您可以选择使用 SWIM 协议为 p2p 网络设置八卦，或者为弹性云原生设置 consul。</p>
+<p><strong>服务发现</strong>：自动服务注册和名称解析。服务发现是微服务开发的核心。当服务 A 需要与服务 B 通话时，它需要该服务的位置。默认发现机制是多播 <code>DNS</code>（<code>mdns</code>），一种零配置系统。您可以选择使用 <code>SWIM</code> 协议为 <code>p2p</code> 网络设置八卦，或者为弹性云原生设置 <code>consul</code>。</p>
 <p><strong>负载均衡</strong>：基于服务发现构建的客户端负载均衡。一旦我们获得了服务的任意数量实例的地址，我们现在需要一种方法来决定要路由到哪个节点。我们使用随机散列负载均衡来提供跨服务的均匀分布，并在出现问题时重试不同的节点。</p>
-<p><strong>消息编码</strong>：基于内容类型的动态消息编码。客户端和服务器将使用编码器和内容类型为您无缝编码和解码 Go 类型。可以编码任何种类的消息并从不同的客户端发送。客户端和服务器默认处理此问题。这包括默认的 protobuf 和 json。</p>
-<p><strong>请求响应</strong>：基于 RPC 的请求响应，支持双向流。我们提供了同步通信的抽象。对服务的请求将自动解决，负载平衡，拨号和流式传输。启用 tls 时，默认传输为 http/1.1 或 http2。</p>
-<p><strong>Async Messaging</strong>：PubSub 是异步通信和事件驱动架构的一流公民。事件通知是微服务开发的核心模式。启用 tls 时，默认消息传递是点对点 http/1.1 或 http2。</p>
-<p><strong>可插拔接口</strong>：Go Micro 为每个分布式系统抽象使用 Go 接口，因此，这些接口是可插拔的，并允许 Go Micro 与运行时无关，可以插入任何基础技术。</p>
+<p><strong>消息编码</strong>：基于内容类型的动态消息编码。客户端和服务器将使用编码器和内容类型为您无缝编码和解码 Go 类型。可以编码任何种类的消息并从不同的客户端发送。客户端和服务器默认处理此问题。这包括默认的 <code>protobuf</code> 和 <code>json</code>。</p>
+<p><strong>请求响应</strong>：基于 <code>RPC</code> 的请求响应，支持双向流。我们提供了同步通信的抽象。对服务的请求将自动解决，负载平衡，拨号和流式传输。启用 <code>tls</code> 时，默认传输为 <code>http/1.1</code> 或 <code>http2</code>。</p>
+<p><strong><code>Async Messaging</code></strong>：<code>PubSub</code> 是异步通信和事件驱动架构的一流公民。事件通知是微服务开发的核心模式。启用 <code>tls</code> 时，默认消息传递是点对点 <code>http/1.1</code> 或 <code>http2</code>。</p>
+<p><strong>可插拔接口</strong>：<code>Go Micro</code> 为每个分布式系统抽象使用 <code>Go</code> 接口，因此，这些接口是可插拔的，并允许 <code>Go Micro</code> 与运行时无关，可以插入任何基础技术。</p>
 <h2 id="小结">小结</h2>
-<p>通过上述介绍，可以看到，Go Micro 简单轻巧、易于上手、功能强大、扩展方便，是基于 Go 语言进行微服务架构时非常值得推荐的一个 RPC 框架，基于其核心功能及插件，我们可以轻松解决之前讨论的微服务架构引入的需要解决的问题：</p>
+<p>通过上述介绍，可以看到，<code>Go Micro</code> 简单轻巧、易于上手、功能强大、扩展方便，是基于 <code>Go</code> 语言进行微服务架构时非常值得推荐的一个 <code>RPC</code> 框架，基于其核心功能及插件，我们可以轻松解决之前讨论的微服务架构引入的需要解决的问题：</p>
 <ul>
-<li>服务接口定义：通过 Transport、Codec 定义通信协议及数据编码；</li>
-<li>服务发布与调用：通过 Registry 实现服务注册与订阅，还可以基于 Selector 提高系统可用性；</li>
-<li>服务监控、服务治理、故障定位：通过 Plugins Wrapper 中间件来实现。</li>
+<li>服务接口定义：通过 <code>Transport</code>、<code>Codec</code> 定义通信协议及数据编码；</li>
+<li>服务发布与调用：通过 <code>Registry</code> 实现服务注册与订阅，还可以基于 <code>Selector</code> 提高系统可用性；</li>
+<li>服务监控、服务治理、故障定位：通过 <code>Plugins Wrapper</code> 中间件来实现。</li>
 </ul>
-<p>接下来，我们将基于 Go Micro 微服务框架演示如何基于 Go 落地微服务架构。</p>
+<p>接下来，我们将基于 <code>Go Micro</code> 微服务框架演示如何基于 <code>Go</code> 落地微服务架构。</p>
 <h2 id="编写-go-micro-http服务">编写 go-micro HTTP服务</h2>
 <h3 id="go-micro安装">go-micro安装</h3>
 <h4 id="安装protobuf">安装protobuf</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">go</span> get -u google.golang.org/protobuf/proto
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold">go</span> install github.com/golang/protobuf/protoc-gen-<span style="font-weight:bold">go</span><span style="">@</span>latest
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">go</span> install <span style="font-weight:bold">go</span>-micro.dev/v4/cmd/protoc-gen-micro<span style="">@</span>v4
-</span></span></code></pre></div><h4 id="安装go-micro框架">安装go-micro框架</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go install go-micro.dev/v4/cmd/micro@master
+<p>可通过访问 <code>protobuf</code> 的<code>github</code>仓库查看<a href="https://github.com/protocolbuffers/protobuf/releases">最新版本</a>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ wget https://github.com/protocolbuffers/protobuf/releases/download/v21.4/protobuf-all-21.4.tar.gz
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ tar -zxvf protobuf-all-21.4.tar.gz
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> protobuf-21.4
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ ./configure
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ make &amp;&amp; make install
+</span></span></code></pre></div><p>查看安装的 <code>protoc</code> 版本：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ protoc --version
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>libprotoc 3.21.4
+</span></span></code></pre></div><p>注意：如果这一步遇到类似 <code>protoc: error while loading shared libraries: libprotoc.so.8: cannot open shared object file: No such file or directory</code> 的错误，可以通过以下方法解决：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo ldconfig
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"># 或者</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ <span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">LD_LIBRARY_PATH</span>=/usr/local/lib
+</span></span></code></pre></div><h4 id="安装go-micro工具集">安装go-micro工具集</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get go-micro.dev/v4@latest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ go install github.com/asim/go-micro/cmd/protoc-gen-micro/v4@latest
 </span></span></code></pre></div><h3 id="开始编写go-micro-http服务">开始编写go-micro HTTP服务</h3>
-<p>greeter文件夹下创建pb文件夹，在pb文件夹中写入<code>greeter.proto</code>文件：</p>
+<p><code>greeter</code> 文件夹下创建 <code>pb</code> 文件夹，在 <code>pb</code> 文件夹中写入 <code>greeter.proto</code> 文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>;<span style="">
@@ -345,11 +358,11 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style=""></span><span style="font-weight:bold;font-style:italic">service</span> Greeter {<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style=""></span>  <span style="font-weight:bold">rpc</span> Hello (Request) <span style="font-weight:bold">returns</span> (Response) {}<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>进入pb目录输入命令：</p>
+</span></span></span></code></pre></div><p>进入 <code>pb</code> 目录输入命令：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>protoc --micro_out=. --go_out=:. greeter.proto
-</span></span></code></pre></div><p>会生成<code>greeter.pb.go</code>和<code>greeter.pb.micro.go</code>两个文件。</p>
-<p>编写server端，创建服务并注册一下handler，运行服务。</p>
-<p>server端<code>main.go</code>：</p>
+</span></span></code></pre></div><p>会生成 <code>greeter.pb.go</code> 和 <code>greeter.pb.micro.go</code> 两个文件。</p>
+<p>编写 <code>server</code> 端，创建服务并注册一下 <code>handler</code>，运行服务。</p>
+<p><code>server</code> 端 <code>main.go</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -379,7 +392,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>}
-</span></span></code></pre></div><p>handler包下<code>greeter.go</code>文件：</p>
+</span></span></code></pre></div><p><code>handler</code> 包下<code>greeter.go</code>文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> handler
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -395,7 +408,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	rsp.Msg = <span style="color:#666;font-style:italic">&#34;Hello, &#34;</span> + req.Name + <span style="color:#666;font-style:italic">&#34;!&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
-</span></span></code></pre></div><p>调用server服务有两种方式，一种是通过终端命令调用，另一种是通过client端代码调用。</p>
+</span></span></code></pre></div><p>调用 <code>server</code> 服务有两种方式，一种是通过终端命令调用，另一种是通过 <code>client</code> 端代码调用。</p>
 <ul>
 <li>终端命令调用</li>
 </ul>
@@ -403,7 +416,7 @@
 </span></span></code></pre></div><p>输出结果：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{<span style="color:#666;font-style:italic">&#34;msg&#34;</span>:<span style="color:#666;font-style:italic">&#34;Hello, John!&#34;</span>}
 </span></span></code></pre></div><ul>
-<li>编写client端调用service服务</li>
+<li>编写 <code>client</code> 端调用 <code>service</code> 服务</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
@@ -435,10 +448,10 @@
 </span></span></code></pre></div><p>运行<code>go.micro.srv.HelloWorld</code>服务，启动客户端，运行结果如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Hello, John!
 </span></span></code></pre></div><h2 id="启动http服务">启动HTTP服务</h2>
-<p>使用go-micro的http创建一个可以调用接口的微服务HTTP</p>
+<p>使用 <code>go-micro</code> 的 <code>http</code> 创建一个可以调用接口的微服务 <code>HTTP</code></p>
 <h3 id="httpserver">httpServer</h3>
-<p>这里使用gin框架结合go-micro来进行编写</p>
-<p>首先，创建一个http目录，并在该目录下创建main.go，写入代码。</p>
+<p>这里使用 <code>gin</code> 框架结合 <code>go-micro</code> 来进行编写</p>
+<p>首先，创建一个 <code>http</code> 目录，并在该目录下创建 <code>main.go</code>，写入代码。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -484,7 +497,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>}
 </span></span></code></pre></div><h3 id="使用gin进行初始化路由">使用gin进行初始化路由</h3>
-<p>在http目录创建handler\handler.go</p>
+<p>在 <code>http</code> 目录创建 <code>handler/handler.go</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> handler
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -527,7 +540,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>	})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>}
 </span></span></code></pre></div><h3 id="postman测试">Postman测试</h3>
-<p>在启动两个微服务之后，使用postman进行测试，调用成功并返回结果：</p>
+<p>在启动两个微服务之后，使用 <code>postman</code> 进行测试，调用成功并返回结果：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/postman_test.png">
             <img class="mx-auto" alt="Postman测试" src="https://imw7.github.io/images/Go/go_micro/postman_test.png" />
@@ -553,7 +566,7 @@
         </a>
     </p>
 <h3 id="代码实现">代码实现</h3>
-<p>首先创建pubsub文件夹，pb文件夹下<code>pubsub.proto</code>文件：</p>
+<p>首先创建 <code>pubsub</code> 文件夹，<code>pb</code> 文件夹下<code>pubsub.proto</code>文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pubsub</span>;<span style="">
@@ -631,9 +644,9 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:654 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Registry [mdns] Registering node: go.micro.srv.pubsub-b046fb63-518c-40e8-8d36-4a8a086b242d
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.2
-</span></span></code></pre></div><p>可以看到，直接使用go-micro的NewEvent订阅即可，成功订阅example.topic.pubsub.1和example.topic.pubsub.2。</p>
+</span></span></code></pre></div><p>可以看到，直接使用 <code>go-micro</code> 的 <code>NewEvent</code> 订阅即可，成功订阅 <code>example.topic.pubsub.1</code> 和 <code>example.topic.pubsub.2</code>。</p>
 <h4 id="subscribe-事件订阅">Subscribe 事件订阅</h4>
-<p>事件既然有发布，那么当然会有订阅。client文件夹下<code>main.go</code>文件：</p>
+<p>事件既然有发布，那么当然会有订阅。<code>client</code> 文件夹下 <code>main.go</code> 文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -696,22 +709,22 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>2021-12-12 00:37:17  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=client/main.go:25 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info publishing [id:<span style="color:#666;font-style:italic">&#34;9a76e8e1-5aa0-11ec-a19b-e454e8084c9f&#34;</span> timestamp:1639240637 msg:<span style="color:#666;font-style:italic">&#34;Messaging you all day on example.topic.pubsub.2&#34;</span>]
 </span></span></code></pre></div><p>结果显示，成功订阅事件并调用成功。</p>
 <h2 id="注册和配置中心">注册和配置中心</h2>
-<p>下面介绍go-micro v4是如何进行配置<a href="https://www.consul.io">consul</a>注册中心和操作配置中心的。</p>
-<p>go-micro框架为服务注册发现提供了标准的接口Registry。只要实现这个接口就可以定制自己的服务注册和发现。不过官方已经为主流注册中心提供了官方的接口实现，大多数时候我们不需要从头写起。</p>
+<p>下面介绍 <code>go-micro v4</code> 是如何进行配置<a href="https://www.consul.io">consul</a>注册中心和操作配置中心的。</p>
+<p><code>go-micro</code> 框架为服务注册发现提供了标准的接口 <code>Registry</code>。只要实现这个接口就可以定制自己的服务注册和发现。不过官方已经为主流注册中心提供了官方的接口实现，大多数时候我们不需要从头写起。</p>
 <h3 id="consul安装">Consul安装</h3>
-<p>Ubuntu直接运行如下命令即可：</p>
+<p><code>Ubuntu</code> 直接运行如下命令即可：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>sudo apt-add-repository <span style="color:#666;font-style:italic">&#34;deb [arch=amd64] https://apt.releases.hashicorp.com </span><span style="font-weight:bold">$(</span>lsb_release -cs<span style="font-weight:bold">)</span><span style="color:#666;font-style:italic"> main&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>sudo apt-get update &amp;&amp; sudo apt-get install consul
-</span></span></code></pre></div><p>在Terminal终端中输出命令</p>
+</span></span></code></pre></div><p>在 <code>Terminal</code> 终端中输出命令</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>consul --version
 </span></span></code></pre></div><p>出现了类似于如下的结果，则表示安装成功了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Consul v1.10.4
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Revision 7bbad6fe
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
-</span></span></code></pre></div><p>在Terminal终端中输入如下命令即可启动consul了。</p>
+</span></span></code></pre></div><p>在 <code>Terminal</code> 终端中输入如下命令即可启动 <code>consul</code> 了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>consul agent -dev
-</span></span></code></pre></div><p>运行成功后，访问 http://localhost:8500 就可以到consul自带的UI界面了，如图：</p>
+</span></span></code></pre></div><p>运行成功后，访问 http://localhost:8500 就可以到 <code>consul</code> 自带的 <code>UI</code> 界面了，如图：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/consul_init.png">
             <img class="mx-auto" alt="consul" src="https://imw7.github.io/images/Go/go_micro/consul_init.png" />
@@ -757,28 +770,28 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>}
-</span></span></code></pre></div><p>go-micro v4 提供plugins，只需要引入并创建实例之后，使用micro.Registry注册即可。</p>
+</span></span></code></pre></div><p><code>go-micro v4</code> 提供 <code>plugins</code>，只需要引入并创建实例之后，使用 <code>micro.Registry</code> 注册即可。</p>
 <p>运行后效果图如下：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/registerConf.png">
             <img class="mx-auto" alt="registerConf" src="https://imw7.github.io/images/Go/go_micro/registerConf.png" />
         </a>
     </p>
-<p>可以看出名为<code>registerConf</code>的服务出现在了页面上。</p>
+<p>可以看出名为 <code>registerConf</code> 的服务出现在了页面上。</p>
 <h3 id="配置中心">配置中心</h3>
-<p>点击 <code>Key/Value</code>创建目录<code>micro/config</code>，然后在<code>config</code>目录分别创建<code>mysql</code>、<code>redis</code>、<code>logger</code>和<code>server</code>四个key，如下图所示：</p>
+<p>点击 <code>Key/Value</code>创建目录<code>micro/config</code>，然后在<code>config</code>目录分别创建<code>mysql</code>、<code>redis</code>、<code>logger</code>和<code>server</code>四个<code>key</code>，如下图所示：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/config_center.png">
             <img class="mx-auto" alt="config center" src="https://imw7.github.io/images/Go/go_micro/config_center.png" />
         </a>
     </p>
-<p>以其中mysql为例，输入信息：</p>
+<p>以其中 <code>mysql</code> 为例，输入信息：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/mysql_info.png">
             <img class="mx-auto" alt="mysql info" src="https://imw7.github.io/images/Go/go_micro/mysql_info.png" />
         </a>
     </p>
-<p>然后在项目中的<code>registerConf</code>文件夹下创建config目录，并创建config.go、mysql.go文件，分别编写其中代码。</p>
+<p>然后在项目中的 <code>registerConf</code> 文件夹下创建 <code>config</code> 目录，并创建 <code>config.go</code>、<code>mysql.go</code> 文件，分别编写其中代码。</p>
 <h4 id="configgo">config.go</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> config
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
@@ -853,14 +866,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#888;font-style:italic">// create service
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// ...
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#888;font-style:italic"></span>}
-</span></span></code></pre></div><p>运行主函数之后，可以成功获取刚在consul页面输入的mysql配置信息，如图：</p>
+</span></span></code></pre></div><p>运行主函数之后，可以成功获取刚在 <code>consul</code> 页面输入的 <code>mysql</code> 配置信息，如图：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/get_conf.png">
             <img class="mx-auto" alt="get_conf" src="https://imw7.github.io/images/Go/go_micro/get_conf.png" />
         </a>
     </p>
 <h2 id="consul和grpc结合使用">consul和grpc结合使用</h2>
-<p>如何将grpc服务注册到consul中呢？</p>
+<p>如何将 <code>grpc</code> 服务注册到 <code>consul</code> 中呢？</p>
 <p><code>hello.proto</code></p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
