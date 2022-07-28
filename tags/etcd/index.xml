@@ -13,7 +13,7 @@
       <pubDate>Mon, 19 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://blog.imw7.com/post/Go/go_etcd/</guid>
-      <description>&lt;p&gt;etcd是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍etcd的安装和使用。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;etcd&lt;/code&gt; 是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍 &lt;code&gt;etcd&lt;/code&gt; 的安装和使用。&lt;/p&gt;</description>
     </item>
     
   </channel>

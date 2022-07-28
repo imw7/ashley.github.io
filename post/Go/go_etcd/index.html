@@ -159,6 +159,13 @@
         <li><a href="#为什么选择etcd">为什么选择etcd？</a></li>
       </ul>
     </li>
+    <li><a href="#etcd安装">etcd安装</a>
+      <ul>
+        <li><a href="#下载">下载</a></li>
+        <li><a href="#安装">安装</a></li>
+        <li><a href="#测试">测试</a></li>
+      </ul>
+    </li>
     <li><a href="#etcd集群">etcd集群</a>
       <ul>
         <li><a href="#搭建一个3节点集群示例">搭建一个3节点集群示例：</a></li>
@@ -166,7 +173,7 @@
     </li>
     <li><a href="#go语言操作etcd">Go语言操作etcd</a>
       <ul>
-        <li><a href="#安装">安装</a></li>
+        <li><a href="#安装-1">安装</a></li>
         <li><a href="#put和get操作">put和get操作</a></li>
         <li><a href="#watch操作">watch操作</a></li>
         <li><a href="#lease租约">lease租约</a></li>
@@ -235,37 +242,37 @@
         </div>
         
         <div class="post-content">
-            <p>etcd是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍etcd的安装和使用。</p>
+            <p><code>etcd</code> 是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍 <code>etcd</code> 的安装和使用。</p>
 <h1 id="etcd">etcd</h1>
 <h2 id="etcd介绍">etcd介绍</h2>
-<p><a href="https://etcd.io/">etcd</a>是使用Go语言开发的一个开源的、高可用的分布式key-value存储系统，可以用于配置共享和服务的注册和发现。</p>
-<p>类似项目有zookeeper和consul。</p>
-<p>etcd具有以下特点：</p>
+<p><a href="https://etcd.io/">etcd</a>是使用 <code>Go</code> 语言开发的一个开源的、高可用的分布式 <code>key-value</code> 存储系统，可以用于配置共享和服务的注册和发现。</p>
+<p>类似项目有 <code>zookeeper</code> 和 <code>consul</code>。</p>
+<p><code>etcd</code> 具有以下特点：</p>
 <ul>
 <li>完全复制：集群中的每个节点都可以使用完整的存档</li>
-<li>高可用性：Etcd可用于避免硬件的单点故障或网络问题</li>
+<li>高可用性：<code>etcd</code> 可用于避免硬件的单点故障或网络问题</li>
 <li>一致性：每次读取都会返回跨多主机的最新写入</li>
-<li>简单：包括一个定义良好、面向用户的API（gRPC）</li>
-<li>安全：实现了带有可选的客户端证书身份验证的自动化TLS</li>
+<li>简单：包括一个定义良好、面向用户的 <code>API</code>（<code>gRPC</code>）</li>
+<li>安全：实现了带有可选的客户端证书身份验证的自动化 <code>TLS</code></li>
 <li>快速：每秒10000次写入的基准速度</li>
-<li>可靠：使用Raft算法实现了强一致、高可用的服务存储目录</li>
+<li>可靠：使用 <code>Raft</code> 算法实现了强一致、高可用的服务存储目录</li>
 </ul>
 <h2 id="etcd应用场景">etcd应用场景</h2>
 <h3 id="服务发现">服务发现</h3>
-<p>服务发现要解决的也是分布式系统中最常见的问题之一，即在同一个分布式集群中的进程或服务，要如何才能找到对方并建立连接。本质上来说，服务发现就是想要了解集群中是否有进程在监听 udp 或 tcp 端口，并且通过名字就可以查找和连接。</p>
+<p>服务发现要解决的也是分布式系统中最常见的问题之一，即在同一个分布式集群中的进程或服务，要如何才能找到对方并建立连接。本质上来说，服务发现就是想要了解集群中是否有进程在监听 <code>udp</code> 或 <code>tcp</code> 端口，并且通过名字就可以查找和连接。</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/etcd/etcd_01.png">
             <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/etcd/etcd_01.png" />
         </a>
     </p>
 <h3 id="配置中心">配置中心</h3>
-<p>将一些配置信息放到 etcd 上进行集中管理。</p>
-<p>这类场景的使用方式通常是这样：应用在启动的时候主动从 etcd 获取一次配置信息，同时，在 etcd 节点上注册一个 Watcher 并等待，以后每次配置有更新的时候，etcd 都会实时通知订阅者，以此达到获取最新配置信息的目的。</p>
+<p>将一些配置信息放到 <code>etcd</code> 上进行集中管理。</p>
+<p>这类场景的使用方式通常是这样：应用在启动的时候主动从 <code>etcd</code> 获取一次配置信息，同时，在 <code>etcd</code> 节点上注册一个 <code>Watcher</code> 并等待，以后每次配置有更新的时候，<code>etcd</code> 都会实时通知订阅者，以此达到获取最新配置信息的目的。</p>
 <h3 id="分布式锁">分布式锁</h3>
-<p>因为 etcd 使用 Raft 算法保持了数据的强一致性，某次操作存储到集群中的值必然是全局一致的，所以很容易实现分布式锁。锁服务有两种使用方式，一是保持独占，二是控制时序。</p>
+<p>因为 <code>etcd</code> 使用 <code>Raft</code> 算法保持了数据的强一致性，某次操作存储到集群中的值必然是全局一致的，所以很容易实现分布式锁。锁服务有两种使用方式，一是保持独占，二是控制时序。</p>
 <ul>
-<li><strong>保持独占即所有获取锁的用户最终只有一个可以得到</strong>。etcd 为此提供了一套实现分布式锁原子操作 CAS（<code>CompareAndSwap</code>）的 API。通过设置<code>prevExist</code>值，可以保证在多个节点同时去创建某个目录时，只有一个成功。而创建成功的用户就可以认为是获得了锁。</li>
-<li>控制时序，即所有想要获得锁的用户都会被安排执行，但是<strong>获得锁的顺序也是全局唯一的，同时决定了执行顺序</strong>。etcd 为此也提供了一套 API（自动创建有序键），对一个目录建值时指定为<code>POST</code>动作，这样 etcd 会自动在目录下生成一个当前最大的值为键，存储这个新的值（客户端编号）。同时还可以使用 API 按顺序列出所有当前目录下的键值。此时这些键的值就是客户端的时序，而这些键中存储的值可以是代表客户端的编号。</li>
+<li><strong>保持独占即所有获取锁的用户最终只有一个可以得到</strong>。<code>etcd</code> 为此提供了一套实现分布式锁原子操作 <code>CAS</code>（<code>CompareAndSwap</code>）的 <code>API</code>。通过设置 <code>prevExist</code> 值，可以保证在多个节点同时去创建某个目录时，只有一个成功。而创建成功的用户就可以认为是获得了锁。</li>
+<li>控制时序，即所有想要获得锁的用户都会被安排执行，但是<strong>获得锁的顺序也是全局唯一的，同时决定了执行顺序</strong>。<code>etcd</code> 为此也提供了一套 <code>API</code>（自动创建有序键），对一个目录建值时指定为 <code>POST</code> 动作，这样 <code>etcd</code> 会自动在目录下生成一个当前最大的值为键，存储这个新的值（客户端编号）。同时还可以使用 <code>API</code> 按顺序列出所有当前目录下的键值。此时这些键的值就是客户端的时序，而这些键中存储的值可以是代表客户端的编号。</li>
 </ul>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/etcd/etcd_02.png">
@@ -273,47 +280,68 @@
         </a>
     </p>
 <h2 id="为什么用-etcd-而不用zookeeper">为什么用 etcd 而不用ZooKeeper？</h2>
-<p>etcd 实现的这些功能，ZooKeeper都能实现。那么为什么要用 etcd 而非直接使用ZooKeeper呢？</p>
+<p><code>etcd</code> 实现的这些功能，<code>ZooKeeper</code> 都能实现。那么为什么要用 <code>etcd</code> 而非直接使用 <code>ZooKeeper</code> 呢？</p>
 <h3 id="为什么不选择zookeeper">为什么不选择ZooKeeper？</h3>
 <ol>
-<li>部署维护复杂，其使用的<code>Paxos</code>强一致性算法复杂难懂。官方只提供了<code>Java</code>和<code>C</code>两种语言的接口。</li>
-<li>使用<code>Java</code>编写引入大量的依赖。运维人员维护起来比较麻烦。</li>
-<li>最近几年发展缓慢，不如<code>etcd</code>和<code>consul</code>等后起之秀。</li>
+<li>部署维护复杂，其使用的 <code>Paxos</code> 强一致性算法复杂难懂。官方只提供了 <code>Java</code> 和 <code>C</code> 两种语言的接口。</li>
+<li>使用 <code>Java</code> 编写引入大量的依赖。运维人员维护起来比较麻烦。</li>
+<li>最近几年发展缓慢，不如 <code>etcd</code> 和 <code>consul</code> 等后起之秀。</li>
 </ol>
 <h3 id="为什么选择etcd">为什么选择etcd？</h3>
 <ol>
-<li>简单。使用 Go 语言编写部署简单；支持HTTP/JSON API,使用简单；使用 Raft 算法保证强一致性让用户易于理解。</li>
-<li>etcd 默认数据一更新就进行持久化。</li>
-<li>etcd 支持 SSL 客户端安全认证。</li>
+<li>简单。使用 <code>Go</code> 语言编写部署简单；支持 <code>HTTP/JSON API</code>，使用简单；使用 <code>Raft</code> 算法保证强一致性让用户易于理解。</li>
+<li><code>etcd</code> 默认数据一更新就进行持久化。</li>
+<li><code>etcd</code> 支持 <code>SSL</code> 客户端安全认证。</li>
 </ol>
-<p>最后，etcd 作为一个年轻的项目，正在高速迭代和开发中，这既是一个优点，也是一个缺点。优点是它的未来具有无限的可能性，缺点是无法得到大项目长时间使用的检验。然而，目前 <code>CoreOS</code>、<code>Kubernetes</code>和<code>CloudFoundry</code>等知名项目均在生产环境中使用了<code>etcd</code>，所以总的来说，etcd值得你去尝试。</p>
-<h2 id="etcd集群">etcd集群</h2>
-<p>etcd 作为一个高可用键值存储系统，天生就是为集群化而设计的。由于 Raft 算法在做决策时需要多数节点的投票，所以 etcd 一般部署集群推荐奇数个节点，推荐的数量为 3、5 或者 7 个节点构成一个集群。</p>
+<p>最后，<code>etcd</code> 作为一个年轻的项目，正在高速迭代和开发中，这既是一个优点，也是一个缺点。优点是它的未来具有无限的可能性，缺点是无法得到大项目长时间使用的检验。然而，目前 <code>CoreOS</code>、<code>Kubernetes</code> 和 <code>CloudFoundry</code> 等知名项目均在生产环境中使用了 <code>etcd</code>，所以总的来说，<code>etcd</code> 值得你去尝试。</p>
+<h2 id="etcd安装">etcd安装</h2>
+<p><code>Go1.16</code> 以上版本可以直接源码安装。</p>
+<h3 id="下载">下载</h3>
+<p><a href="https://github.com/etcd-io/etcd/archive/v3.5.0.zip">下载</a> <code>etcd</code> 并解压缩，或者用以下命令直接从 <code>GitHub</code> 仓库克隆下来：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ git clone -b v3.5.0 https://github.com/etcd-io/etcd.git
+</span></span></code></pre></div><p>如果要从 <code>main@HEAD</code> 主分支构建，忽略 <code>-b v3.5.0</code> 即可。</p>
+<h3 id="安装">安装</h3>
+<h4 id="进入etcd目录">进入etcd目录</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> etcd
+</span></span></code></pre></div><h4 id="运行脚本">运行脚本</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ./build.sh
+</span></span></code></pre></div><h4 id="把etcd加入环境变量">把etcd加入环境变量</h4>
+<p>在 <code>/etc/profile</code> 文件末尾加入以下内容后重启电脑。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">PATH</span>=<span style="color:#666;font-weight:bold;font-style:italic">$PATH</span>:/usr/local/etcd/bin
+</span></span></code></pre></div><h3 id="测试">测试</h3>
+<p>测试 <code>etcd</code> 是否安装成功，并查看版本：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ etcd --version                                      
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>etcd Version: 3.5.0
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Git SHA: 946a5a6f2
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Go Version: go1.18.4
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>Go OS/Arch: linux/amd64
+</span></span></code></pre></div><h2 id="etcd集群">etcd集群</h2>
+<p><code>etcd</code> 作为一个高可用键值存储系统，天生就是为集群化而设计的。由于 <code>Raft</code> 算法在做决策时需要多数节点的投票，所以 <code>etcd</code> 一般部署集群推荐奇数个节点，推荐的数量为 3、5 或者 7 个节点构成一个集群。</p>
 <h3 id="搭建一个3节点集群示例">搭建一个3节点集群示例：</h3>
-<p>在每个etcd节点指定集群成员，为了区分不同的集群最好同时配置一个独一无二的token。</p>
-<p>下面是提前定义好的集群信息，其中<code>n1</code>、<code>n2</code>和<code>n3</code>表示3个不同的etcd节点。</p>
+<p>在每个 <code>etcd</code> 节点指定集群成员，为了区分不同的集群最好同时配置一个独一无二的 <code>token</code>。</p>
+<p>下面是提前定义好的集群信息，其中 <code>n1</code>、<code>n2</code> 和 <code>n3</code> 表示3个不同的 <code>etcd</code> 节点。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span>=token-01
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span>=new
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span>=<span style="color:#666;font-weight:bold;font-style:italic">n1</span>=http://10.240.0.17:2380,n2=http://10.240.0.18:2380,n3=http://10.240.0.19:2380
-</span></span></code></pre></div><p>在<code>n1</code>这台机器上执行以下命令来启动etcd：</p>
+</span></span></code></pre></div><p>在 <code>n1</code> 这台机器上执行以下命令来启动 <code>etcd</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>etcd --data-dir=data.etcd --name n1 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.17:2380 --listen-peer-urls http://10.240.0.17:2380 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.17:2379 --listen-client-urls http://10.240.0.17:2379 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
-</span></span></code></pre></div><p>在<code>n2</code>这台机器上执行以下命令启动etcd：</p>
+</span></span></code></pre></div><p>在 <code>n2</code> 这台机器上执行以下命令启动 <code>etcd</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>etcd --data-dir=data.etcd --name n2 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.18:2380 --listen-peer-urls http://10.240.0.18:2380 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.18:2379 --listen-client-urls http://10.240.0.18:2379 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
-</span></span></code></pre></div><p>在<code>n3</code>这台机器上执行以下命令启动etcd：</p>
+</span></span></code></pre></div><p>在 <code>n3</code> 这台机器上执行以下命令启动 <code>etcd</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>etcd --data-dir=data.etcd --name n3 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>	--initial-advertise-peer-urls http://10.240.0.19:2380 --listen-peer-urls http://10.240.0.19:2380 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.19:2379 --listen-client-urls http://10.240.0.19:2379 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
-</span></span></code></pre></div><p>etcd 官网提供了一个可以公网访问的 etcd 存储地址。你可以通过如下命令得到 etcd 服务的目录，并把它作为<code>-discovery</code>参数使用。</p>
+</span></span></code></pre></div><p><code>etcd</code> 官网提供了一个可以公网访问的 <code>etcd</code> 存储地址。你可以通过如下命令得到 <code>etcd</code> 服务的目录，并把它作为 <code>-discovery</code> 参数使用。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>curl https://discovery.etcd.io/new?size=3
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>https://discovery.etcd.io/a81b5818e67a6ea83e9d4daea5ecbc92
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
@@ -342,7 +370,7 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#666;font-style:italic"></span>	--advertise-client-urls http://10.240.0.19:2379 --listen-client-urls http:/10.240.0.19:2379 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#666;font-style:italic"></span>	--discovery <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">DISCOVERY</span><span style="color:#666;font-style:italic">}</span> <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span><span style="color:#666;font-style:italic"></span>	--initial-cluster-state <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">CLUSTER_STATE</span><span style="color:#666;font-style:italic">}</span> --initial-cluster-token <span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">TOKEN</span><span style="color:#666;font-style:italic">}</span>
-</span></span></code></pre></div><p>到此etcd集群就搭建起来了，可以使用<code>etcdctl</code>来连接etcd。</p>
+</span></span></code></pre></div><p>到此 <code>etcd</code> 集群就搭建起来了，可以使用 <code>etcdctl</code> 来连接 <code>etcd</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">ETCDCTL_API</span>=3
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">HOST_1</span>=10.240.0.17
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-weight:bold;font-style:italic">HOST_2</span>=10.240.0.18
@@ -351,11 +379,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>etcdctl --endpoints=<span style="color:#666;font-weight:bold;font-style:italic">$ENDPOINTS</span> member list
 </span></span></code></pre></div><h2 id="go语言操作etcd">Go语言操作etcd</h2>
-<p>这里使用官方的<a href="https://github.com/etcd-io/etcd/releases/tag/v3.2.32">etcd/clientv3</a>包来连接etcd并进行相关操作。</p>
-<h3 id="安装">安装</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go get go.etcd.io/etcd/clientv3
+<p>这里使用官方的<a href="https://github.com/etcd-io/etcd/releases/tag/v3.2.32">etcd/clientv3</a>包来连接 <code>etcd</code> 并进行相关操作。</p>
+<h3 id="安装-1">安装</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get go.etcd.io/etcd/clientv3
 </span></span></code></pre></div><h3 id="put和get操作">put和get操作</h3>
-<p><code>put</code>命令用来设置键值对数据，<code>get</code>命令用来根据key获取值。</p>
+<p><code>put</code> 命令用来设置键值对数据，<code>get</code> 命令用来根据 <code>key</code> 获取值。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -401,7 +429,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>}
 </span></span></code></pre></div><h3 id="watch操作">watch操作</h3>
-<p><code>watch</code>用来获取未来更改的通知。</p>
+<p><code>watch</code> 用来获取未来更改的通知。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -432,18 +460,18 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>		}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>}
-</span></span></code></pre></div><p>将上面的代码保存编译执行，此时程序就会等待etcd中<code>eric</code>这个key的变化。</p>
-<p>例如：我们打开终端执行以下命令修改、删除、设置<code>eric</code>这个key。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;22&#34;</span>
+</span></span></code></pre></div><p>将上面的代码保存编译执行，此时程序就会等待 <code>etcd</code> 中 <code>eric</code> 这个 <code>key</code> 的变化。</p>
+<p>例如：我们打开终端执行以下命令修改、删除、设置 <code>eric</code> 这个 <code>key</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ etcdctl --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;22&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>OK
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 del eric
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ etcdctl --endpoints=http://127.0.0.1:2379 del eric
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>etcd&gt; etcdctl.exe --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;23&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>$ etcdctl --endpoints=http://127.0.0.1:2379 put eric <span style="color:#666;font-style:italic">&#34;23&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>OK
 </span></span></code></pre></div><p>上面的程序都能收到如下通知。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>watch&gt;watch.exe
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ./watch
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>connect to etcd success
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Type: PUT Key:eric Value:22
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>Type: DELETE Key:eric Value:
@@ -478,8 +506,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>	<span style="color:#888;font-style:italic">// 5秒钟之后, /eric/ 这个key就会被移除
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#888;font-style:italic"></span>	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;/eric/&#34;</span>, <span style="color:#666;font-style:italic">&#34;male&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>	<span style="color:#888;font-style:italic">// 5秒钟之后, foo 这个key就会被移除
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#888;font-style:italic"></span>	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;foo&#34;</span>, <span style="color:#666;font-style:italic">&#34;yoo&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>	}
@@ -513,7 +541,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;/eric/&#34;</span>, <span style="color:#666;font-style:italic">&#34;male&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	_, err = cli.<span style="color:#666;font-weight:bold;font-style:italic">Put</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), <span style="color:#666;font-style:italic">&#34;foo&#34;</span>, <span style="color:#666;font-style:italic">&#34;yoo&#34;</span>, clientv3.<span style="color:#666;font-weight:bold;font-style:italic">WithLease</span>(resp.ID))
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>	}
@@ -529,10 +557,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>}
 </span></span></code></pre></div><h3 id="基于etcd实现分布式锁">基于etcd实现分布式锁</h3>
-<p><code>go.etcd.io/etcd/clientv3/concurrency</code>在etcd之上实现并发操作，如分布式锁、屏障和选举。</p>
+<p><code>go.etcd.io/etcd/clientv3/concurrency</code> 在 <code>etcd</code> 之上实现并发操作，如分布式锁、屏障和选举。</p>
 <p>导入该包：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go.etcd.io/etcd/clientv3/concurrency&#34;</span>
-</span></span></code></pre></div><p>基于etcd实现的分布式锁示例：</p>
+</span></span></code></pre></div><p>基于 <code>etcd</code> 实现的分布式锁示例：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>cli, err := clientv3.<span style="color:#666;font-weight:bold;font-style:italic">New</span>(clientv3.Config{Endpoints: endpoints})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)

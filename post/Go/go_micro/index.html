@@ -360,7 +360,7 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style=""></span>  <span style="font-weight:bold">rpc</span> Hello (Request) <span style="font-weight:bold">returns</span> (Response) {}<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style=""></span>}<span style="">
 </span></span></span></code></pre></div><p>进入 <code>pb</code> 目录输入命令：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>protoc --micro_out=. --go_out=:. greeter.proto
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ protoc --micro_out=. --go_out=:. greeter.proto
 </span></span></code></pre></div><p>会生成 <code>greeter.pb.go</code> 和 <code>greeter.pb.micro.go</code> 两个文件。</p>
 <p>编写 <code>server</code> 端，创建服务并注册一下 <code>handler</code>，运行服务。</p>
 <p><code>server</code> 端 <code>main.go</code>：</p>
@@ -413,7 +413,7 @@
 <ul>
 <li>终端命令调用</li>
 </ul>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go-micro call greeter Greeter.Hello <span style="color:#666;font-style:italic">&#39;{&#34;name&#34;: &#34;John&#34;}&#39;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go-micro call greeter Greeter.Hello <span style="color:#666;font-style:italic">&#39;{&#34;name&#34;: &#34;John&#34;}&#39;</span>
 </span></span></code></pre></div><p>输出结果：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{<span style="color:#666;font-style:italic">&#34;msg&#34;</span>:<span style="color:#666;font-style:italic">&#34;Hello, John!&#34;</span>}
 </span></span></code></pre></div><ul>
@@ -638,7 +638,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:654 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Registry [mdns] Registering node: go.micro.srv.pubsub-b046fb63-518c-40e8-8d36-4a8a086b242d
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.1
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>2021-12-12 00:36:04  <span style="color:#666;font-weight:bold;font-style:italic">file</span>=server/rpc_server.go:706 <span style="color:#666;font-weight:bold;font-style:italic">level</span>=info Subscribing to topic: example.topic.pubsub.2
-</span></span></code></pre></div><p>可以看到，直接使用 <code>go-micro</code> 的 <code>NewEvent</code> 订阅即可，成功订阅 <code>example.topic.pubsub.1</code> 和 <code>example.topic.pubsub.2</code>。</p>
+</span></span></code></pre></div><p>可以看到，直接使用 <code>go-micro</code> 的 <code>NewEvent</code> 发布即可，成功发布 <code>example.topic.pubsub.1</code> 和 <code>example.topic.pubsub.2</code>。</p>
 <h4 id="subscribe-事件订阅">Subscribe 事件订阅</h4>
 <p>事件既然有发布，那么当然会有订阅。<code>client</code> 文件夹下 <code>main.go</code> 文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
@@ -718,7 +718,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Protocol 2 spoken by default, understands 2 to 3 (agent will automatically use protocol &gt;2 when speaking to compatible agents)
 </span></span></code></pre></div><p>在 <code>Terminal</code> 终端中输入如下命令即可启动 <code>consul</code> 了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ consul agent -dev
-</span></span></code></pre></div><p>运行成功后，访问 http://localhost:8500 就可以到 <code>consul</code> 自带的 <code>UI</code> 界面了，如图：</p>
+</span></span></code></pre></div><p><strong>注</strong>：如果想让外网也能访问consul，可以使用如下命令：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ consul agent -dev -client 0.0.0.0 -ui
+</span></span></code></pre></div><p>通过以上命令，可以实现指定 <code>IP</code> 访问。</p>
+<p>运行成功后，访问 http://localhost:8500 就可以到 <code>consul</code> 自带的 <code>UI</code> 界面了，如图：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/consul_init.png">
             <img class="mx-auto" alt="consul" src="https://imw7.github.io/images/Go/go_micro/consul_init.png" />
