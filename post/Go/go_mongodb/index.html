@@ -145,25 +145,25 @@
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
-    <li><a href="#mongodb介绍">mongoDB介绍</a>
+    <li><a href="#mongodb介绍">MongoDB介绍</a>
       <ul>
-        <li><a href="#mongodb相关概念">mongoDB相关概念</a></li>
+        <li><a href="#mongodb相关概念">MongoDB相关概念</a></li>
       </ul>
     </li>
-    <li><a href="#mongodb安装">mongoDB安装</a></li>
-    <li><a href="#mongodb基本使用">mongoDB基本使用</a>
+    <li><a href="#mongodb安装">MongoDB安装</a></li>
+    <li><a href="#mongodb基本使用">MongoDB基本使用</a>
       <ul>
-        <li><a href="#启动mongodb数据库">启动mongoDB数据库</a></li>
+        <li><a href="#启动mongodb数据库">启动MongoDB数据库</a></li>
         <li><a href="#启动client">启动client</a></li>
         <li><a href="#数据库常用命令">数据库常用命令</a></li>
         <li><a href="#数据集常用命令">数据集常用命令</a></li>
         <li><a href="#文档常用命令">文档常用命令</a></li>
       </ul>
     </li>
-    <li><a href="#go语言操作mongodb">Go语言操作mongoDB</a>
+    <li><a href="#go语言操作mongodb">Go语言操作MongoDB</a>
       <ul>
-        <li><a href="#安装mongodb-go驱动包">安装mongoDB Go驱动包</a></li>
-        <li><a href="#通过go代码连接mongodb">通过Go代码连接mongoDB</a></li>
+        <li><a href="#安装mongodb-go驱动包">安装MongoDB Go驱动包</a></li>
+        <li><a href="#通过go代码连接mongodb">通过Go代码连接MongoDB</a></li>
         <li><a href="#连接池模式">连接池模式</a></li>
         <li><a href="#bson">BSON</a></li>
         <li><a href="#crud">CRUD</a></li>
@@ -230,12 +230,11 @@
         </div>
         
         <div class="post-content">
-            <p>mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
-<h2 id="mongodb介绍">mongoDB介绍</h2>
-<p><a href="https://www.mongodb.com/">mongoDB</a>是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
-<p>mongoDB中将一条数据存储为一个文档（document），数据结构由键值（key-value）对组成。 其中文档类似于我们平常编程中用到的JSON对象。 文档中的字段值可以包含其他文档，数组及文档数组。</p>
-<h3 id="mongodb相关概念">mongoDB相关概念</h3>
-<p>mongoDB中相关概念与我们熟悉的SQL概念对比如下：</p>
+            <p><code>MongoDB</code> 是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(<code>NoSQL</code>)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。</p>
+<h2 id="mongodb介绍">MongoDB介绍</h2>
+<p><a href="https://www.mongodb.com/">MongoDB</a>中将一条数据存储为一个文档（<code>document</code>），数据结构由键值（<code>key-value</code>）对组成。 其中文档类似于我们平常编程中用到的 <code>JSON</code> 对象。 文档中的字段值可以包含其他文档，数组及文档数组。</p>
+<h3 id="mongodb相关概念">MongoDB相关概念</h3>
+<p><code>MongoDB</code> 中相关概念与我们熟悉的 <code>SQL</code> 概念对比如下：</p>
 <table>
 <thead>
 <tr>
@@ -267,8 +266,8 @@
 </tr>
 <tr>
 <td style="text-align:center">index</td>
-<td style="text-align:center">index</td>
 <td style="text-align:center">索引</td>
+<td style="text-align:center">index</td>
 </tr>
 <tr>
 <td style="text-align:center">primary key</td>
@@ -277,24 +276,28 @@
 </tr>
 </tbody>
 </table>
-<h2 id="mongodb安装">mongoDB安装</h2>
-<p>我们这里下载和安装社区版，<a href="https://www.mongodb.com/download-center/community">官网下载地址</a>。 打开上述连接后，选择对应的版本、操作系统平台（常见的平台均支持）和包类型，点击Download按钮下载即可。</p>
-<p>这里补充说明下，Windows平台有<code>ZIP</code>和<code>MSI</code>两种包类型: * ZIP：压缩文件版本 * MSI：可执行文件版本，点击”下一步”安装即可。</p>
-<p>macOS平台除了在该网页下载<code>TGZ</code>文件外，还可以使用<code>Homebrew</code>安装。</p>
-<p>更多安装细节可以参考<a href="https://docs.mongodb.com/manual/administration/install-community/">官方安装教程</a>，里面有<code>Linux</code>、<code>macOS</code>和<code>Windows</code>三大主流平台的安装教程。</p>
-<h2 id="mongodb基本使用">mongoDB基本使用</h2>
-<h3 id="启动mongodb数据库">启动mongoDB数据库</h3>
+<h2 id="mongodb安装">MongoDB安装</h2>
+<p>我们这里下载和安装社区版，<a href="https://www.mongodb.com/download-center/community">官网下载地址</a>。 打开上述连接后，选择对应的版本、操作系统平台（常见的平台均支持）和包类型，点击 <code>Download</code> 按钮下载即可。</p>
+<p>这里补充说明下，<code>Windows</code> 平台有 <code>ZIP</code> 和 <code>MSI</code> 两种包类型:</p>
+<ul>
+<li><code>ZIP</code>：压缩文件版本</li>
+<li><code>MSI</code>：可执行文件版本，点击「下一步」安装即可。</li>
+</ul>
+<p><code>MacOS</code> 平台除了在该网页下载 <code>TGZ</code> 文件外，还可以使用 <code>Homebrew</code> 安装。</p>
+<p>更多安装细节可以参考<a href="https://docs.mongodb.com/manual/administration/install-community/">官方安装教程</a>，里面有 <code>Linux</code>、<code>MacOS</code> 和 <code>Windows</code> 三大主流平台的安装教程。</p>
+<h2 id="mongodb基本使用">MongoDB基本使用</h2>
+<h3 id="启动mongodb数据库">启动MongoDB数据库</h3>
 <h4 id="windows">Windows</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\4.2\bin\mongod.exe&#34;</span> --dbpath=<span style="color:#666;font-style:italic">&#34;c:\data\db&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\6.0\bin\mongod.exe&#34;</span> --dbpath=<span style="color:#666;font-style:italic">&#34;c:\data\db&#34;</span>
 </span></span></code></pre></div><h4 id="mac">Mac</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mongod --config /usr/local/etc/mongod.conf
 </span></span></code></pre></div><p>或</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>brew services start mongodb-community@4.2
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>brew services start mongodb-community@6.0
 </span></span></code></pre></div><h3 id="启动client">启动client</h3>
 <h4 id="windows-1">Windows</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\4.2\bin\mongo.exe&#34;</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;C:\Program Files\MongoDB\Server\6.0\bin\mongosh.exe&#34;</span>
 </span></span></code></pre></div><h4 id="mac-1">Mac</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mongo
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>mongosh
 </span></span></code></pre></div><h3 id="数据库常用命令">数据库常用命令</h3>
 <p><code>show dbs;</code>：查看数据库</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&gt; show dbs;
@@ -371,11 +374,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db149e904b33457f8c02509&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;老王子&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 98 }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>{ <span style="color:#666;font-style:italic">&#34;_id&#34;</span> : ObjectId(<span style="color:#666;font-style:italic">&#34;5db14c4704b33457f8c0250a&#34;</span>), <span style="color:#666;font-style:italic">&#34;name&#34;</span> : <span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;age&#34;</span> : 20 }
 </span></span></code></pre></div><p>命令实在太多，更多命令请参阅<a href="https://docs.mongodb.com/manual/mongo/">官方文档：shell命令</a>和<a href="https://docs.mongodb.com/manual/crud/">官方文档：CRUD操作</a>。</p>
-<h2 id="go语言操作mongodb">Go语言操作mongoDB</h2>
-<p>我们这里使用的是官方的驱动包，当然你也可以使用第三方的驱动包（如mgo等）。 mongoDB官方版的Go驱动发布的比较晚（2018年12月13号）。</p>
-<h3 id="安装mongodb-go驱动包">安装mongoDB Go驱动包</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go get github.com/mongodb/mongo-go-driver
-</span></span></code></pre></div><h3 id="通过go代码连接mongodb">通过Go代码连接mongoDB</h3>
+<h2 id="go语言操作mongodb">Go语言操作MongoDB</h2>
+<p>我们这里使用的是官方的驱动包，当然你也可以使用第三方的驱动包（如 <code>mgo</code> 等）。 <code>MongoDB</code> 官方版的 <code>Go</code> 驱动发布的比较晚（2018年12月13号）。</p>
+<h3 id="安装mongodb-go驱动包">安装MongoDB Go驱动包</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get github.com/mongodb/mongo-go-driver
+</span></span></code></pre></div><h3 id="通过go代码连接mongodb">通过Go代码连接MongoDB</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
@@ -404,10 +407,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Connected to MongoDB!&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>}
-</span></span></code></pre></div><p>连接上MongoDB之后，可以通过下面的语句处理我们上面的eric数据库中的student数据集了：</p>
+</span></span></code></pre></div><p>连接上 <code>MongoDB</code> 之后，可以通过下面的语句处理我们上面的 <code>eric</code> 数据库中的 <code>student</code> 数据集了：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">// 指定获取要操作的数据集
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span>collection := client.<span style="color:#666;font-weight:bold;font-style:italic">Database</span>(<span style="color:#666;font-style:italic">&#34;eric&#34;</span>).<span style="color:#666;font-weight:bold;font-style:italic">Collection</span>(<span style="color:#666;font-style:italic">&#34;student&#34;</span>)
-</span></span></code></pre></div><p>处理完任务之后可以通过下面的命令断开与MongoDB的连接：</p>
+</span></span></code></pre></div><p>处理完任务之后可以通过下面的命令断开与 <code>MongoDB</code> 的连接：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">// 断开连接
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span>err = client.<span style="color:#666;font-weight:bold;font-style:italic">Disconnect</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>())
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
@@ -436,18 +439,18 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>	<span style="font-weight:bold">return</span> client.<span style="color:#666;font-weight:bold;font-style:italic">Database</span>(name), <span style="font-weight:bold">nil</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>}
 </span></span></code></pre></div><h3 id="bson">BSON</h3>
-<p>MongoDB中的JSON文档存储在名为BSON(二进制编码的JSON)的二进制表示中。与其他将JSON数据存储为简单字符串和数字的数据库不同，BSON编码扩展了JSON表示，使其包含额外的类型，如int、long、date、浮点数和decimal128。这使得应用程序更容易可靠地处理、排序和比较数据。</p>
-<p>连接MongoDB的Go驱动程序中有两大类型表示BSON数据：<code>D</code>和<code>Raw</code>。</p>
-<p>类型<code>D</code>家族被用来简洁地构建使用本地Go类型的BSON对象。这对于构造传递给MongoDB的命令特别有用。<code>D</code>家族包括四类:</p>
+<p><code>MongoDB</code> 中的 <code>JSON</code> 文档存储在名为 <code>BSON</code>(二进制编码的 <code>JSON</code>)的二进制表示中。与其他将 <code>JSON</code> 数据存储为简单字符串和数字的数据库不同，<code>BSON</code> 编码扩展了 <code>JSON</code> 表示，使其包含额外的类型，如 <code>int</code>、<code>long</code>、<code>date</code>、浮点数和 <code>decimal128</code>。这使得应用程序更容易可靠地处理、排序和比较数据。</p>
+<p>连接 <code>MongoDB</code> 的 <code>Go</code> 驱动程序中有两大类型表示 <code>BSON</code> 数据：<code>D</code> 和 <code>Raw</code>。</p>
+<p>类型 <code>D</code> 家族被用来简洁地构建使用本地 <code>Go</code> 类型的 <code>BSON</code> 对象。这对于构造传递给 <code>MongoDB</code> 的命令特别有用。<code>D</code>家族包括四类:</p>
 <ul>
-<li>D：一个BSON文档。这种类型应该在顺序重要的情况下使用，比如MongoDB命令。</li>
-<li>M：一张无序的map。它和D是一样的，只是它不保持顺序。</li>
-<li>A：一个BSON数组。</li>
-<li>E：D里面的一个元素。</li>
+<li><code>D</code>：一个 <code>BSON</code> 文档。这种类型应该在顺序重要的情况下使用，比如 <code>MongoDB</code> 命令。</li>
+<li><code>M</code>：一张无序的 <code>map</code>。它和 <code>D</code> 是一样的，只是它不保持顺序。</li>
+<li><code>A</code>：一个 <code>BSON</code> 数组。</li>
+<li><code>E</code>：<code>D</code> 里面的一个元素。</li>
 </ul>
-<p>要使用BSON，需要先导入下面的包：</p>
+<p>要使用 <code>BSON</code>，需要先导入下面的包：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go.mongodb.org/mongo-driver/bson&#34;</span>
-</span></span></code></pre></div><p>下面是一个使用D类型构建的过滤器文档的例子，它可以用来查找name字段与’张三’或’李四’匹配的文档:</p>
+</span></span></code></pre></div><p>下面是一个使用 <code>D</code> 类型构建的过滤器文档的例子，它可以用来查找 <code>name</code> 字段与「张三」或「李四」匹配的文档:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>bson.D{{
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	<span style="color:#666;font-style:italic">&#34;name&#34;</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	bson.D{{
@@ -455,19 +458,19 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>		bson.A{<span style="color:#666;font-style:italic">&#34;张三&#34;</span>, <span style="color:#666;font-style:italic">&#34;李四&#34;</span>},
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	}},
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}}
-</span></span></code></pre></div><p><code>Raw</code>类型家族用于验证字节切片。你还可以使用<code>Lookup()</code>从原始类型检索单个元素。如果你不想要将BSON反序列化成另一种类型的开销，那么这是非常有用的。这个教程我们将只使用D类型。</p>
+</span></span></code></pre></div><p><code>Raw</code> 类型家族用于验证字节切片。你还可以使用 <code>Lookup()</code> 从原始类型检索单个元素。如果你不想要将 <code>BSON</code> 反序列化成另一种类型的开销，那么这是非常有用的。这个教程我们将只使用 <code>D</code> 类型。</p>
 <h3 id="crud">CRUD</h3>
-<p>我们现在Go代码中定义一个<code>Studet</code>类型如下：</p>
+<p>我们现在 <code>Go</code> 代码中定义一个 <code>Studet</code> 类型如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">type</span> Student <span style="font-weight:bold;font-style:italic">struct</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	Name <span style="font-weight:bold">string</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	Age <span style="font-weight:bold">int</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
-</span></span></code></pre></div><p>接下来，创建一些<code>Student</code>类型的值，准备插入到数据库中：</p>
+</span></span></code></pre></div><p>接下来，创建一些 <code>Student</code> 类型的值，准备插入到数据库中：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>s1 := Student{<span style="color:#666;font-style:italic">&#34;小红&#34;</span>, 12}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>s2 := Student{<span style="color:#666;font-style:italic">&#34;小兰&#34;</span>, 10}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>s3 := Student{<span style="color:#666;font-style:italic">&#34;小黄&#34;</span>, 11}
 </span></span></code></pre></div><h4 id="插入文档">插入文档</h4>
-<p>使用<code>collection.InsertOne()</code>方法插入一条文档记录：</p>
+<p>使用 <code>collection.InsertOne()</code> 方法插入一条文档记录：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>insertResult, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">InsertOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), s1)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
@@ -482,7 +485,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Inserted multiple documents: &#34;</span>, insertManyResult.InsertedIDs)
 </span></span></code></pre></div><h4 id="更新文档">更新文档</h4>
-<p><code>updateone()</code>方法允许你更新单个文档。它需要一个筛选器文档来匹配数据库中的文档，并需要一个更新文档来描述更新操作。你可以使用<code>bson.D</code>类型来构建筛选文档和更新文档:</p>
+<p><code>updateone()</code> 方法允许你更新单个文档。它需要一个筛选器文档来匹配数据库中的文档，并需要一个更新文档来描述更新操作。你可以使用 <code>bson.D</code> 类型来构建筛选文档和更新文档:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>filter := bson.D{{<span style="color:#666;font-style:italic">&#34;name&#34;</span>, <span style="color:#666;font-style:italic">&#34;小兰&#34;</span>}}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>update := bson.D{
@@ -497,8 +500,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Matched %v documents and updated %v documents.\n&#34;</span>, updateResult.MatchedCount, updateResult.ModifiedCount)
 </span></span></code></pre></div><h4 id="查找文档">查找文档</h4>
-<p>要找到一个文档，你需要一个filter文档，以及一个指向可以将结果解码为其值的指针。要查找单个文档，使用<code>collection.FindOne()</code>。这个方法返回一个可以解码为值的结果。</p>
-<p>我们使用上面定义过的那个filter来查找姓名为’小兰’的文档。</p>
+<p>要找到一个文档，你需要一个 <code>filter</code> 文档，以及一个指向可以将结果解码为其值的指针。要查找单个文档，使用 <code>collection.FindOne()</code>。这个方法返回一个可以解码为值的结果。</p>
+<p>我们使用上面定义过的那个 <code>filter</code> 来查找姓名为’小兰’的文档。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">// 创建一个Student变量用来接收查询的结果
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">var</span> result Student
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>err = collection.<span style="color:#666;font-weight:bold;font-style:italic">FindOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), filter).<span style="color:#666;font-weight:bold;font-style:italic">Decode</span>(&amp;result)
@@ -506,7 +509,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>	log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Found a single document: %+v\n&#34;</span>, result)
-</span></span></code></pre></div><p>要查找多个文档，请使用<code>collection.Find()</code>。此方法返回一个游标。游标提供了一个文档流，你可以通过它一次迭代和解码一个文档。当游标用完之后，应该关闭游标。下面的示例将使用<code>options</code>包设置一个限制以便只返回两个文档。</p>
+</span></span></code></pre></div><p>要查找多个文档，请使用 <code>collection.Find()</code>。此方法返回一个游标。游标提供了一个文档流，你可以通过它一次迭代和解码一个文档。当游标用完之后，应该关闭游标。下面的示例将使用 <code>options</code> 包设置一个限制以便只返回两个文档。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// 查询多个
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic">// 将选项传递给Find()
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>findOptions := options.<span style="color:#666;font-weight:bold;font-style:italic">Find</span>()
@@ -541,7 +544,7 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#888;font-style:italic"></span>cur.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>())
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;Found multiple documents (array of pointers): %#v\n&#34;</span>, results)
 </span></span></code></pre></div><h4 id="删除文档">删除文档</h4>
-<p>最后，可以使用<code>collection.DeleteOne()</code>或<code>collection.DeleteMany()</code>删除文档。如果你传递<code>bson.D{{}}</code>作为过滤器参数，它将匹配数据集中的所有文档。还可以使用<code>collection. drop()</code>删除整个数据集。</p>
+<p>最后，可以使用 <code>collection.DeleteOne()</code> 或 <code>collection.DeleteMany()</code> 删除文档。如果你传递 <code>bson.D{{}}</code> 作为过滤器参数，它将匹配数据集中的所有文档。还可以使用 <code>collection. drop()</code> 删除整个数据集。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// 删除名字是小黄的那个
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"></span>deleteResult1, err := collection.<span style="color:#666;font-weight:bold;font-style:italic">DeleteOne</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), bson.D{{<span style="color:#666;font-style:italic">&#34;name&#34;</span>,<span style="color:#666;font-style:italic">&#34;小黄&#34;</span>}})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {

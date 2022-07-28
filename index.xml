@@ -229,7 +229,7 @@
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>https://blog.imw7.com/post/Go/go_mongodb/</guid>
-      <description>&lt;p&gt;mongoDB是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(NoSQL)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;MongoDB&lt;/code&gt; 是目前比较流行的一个基于分布式文件存储的数据库，它是一个介于关系数据库和非关系数据库(&lt;code&gt;NoSQL&lt;/code&gt;)之间的产品，是非关系数据库当中功能最丰富，最像关系数据库的。&lt;/p&gt;</description>
     </item>
     
     <item>
