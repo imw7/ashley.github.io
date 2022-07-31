@@ -584,5 +584,14 @@
       <description>&lt;p&gt;作为一个技术宅，拥有自己的博客是很酷炫的事情。本文介绍如何从零开始搭建Hexo博客以及Hexo主题yilia的相关设置。&lt;/p&gt;</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://blog.imw7.com/post/beego_guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://blog.imw7.com/post/beego_guide/</guid>
+      <description>Beego 登陆和注册 说明 这个小样是 Beego 框架的简单实例，实现了如何用 bee 工具自动生成项目的基本结构。 Beego的安装 要想构建 Beego 项目需要下载安装 Beego 框架和 Bee 工具。 Beego Beego 框架的安装很简单，只需要执行下面的代码就行: 1go get -u github.com/beego/beego/v2 这样 Beego 框架就安装好了。 Bee 想要快速创建项目，还需要安装 Bee 工具: 1go get -u github.com/beego/bee/v2 安装好了 Bee 工</description>
+    </item>
+    
   </channel>
 </rss>
