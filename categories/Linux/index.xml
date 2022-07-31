@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on 魏奇的博客</title>
+    <link>https://blog.imw7.com/categories/Linux/</link>
+    <description>Recent content in Linux on 魏奇的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 01 Aug 2022 03:31:31 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/categories/Linux/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux指南</title>
+      <link>https://blog.imw7.com/post/linux_guide/</link>
+      <pubDate>Mon, 01 Aug 2022 03:31:31 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/linux_guide/</guid>
+      <description>&lt;p&gt;本文会介绍到 &lt;code&gt;Linux&lt;/code&gt; 的方方面面。&lt;/p&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

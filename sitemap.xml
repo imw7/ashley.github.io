@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://blog.imw7.com/categories/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/Linux/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/categories/Linux/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/post/linux_guide/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/post/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/tags/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
+    <loc>https://blog.imw7.com/</loc>
+    <lastmod>2022-08-01T03:31:31+08:00</lastmod>
+  </url><url>
     <loc>https://blog.imw7.com/tags/Beego/</loc>
     <lastmod>2022-07-31T23:49:32+08:00</lastmod>
   </url><url>
@@ -11,19 +32,7 @@
     <loc>https://blog.imw7.com/post/beego_guide/</loc>
     <lastmod>2022-07-31T23:49:32+08:00</lastmod>
   </url><url>
-    <loc>https://blog.imw7.com/categories/</loc>
-    <lastmod>2022-07-31T23:49:32+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/post/</loc>
-    <lastmod>2022-07-31T23:49:32+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/tags/</loc>
-    <lastmod>2022-07-31T23:49:32+08:00</lastmod>
-  </url><url>
     <loc>https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/</loc>
-    <lastmod>2022-07-31T23:49:32+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/</loc>
     <lastmod>2022-07-31T23:49:32+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/tags/Hugo/</loc>
@@ -138,9 +147,6 @@
     <lastmod>2021-04-29T21:55:28+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/tags/HDMI/</loc>
-    <lastmod>2021-04-29T21:55:28+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.imw7.com/tags/Linux/</loc>
     <lastmod>2021-04-29T21:55:28+08:00</lastmod>
   </url><url>
     <loc>https://blog.imw7.com/tags/Ubuntu/</loc>
