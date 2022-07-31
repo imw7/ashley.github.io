@@ -6,7 +6,16 @@
     <description>Recent content on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 01 Jul 2022 21:23:51 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 Jul 2022 23:49:32 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Beego使用指南</title>
+      <link>https://blog.imw7.com/post/beego_guide/</link>
+      <pubDate>Sun, 31 Jul 2022 23:49:32 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/beego_guide/</guid>
+      <description>&lt;p&gt;这篇文章是 &lt;code&gt;Beego&lt;/code&gt; 框架的使用教程，实现了如何用 &lt;code&gt;bee&lt;/code&gt; 工具自动生成项目的基本结构。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Hugo使用指南</title>
       <link>https://blog.imw7.com/post/hugo_guide/</link>
@@ -591,15 +600,6 @@
       
       <guid>https://blog.imw7.com/post/hexo_with_yilia/</guid>
       <description>&lt;p&gt;作为一个技术宅，拥有自己的博客是很酷炫的事情。本文介绍如何从零开始搭建Hexo博客以及Hexo主题yilia的相关设置。&lt;/p&gt;</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://blog.imw7.com/post/beego_guide/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://blog.imw7.com/post/beego_guide/</guid>
-      <description>Beego 登陆和注册 说明 这个小样是 Beego 框架的简单实例，实现了如何用 bee 工具自动生成项目的基本结构。 Beego的安装 要想构建 Beego 项目需要下载安装 Beego 框架和 Bee 工具。 Beego Beego 框架的安装很简单，只需要执行下面的代码就行: 1go get -u github.com/beego/beego/v2 这样 Beego 框架就安装好了。 Bee 想要快速创建项目，还需要安装 Bee 工具: 1go get -u github.com/beego/bee/v2 安装好了 Bee 工</description>
     </item>
     
     <item>
