@@ -276,10 +276,14 @@
             <p>本文主要介绍 <code>Linux</code> 的常见命令及其使用方法。</p>
 <h2 id="linux终端命令格式">Linux终端命令格式</h2>
 <h3 id="目标">目标</h3>
-<ul>
-<li>了解终端命令格式</li>
-<li>知道如何查阅终端命令帮助信息</li>
-</ul>
+<ol>
+<li>
+<p>了解终端命令格式</p>
+</li>
+<li>
+<p>知道如何查阅终端命令帮助信息</p>
+</li>
+</ol>
 <h3 id="终端命令格式">终端命令格式</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">command</span> [-options] [parameter]
 </span></span></code></pre></div><p>说明：</p>
@@ -288,9 +292,7 @@
 <li><code>[-options]</code>：选项，可用来对命令进行控制，也可以省略</li>
 <li><code>parameter</code>：传给命令的参数，可以是<strong>零个</strong>、<strong>一个</strong>或者<strong>多个</strong></li>
 </ul>
-<blockquote>
-<p><code>[]</code> 代表可选</p>
-</blockquote>
+<p>注意：<code>[]</code> 代表可选</p>
 <h3 id="查阅命令帮助信息">查阅命令帮助信息</h3>
 <h4 id="--help"><code>--help</code></h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">command</span> --help
@@ -304,9 +306,7 @@
 <ul>
 <li>查询 <code>command</code> 命令的使用手册</li>
 </ul>
-<blockquote>
-<p><code>man</code> 是 <code>manual</code> 的缩写，是 <code>Linux</code> 提供的一个<strong>手册</strong>，包含了绝大部分的命令、函数的详细使用说明</p>
-</blockquote>
+<p>注意：<code>man</code> 是 <code>manual</code> 的缩写，是 <code>Linux</code> 提供的一个<strong>手册</strong>，包含了绝大部分的命令、函数的详细使用说明。</p>
 <p>使用 <code>man</code> 时的操作键：</p>
 <table>
 <thead>
@@ -321,33 +321,33 @@
 <td>显示手册页的下一屏</td>
 </tr>
 <tr>
-<td>Enter键</td>
+<td><code>Enter</code> 键</td>
 <td>一次滚动手册页的一行</td>
 </tr>
 <tr>
-<td>b</td>
+<td><code>b</code></td>
 <td>回滚一屏</td>
 </tr>
 <tr>
-<td>f</td>
+<td><code>f</code></td>
 <td>前滚一屏</td>
 </tr>
 <tr>
-<td>q</td>
+<td><code>q</code></td>
 <td>退出</td>
 </tr>
 <tr>
-<td>/word</td>
-<td>搜索 word 字符串</td>
+<td><code>/word</code></td>
+<td>搜索 <code>word</code> 字符串</td>
 </tr>
 </tbody>
 </table>
 <h2 id="常用linux命令的基本使用">常用Linux命令的基本使用</h2>
 <h3 id="目标-1">目标</h3>
-<ul>
+<ol>
 <li>理解学习 <code>Linux</code> 终端命令的原因</li>
 <li>常用 <code>Linux</code> 命令体验</li>
-</ul>
+</ol>
 <h3 id="学习linux终端命令的原因">学习Linux终端命令的原因</h3>
 <ul>
 <li><code>Linux</code> 刚面世时并没有图形界面，所有的操作全靠命令完成，如<strong>磁盘操作</strong>、<strong>文件存取</strong>、<strong>目录操作</strong>、<strong>进程管理</strong>、<strong>文件权限设定</strong>等</li>
@@ -355,13 +355,11 @@
 <li>在职场中，作为后端程序员，必须要或多或少的掌握一些 <code>Linux</code> 常用的终端命令</li>
 <li><code>Linux</code> 发行版的命令大概有 <code>200</code> 多个，但是常用的命令只有 <code>10</code> 多个而已</li>
 </ul>
-<blockquote>
 <p>学习终端命令的技巧：</p>
 <ul>
 <li>不需要死记硬背，对于常用命令，用的多了，自然就记住了</li>
 <li>不要尝试一次学会所有的命令，有些命令是非常不常用的，临时遇到，临时百度就可以</li>
 </ul>
-</blockquote>
 <h3 id="常用linux命令的基本使用-1">常用Linux命令的基本使用</h3>
 <table>
 <thead>
@@ -373,90 +371,74 @@
 </thead>
 <tbody>
 <tr>
-<td>ls</td>
-<td>list</td>
+<td><code>ls</code></td>
+<td><code>list</code></td>
 <td>查看当前文件夹下的内容</td>
 </tr>
 <tr>
-<td>pwd</td>
-<td>print work directory</td>
+<td><code>pwd</code></td>
+<td><code>print work directory</code></td>
 <td>查看当前所在文件夹</td>
 </tr>
 <tr>
-<td>cd [目录名]</td>
-<td>change directory</td>
+<td><code>cd [目录名]</code></td>
+<td><code>change directory</code></td>
 <td>切换文件夹</td>
 </tr>
 <tr>
-<td>touch [文件名]</td>
-<td>touch</td>
+<td><code>touch [文件名]</code></td>
+<td><code>touch</code></td>
 <td>如果文件不存在，新建文件</td>
 </tr>
 <tr>
-<td>mkdir [目录名]</td>
-<td>make directory</td>
+<td><code>mkdir [目录名]</code></td>
+<td><code>make directory</code></td>
 <td>创建目录</td>
 </tr>
 <tr>
-<td>rm [文件名]</td>
-<td>remove</td>
+<td><code>rm [文件名]</code></td>
+<td><code>remove</code></td>
 <td>删除指定的文件名</td>
 </tr>
 <tr>
-<td>clear</td>
-<td>clear</td>
+<td><code>clear</code></td>
+<td><code>clear</code></td>
 <td>清屏</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>小技巧</p>
+<p>小技巧：</p>
 <ul>
 <li><code>ctrl</code> + <code>shift</code> + <code>=</code> <strong>放大</strong>终端窗口的字体显示</li>
 <li><code>ctrl</code> + <code>-</code> <strong>缩小</strong>终端窗口的字体显示</li>
 </ul>
-</blockquote>
 <h3 id="自动补全">自动补全</h3>
 <p>在敲出 <code>文件</code> / <code>目录</code> / <code>命令</code> 的前几个字母之后，按下 <code>tab</code> 键</p>
 <ul>
 <li>如果输入的没有歧义，系统会自动补全</li>
 <li>如果还存在其他 <code>文件</code> / <code>目录</code> / <code>命令</code>，再按一下 <code>tab</code> 键，系统会提示可能存在的命令</li>
 </ul>
-<blockquote>
-<p>小技巧</p>
+<p>小技巧：</p>
 <ul>
 <li>按 <code>↑</code> / <code>↓</code> 光标键可以在曾经使用过的命令之间来回切换</li>
 <li>如果想要退出选择，并且不想执行当前选中的命令，可以按 <code>ctrl</code> + <code>c</code></li>
 </ul>
-</blockquote>
 <h2 id="其他命令">其他命令</h2>
 <h3 id="目标-2">目标</h3>
-<ul>
+<ol>
 <li>
-<p>查找文件</p>
-<ul>
-<li><code>find</code></li>
-</ul>
+<p>查找文件：<code>find</code></p>
 </li>
 <li>
-<p>软链接</p>
-<ul>
-<li><code>ln</code></li>
-</ul>
+<p>软链接：<code>ln</code></p>
 </li>
 <li>
-<p>打包和压缩</p>
-<ul>
-<li><code>tar</code></li>
-</ul>
+<p>打包和压缩：<code>tar</code></p>
 </li>
 <li>
-<p>软件安装</p>
-<ul>
-<li><code>apt-get</code></li>
-</ul>
+<p>软件安装：<code>apt-get</code></p>
 </li>
-</ul>
+</ol>
 <h3 id="查找文件">查找文件</h3>
 <p><code>find</code> 命令功能非常强大，通常用来在<strong>特定的目录下搜索</strong>符合条件的文件</p>
 <table>
@@ -523,9 +505,7 @@
             <img class="mx-auto" alt="links" src="https://blog.imw7.com/images/linux/links.png" />
         </a>
     </p>
-<blockquote>
-<p>在 <code>Linux</code> 中，<strong>文件名</strong>和<strong>文件的数据</strong>是分开存储的</p>
-</blockquote>
+<p><strong>注意</strong>：在 <code>Linux</code> 中，<strong>文件名</strong>和<strong>文件的数据</strong>是分开存储的</p>
 <p>提示：</p>
 <ul>
 <li>在 <code>Linux</code> 中，只有文件的 <code>硬链接数 = 0</code> 才会被删除</li>
@@ -561,26 +541,24 @@
 </thead>
 <tbody>
 <tr>
-<td>c</td>
+<td><code>c</code></td>
 <td>生成档案文件，创建打包文件</td>
 </tr>
 <tr>
-<td>x</td>
+<td><code>x</code></td>
 <td>解开档案文件</td>
 </tr>
 <tr>
-<td>v</td>
+<td><code>v</code></td>
 <td>列出归档解档的详细过程，显示进度</td>
 </tr>
 <tr>
-<td>f</td>
+<td><code>f</code></td>
 <td>指定档案文件名称，<code>f</code> 后面一定是 <code>.tar</code> 文件，所以必须放选项最后</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>注意：<code>f</code> 选项必须放在最后，其他选项顺序可以随意</p>
-</blockquote>
+<p><strong>注意</strong>：<code>f</code> 选项必须放在最后，其他选项顺序可以随意</p>
 <h4 id="压缩--解压缩">压缩 / 解压缩</h4>
 <ol>
 <li><code>gzip</code></li>
@@ -655,11 +633,9 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"># 3. 更新已安装的包</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>$ sudo apt upgrade
 </span></span></code></pre></div><h4 id="配置软件源">配置软件源</h4>
-<p>如果在 <code>Ubuntu</code> 中安装软件，<strong>更加快速</strong>，可以通过设置<strong>镜像源</strong>，选择一个访问网速更快的服务器，来提供软件下载 / 安装服务</p>
-<p>提示：更换服务器之后，需要一个相对比较长时间的更新过程，需要耐心等待。更新完成后，再安装软件都会从新设置的服务器下载软件了</p>
-<blockquote>
+<p>如果在 <code>Ubuntu</code> 中安装软件，<strong>更加快速</strong>，可以通过设置<strong>镜像源</strong>，选择一个访问网速更快的服务器，来提供软件下载 / 安装服务。</p>
+<p>提示：更换服务器之后，需要一个相对比较长时间的更新过程，需要耐心等待。更新完成后，再安装软件都会从新设置的服务器下载软件了。</p>
 <p>所谓镜像源，就是<strong>所有服务器的内容是相同的（镜像）</strong>，但是根据所在位置不同，国内服务器通常速度会更快一些！</p>
-</blockquote>
 <p>
         <a data-fancybox="gallery" href="https://blog.imw7.com/images/linux/mirrors.png">
             <img class="mx-auto" alt="mirrors" src="https://blog.imw7.com/images/linux/mirrors.png" />
@@ -1009,10 +985,8 @@
 </table>
 <h3 id="切换目录">切换目录</h3>
 <h4 id="cd"><code>cd</code></h4>
-<p><code>cd</code> 是英文单词 <code>change directory</code> 的简写，其功能为更改当前的工作目录，也是用户最常用的命令之一</p>
-<blockquote>
-<p>注意：<code>Linux</code> 所有的<strong>目录</strong>和<strong>文件名</strong>都是大小写敏感的</p>
-</blockquote>
+<p><code>cd</code> 是英文单词 <code>change directory</code> 的简写，其功能为更改当前的工作目录，也是用户最常用的命令之一。</p>
+<p><strong>注意</strong>：<code>Linux</code> 所有的<strong>目录</strong>和<strong>文件名</strong>都是大小写敏感的</p>
 <table>
 <thead>
 <tr>
@@ -1076,16 +1050,12 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><strong>新目录的名称</strong>不能与当前目录中<strong>已有的目录或文件</strong>同名</p>
-</blockquote>
+<p><strong>注意</strong>：<strong>新目录的名称</strong>不能与当前目录中<strong>已有的目录或文件</strong>同名。</p>
 <h4 id="rm"><code>rm</code></h4>
 <ul>
 <li>删除文件或目录</li>
 </ul>
-<blockquote>
-<p>使用 <code>rm</code> 命令要小心，因为文件删除后不能恢复</p>
-</blockquote>
+<p>使用 <code>rm</code> 命令要小心，因为文件删除后不能恢复。</p>
 <table>
 <thead>
 <tr>
@@ -1239,9 +1209,7 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><code>Linux</code> 中还有一个 <code>nl</code> 的命令和 <code>cat -b</code> 的效果等价</p>
-</blockquote>
+<p><code>Linux</code> 中还有一个 <code>nl</code> 的命令和 <code>cat -b</code> 的效果等价。</p>
 <h4 id="more"><code>more</code></h4>
 <ul>
 <li><code>more</code> 命令可以用于分屏显示文件内容，每次只显示一页内容</li>
@@ -1358,7 +1326,7 @@
 <h2 id="系统信息相关命令">系统信息相关命令</h2>
 <ul>
 <li>本节内容主要是为了方便通过远程终端维护服务器时，查看服务器上当前<strong>系统日期和时间 / 磁盘空间占用情况 / 程序执行情况</strong></li>
-<li>本小结学习的终端命令基本都是查询命令，通过这些命令对系统资源的使用情况有个了解</li>
+<li>本小节学习的终端命令基本都是查询命令，通过这些命令对系统资源的使用情况有个了解</li>
 </ul>
 <h3 id="目标-5">目标</h3>
 <ul>
@@ -1463,9 +1431,7 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><code>ps</code> 默认只会显示当前用户通过终端启动的应用程序</p>
-</blockquote>
+<p><strong>注意</strong>：<code>ps</code> 默认只会显示当前用户通过终端启动的应用程序</p>
 <ul>
 <li><code>ps</code> 选项说明</li>
 </ul>
@@ -1491,10 +1457,7 @@
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p>提示：使用 <code>kill</code> 命令时，最好只终止由当前用户开启的进程，而不要终止 <code>root</code> 身份开启的进程，否则可能导致系统崩溃</p>
-<p>要退出 <code>top</code> 可以直接输入 <code>q</code></p>
-</blockquote>
+<p><strong>注意</strong>：使用 <code>kill</code> 命令时，最好只终止由当前用户开启的进程，而不要终止 <code>root</code> 身份开启的进程，否则可能导致系统崩溃。要退出 <code>top</code> 可以直接输入 <code>q</code></p>
 <h2 id="用户权限相关命令">用户权限相关命令</h2>
 <h3 id="目标-6">目标</h3>
 <ul>
@@ -1578,28 +1541,22 @@
 <li>命令格式如下：</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>chmod +/-rwx 文件名|目录名
-</span></span></code></pre></div><blockquote>
-<p>提示：以上方式会一次性修改<code>拥有者</code> / <code>组</code>权限。</p>
-</blockquote>
+</span></span></code></pre></div><p><strong>注意</strong>：以上方式会一次性修改<code>拥有者</code> / <code>组</code>权限。</p>
 <h4 id="超级用户">超级用户</h4>
 <ul>
 <li><code>Linux</code> 系统中的 <code>root</code> 账号通常<strong>用于系统的维护和管理</strong>，对操作系统的所有资源<strong>具有所有访问权限</strong></li>
 <li>在大多数版本的 <code>Linux</code> 中，都<strong>不推荐直接使用 <code>root</code> 账号登录系统</strong></li>
 <li>在 <code>Linux</code> 安装的过程中，系统会自动创建一个用户账号，而这个默认的用户就称为“标准用户”</li>
 </ul>
-<h5 id="sudo">sudo</h5>
+<h5 id="sudo"><code>sudo</code></h5>
 <ul>
 <li><code>su</code> 是 <code>substitute user</code> 的缩写，表示<strong>使用另一个用户的身份</strong></li>
 <li><code>sudo</code> 命令用来以其他身份来执行命令，预设的身份为 <code>root</code></li>
 <li>用户使用 <code>sudo</code> 时，必须先输入密码，之后有<strong>5分钟的有限期限</strong>，超过期限则必须重新输入密码</li>
 </ul>
-<blockquote>
-<p>若其未经授权的用户企图使用 <code>sudo</code>，则会发出警告邮件给管理员</p>
-</blockquote>
+<p><strong>注意</strong>：若其未经授权的用户企图使用 <code>sudo</code>，则会发出警告邮件给管理员。</p>
 <h3 id="组管理终端命令">组管理终端命令</h3>
-<blockquote>
-<p>提示：<strong>创建组 / 删除组</strong>的终端命令都需要通过 <code>sudo</code> 执行</p>
-</blockquote>
+<p><strong>注意</strong>：<strong>创建组 / 删除组</strong>的终端命令都需要通过 <code>sudo</code> 执行</p>
 <table>
 <thead>
 <tr>
@@ -1626,7 +1583,7 @@
 </tr>
 </tbody>
 </table>
-<p>注意：</p>
+<p><strong>注意</strong>：</p>
 <ol>
 <li>
 <p>组信息保存在 <code>/etc/group</code> 文件中</p>
@@ -1677,7 +1634,7 @@
 </tr>
 </tbody>
 </table>
-<p>注意：</p>
+<p><strong>注意</strong>：</p>
 <ul>
 <li>创建用户时，如果忘记添加 <code>-m</code> 选项指定新用户的家目录——最简单的方法就是<strong>删除用户，重新创建</strong></li>
 <li>创建用户时，默认会创建一个和<strong>用户名</strong>同名的<strong>组名</strong></li>
@@ -1723,7 +1680,7 @@
 <li><strong>主组</strong>：通常在新建用户时指定，在 <code>/etc/passwd</code> 的第4列**<code>GID</code>对应的组**</li>
 <li><strong>附加组</strong>：在 <code>/etc/group</code> 中最后一列表示该组的用户列表，用于指定<strong>用户的附加权限</strong></li>
 </ul>
-<p>注意：设置了用户的附加组之后，需要重新登录才能生效！</p>
+<p><strong>注意</strong>：设置了用户的附加组之后，需要重新登录才能生效！</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic"># 修改用户的主组（passwd 中的 GID）</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>usermod -g 组 用户名
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
@@ -1732,7 +1689,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"># 修改用户登录Shell</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>usermod -s /bin/bash 用户名
-</span></span></code></pre></div><p>注意：默认使用 <code>useradd</code> 添加的用户是没有权限使用 <code>sudo</code> 以 <code>root</code> 身份执行命令的，可以使用以下命令，将用户添加到 <code>sudo</code> 附加组中</p>
+</span></span></code></pre></div><p><strong>注意</strong>：默认使用 <code>useradd</code> 添加的用户是没有权限使用 <code>sudo</code> 以 <code>root</code> 身份执行命令的，可以使用以下命令，将用户添加到 <code>sudo</code> 附加组中</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>usermod -G sudo 用户名
 </span></span></code></pre></div><h5 id="which"><code>which</code></h5>
 <ul>
@@ -1963,7 +1920,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"># 查看网卡对应的IP地址</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ ifconfig | grep inet
-</span></span></code></pre></div><p>注意：一台计算中有可能会有一个<strong>物理网卡</strong>和<strong>多个虚拟网卡</strong>，在 <code>Linux</code> 中物理网卡的名字通常以 <code>ensXX</code> 表示。</p>
+</span></span></code></pre></div><p><strong>注意</strong>：一台计算中有可能会有一个<strong>物理网卡</strong>和<strong>多个虚拟网卡</strong>，在 <code>Linux</code> 中物理网卡的名字通常以 <code>ensXX</code> 表示。</p>
 <ul>
 <li><code>127.0.0.1</code> 被称为<strong>本地回环/环回地址</strong>，一般用来测试本机网卡是否正常</li>
 </ul>
@@ -1982,7 +1939,7 @@
 <p>网络管理员之间也常将 <code>ping</code> 用作动词——<strong><code>ping</code>一下计算机X，看它是否开着</strong>。</p>
 </li>
 </ol>
-<p>原理：网络上的机器都有<strong>唯一确定的<code>IP</code>地址</strong>，我们给<strong>目标<code>IP</code>地址</strong>发送一个数据包，对方就要返回一个数据包，根据返回的数据包以及时间，我们可以确定目标主机的存在。</p>
+<p><strong>原理</strong>：网络上的机器都有<strong>唯一确定的<code>IP</code>地址</strong>，我们给<strong>目标<code>IP</code>地址</strong>发送一个数据包，对方就要返回一个数据包，根据返回的数据包以及时间，我们可以确定目标主机的存在。</p>
 <p><strong>注意</strong>：在<code>Linux</code>中，想要终止一个终端程序的执行，绝大多数都可以使用 <code>CTRL</code> + <code>C</code>。</p>
 <h3 id="远程登录和复制文件">远程登录和复制文件</h3>
 <table>
@@ -2097,17 +2054,17 @@
     </p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic"># 把本地当前目录下的 01.py 文件 复制到 远程 家目录下的 Desktop/01.py</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"># 注意：`:` 后面的路径如果不是绝对路径，则以用户的家目录作为参照路径</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>scp -P port 01.py user@remote:Desktop/01.py
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>$ scp -P port 01.py user@remote:Desktop/01.py
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#888;font-style:italic"># 把远程 家目录下的 Desktop/01.py 文件 复制到 本地当前目录下的 01.py</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>scp -P port user@remote:Desktop/01.py 01.py
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>$ scp -P port user@remote:Desktop/01.py 01.py
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#888;font-style:italic"># 加上 -r 选项可以传送文件夹</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#888;font-style:italic"># 把当前目录下的 demo 文件夹 复制到 远程 家目录下的 Desktop</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>scp -r demo user@remote:Desktop
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>$ scp -r demo user@remote:Desktop
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#888;font-style:italic"># 把远程 家目录下的 Desktop 复制到 当前目录下的 demo 文件夹</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>scp -r user@remote:Desktop demo
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>$ scp -r user@remote:Desktop demo
 </span></span></code></pre></div><table>
 <thead>
 <tr>
@@ -2141,7 +2098,7 @@
 <li>免密码登录</li>
 <li>配置别名</li>
 </ul>
-<p>注意：有关 <code>SSH</code> 配置信息都保存在用户家目录下的 <code>.ssh</code> 目录下</p>
+<p><strong>注意</strong>：有关 <code>SSH</code> 配置信息都保存在用户家目录下的 <code>.ssh</code> 目录下。</p>
 <h5 id="免密码登录">免密码登录</h5>
 <p><strong>步骤</strong>：</p>
 <ol>
