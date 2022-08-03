@@ -139,7 +139,7 @@
       <pubDate>Wed, 21 Jul 2021 00:00:00 +0000</pubDate>
       
       <guid>https://blog.imw7.com/post/Go/grpc/</guid>
-      <description>&lt;p&gt;gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP/2协议设计，可以基于一个HTTP/2链接提供多个服务，对于移动设备更加友好。本文将介绍gRPC的一些用法。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;gRPC&lt;/code&gt; 是 &lt;code&gt;Google&lt;/code&gt; 公司基于 &lt;code&gt;Protobuf&lt;/code&gt; 开发的跨语言的开源 &lt;code&gt;RPC&lt;/code&gt; 框架。&lt;code&gt;gRPC&lt;/code&gt; 基于 &lt;code&gt;HTTP/2&lt;/code&gt; 协议设计，可以基于一个 &lt;code&gt;HTTP/2&lt;/code&gt; 链接提供多个服务，对于移动设备更加友好。本文将介绍 &lt;code&gt;gRPC&lt;/code&gt; 的一些用法。&lt;/p&gt;</description>
     </item>
     
     <item>

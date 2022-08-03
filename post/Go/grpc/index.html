@@ -231,21 +231,21 @@
         </div>
         
         <div class="post-content">
-            <p>gRPC是Google公司基于Protobuf开发的跨语言的开源RPC框架。gRPC基于HTTP/2协议设计，可以基于一个HTTP/2链接提供多个服务，对于移动设备更加友好。本文将介绍gRPC的一些用法。</p>
+            <p><code>gRPC</code> 是 <code>Google</code> 公司基于 <code>Protobuf</code> 开发的跨语言的开源 <code>RPC</code> 框架。<code>gRPC</code> 基于 <code>HTTP/2</code> 协议设计，可以基于一个 <code>HTTP/2</code> 链接提供多个服务，对于移动设备更加友好。本文将介绍 <code>gRPC</code> 的一些用法。</p>
 <h1 id="grpc入门">gRPC入门</h1>
-<p>本节将讲述gRPC的简单用法。</p>
+<p>本节将讲述 <code>gRPC</code> 的简单用法。</p>
 <h2 id="grpc技术栈">gRPC技术栈</h2>
-<p>Go语言的gRPC技术栈如图1所示：</p>
+<p><code>Go</code> 语言的 <code>gRPC</code> 技术栈如图1所示：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/grpc/grpc-go-stack.png">
             <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/grpc/grpc-go-stack.png" />
         </a>
     </p>
 <p><em>图1 gRPC技术栈</em></p>
-<p>最底层为TCP或Unix Socket协议，在此之上是HTTP/2协议的实现，然后在HTTP/2协议之上又构建了针对Go语言的gRPC核心库。应用程序通过gRPC插件生产的Stub代码和gRPC核心库通信，也可以直接和gRPC核心库通信。</p>
+<p>最底层为 <code>TCP</code> 或 <code>Unix Socket</code> 协议，在此之上是 <code>HTTP/2</code> 协议的实现，然后在 <code>HTTP/2</code> 协议之上又构建了针对 <code>Go</code> 语言的 <code>gRPC</code> 核心库。应用程序通过 <code>gRPC</code> 插件生产的 <code>Stub</code> 代码和 <code>gRPC</code> 核心库通信，也可以直接和 <code>gRPC</code> 核心库通信。</p>
 <h2 id="grpc入门-1">gRPC入门</h2>
-<p>如果从Protobuf的角度看，gRPC只不过是一个针对service接口生成代码的生成器。</p>
-<p>创建hello.proto文件，定义HelloService接口：</p>
+<p>如果从 <code>Protobuf</code> 的角度看，<code>gRPC</code> 只不过是一个针对 <code>service</code> 接口生成代码的生成器。</p>
+<p>创建 <code>hello.proto</code> 文件，定义 <code>HelloService</code> 接口：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>; <span style="color:#888;font-style:italic">// 使用proto3的语法
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"></span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>; <span style="color:#888;font-style:italic">// package指令指明当前是pb包
@@ -262,9 +262,9 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style=""></span><span style="font-weight:bold;font-style:italic">service</span> HelloService {<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style=""></span>	<span style="font-weight:bold">rpc</span> Hello (String) <span style="font-weight:bold">returns</span> (String);<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>使用protoc-gen-go内置的gRPC插件生成gRPC代码：</p>
+</span></span></span></code></pre></div><p>使用 <code>protoc-gen-go</code> 内置的 <code>gRPC</code> 插件生成 <code>gRPC</code> 代码：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ protoc --go_out=<span style="color:#666;font-weight:bold;font-style:italic">plugins</span>=grpc:. hello.proto
-</span></span></code></pre></div><p>gRPC插件会为服务端和客户端生成不同的接口：</p>
+</span></span></code></pre></div><p><code>gRPC</code> 插件会为服务端和客户端生成不同的接口：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloServiceServer <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.Context, *pb.String) (*pb.String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>}
@@ -272,15 +272,15 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloServiceClient <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>    <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.Context, *pb.String, ...grpc.CallOption) (*pb.String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
-</span></span></code></pre></div><p>gRPC通过context.Context参数，为每个调用方法提供了上下文支持。客户端在调用方法的时候，可以通过可选的grpc.CallOption类型的参数提供额外的上下文信息。</p>
-<p>基于服务端的HelloServiceServer接口可以重新实现HelloService服务：</p>
+</span></span></code></pre></div><p><code>gRPC</code> 通过 <code>context.Context</code> 参数，为每个调用方法提供了上下文支持。客户端在调用方法的时候，可以通过可选的 <code>grpc.CallOption</code> 类型的参数提供额外的上下文信息。</p>
+<p>基于服务端的 <code>HelloServiceServer</code> 接口可以重新实现 <code>HelloService</code> 服务：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloServiceImpl <span style="font-weight:bold;font-style:italic">struct</span>{}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold;font-style:italic">func</span> (h *HelloServiceImpl) <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(ctx context.Context, args *pb.String) (*pb.String, <span style="font-weight:bold">error</span>) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    reply := &amp;pb.String{Value: <span style="color:#666;font-style:italic">&#34;Hello, &#34;</span> + args.<span style="color:#666;font-weight:bold;font-style:italic">GetValue</span>() + <span style="color:#666;font-style:italic">&#34;!&#34;</span>}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>    <span style="font-weight:bold">return</span> reply, <span style="font-weight:bold">nil</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
-</span></span></code></pre></div><p>gRPC服务的启动流程和标准库的RPC服务启动流程类似：</p>
+</span></span></code></pre></div><p><code>gRPC</code> 服务的启动流程和标准库的 <code>RPC</code> 服务启动流程类似：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#888;font-style:italic">// 构造一个gRPC服务对象
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>	grpcServer := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>()
@@ -296,8 +296,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
-</span></span></code></pre></div><p>首先是通过<code>grpc.NewServer()</code>构造一个gRPC服务对象，然后通过gRPC插件生成的RegisterHelloServiceServer函数注册我们实现的HelloServiceImpl服务。然后通过<code>grpcServer.Serve(lis)</code>在一个监听端口上提供gRPC服务。</p>
-<p>然后就可以通过客户端链接gRPC服务了：</p>
+</span></span></code></pre></div><p>首先是通过 <code>grpc.NewServer()</code> 构造一个 <code>gRPC</code> 服务对象，然后通过 <code>gRPC</code> 插件生成的 <code>RegisterHelloServiceServer</code> 函数注册我们实现的 <code>HelloServiceImpl</code> 服务。然后通过<code>grpcServer.Serve(lis)</code> 在一个监听端口上提供 <code>gRPC</code> 服务。</p>
+<p>然后就可以通过客户端连接 <code>gRPC</code> 服务了：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#888;font-style:italic">// 和gRPC服务建立链接
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>	conn, err := grpc.<span style="color:#666;font-weight:bold;font-style:italic">Dial</span>(<span style="color:#666;font-style:italic">&#34;localhost:1234&#34;</span>, grpc.<span style="color:#666;font-weight:bold;font-style:italic">WithInsecure</span>())
@@ -321,11 +321,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(reply.<span style="color:#666;font-weight:bold;font-style:italic">GetValue</span>())
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>}
-</span></span></code></pre></div><p>其中grpc.Dial负责和gRPC服务建立链接，然后NewHelloServiceClient函数基于已经建立的链接构造HelloServiceClient对象。返回的client其实是一个HelloServiceClient借口对象，通过接口定义的方法就可以调用服务端对应的gRPC服务提供的方法。</p>
-<p>gRPC和标准库的RPC框架有一个区别，gRPC生成的接口并不支持异步调用。不过我们可以在多个Goroutine之间安全地共享gRPC底层的HTTP/2链接，因此可以通过在另一个Goroutine阻塞调用的方式模拟异步调用。</p>
+</span></span></code></pre></div><p>其中 <code>grpc.Dial</code> 负责和 <code>gRPC</code> 服务建立链接，然后 <code>NewHelloServiceClient</code> 函数基于已经建立的链接构造 <code>HelloServiceClient</code> 对象。返回的 <code>client</code> 其实是一个 <code>HelloServiceClient</code> 借口对象，通过接口定义的方法就可以调用服务端对应的 <code>gRPC</code> 服务提供的方法。</p>
+<p><code>gRPC</code> 和标准库的 <code>RPC</code> 框架有一个区别，<code>gRPC</code> 生成的接口并不支持异步调用。不过我们可以在多个<code>Goroutine</code> 之间安全地共享 <code>gRPC</code> 底层的 <code>HTTP/2</code> 连接，因此可以通过在另一个 <code>Goroutine</code> 阻塞调用的方式模拟异步调用。</p>
 <h2 id="grpc流">gRPC流</h2>
-<p>RPC是远程函数调用，因此每次调用的函数参数和返回值不能太大，否则将严重影响每次调用的响应时间。因此传统的RPC方法调用对于上传和下载较大数据量场景并不适合。同时传统RPC模式也不适用于对时间不确定的订阅和发布模式。为此，gRPC框架针对服务器端和客户端分别提供了流特性。</p>
-<p>服务端或客户端的单向流是双向流的特例，我们在HelloService增加一个支持双向流的Channel方法：</p>
+<p><code>RPC</code> 是远程函数调用，因此每次调用的函数参数和返回值不能太大，否则将严重影响每次调用的响应时间。因此传统的 <code>RPC</code> 方法调用对于上传和下载较大数据量场景并不适合。同时传统 <code>RPC</code> 模式也不适用于对时间不确定的订阅和发布模式。为此，<code>gRPC</code> 框架针对服务器端和客户端分别提供了流特性。</p>
+<p>服务端或客户端的单向流是双向流的特例，我们在 <code>HelloService</code> 增加一个支持双向流的 <code>Channel</code> 方法：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">service</span> HelloService {<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style=""></span>	<span style="font-weight:bold">rpc</span> Hello (String) <span style="font-weight:bold">returns</span> (String);<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style=""></span>	<span style="">
@@ -333,8 +333,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#888;font-style:italic"></span>  	<span style="color:#888;font-style:italic">// 关键字stream指定启用流特性，参数部分是接收客户端参数的流，返回值是返回给客户端的流。
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">rpc</span> Channel (stream String) <span style="font-weight:bold">returns</span> (stream String);<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>关键字stream指定启用流特性，参数部分是接收客户端参数的流，返回值是返回给客户端的流。</p>
-<p>重新生成代码可以看到接口中新增加的Channel方法的定义：</p>
+</span></span></span></code></pre></div><p>关键字 <code>stream</code> 指定启用流特性，参数部分是接收客户端参数的流，返回值是返回给客户端的流。</p>
+<p>重新生成代码可以看到接口中新增加的 <code>Channel</code> 方法的定义：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloServiceServer <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.Context, *String) (*String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Channel</span>(HelloService_ChannelServer) <span style="font-weight:bold">error</span>
@@ -343,8 +343,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(ctx context.Context, in *String, opts ...grpc.CallOption) (*String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Channel</span>(ctx context.Context, opts ...grpc.CallOption) (HelloService_ChannelClient, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>}
-</span></span></code></pre></div><p>在服务端的Channel方法参数是一个新的HelloService_ChannelServer类型的参数，可以用于和客户端双向通信。客户端的Channel方法返回一个HelloService_ChannelClient类型的返回值，可以用于和服务端进行双向通信。</p>
-<p>HelloService_ChannelServer和HelloService_ChannelClient均为接口类型：</p>
+</span></span></code></pre></div><p>在服务端的 <code>Channel</code> 方法参数是一个新的 <code>HelloService_ChannelServer</code> 类型的参数，可以用于和客户端双向通信。客户端的 <code>Channel</code> 方法返回一个 <code>HelloService_ChannelClient</code> 类型的返回值，可以用于和服务端进行双向通信。</p>
+<p><code>HelloService_ChannelServer</code> 和 <code>HelloService_ChannelClient</code> 均为接口类型：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloService_ChannelServer <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#666;font-weight:bold;font-style:italic">Send</span>(*String) <span style="font-weight:bold">error</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="color:#666;font-weight:bold;font-style:italic">Recv</span>() (*String, <span style="font-weight:bold">error</span>)
@@ -356,7 +356,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Recv</span>() (*String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	grpc.ClientStream
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>}
-</span></span></code></pre></div><p>可以发现服务端和客户端的流辅助接口均定义了Send和Recv方法用于流数据的双向通信。</p>
+</span></span></code></pre></div><p>可以发现服务端和客户端的流辅助接口均定义了 <code>Send</code> 和 <code>Recv</code> 方法用于流数据的双向通信。</p>
 <p>现在我们可以实现流服务了：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// Channel 可以用于和客户端双向通信
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic">// Send和Recv方法用于流数据的双向通信
@@ -376,13 +376,13 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>		}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
-</span></span></code></pre></div><p>服务端在循环中接收客户端发来的数据，如果遇到io.EOF表示客户端流被关闭，如果函数退出表示服务端流关闭。生成返回的数据通过流发送给客户端，双向流数据的发送和接收都是完全独立的行为。需要注意的是，发送和接收的操作并不需要一一对应，用户可以根据真实场景进行组织代码。</p>
-<p>客户端需要先调用Channel方法获取返回的流对象：</p>
+</span></span></code></pre></div><p>服务端在循环中接收客户端发来的数据，如果遇到 <code>io.EOF</code> 表示客户端流被关闭，如果函数退出表示服务端流关闭。生成返回的数据通过流发送给客户端，双向流数据的发送和接收都是完全独立的行为。需要注意的是，发送和接收的操作并不需要一一对应，用户可以根据真实场景进行组织代码。</p>
+<p>客户端需要先调用 <code>Channel</code> 方法获取返回的流对象：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>stream, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Channel</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>())
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
-</span></span></code></pre></div><p>在客户端我们将发送和接收操作放到两个独立的Goroutine。首先是向服务端发送数据：</p>
+</span></span></code></pre></div><p>在客户端我们将发送和接收操作放到两个独立的 <code>Goroutine</code>。首先是向服务端发送数据：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">go</span> <span style="font-weight:bold;font-style:italic">func</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>   <span style="font-weight:bold">for</span> { <span style="color:#888;font-style:italic">// 向服务端发送数据
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#888;font-style:italic"></span>      <span style="font-weight:bold">if</span> err = stream.<span style="color:#666;font-weight:bold;font-style:italic">Send</span>(&amp;pb.String{Value: <span style="color:#666;font-style:italic">&#34;hi&#34;</span>}); err != <span style="font-weight:bold">nil</span> {
@@ -404,8 +404,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
 </span></span></code></pre></div><p>这样就完成了完整的流接收和发送支持。</p>
 <h2 id="发布和订阅模式">发布和订阅模式</h2>
-<p>在发布和订阅模式中，由调用者主动发起的发布行为类似一个普通函数调用，而被动的订阅者则类似gRPC客户端单向流中的接收者。</p>
-<p>发布订阅是一个常见的设计模式，开源社区中已经存在很多该模式的实现。其中docker项目中提供了一个pubsub的极简实现，下面是基于pubsub包实现的本地发布订阅代码：</p>
+<p>在发布和订阅模式中，由调用者主动发起的发布行为类似一个普通函数调用，而被动的订阅者则类似 <code>gRPC</code> 客户端单向流中的接收者。</p>
+<p>发布订阅是一个常见的设计模式，开源社区中已经存在很多该模式的实现。其中 <code>Docker</code> 项目中提供了一个 <code>pubsub</code> 的极简实现，下面是基于 <code>pubsub</code> 包实现的本地发布订阅代码：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;github.com/moby/moby/pkg/pubsub&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
@@ -442,14 +442,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>    &lt;-<span style="font-weight:bold;font-style:italic">make</span>(<span style="font-weight:bold;font-style:italic">chan</span> <span style="font-weight:bold">bool</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>}
-</span></span></code></pre></div><p>其中<code>pubsub.NewPublisher</code>构造一个发布对象，<code>p.SubscribeTopic()</code>可以通过函数筛选感兴趣的主题进行订阅。</p>
-<p>现在尝试基于gRPC和pubsub包，提供一个跨网络的发布和订阅系统。首先通过Protobuf定义一个发布订阅服务接口：</p>
+</span></span></code></pre></div><p>其中 <code>pubsub.NewPublisher</code> 构造一个发布对象，<code>p.SubscribeTopic()</code> 可以通过函数筛选感兴趣的主题进行订阅。</p>
+<p>现在尝试基于 <code>gRPC</code> 和 <code>pubsub</code> 包，提供一个跨网络的发布和订阅系统。首先通过 <code>Protobuf</code> 定义一个发布订阅服务接口：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">// 发布订阅服务接口
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">service</span> PubsubService {<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style=""></span>  <span style="font-weight:bold">rpc</span> Publish (String) <span style="font-weight:bold">returns</span> (String); <span style="color:#888;font-style:italic">// 普通的RPC方法
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"></span>  <span style="font-weight:bold">rpc</span> Subscribe (String) <span style="font-weight:bold">returns</span> (stream String); <span style="color:#888;font-style:italic">// 单向的流服务
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#888;font-style:italic"></span>}<span style="">
-</span></span></span></code></pre></div><p>其中Publish是普通的RPC方法，Subscribe则是一个单向的流服务。然后gRPC插件会为服务端和客户端生成对应的接口：</p>
+</span></span></span></code></pre></div><p>其中 <code>Publish</code> 是普通的 <code>RPC</code> 方法，<code>Subscribe</code> 则是一个单向的流服务。然后 <code>gRPC</code> 插件会为服务端和客户端生成对应的接口：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> PubsubServiceServer <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Publish</span>(context.Context, *String) (*String, <span style="font-weight:bold">error</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	<span style="color:#666;font-weight:bold;font-style:italic">Subscribe</span>(*String, PubsubService_SubscribeServer) <span style="font-weight:bold">error</span>
@@ -463,7 +463,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    <span style="color:#666;font-weight:bold;font-style:italic">Send</span>(*String) <span style="font-weight:bold">error</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    grpc.ServerStream
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>}
-</span></span></code></pre></div><p>因为Subscribe是服务端的单向流，因此生成的HelloService_SubscribeServer接口中只有Send方法。</p>
+</span></span></code></pre></div><p>因为 <code>Subscribe</code> 是服务端的单向流，因此生成的 <code>HelloService_SubscribeServer</code> 接口中只有 <code>Send</code> 方法。</p>
 <p>然后就可以实现发布和订阅服务了：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">type</span> PubsubService <span style="font-weight:bold;font-style:italic">struct</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	pub *pubsub.Publisher
@@ -572,11 +572,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>		}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>}
-</span></span></code></pre></div><p>到此我们就基于gRPC简单实现了一个跨网络的发布和订阅服务。</p>
+</span></span></code></pre></div><p>到此我们就基于 <code>gRPC</code> 简单实现了一个跨网络的发布和订阅服务。</p>
 <h1 id="grpc进阶">gRPC进阶</h1>
-<p>作为一个基础的RPC框架，安全和扩展是经常遇到的问题。本节将简单介绍如果对gRPC进行安全认证。然后介绍通过gRPC的截取器特性，以及如何通过截取器优雅地实现Token认证、调用跟踪以及Panic捕获等特性。最后介绍服务如何和其他Web服务共存。</p>
+<p>作为一个基础的 <code>RPC</code> 框架，安全和扩展是经常遇到的问题。本节将简单介绍如果对 <code>gRPC</code> 进行安全认证。然后介绍通过 <code>gRPC</code> 的截取器特性，以及如何通过截取器优雅地实现 <code>Token</code> 认证、调用跟踪以及 <code>Panic</code> 捕获等特性。最后介绍服务如何和其他 <code>Web</code> 服务共存。</p>
 <h2 id="证书认证">证书认证</h2>
-<p>gRPC建立在HTTP/2协议之上，对TLS提供了很好的支持。我们前面章节中gRPC的服务都没有提供证书支持，因此客户端在链接服务器中通过<code>grpc.WithInsecure()</code>选项跳过了对服务器证书的验证。没有启用证书的gRPC服务在和客户端进行的是明文通讯，信息面临被任何第三方监听的风险。为了保障gRPC通信不被第三方监听篡改或伪造，我们可以对服务器启动TLS加密特性。</p>
+<p><code>gRPC</code> 建立在 <code>HTTP/2</code> 协议之上，对 <code>TLS</code> 提供了很好的支持。我们前面章节中 <code>gRPC</code> 的服务都没有提供证书支持，因此客户端在链接服务器中通过 <code>grpc.WithInsecure()</code> 选项跳过了对服务器证书的验证。没有启用证书的 <code>gRPC</code> 服务在和客户端进行的是明文通讯，信息面临被任何第三方监听的风险。为了保障 <code>gRPC</code> 通信不被第三方监听篡改或伪造，我们可以对服务器启动 <code>TLS</code> 加密特性。</p>
 <p>可以用以下命令为服务器和客户端分别生成私钥和证书：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ openssl genrsa -out server.key 2048
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ openssl req -new -x509 -days 3650 <span style="color:#666;font-style:italic">\
@@ -587,8 +587,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>$ openssl req -new -x509 -days 3650 <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style="color:#666;font-style:italic"></span>    -subj <span style="color:#666;font-style:italic">&#34;/C=GB/L=China/O=grpc-client/CN=client.grpc.io&#34;</span> <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span><span style="color:#666;font-style:italic"></span>    -key client.key -out client.crt
-</span></span></code></pre></div><p>以上命令将生成server.key、server.crt、client.key和client.crt四个文件。其中以.key为后缀名的是私钥文件，需要妥善保管。以.crt为后缀名是证书文件，也可以简单理解为公钥文件，并不需要秘密保存。在subj参数中的<code>/CN=server.grpc.io</code>表示服务器的名字为<code>server.grpc.io</code>，在验证服务器的证书时需要用到该信息。</p>
-<p>有了证书之后，我们就可以在启动gRPC服务时传入证书选项参数：</p>
+</span></span></code></pre></div><p>以上命令将生成 <code>server.key</code>、<code>server.crt</code>、<code>client.key</code> 和 <code>client.crt</code> 四个文件。其中以. <code>key</code> 为后缀名的是私钥文件，需要妥善保管。以 <code>.crt</code> 为后缀名是证书文件，也可以简单理解为公钥文件，并不需要秘密保存。在 <code>subj</code> 参数中的 <code>/CN=server.grpc.io</code> 表示服务器的名字为 <code>server.grpc.io</code>，在验证服务器的证书时需要用到该信息。</p>
+<p>有了证书之后，我们就可以在启动 <code>gRPC</code> 服务时传入证书选项参数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    creds, err := credentials.<span style="color:#666;font-weight:bold;font-style:italic">NewServerTLSFromFile</span>(<span style="color:#666;font-style:italic">&#34;server.crt&#34;</span>, <span style="color:#666;font-style:italic">&#34;server.key&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
@@ -599,7 +599,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
-</span></span></code></pre></div><p>其中credentials.NewServerTLSFromFile函数是从文件为服务器构造证书对象，然后通过grpc.Creds(creds)函数将证书包装为选项后作为参数传入grpc.NewServer函数。</p>
+</span></span></code></pre></div><p>其中 <code>credentials.NewServerTLSFromFile</code> 函数是从文件为服务器构造证书对象，然后通过 <code>grpc.Creds(creds)</code> 函数将证书包装为选项后作为参数传入 <code>grpc.NewServer</code> 函数。</p>
 <p>在客户端基于服务器的证书和服务器名字就可以对服务器进行验证：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    creds, err := credentials.<span style="color:#666;font-weight:bold;font-style:italic">NewClientTLSFromFile</span>(<span style="color:#666;font-style:italic">&#34;server.crt&#34;</span>, <span style="color:#666;font-style:italic">&#34;server.grpc.io&#34;</span>)
@@ -615,11 +615,11 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
-</span></span></code></pre></div><p>其中redentials.NewClientTLSFromFile是构造客户端用的证书对象，第一个参数是服务器的证书文件，第二个参数是签发证书的服务器的名字。然后通过grpc.WithTransportCredentials(creds)将证书对象转为参数选项传人grpc.Dial函数。</p>
+</span></span></code></pre></div><p>其中 <code>redentials.NewClientTLSFromFile</code> 是构造客户端用的证书对象，第一个参数是服务器的证书文件，第二个参数是签发证书的服务器的名字。然后通过 <code>grpc.WithTransportCredentials(creds)</code> 将证书对象转为参数选项传人 <code>grpc.Dial</code> 函数。</p>
 <p>以上这种方式，需要提前将服务器的证书告知客户端，这样客户端在链接服务器时才能进行对服务器证书认证。在复杂的网络环境中，服务器证书的传输本身也是一个非常危险的问题。如果在中间某个环节，服务器证书被监听或替换那么对服务器的认证也将不再可靠。</p>
 <p>为了避免证书的传递过程中被篡改，可以通过一个安全可靠的<strong>根证书</strong>分别对服务器和客户端的证书进行签名。这样客户端或服务器在收到对方的证书后可以通过根证书进行验证证书的有效性。</p>
 <h3 id="根证书">根证书</h3>
-<p>根证书（root certificate）是属于根证书颁发机构（CA）的公钥证书。我们可以通过验证 CA 的签名从而信任 CA ，任何人都可以得到 CA 的证书（含公钥），用以验证它所签发的证书（客户端、服务端）。它包含公钥和密钥。</p>
+<p>根证书「<code>root certificate</code>」是属于根证书颁发机构「 <code>CA</code>」的公钥证书。我们可以通过验证 <code>CA</code> 的签名从而信任 <code>CA</code>，任何人都可以得到 <code>CA</code> 的证书（含公钥），用以验证它所签发的证书（客户端、服务端）。它包含公钥和密钥。</p>
 <h4 id="生成-key">生成 key</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ openssl genrsa -out ca.key 2048
 </span></span></code></pre></div><h4 id="生成密钥">生成密钥</h4>
@@ -664,10 +664,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>to be sent with your certificate request
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>A challenge password []:
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>An optional company name []:
-</span></span></code></pre></div><p>CSR 是 Cerificate Signing Request 的英文缩写，为证书请求文件。主要作用是 CA 会利用 CSR 文件进行签名使得攻击者无法伪装或篡改原有证书。</p>
+</span></span></code></pre></div><p><code>CSR</code> 是 <code>Cerificate Signing Request</code> 的英文缩写，为证书请求文件。主要作用是 <code>CA</code> 会利用 <code>CSR</code> 文件进行签名使得攻击者无法伪装或篡改原有证书。</p>
 <h4 id="基于-ca-签发">基于 CA 签发</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl x509 -req -sha256 -CA ca.pem -CAkey ca.key -CAcreateserial -days 3650 -in server.csr -out server.pem
-</span></span></code></pre></div><p>签名的过程中引入了一个新的以.csr为后缀名的文件，它表示证书签名请求文件。在证书签名完成之后可以删除.csr文件。</p>
+</span></span></code></pre></div><p>签名的过程中引入了一个新的以 <code>.csr</code> 为后缀名的文件，它表示证书签名请求文件。在证书签名完成之后可以删除 <code>.csr</code> 文件。</p>
 <h3 id="client">Client</h3>
 <h4 id="生成key-1">生成Key</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>openssl ecparam -genkey -name secp384r1 -out client.key
@@ -689,7 +689,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    ├── server.csr
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    ├── server.key
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    └── server.pem
-</span></span></code></pre></div><p>然后在客户端就可以基于CA证书对服务器进行证书验证：</p>
+</span></span></code></pre></div><p>然后在客户端就可以基于 <code>CA</code> 证书对服务器进行证书验证：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    certificate, err := tls.<span style="color:#666;font-weight:bold;font-style:italic">LoadX509KeyPair</span>(<span style="color:#666;font-style:italic">&#34;../conf/client/client.pem&#34;</span>, <span style="color:#666;font-style:italic">&#34;../conf/client/client.key&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
@@ -724,8 +724,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>}
-</span></span></code></pre></div><p>在新的客户端代码中，我们不再直接依赖服务器端证书文件。在credentials.NewTLS函数调用中，客户端通过引入一个CA根证书和服务器的名字来实现对服务器进行验证。客户端在链接服务器时会首先请求服务器的证书，然后使用CA根证书对收到的服务器端证书进行验证。</p>
-<p>因为引入了CA根证书签名，在启动服务器时同样要配置根证书：</p>
+</span></span></code></pre></div><p>在新的客户端代码中，我们不再直接依赖服务器端证书文件。在 <code>credentials.NewTLS</code> 函数调用中，客户端通过引入一个 <code>CA</code> 根证书和服务器的名字来实现对服务器进行验证。客户端在链接服务器时会首先请求服务器的证书，然后使用 <code>CA</code> 根证书对收到的服务器端证书进行验证。</p>
+<p>因为引入了 <code>CA</code> 根证书签名，在启动服务器时同样要配置根证书：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    certificate, err := tls.<span style="color:#666;font-weight:bold;font-style:italic">LoadX509KeyPair</span>(<span style="color:#666;font-style:italic">&#34;../conf/server/server.pem&#34;</span>, <span style="color:#666;font-style:italic">&#34;../conf/server/server.key&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
@@ -750,10 +750,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>	grpcServer := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>(grpc.<span style="color:#666;font-weight:bold;font-style:italic">Creds</span>(creds))
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>}
-</span></span></code></pre></div><p>服务器端同样改用credentials.NewTLS函数生成证书，通过ClientCAs选择CA根证书，并通过ClientAuth选项启用对客户端进行验证。</p>
-<p>到此我们就实现了一个服务器和客户端进行双向证书验证的通信可靠的gRPC系统。</p>
+</span></span></code></pre></div><p>服务器端同样改用 <code>credentials.NewTLS</code> 函数生成证书，通过 <code>ClientCAs</code> 选择 <code>CA</code> 根证书，并通过 <code>ClientAuth</code> 选项启用对客户端进行验证。</p>
+<p>到此我们就实现了一个服务器和客户端进行双向证书验证的通信可靠的 <code>gRPC</code> 系统。</p>
 <h2 id="token认证">Token认证</h2>
-<p>前面讲述的基于证书的认证是针对每个gRPC链接的认证。gRPC还为每个gRPC方法调用提供了认证支持，这样就基于用户Token对不同的方法访问进行权限管理。要实现对每个gRPC方法进行认证，需要实现grpc.PerRPCCredentials接口：</p>
+<p>前面讲述的基于证书的认证是针对每个 <code>gRPC</code> 链接的认证。<code>gRPC</code> 还为每个 <code>gRPC</code> 方法调用提供了认证支持，这样就基于用户 <code>Token</code> 对不同的方法访问进行权限管理。要实现对每个 <code>gRPC</code> 方法进行认证，需要实现 <code>grpc.PerRPCCredentials</code> 接口：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> PerRPCCredentials <span style="font-weight:bold;font-style:italic">interface</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    <span style="color:#888;font-style:italic">// GetRequestMetadata gets the current request metadata, refreshing
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// tokens if required. This should be called by the transport layer on
@@ -771,8 +771,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// transport security.
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#666;font-weight:bold;font-style:italic">RequireTransportSecurity</span>() <span style="font-weight:bold">bool</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
-</span></span></code></pre></div><p>在GetRequestMetadata方法中返回认证需要的必要信息。RequireTransportSecurity方法表示是否要求底层使用安全链接。在真实的环境中建议必须要求底层启用安全的链接，否则认证信息有泄露和被篡改的风险。</p>
-<p>我们可以创建一个Authentication类型，用于实现用户名和密码的认证：</p>
+</span></span></code></pre></div><p>在 <code>GetRequestMetadata</code> 方法中返回认证需要的必要信息。<code>RequireTransportSecurity</code> 方法表示是否要求底层使用安全链接。在真实的环境中建议必须要求底层启用安全的链接，否则认证信息有泄露和被篡改的风险。</p>
+<p>我们可以创建一个 <code>Authentication</code> 类型，用于实现用户名和密码的认证：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> Authentication <span style="font-weight:bold;font-style:italic">struct</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    User     <span style="font-weight:bold">string</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    Password <span style="font-weight:bold">string</span>
@@ -787,8 +787,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (a *Authentication) <span style="color:#666;font-weight:bold;font-style:italic">RequireTransportSecurity</span>() <span style="font-weight:bold">bool</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">false</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
-</span></span></code></pre></div><p>在GetRequestMetadata方法中，我们返回地认证信息包装login和password两个信息。为了演示代码简单，RequireTransportSecurity方法表示不要求底层使用安全链接。</p>
-<p>然后在每次请求gRPC服务时就可以将Token信息作为参数选项传人：</p>
+</span></span></code></pre></div><p>在 <code>GetRequestMetadata</code> 方法中，我们返回地认证信息包装 <code>login</code> 和 <code>password</code> 两个信息。为了演示代码简单，<code>RequireTransportSecurity</code> 方法表示不要求底层使用安全链接。</p>
+<p>然后在每次请求 <code>gRPC</code> 服务时就可以将 <code>Token</code> 信息作为参数选项传人：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    auth := Authentication{
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        User:    <span style="color:#666;font-style:italic">&#34;gopher&#34;</span>,
@@ -803,8 +803,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
-</span></span></code></pre></div><p>通过grpc.WithPerRPCCredentials函数将Authentication对象转为grpc.Dial参数。因为这里没有启用安全链接，需要传人grpc.WithInsecure()表示忽略证书认证。</p>
-<p>然后在gRPC服务端的每个方法中通过Authentication类型的Auth方法进行身份认证：</p>
+</span></span></code></pre></div><p>通过 <code>grpc.WithPerRPCCredentials</code> 函数将 <code>Authentication</code> 对象转为 <code>grpc.Dial</code> 参数。因为这里没有启用安全链接，需要传人 <code>grpc.WithInsecure()</code> 表示忽略证书认证。</p>
+<p>然后在 <code>gRPC</code> 服务端的每个方法中通过 <code>Authentication</code> 类型的 <code>Auth</code> 方法进行身份认证：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> grpcServer <span style="font-weight:bold;font-style:italic">struct</span> { auth *Authentication }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold;font-style:italic">func</span> (g *grpcServer) <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, <span style="font-weight:bold">error</span>) {
@@ -838,20 +838,20 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>}
-</span></span></code></pre></div><p>详细地认证工作主要在Authentication.Auth方法中完成。首先通过metadata.FromIncomingContext从ctx上下文中获取元信息，然后取出相应的认证信息进行认证。如果认证失败，则返回一个codes.Unauthenticated类型地错误。</p>
+</span></span></code></pre></div><p>详细地认证工作主要在 <code>Authentication.Auth</code> 方法中完成。首先通过 <code>metadata.FromIncomingContext</code> 从 <code>ctx</code> 上下文中获取元信息，然后取出相应的认证信息进行认证。如果认证失败，则返回一个 <code>codes.Unauthenticated</code> 类型地错误。</p>
 <h2 id="截取器">截取器</h2>
-<p>gRPC中的grpc.UnaryInterceptor和grpc.StreamInterceptor分别对普通方法和流方法提供了截取器的支持。我们这里简单介绍普通方法的截取器用法。</p>
-<p>要实现普通方法的截取器，需要为grpc.UnaryInterceptor的参数实现一个函数：</p>
+<p><code>gRPC</code> 中的 <code>grpc.UnaryInterceptor</code> 和 <code>grpc.StreamInterceptor</code> 分别对普通方法和流方法提供了截取器的支持。我们这里简单介绍普通方法的截取器用法。</p>
+<p>要实现普通方法的截取器，需要为 <code>grpc.UnaryInterceptor</code> 的参数实现一个函数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">filter</span>(ctx context.Context, req <span style="font-weight:bold;font-style:italic">interface</span>{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (resp <span style="font-weight:bold;font-style:italic">interface</span>{}, err <span style="font-weight:bold">error</span>) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    log.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;fileter:&#34;</span>, info)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">handler</span>(ctx, req)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>}
-</span></span></code></pre></div><p>函数的ctx和req参数就是每个普通的RPC方法的前两个参数。第三个info参数表示当前是对应的那个gRPC方法，第四个handler参数对应当前的gRPC方法函数。上面的函数中首先是日志输出info参数，然后调用handler对应的gRPC方法函数。</p>
-<p>要使用filter截取器函数，只需要在启动gRPC服务时作为参数输入即可：</p>
+</span></span></code></pre></div><p>函数的 <code>ctx</code> 和 <code>req</code> 参数就是每个普通的 <code>RPC</code> 方法的前两个参数。第三个 <code>info</code> 参数表示当前是对应的那个 <code>gRPC</code> 方法，第四个 <code>handler</code> 参数对应当前的 <code>gRPC</code> 方法函数。上面的函数中首先是日志输出 <code>info</code> 参数，然后调用 <code>handler</code> 对应的 <code>gRPC</code> 方法函数。</p>
+<p>要使用 <code>filter</code> 截取器函数，只需要在启动 <code>gRPC</code> 服务时作为参数输入即可：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>server := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>(grpc.<span style="color:#666;font-weight:bold;font-style:italic">UnaryInterceptor</span>(filter))
-</span></span></code></pre></div><p>然后服务器在收到每个gRPC方法调用之前，会首先输出一行日志，然后再调用对方的方法。</p>
-<p>如果截取器函数返回了错误，那么该次gRPC方法调用将被视作失败处理。因此，我们可以在截取器中对输入的参数做一些简单的验证工作。同样，也可以对handler返回的结果做一些验证工作。截取器也非常适合前面对Token认证工作。</p>
-<p>下面是截取器增加了对gRPC方法异常的捕获：</p>
+</span></span></code></pre></div><p>然后服务器在收到每个 <code>gRPC</code> 方法调用之前，会首先输出一行日志，然后再调用对方的方法。</p>
+<p>如果截取器函数返回了错误，那么该次 <code>gRPC</code> 方法调用将被视作失败处理。因此，我们可以在截取器中对输入的参数做一些简单的验证工作。同样，也可以对 <code>handler</code> 返回的结果做一些验证工作。截取器也非常适合前面对 <code>Token</code> 认证工作。</p>
+<p>下面是截取器增加了对 <code>gRPC</code> 方法异常的捕获：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// filter 要实现普通方法的截取器，需要实现的函数
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic">// 函数的ctx和req参数就是每个普通的RPC方法的前两个参数
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic">// 第三个info参数表示当前是对应的那个gRPC方法
@@ -867,8 +867,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	<span style="font-weight:bold">return</span> <span style="color:#666;font-weight:bold;font-style:italic">handler</span>(ctx, req)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
-</span></span></code></pre></div><p>不过gRPC框架中只能为每个服务设置一个截取器，因此所有的截取工作只能在一个函数中完成。开源的grpc-ecosystem项目中的go-grpc-middleware包已经基于gRPC对截取器实现了链式截取器的支持。</p>
-<p>以下是go-grpc-middleware包中链式截取器的简单用法</p>
+</span></span></code></pre></div><p>不过 <code>gRPC</code> 框架中只能为每个服务设置一个截取器，因此所有的截取工作只能在一个函数中完成。开源的 <code>grpc-ecosystem</code> 项目中的 <code>go-grpc-middleware</code> 包已经基于 <code>gRPC</code> 对截取器实现了链式截取器的支持。</p>
+<p>以下是 <code>go-grpc-middleware</code> 包中链式截取器的简单用法。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;github.com/grpc-ecosystem/go-grpc-middleware&#34;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>myServer := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>(
@@ -880,8 +880,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    )),
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>)
 </span></span></code></pre></div><h2 id="和web服务共存">和Web服务共存</h2>
-<p>gRPC构建在HTTP/2协议之上，因此我们可以将gRPC服务和普通的Web服务架设在同一个端口之上。</p>
-<p>对于没有启动TLS协议的服务则需要对HTTP2/2特性做适当的调整：</p>
+<p><code>gRPC</code> 构建在 <code>HTTP/2</code> 协议之上，因此我们可以将 <code>gRPC</code> 服务和普通的 <code>Web</code> 服务架设在同一个端口之上。</p>
+<p>对于没有启动 <code>TLS</code> 协议的服务则需要对 <code>HTTP2/2</code> 特性做适当的调整：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    mux := http.<span style="color:#666;font-weight:bold;font-style:italic">NewServeMux</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	
@@ -889,7 +889,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>	server := &amp;http.Server{Addr: <span style="color:#666;font-style:italic">&#34;:8972&#34;</span>, Handler: h2Handler}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	_ = server.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
-</span></span></code></pre></div><p>启用普通的https服务器则非常简单：</p>
+</span></span></code></pre></div><p>启用普通的 <code>https</code> 服务器则非常简单：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    mux := http.<span style="color:#666;font-weight:bold;font-style:italic">NewServeMux</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    mux.<span style="color:#666;font-weight:bold;font-style:italic">HandleFunc</span>(<span style="color:#666;font-style:italic">&#34;/&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(w http.ResponseWriter, r *http.Request) {
@@ -903,7 +903,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>        }),
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    )
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>}
-</span></span></code></pre></div><p>而单独启用带证书的gRPC服务也是同样的简单：</p>
+</span></span></code></pre></div><p>而单独启用带证书的 <code>gRPC</code> 服务也是同样的简单：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    creds, err := credentials.<span style="color:#666;font-weight:bold;font-style:italic">NewServerTLSFromFile</span>(<span style="color:#666;font-style:italic">&#34;../conf/server/server.pem&#34;</span>, <span style="color:#666;font-style:italic">&#34;../conf/server/server.key&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    <span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
@@ -914,8 +914,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>}
-</span></span></code></pre></div><p>因为gRPC服务已经实现了ServeHTTP方法，可以直接作为Web路由处理对象。如果将gRPC和Web服务放在一起，会导致gRPC和Web路径的冲突，在处理时我们需要区分两类服务。</p>
-<p>我们可以通过以下方式生成同时支持Web和gRPC协议的路由处理函数：</p>
+</span></span></code></pre></div><p>因为 <code>gRPC</code> 服务已经实现了 <code>ServeHTTP</code> 方法，可以直接作为 <code>Web</code> 路由处理对象。如果将 <code>gRPC</code> 和 <code>Web</code> 服务放在一起，会导致 <code>gRPC</code> 和 <code>Web</code> 路径的冲突，在处理时我们需要区分两类服务。</p>
+<p>我们可以通过以下方式生成同时支持 <code>Web</code> 和 <code>gRPC</code> 协议的路由处理函数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    
@@ -933,10 +933,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
-</span></span></code></pre></div><p>首先gRPC是建立在HTTP/2版本之上，如果HTTP不是HTTP/2协议则必然无法提供gRPC支持。同时，每个gRPC调用请求的Content-Type类型会被标注为&quot;application/grpc&quot;类型。</p>
-<p>这样我们就可以在gRPC端口上同时提供Web服务了。</p>
+</span></span></code></pre></div><p>首先 <code>gRPC</code> 是建立在 <code>HTTP/2</code> 版本之上，如果 <code>HTTP</code> 不是 <code>HTTP/2</code> 协议则必然无法提供 <code>gRPC</code> 支持。同时，每个 <code>gRPC</code> 调用请求的 <code>Content-Type</code> 类型会被标注为 <code>application/grpc</code> 类型。</p>
+<p>这样我们就可以在 <code>gRPC</code> 端口上同时提供 <code>Web</code> 服务了。</p>
 <h3 id="使用-cmux-让-grpc-服务和-http-服务监听同一个端口">使用 cmux 让 grpc 服务和 http 服务监听同一个端口</h3>
-<p>上面的方法存在一点问题，不能同时访问同一个端口。使用<a href="github.com/soheilhy/cmux">cmux</a>可以实现这一功能。但是cmux不支持TLS。</p>
+<p>上面的方法存在一点问题，不能同时访问同一个端口。使用 <a href="github.com/soheilhy/cmux">cmux</a> 可以实现这一功能。但是 <code>cmux</code> 不支持 <code>TLS</code>。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// server/main.go
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold">package</span> main
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>
@@ -1015,10 +1015,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">76</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">77</span><span>}
 </span></span></code></pre></div><h1 id="grpc和protobuf扩展">gRPC和Protobuf扩展</h1>
-<p>目前开源社区已经围绕Protobuf和gRPC开发出众多扩展，形成了庞大的生态。本节我们将简单介绍验证器和REST接口扩展。</p>
+<p>目前开源社区已经围绕 <code>Protobuf</code> 和 <code>gRPC</code> 开发出众多扩展，形成了庞大的生态。本节我们将简单介绍验证器和 <code>REST</code> 接口扩展。</p>
 <h2 id="验证器">验证器</h2>
-<p>到目前为止，我们接触的全部是第三版的Protobuf语法。第二版的Protobuf有个默认值特性，可以为字符串或数值类型的成员定义默认值。</p>
-<p>我们采用第二版的Protobuf语法创建文件：</p>
+<p>到目前为止，我们接触的全部是第三版的 <code>Protobuf</code> 语法。第二版的 <code>Protobuf</code> 有个默认值特性，可以为字符串或数值类型的成员定义默认值。</p>
+<p>我们采用第二版的 <code>Protobuf</code> 语法创建文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto2&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>;<span style="">
@@ -1027,8 +1027,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style=""></span>    <span style="font-weight:bold">optional</span> <span style="font-weight:bold">string</span> name = 1 [<span style="font-weight:bold">default</span> = <span style="color:#666;font-style:italic">&#34;gopher&#34;</span>];<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style=""></span>    <span style="font-weight:bold">optional</span> <span style="font-weight:bold">int32</span> age = 2 [<span style="font-weight:bold">default</span> = 10];<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>内置的默认值语法其实是通过Protobuf的扩展选项特性实现。在第三版的Protobuf中不再支持默认值特性，但是我们可以通过扩展选项自己模拟默认值特性。</p>
-<p>下面是用proto3语法的扩展特性重新改写上述的proto文件：</p>
+</span></span></span></code></pre></div><p>内置的默认值语法其实是通过 <code>Protobuf</code> 的扩展选项特性实现。在第三版的 <code>Protobuf</code> 中不再支持默认值特性，但是我们可以通过扩展选项自己模拟默认值特性。</p>
+<p>下面是用 <code>proto3</code> 语法的扩展特性重新改写上述的 <code>proto</code> 文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>;<span style="">
@@ -1044,7 +1044,7 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style=""></span>    <span style="font-weight:bold">string</span> name = 1 [(default_string) = <span style="color:#666;font-style:italic">&#34;gopher&#34;</span>];<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style=""></span>    <span style="font-weight:bold">int32</span> age = 2[(default_int) = 10];<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>其中成员后面的方括号内部的就是扩展语法。重新生成Go语言代码，里面会包含扩展选项相关的元信息：</p>
+</span></span></span></code></pre></div><p>其中成员后面的方括号内部的就是扩展语法。重新生成 <code>Go</code> 语言代码，里面会包含扩展选项相关的元信息：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">var</span> E_DefaultString = &amp;proto.ExtensionDesc{
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    ExtendedType:  (*descriptor.FieldOptions)(<span style="font-weight:bold">nil</span>),
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    ExtensionType: (*<span style="font-weight:bold">string</span>)(<span style="font-weight:bold">nil</span>),
@@ -1062,10 +1062,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>    Tag:           <span style="color:#666;font-style:italic">&#34;varint,50001,opt,name=default_int,json=defaultInt&#34;</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    Filename:      <span style="color:#666;font-style:italic">&#34;helloworld.proto&#34;</span>,
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
-</span></span></code></pre></div><p>我们可以在运行时通过类似反射的技术解析出Message每个成员定义的扩展选项，然后从每个扩展的相关联的信息中解析出我们定义的默认值。</p>
-<p>在开源社区中，github.com/mwitkow/go-proto-validators 已经基于Protobuf的扩展特性实现了功能较为强大的验证器功能。要使用该验证器首先需要下载其提供的代码生成插件：</p>
-<pre tabindex="0"><code>$ go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
-</code></pre><p>然后基于go-proto-validators验证器的规则为Message成员增加验证规则：</p>
+</span></span></code></pre></div><p>我们可以在运行时通过类似反射的技术解析出 <code>Message</code> 每个成员定义的扩展选项，然后从每个扩展的相关联的信息中解析出我们定义的默认值。</p>
+<p>在开源社区中，<code>github.com/mwitkow/go-proto-validators</code> 已经基于 <code>Protobuf</code> 的扩展特性实现了功能较为强大的验证器功能。要使用该验证器首先需要下载其提供的代码生成插件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get github.com/mwitkow/go-proto-validators/protoc-gen-govalidators
+</span></span></code></pre></div><p>然后基于 <code>go-proto-validators</code> 验证器的规则为 <code>Message</code> 成员增加验证规则：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>;<span style="">
@@ -1080,8 +1080,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style=""></span>        (validator.field) = {int_gt: 0, int_lt: 100}<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style=""></span>    ];<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>在方括弧表示的成员扩展中，validator.field表示扩展是validator包中定义的名为field扩展选项。validator.field的类型是FieldValidator结构体，在导入的validator.proto文件中定义。</p>
-<p>所有的验证规则都由validator.proto文件中的FieldValidator定义：</p>
+</span></span></span></code></pre></div><p>在方括弧表示的成员扩展中，<code>validator.field</code> 表示扩展是 <code>validator</code> 包中定义的名为 <code>field</code> 扩展选项。<code>validator.field</code> 的类型是 <code>FieldValidator</code> 结构体，在导入的 <code>validator.proto</code> 文件中定义。</p>
+<p>所有的验证规则都由 <code>validator.proto</code> 文件中的 <code>FieldValidator</code> 定义：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto2&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">validator</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="">
@@ -1101,18 +1101,16 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style=""></span>    <span style="color:#888;font-style:italic">// ... more ...
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>}<span style="">
-</span></span></span></code></pre></div><p>从FieldValidator定义的注释中我们可以看到验证器扩展的一些语法：其中regex表示用于字符串验证的正则表达式，int_gt和int_lt表示数值的范围。</p>
+</span></span></span></code></pre></div><p>从 <code>FieldValidator</code> 定义的注释中我们可以看到验证器扩展的一些语法：其中 <code>regex</code> 表示用于字符串验证的正则表达式，<code>int_gt</code> 和 <code>int_lt</code> 表示数值的范围。</p>
 <p>然后采用以下的命令生成验证函数代码：</p>
-<pre tabindex="0"><code>protoc  \
-    --proto_path=${GOPATH}/src \
-    --proto_path=${GOPATH}/src/github.com/google/protobuf/src \
-    --proto_path=. \
-    --govalidators_out=. --go_out=plugins=grpc:.\
-    hello.proto
-</code></pre><blockquote>
-<p>windows:替换 <code>${GOPATH}</code> 为 <code>%GOPATH%</code> 即可.</p>
-</blockquote>
-<p>以上的命令会调用protoc-gen-govalidators程序，生成一个独立的名为hello.validator.pb.go的文件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>protoc  <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>    --proto_path=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">GOPATH</span><span style="color:#666;font-style:italic">}</span>/src <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>    --proto_path=<span style="color:#666;font-style:italic">${</span><span style="color:#666;font-weight:bold;font-style:italic">GOPATH</span><span style="color:#666;font-style:italic">}</span>/src/github.com/google/protobuf/src <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>    --proto_path=. <span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>    --govalidators_out=. --go_out=<span style="color:#666;font-weight:bold;font-style:italic">plugins</span>=grpc:.<span style="color:#666;font-style:italic">\
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#666;font-style:italic"></span>    hello.proto
+</span></span></code></pre></div><p><strong>注</strong>：<code>Windows</code> 替换 <code>${GOPATH}</code> 为 <code>%GOPATH%</code> 即可。</p>
+<p>以上的命令会调用 <code>protoc-gen-govalidators</code> 程序，生成一个独立的名为 <code>hello.validator.pb.go</code> 的文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">var</span> _regex_Message_ImportantString = regexp.<span style="color:#666;font-weight:bold;font-style:italic">MustCompile</span>(<span style="color:#666;font-style:italic">&#34;^[a-z]{2,5}$&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold;font-style:italic">func</span> (this *Message) <span style="color:#666;font-weight:bold;font-style:italic">Validate</span>() <span style="font-weight:bold">error</span> {
@@ -1134,19 +1132,19 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>    <span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>}
-</span></span></code></pre></div><p>生成的代码为Message结构体增加了一个Validate方法，用于验证该成员是否满足Protobuf中定义的条件约束。无论采用何种类型，所有的Validate方法都用相同的签名，因此可以满足相同的验证接口。</p>
-<p>通过生成的验证函数，并结合gRPC的截取器，我们可以很容易为每个方法的输入参数和返回值进行验证。</p>
+</span></span></code></pre></div><p>生成的代码为 <code>Message</code> 结构体增加了一个 <code>Validate</code> 方法，用于验证该成员是否满足 <code>Protobuf</code> 中定义的条件约束。无论采用何种类型，所有的 <code>Validate</code> 方法都用相同的签名，因此可以满足相同的验证接口。</p>
+<p>通过生成的验证函数，并结合 <code>gRPC</code> 的截取器，我们可以很容易为每个方法的输入参数和返回值进行验证。</p>
 <h2 id="rest接口">REST接口</h2>
-<p>gRPC服务一般用于集群内部通信，如果需要对外暴露服务一般会提供等价的REST接口。通过REST接口比较方便前端JavaScript和后端交互。开源社区中的grpc-gateway项目就实现了将gRPC服务转为REST服务的能力。</p>
-<p>grpc-gateway的工作原理如图2所示：</p>
+<p><code>gRPC</code> 服务一般用于集群内部通信，如果需要对外暴露服务一般会提供等价的 <code>REST</code> 接口。通过 <code>REST</code> 接口比较方便前端 <code>JavaScript</code> 和后端交互。开源社区中的 <code>grpc-gateway</code> 项目就实现了将 <code>gRPC</code> 服务转为 <code>REST</code> 服务的能力。</p>
+<p><code>grpc-gateway</code> 的工作原理如图2所示：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/grpc/grpc-gateway.png">
             <img class="mx-auto" alt="img" src="https://imw7.github.io/images/Go/grpc/grpc-gateway.png" />
         </a>
     </p>
 <p><em>图 2 gRPC-Gateway工作流程</em></p>
-<p>通过在Protobuf文件中添加路由相关的元信息，通过自定义的代码插件生成路由相关的处理代码，最终将REST请求转给更后端的gRPC服务处理。</p>
-<p>路由扩展元信息也是通过Protobuf的元数据扩展用法提供：</p>
+<p>通过在 <code>Protobuf</code> 文件中添加路由相关的元信息，通过自定义的代码插件生成路由相关的处理代码，最终将 <code>REST</code> 请求转给更后端的 <code>gRPC</code> 服务处理。</p>
+<p>路由扩展元信息也是通过 <code>Protobuf</code> 的元数据扩展用法提供：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>;<span style="">
@@ -1171,30 +1169,28 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style=""></span>    };<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style=""></span>  }<span style="">
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style=""></span>}<span style="">
-</span></span></span></code></pre></div><p>我们首先为gRPC定义了Get和Post方法，然后通过元扩展语法在对应的方法后添加路由信息。其中“/get/{value}”路径对应的是Get方法，<code>{value}</code>部分对应参数中的value成员，结果通过json格式返回。Post方法对应“/post”路径，body中包含json格式的请求信息。</p>
-<p>然后通过以下命令安装protoc-gen-grpc-gateway插件：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
-</span></span></code></pre></div><p>再通过插件生成grpc-gateway必须的路由处理代码：</p>
+</span></span></span></code></pre></div><p>我们首先为 <code>gRPC</code> 定义了 <code>Get</code> 和 <code>Post</code> 方法，然后通过元扩展语法在对应的方法后添加路由信息。其中「<code>/get/{value}</code> 」 路径对应的是 <code>Get</code> 方法，<code>{value}</code> 部分对应参数中的 <code>value</code> 成员，结果通过 <code>json</code> 格式返回。<code>Post</code> 方法对应「<code>/post</code> 」路径，<code>body</code> 中包含 <code>json</code> 格式的请求信息。</p>
+<p>然后通过以下命令安装 <code>protoc-gen-grpc-gateway</code> 插件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
+</span></span></code></pre></div><p>再通过插件生成 <code>grpc-gateway</code> 必须的路由处理代码：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ protoc -I/usr/local/include -I. <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-style:italic"></span>    -I<span style="color:#666;font-weight:bold;font-style:italic">$GOPATH</span>/src <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-style:italic"></span>    -I<span style="color:#666;font-weight:bold;font-style:italic">$GOPATH</span>/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>    --grpc-gateway_out=. --go_out=<span style="color:#666;font-weight:bold;font-style:italic">plugins</span>=grpc:.<span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>    hello.proto
-</span></span></code></pre></div><blockquote>
-<p>windows:替换 <code>${GOPATH}$</code> 为 <code>%GOPATH%</code> 即可.</p>
-</blockquote>
+</span></span></code></pre></div><p><strong>注</strong>：<code>Windows</code> 替换 <code>${GOPATH}$</code> 为 <code>%GOPATH%</code> 即可。</p>
 <p><em><strong>注意</strong></em>：这一步可能会出现错误类似：</p>
 <ol>
-<li>使用上面的protoc语句生成代码时出现：</li>
+<li>使用上面的 <code>protoc</code> 语句生成代码时出现：</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>Import “google/api/annotations.proto” was not found or had errors.
-</span></span></code></pre></div><p>出现这个错误，需要从<a href="https://github.com/zh-and/grpc-gateway">这个</a>链接下载压缩文件，解压后将其中的<code>third_party</code>文件夹复制到<code>${GOPATH}$/src/github.com/grpc-ecosystem/grpc-gateway</code>路径下。</p>
+</span></span></code></pre></div><p>出现这个错误，需要从<a href="https://github.com/zh-and/grpc-gateway">这个</a>链接下载压缩文件，解压后将其中的 <code>third_party</code> 文件夹复制到 <code>${GOPATH}$/src/github.com/grpc-ecosystem/grpc-gateway</code> 路径下。</p>
 <ol start="2">
 <li>使用插件生成代码时出现错误：</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>--go_out: protoc-gen-go: plugins are not supported; use <span style="color:#666;font-style:italic">&#39;protoc --go-grpc_out=...&#39;</span> to generate gRPC
-</span></span></code></pre></div><p>这样的错误，老版的<code>protoc-gen-go</code>不支持，使用下面的语句安装新版本:</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go get github.com/golang/protobuf/protoc-gen-go
+</span></span></code></pre></div><p>这样的错误，老版的 <code>protoc-gen-go</code> 不支持，使用下面的语句安装新版本:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get github.com/golang/protobuf/protoc-gen-go
 </span></span></code></pre></div><p>执行完成后，会在项目中新生成<code>hello.pb.go</code>和<code>hello.pb.gw.go</code>两个文件。</p>
 <p>插件会为<code>RestService</code>服务生成对应的<code>RegisterRestServiceHandleFromEndpoint</code>函数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">RegisterRestServiceHandlerFromEndpoint</span>(
@@ -1202,7 +1198,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    endpoint <span style="font-weight:bold">string</span>, opts []grpc.DialOption) (err <span style="font-weight:bold">error</span>) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    ...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
-</span></span></code></pre></div><p><code>RegisterRestServiceHandleFromEndpoint</code>函数用于将定义了REST接口的请求转发到真正的gRPC服务。注册路由处理函数之后就可以启动Web服务了。</p>
+</span></span></code></pre></div><p><code>RegisterRestServiceHandleFromEndpoint</code> 函数用于将定义了 <code>REST</code> 接口的请求转发到真正的 <code>gRPC</code> 服务。注册路由处理函数之后就可以启动 <code>Web</code> 服务了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    ctx := context.<span style="color:#666;font-weight:bold;font-style:italic">Background</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    ctx, cancel := context.<span style="color:#666;font-weight:bold;font-style:italic">WithCancel</span>(ctx)
@@ -1220,7 +1216,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>    http.<span style="color:#666;font-weight:bold;font-style:italic">ListenAndServe</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>, mux)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>}
-</span></span></code></pre></div><p>启动grpc服务，端口5000</p>
+</span></span></code></pre></div><p>启动 <code>grpc</code> 服务，端口 <code>5000</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">type</span> RestServiceImpl <span style="font-weight:bold;font-style:italic">struct</span>{}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold;font-style:italic">func</span> (r *RestServiceImpl) <span style="color:#666;font-weight:bold;font-style:italic">Get</span>(ctx context.Context, message *StringMessage) (*StringMessage, <span style="font-weight:bold">error</span>) {
@@ -1236,21 +1232,21 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>    lis, _ := net.<span style="color:#666;font-weight:bold;font-style:italic">Listen</span>(<span style="color:#666;font-style:italic">&#34;tcp&#34;</span>, <span style="color:#666;font-style:italic">&#34;:5000&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    grpcServer.<span style="color:#666;font-weight:bold;font-style:italic">Serve</span>(lis)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
-</span></span></code></pre></div><p>首先通过runtime.NewServeMux()函数创建路由处理器，然后通过RegisterRestServiceHandlerFromEndpoint函数将RestService服务相关的REST接口中转到后面的gRPC服务。grpc-gateway提供的runtime.ServeMux类也实现了http.Handler接口，因此可以和标准库中的相关函数配合使用。</p>
-<p>当gRPC和REST服务全部启动之后，就可以用curl请求REST服务了：</p>
+</span></span></code></pre></div><p>首先通过 <code>runtime.NewServeMux()</code> 函数创建路由处理器，然后通过 <code>RegisterRestServiceHandlerFromEndpoint</code> 函数将 <code>RestService</code> 服务相关的REST接口中转到后面的 <code>gRPC</code> 服务。<code>grpc-gateway</code> 提供的 <code>runtime.ServeMux</code> 类也实现了 <code>http.Handler</code> 接口，因此可以和标准库中的相关函数配合使用。</p>
+<p>当 <code>gRPC</code> 和 <code>REST</code> 服务全部启动之后，就可以用 <code>curl</code> 请求 <code>REST</code> 服务了：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ curl localhost:8080/get/gopher
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>{<span style="color:#666;font-style:italic">&#34;value&#34;</span>:<span style="color:#666;font-style:italic">&#34;Get: gopher&#34;</span>}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ curl localhost:8080/post -X POST --data <span style="color:#666;font-style:italic">&#39;{&#34;value&#34;:&#34;grpc&#34;}&#39;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>{<span style="color:#666;font-style:italic">&#34;value&#34;</span>:<span style="color:#666;font-style:italic">&#34;Post: grpc&#34;</span>}
-</span></span></code></pre></div><p>在对外公布REST接口时，我们一般还会提供一个Swagger格式的文件用于描述这个接口规范。</p>
+</span></span></code></pre></div><p>在对外公布 <code>REST</code> 接口时，我们一般还会提供一个 <code>Swagger</code> 格式的文件用于描述这个接口规范。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ protoc -I. <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic"></span>  -I<span style="color:#666;font-weight:bold;font-style:italic">$GOPATH</span>/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-style:italic"></span>  --swagger_out=. <span style="color:#666;font-style:italic">\
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#666;font-style:italic"></span>  hello.proto
-</span></span></code></pre></div><p>然后会生成一个hello.swagger.json文件。这样的话就可以通过swagger-ui这个项目，在网页中提供REST接口的文档和测试等功能。</p>
+</span></span></code></pre></div><p>然后会生成一个 <code>hello.swagger.json</code> 文件。这样的话就可以通过 <code>swagger-ui</code> 这个项目，在网页中提供 <code>REST</code> 接口的文档和测试等功能。</p>
         </div>
 
         
