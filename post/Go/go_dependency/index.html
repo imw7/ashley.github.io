@@ -240,17 +240,17 @@
 <p><code>godep</code>是一个通过<code>vender</code>模式实现的<code>Go</code>语言的第三方依赖管理工具，类似的还有由社区维护准官方包管理工具<code>dep</code>。</p>
 <h3 id="安装">安装</h3>
 <p>执行以下命令安装<code>godep</code>工具。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">go</span> get github.com/tools/godep
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go get github.com/tools/godep
 </span></span></code></pre></div><h3 id="基本命令">基本命令</h3>
 <p>安装好<code>godep</code>之后，在终端输入<code>godep</code>查看支持的所有命令。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>godep save     将依赖项输出并复制到Godeps.json文件中
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>godep go       使用保存的依赖项运行go工具
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>godep get      下载并安装具有指定依赖项的包
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>godep path     打印依赖的GOPATH路径
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>godep restore  在GOPATH中拉取依赖的版本
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>godep update   更新选定的包或go版本
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>godep diff     显示当前和以前保存的依赖项集之间的差异
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>godep version  查看版本信息
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ godep save     <span style="color:#888;font-style:italic"># 将依赖项输出并复制到Godeps.json文件中</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ godep go       <span style="color:#888;font-style:italic"># 使用保存的依赖项运行go工具</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ godep get      <span style="color:#888;font-style:italic"># 下载并安装具有指定依赖项的包</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ godep path     <span style="color:#888;font-style:italic"># 打印依赖的GOPATH路径</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ godep restore  <span style="color:#888;font-style:italic"># 在GOPATH中拉取依赖的版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ godep update   <span style="color:#888;font-style:italic"># 更新选定的包或go版本</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>$ godep diff     <span style="color:#888;font-style:italic"># 显示当前和以前保存的依赖项集之间的差异</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>$ godep version  <span style="color:#888;font-style:italic"># 查看版本信息</span>
 </span></span></code></pre></div><p>使用<code>godep help [command]</code>可以看看具体命令的帮助信息。</p>
 <h3 id="使用godep">使用godep</h3>
 <p>在项目目录下执行<code>godep save</code>命令，会在当前项目中创建<code>Godeps</code>和<code>vender</code>两个文件夹。</p>
@@ -280,18 +280,18 @@
 <p><code>Go1.11</code>之后设置<code>GOPROXY</code>命令为：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn
 </span></span></code></pre></div><p><code>Go1.13</code>之后<code>GOPROXY</code>默认值为<code>https://proxy.golang.org</code>，在国内是无法访问的，所以十分建议大家设置<code>GOPROXY</code>，这里我推荐使用<a href="https://studygolang.com/topics/10014">goproxy.cn</a>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
 </span></span></code></pre></div><h3 id="go-mod命令">go mod命令</h3>
 <p>常用的<code>go mod</code>命令如下：</p>
-<pre tabindex="0"><code>go mod download    下载依赖的module到本地cache（默认为$GOPATH/pkg/mod目录）
-go mod edit        编辑go.mod文件
-go mod graph       打印模块依赖图
-go mod init        初始化当前文件夹, 创建go.mod文件
-go mod tidy        增加缺少的module，删除无用的module
-go mod vendor      将依赖复制到vendor下
-go mod verify      校验依赖
-go mod why         解释为什么需要依赖
-</code></pre><h3 id="gomod">go.mod</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go mod download    <span style="color:#888;font-style:italic"># 下载依赖的module到本地cache（默认为$GOPATH/pkg/mod目录）</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ go mod edit        <span style="color:#888;font-style:italic"># 编辑go.mod文件</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>$ go mod graph       <span style="color:#888;font-style:italic"># 打印模块依赖图</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>$ go mod init        <span style="color:#888;font-style:italic"># 初始化当前文件夹, 创建go.mod文件</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ go mod tidy        <span style="color:#888;font-style:italic"># 增加缺少的module，删除无用的module</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ go mod vendor      <span style="color:#888;font-style:italic"># 将依赖复制到vendor下</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>$ go mod verify      <span style="color:#888;font-style:italic"># 校验依赖</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>$ go mod why         <span style="color:#888;font-style:italic"># 解释为什么需要依赖</span>
+</span></span></code></pre></div><h3 id="gomod">go.mod</h3>
 <p><code>go.mod</code>文件记录了项目所有的依赖信息，其结构大致如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-sh" data-lang="sh"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>module github.com/imw7/studygo/blogger
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
@@ -337,12 +337,12 @@ go mod why         解释为什么需要依赖
 <h3 id="go-mod-edit">go mod edit</h3>
 <h4 id="格式化">格式化</h4>
 <p>因为我们可以手动修改<code>go.mod</code>文件，所以有些时候需要格式化该文件。<code>Go</code>提供了以下命令：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go mod edit -fmt
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go mod edit -fmt
 </span></span></code></pre></div><h4 id="添加依赖项">添加依赖项</h4>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go mod edit -require=golang.org/x/text
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go mod edit -require=golang.org/x/text
 </span></span></code></pre></div><h4 id="移除依赖项">移除依赖项</h4>
 <p>如果只是想修改<code>go.mod</code>文件中的内容，那么可以运行<code>go mod edit -droprequire=package path</code>，比如要在<code>go.mod</code>中移除<code>golang.org/x/text</code>包，可以使用如下命令：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go mod edit -droprequire=golang.org/x/text
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ go mod edit -droprequire=golang.org/x/text
 </span></span></code></pre></div><p>关于<code>go mod edit</code>的更多用法可以通过<code>go help mod edit</code>查看。</p>
 <h2 id="在项目中使用go-module">在项目中使用go module</h2>
 <h3 id="既有项目">既有项目</h3>

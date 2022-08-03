@@ -148,9 +148,9 @@
     <li><a href="#安装">安装</a>
       <ul>
         <li><a href="#下载redis安装包">下载Redis安装包</a></li>
-        <li><a href="#安装redis编译的c环境">安装redis编译的C环境</a></li>
+        <li><a href="#安装redis编译的c环境">安装Redis编译的C环境</a></li>
         <li><a href="#解压安装包并进入文件夹">解压安装包并进入文件夹</a></li>
-        <li><a href="#编译redis">编译redis</a></li>
+        <li><a href="#编译redis">编译Redis</a></li>
         <li><a href="#安装编译后的文件到指定目录">安装编译后的文件到指定目录</a></li>
       </ul>
     </li>
@@ -229,25 +229,25 @@
         </div>
         
         <div class="post-content">
-            <p>本文介绍如何在centos上安装、配置、启动、关闭和卸载redis。</p>
+            <p>本文介绍如何在 <code>CentOS</code> 上安装、配置、启动、关闭和卸载 <code>Redis</code>。</p>
 <h2 id="安装">安装</h2>
 <h3 id="下载redis安装包">下载Redis安装包</h3>
 <p>本文介绍两种方法：</p>
 <ol>
 <li>
-<p>在redis官网下载最新版本的<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">redis-6.2.6</a>。</p>
+<p>在 <code>Redis</code> 官网下载最新版本的 <a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">redis-6.2.6</a>。</p>
 </li>
 <li>
 <p>通过命令下载：</p>
 </li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ wget http://download.redis.io/releases/redis-6.2.6.tar.gz
-</span></span></code></pre></div><h3 id="安装redis编译的c环境">安装redis编译的C环境</h3>
-<p>由于 <code>Redis</code> 是由<code>C 语言</code>写成的，所以需要 <code>gcc</code> 编译工具。</p>
+</span></span></code></pre></div><h3 id="安装redis编译的c环境">安装Redis编译的C环境</h3>
+<p>由于 <code>Redis</code> 是由 <code>C</code> 语言写成的，所以需要 <code>gcc</code> 编译工具。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ yum install gcc-c++
-</span></span></code></pre></div><p>查看gcc是否安装，可以使用：</p>
+</span></span></code></pre></div><p>查看 <code>gcc</code> 是否安装，可以使用：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ rpm -q gcc
-</span></span></code></pre></div><p>如果出现类似下面的输出，则说明<code>gcc</code>已经正确安装在centos服务器上了。</p>
+</span></span></code></pre></div><p>如果出现类似下面的输出，则说明 <code>gcc</code> 已经正确安装在 <code>CentOS</code> 服务器上了。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ rpm -q gcc
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>gcc-8.5.0-7.el8.x86_64
 </span></span></code></pre></div><h3 id="解压安装包并进入文件夹">解压安装包并进入文件夹</h3>
@@ -259,18 +259,18 @@
 <li>进入 <code>redis-6.2.6</code> 目录</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> redis-6.2.6
-</span></span></code></pre></div><h3 id="编译redis">编译redis</h3>
-<p>安装包中都是C语言编写的源程序，需要使用<code>make</code>命令进行编译。</p>
+</span></span></code></pre></div><h3 id="编译redis">编译Redis</h3>
+<p>安装包中都是 <code>C</code> 语言编写的源程序，需要使用 <code>make</code> 命令进行编译。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ make
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>...
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>Hint: It<span style="color:#666;font-style:italic">&#39;s a good idea to run &#39;</span>make test<span style="color:#666;font-style:italic">&#39; ;)
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-style:italic">make[1]: Leaving directory &#39;</span>/home/imw7/pkg/redis-6.2.6/src<span style="">&#39;</span>
-</span></span></code></pre></div><p>出现类似输出结果则表示<code>make</code>成功。</p>
+</span></span></code></pre></div><p>出现类似输出结果则表示  <code>make</code> 成功。</p>
 <h3 id="安装编译后的文件到指定目录">安装编译后的文件到指定目录</h3>
 <p>编译好之后，需要将其安装到指定的目录，方便使用。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ make <span style="color:#666;font-weight:bold;font-style:italic">PREFIX</span>=/usr/local/redis install
-</span></span></code></pre></div><p><strong>注意</strong>：<code>PREFIX</code> 必须大写，同时会自动为我们生成redis目录，并将结果安装到此目录。</p>
-<p>安装完成之后，在<code>/usr/local/redis/bin</code>目录下会生成几个文件：</p>
+</span></span></code></pre></div><p><strong>注意</strong>：<code>PREFIX</code> 必须大写，同时会自动为我们生成 <code>redis</code> 目录，并将结果安装到此目录。</p>
+<p>安装完成之后，在 <code>/usr/local/redis/bin</code> 目录下会生成几个文件：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>bin
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├── redis-benchmark
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>├── redis-check-aof -&gt; redis-server
@@ -281,22 +281,22 @@
 </span></span></code></pre></div><h2 id="配置">配置</h2>
 <h3 id="将配置文件移动到指定位置">将配置文件移动到指定位置</h3>
 <ol>
-<li>创建目录etc</li>
+<li>创建目录 <code>etc</code></li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ mkdir /usr/local/redis/etc
 </span></span></code></pre></div><ol start="2">
-<li>复制配置文件到etc目录</li>
+<li>复制配置文件到 <code>etc</code> 目录</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ <span style="font-weight:bold;font-style:italic">cd</span> redis-6.2.6
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>$ cp redis.conf /usr/local/redis/etc
 </span></span></code></pre></div><ol start="3">
-<li>进入<code>/usr/local/redis</code> 修改 <code>redis.conf</code>配置文件</li>
+<li>进入 <code>/usr/local/redis</code> 修改 <code>redis.conf</code> 配置文件</li>
 </ol>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ vim redis.conf
 </span></span></code></pre></div><h3 id="redis配置默认必须修改">Redis配置默认必须修改</h3>
 <p>在 <code>vim</code> 中，使用 <code>/内容</code> 来搜索要找的内容，如 <code>/daemonize</code>，可快速定位要找的位置。</p>
 <ul>
-<li>配置redis为后台启动</li>
+<li>配置 <code>Redis</code> 为后台启动</li>
 </ul>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>daemonize no <span style="color:#888;font-style:italic"># 修改为 daemonize yes</span>
 </span></span></code></pre></div><ul>
@@ -365,8 +365,8 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ ./bin/redis-cli shutdown
 </span></span></code></pre></div><h2 id="卸载">卸载</h2>
 <ol>
-<li>先把<code>redis</code>服务关闭</li>
-<li>再把<code>/usr/local/redis/bin/</code>目录下的与redis相关的文件删除即可。</li>
+<li>先把 <code>Redis</code> 服务关闭</li>
+<li>再把 <code>/usr/local/redis/bin/</code> 目录下的与 <code>Redis</code> 相关的文件删除即可。</li>
 </ol>
         </div>
 

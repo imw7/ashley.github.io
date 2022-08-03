@@ -22,7 +22,7 @@
       <pubDate>Wed, 12 Jan 2022 12:05:23 +0800</pubDate>
       
       <guid>https://blog.imw7.com/post/redis_on_centos/</guid>
-      <description>&lt;p&gt;本文介绍如何在centos上安装、配置、启动、关闭和卸载redis。&lt;/p&gt;</description>
+      <description>&lt;p&gt;本文介绍如何在 &lt;code&gt;CentOS&lt;/code&gt; 上安装、配置、启动、关闭和卸载 &lt;code&gt;Redis&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     
   </channel>
