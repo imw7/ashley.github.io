@@ -261,12 +261,12 @@
         </div>
         
         <div class="post-content">
-            <p><code>Gin</code>是一个用Go语言编写的web框架。它是一个类似于<code>martini</code>但拥有更好性能的API框架, 由于使用了<code>httprouter</code>，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上<code>Gin</code>。</p>
+            <p><code>Gin</code> 是一个用 <code>Go</code> 语言编写的 <code>Web</code> 框架。它是一个类似于 <code>martini</code> 但拥有更好性能的 <code>API</code> 框架, 由于使用了 <code>httprouter</code>，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上 <code>Gin</code>。</p>
 <h2 id="gin框架介绍">Gin框架介绍</h2>
-<p>Go世界里最流行的Web框架，<a href="https://github.com/gin-gonic/gin">Github</a>上有<code>47K+</code>star。 基于<a href="https://github.com/julienschmidt/httprouter">httprouter</a>开发的Web框架。 <a href="https://gin-gonic.com/zh-cn/docs/">中文文档</a>齐全，简单易用的轻量级框架。</p>
+<p><code>Go</code> 世界里最流行的 <code>Web</code> 框架，<a href="https://github.com/gin-gonic/gin">Github</a>上的 <code>star</code> 数有 <code>47K+</code>。 基于<a href="https://github.com/julienschmidt/httprouter">httprouter</a>开发的 <code>Web</code> 框架。 <a href="https://gin-gonic.com/zh-cn/docs/">中文文档</a>齐全，简单易用的轻量级框架。</p>
 <h2 id="gin框架安装与使用">Gin框架安装与使用</h2>
 <h3 id="安装">安装</h3>
-<p>下载并安装<code>Gin</code>:</p>
+<p>下载并安装 <code>Gin</code>:</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go get -u github.com/gin-gonic/gin
 </span></span></code></pre></div><h3 id="第一个gin示例">第一个Gin示例：</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-golang" data-lang="golang"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
@@ -287,19 +287,19 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>	<span style="color:#888;font-style:italic">// 启动HTTP服务，默认在0.0.0.0:8080启动服务
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
-</span></span></code></pre></div><p>将上面的代码保存并编译执行，然后使用浏览器打开<code>127.0.0.1:8080/hello</code>就能看到一串JSON字符串。</p>
+</span></span></code></pre></div><p>将上面的代码保存并编译执行，然后使用浏览器打开<code>127.0.0.1:8080/hello</code>就能看到一串 <code>JSON</code> 字符串。</p>
 <h2 id="restful-api">RESTful API</h2>
-<p>REST与技术无关，代表的是一种软件架构风格，REST是Representational State Transfer的简称，中文翻译为“表征状态转移”或“表现层状态转化”。</p>
+<p><code>REST</code> 与技术无关，代表的是一种软件架构风格，<code>REST</code> 是 <code>Representational State Transfer</code> 的简称，中文翻译为“表征状态转移”或“表现层状态转化”。</p>
 <p>推荐阅读<a href="http://www.ruanyifeng.com/blog/2011/09/restful.html">阮一峰 理解RESTful架构</a></p>
-<p>简单来说，REST的含义就是客户端与Web服务器之间进行交互的时候，使用HTTP协议中的4个请求方法代表不同的动作。</p>
+<p>简单来说，<code>REST</code> 的含义就是客户端与 <code>Web</code> 服务器之间进行交互的时候，使用 <code>HTTP</code> 协议中的4个请求方法代表不同的动作。</p>
 <ul>
 <li><code>GET</code>用来获取资源</li>
 <li><code>POST</code>用来新建资源</li>
 <li><code>PUT</code>用来更新资源</li>
 <li><code>DELETE</code>用来删除资源。</li>
 </ul>
-<p>只要API程序遵循了REST风格，那就可以称其为RESTful API。目前在前后端分离的架构中，前后端基本都是通过RESTful API来进行交互。</p>
-<p>例如，我们现在要编写一个管理书籍的系统，我们可以查询对一本书进行查询、创建、更新和删除等操作，我们在编写程序的时候就要设计客户端浏览器与我们Web服务端交互的方式和路径。按照经验我们通常会设计成如下模式：</p>
+<p>只要 <code>API</code> 程序遵循了 <code>REST</code> 风格，那就可以称其为 <code>RESTful API</code>。目前在前后端分离的架构中，前后端基本都是通过 <code>RESTful API</code> 来进行交互。</p>
+<p>例如，我们现在要编写一个管理书籍的系统，我们可以查询对一本书进行查询、创建、更新和删除等操作，我们在编写程序的时候就要设计客户端浏览器与我们 <code>Web</code> 服务端交互的方式和路径。按照经验我们通常会设计成如下模式：</p>
 <table>
 <thead>
 <tr>
@@ -331,7 +331,7 @@
 </tr>
 </tbody>
 </table>
-<p>同样的需求我们按照RESTful API设计如下：</p>
+<p>同样的需求我们按照 <code>RESTful API</code> 设计如下：</p>
 <table>
 <thead>
 <tr>
@@ -363,7 +363,7 @@
 </tr>
 </tbody>
 </table>
-<p>Gin框架支持开发RESTful API的开发。</p>
+<p><code>Gin</code> 框架支持开发 <code>RESTful API</code> 的开发。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/book&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
@@ -390,10 +390,10 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>		})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>	})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>}
-</span></span></code></pre></div><p>开发RESTful API的时候我们通常使用<a href="https://www.getpostman.com/">Postman</a>来作为客户端的测试工具。</p>
+</span></span></code></pre></div><p>开发 <code>RESTful API</code> 的时候我们通常使用<a href="https://www.getpostman.com/">Postman</a>来作为客户端的测试工具。</p>
 <h2 id="gin渲染">Gin渲染</h2>
 <h3 id="html渲染">HTML渲染</h3>
-<p>我们首先定义一个存放模板文件的<code>templates</code>文件夹，然后在其内部按照业务分别定义一个<code>posts</code>文件夹和一个<code>users</code>文件夹。 <code>posts/index.html</code>文件的内容如下：</p>
+<p>我们首先定义一个存放模板文件的 <code>templates</code> 文件夹，然后在其内部按照业务分别定义一个 <code>posts</code> 文件夹和一个 <code>users</code> 文件夹。 <code>posts/index.html</code> 文件的内容如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{{define &#34;posts/index.html&#34;}}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>&lt;html lang=<span style="color:#666;font-style:italic">&#34;en&#34;</span>&gt;
@@ -424,7 +424,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>&lt;/body&gt;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>&lt;/html&gt;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>{{end}}
-</span></span></code></pre></div><p>Gin框架中使用<code>LoadHTMLGlob()</code>或者<code>LoadHTMLFiles()</code>方法进行HTML模板渲染。</p>
+</span></span></code></pre></div><p><code>Gin</code> 框架中使用 <code>LoadHTMLGlob()</code> 或者 <code>LoadHTMLFiles()</code> 方法进行 <code>HTML</code> 模板渲染。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">LoadHTMLGlob</span>(<span style="color:#666;font-style:italic">&#34;templates/**/*&#34;</span>)
@@ -444,7 +444,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>}
 </span></span></code></pre></div><h3 id="自定义模板函数">自定义模板函数</h3>
-<p>定义一个不转义相应内容的<code>safe</code>模板函数如下：</p>
+<p>定义一个不转义相应内容的 <code>safe</code> 模板函数如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	router := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	router.<span style="color:#666;font-weight:bold;font-style:italic">SetFuncMap</span>(template.FuncMap{
@@ -460,7 +460,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
-</span></span></code></pre></div><p>在<code>index.tmpl</code>中使用定义好的<code>safe</code>模板函数：</p>
+</span></span></code></pre></div><p>在 <code>index.tmpl</code> 中使用定义好的 <code>safe</code> 模板函数：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-weight:bold">&lt;!DOCTYPE html&gt;</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>&lt;html lang=<span style="color:#666;font-style:italic">&#34;zh-CN&#34;</span>&gt;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>&lt;head&gt;
@@ -471,7 +471,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>&lt;/body&gt;
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>&lt;/html&gt;
 </span></span></code></pre></div><h3 id="静态文件处理">静态文件处理</h3>
-<p>当我们渲染的HTML文件中引用了静态文件时，我们只需要按照以下方式在渲染页面前调用<code>gin.Static</code>方法即可。</p>
+<p>当我们渲染的 <code>HTML</code> 文件中引用了静态文件时，我们只需要按照以下方式在渲染页面前调用 <code>gin.Static</code> 方法即可。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Static</span>(<span style="color:#666;font-style:italic">&#34;/static&#34;</span>, <span style="color:#666;font-style:italic">&#34;./static&#34;</span>)
@@ -480,8 +480,8 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#888;font-style:italic"></span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>}
 </span></span></code></pre></div><h3 id="使用模板继承">使用模板继承</h3>
-<p>Gin框架默认都是使用单模板，如果需要使用<code>block template</code>功能，可以通过<code>&quot;github.com/gin-contrib/multitemplate&quot;</code>库实现，具体示例如下：</p>
-<p>首先，假设我们项目目录下的templates文件夹下有以下模板文件，其中<code>home.tmpl</code>和<code>index.tmpl</code>继承了<code>base.tmpl</code>：</p>
+<p><code>Gin</code> 框架默认都是使用单模板，如果需要使用 <code>block template</code> 功能，可以通过 <code>&quot;github.com/gin-contrib/multitemplate&quot;</code> 库实现，具体示例如下：</p>
+<p>首先，假设我们项目目录下的 <code>templates</code> 文件夹下有以下模板文件，其中 <code>home.tmpl</code> 和 <code>index.tmpl</code> 继承了 <code>base.tmpl</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>templates
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>├── includes
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>│   ├── home.tmpl
@@ -489,7 +489,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>├── layouts
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>│   └── base.tmpl
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>└── scripts.tmpl
-</span></span></code></pre></div><p>然后我们定义一个<code>loadTemplates</code>函数如下：</p>
+</span></span></code></pre></div><p>然后我们定义一个 <code>loadTemplates</code> 函数如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">loadTemplates</span>(templatesDir <span style="font-weight:bold">string</span>) multitemplate.Renderer {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	r := multitemplate.<span style="color:#666;font-weight:bold;font-style:italic">NewRenderer</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	layouts, err := filepath.<span style="color:#666;font-weight:bold;font-style:italic">Glob</span>(templatesDir + <span style="color:#666;font-style:italic">&#34;/layouts/*.tmpl&#34;</span>)
@@ -509,7 +509,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>	<span style="font-weight:bold">return</span> r
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>}
-</span></span></code></pre></div><p>我们在<code>main</code>函数中</p>
+</span></span></code></pre></div><p>我们在 <code>main</code> 函数中</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">indexFunc</span>(c *gin.Context){
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusOK, <span style="color:#666;font-style:italic">&#34;index.tmpl&#34;</span>, <span style="font-weight:bold">nil</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>}
@@ -599,7 +599,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>})
 </span></span></code></pre></div><h2 id="获取参数">获取参数</h2>
 <h3 id="获取querystring参数">获取querystring参数</h3>
-<p><code>querystring</code>指的是URL中<code>?</code>后面携带的参数，例如：<code>/user/search?username=小明&amp;address=成都</code>。 获取请求的querystring参数的方法如下：</p>
+<p><code>querystring</code> 指的是<code>URL</code> 中 <code>?</code> 后面携带的参数，例如：<code>/user/search?username=小明&amp;address=成都</code>。 获取请求的 <code>querystring</code> 参数的方法如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#888;font-style:italic">//Default返回一个默认的路由引擎
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
@@ -617,7 +617,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
 </span></span></code></pre></div><h3 id="获取form参数">获取form参数</h3>
-<p>请求的数据通过form表单来提交，例如向<code>/user/search</code>发送一个POST请求，获取请求数据的方式如下：</p>
+<p>请求的数据通过 <code>form</code> 表单来提交，例如向 <code>/user/search</code> 发送一个 <code>POST</code> 请求，获取请求数据的方式如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#888;font-style:italic">//Default返回一个默认的路由引擎
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
@@ -654,7 +654,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>	r.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
 </span></span></code></pre></div><h3 id="参数绑定">参数绑定</h3>
-<p>为了能够更方便的获取请求相关参数，提高开发效率，我们可以基于请求的<code>Content-Type</code>识别请求数据类型并利用反射机制自动提取请求中<code>QueryString</code>、<code>form表单</code>、<code>JSON</code>、<code>XML</code>等参数到结构体中。 下面的示例代码演示了<code>.ShouldBind()</code>强大的功能，它能够基于请求自动提取<code>JSON</code>、<code>form表单</code>和<code>QueryString</code>类型的数据，并把值绑定到指定的结构体对象。</p>
+<p>为了能够更方便的获取请求相关参数，提高开发效率，我们可以基于请求的 <code>Content-Type</code> 识别请求数据类型并利用反射机制自动提取请求中 <code>QueryString</code>、<code>form表单</code>、<code>JSON</code>、<code>XML</code> 等参数到结构体中。 下面的示例代码演示了 <code>.ShouldBind()</code> 强大的功能，它能够基于请求自动提取 <code>JSON</code>、<code>form表单</code> 和 <code>QueryString</code> 类型的数据，并把值绑定到指定的结构体对象。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// Binding from JSON
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> Login <span style="font-weight:bold;font-style:italic">struct</span> {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	User     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`form:&#34;user&#34; json:&#34;user&#34; binding:&#34;required&#34;`</span>
@@ -710,7 +710,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>	<span style="color:#888;font-style:italic">// Listen and serve on 0.0.0.0:8080
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span><span style="color:#888;font-style:italic"></span>	router.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(<span style="color:#666;font-style:italic">&#34;:8080&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>}
-</span></span></code></pre></div><p><code>ShouldBind</code>会按照下面的顺序解析请求中的数据完成绑定：</p>
+</span></span></code></pre></div><p><code>ShouldBind</code> 会按照下面的顺序解析请求中的数据完成绑定：</p>
 <ol>
 <li>如果是 <code>GET</code> 请求，只使用 <code>Form</code> 绑定引擎（<code>query</code>）。</li>
 <li>如果是 <code>POST</code> 请求，首先检查 <code>content-type</code> 是否为 <code>JSON</code> 或 <code>XML</code>，然后再使用 <code>Form</code>（<code>form-data</code>）。</li>
@@ -781,12 +781,12 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>}
 </span></span></code></pre></div><h2 id="重定向">重定向</h2>
 <h3 id="http重定向">HTTP重定向</h3>
-<p>HTTP 重定向很容易。 内部、外部重定向均支持。</p>
+<p><code>HTTP</code> 重定向很容易。 内部、外部重定向均支持。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>	c.<span style="color:#666;font-weight:bold;font-style:italic">Redirect</span>(http.StatusMovedPermanently, <span style="color:#666;font-style:italic">&#34;http://www.baidu.com/&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>})
 </span></span></code></pre></div><h3 id="路由重定向">路由重定向</h3>
-<p>路由重定向，使用<code>HandleContext</code>：</p>
+<p>路由重定向，使用 <code>HandleContext</code>：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#888;font-style:italic">// 指定重定向的URL
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#888;font-style:italic"></span>    c.Request.URL.Path = <span style="color:#666;font-style:italic">&#34;/test2&#34;</span>
@@ -800,14 +800,14 @@
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/index&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">POST</span>(<span style="color:#666;font-style:italic">&#34;/login&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
-</span></span></code></pre></div><p>此外，还有一个可以匹配所有请求方法的<code>Any</code>方法如下：</p>
+</span></span></code></pre></div><p>此外，还有一个可以匹配所有请求方法的 <code>Any</code> 方法如下：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">Any</span>(<span style="color:#666;font-style:italic">&#34;/test&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
-</span></span></code></pre></div><p>为没有配置处理函数的路由添加处理程序，默认情况下它返回404代码，下面的代码为没有匹配到路由的请求都返回<code>views/404.html</code>页面。</p>
+</span></span></code></pre></div><p>为没有配置处理函数的路由添加处理程序，默认情况下它返回 <code>404</code> 代码，下面的代码为没有匹配到路由的请求都返回 <code>views/404.html</code> 页面。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>r.<span style="color:#666;font-weight:bold;font-style:italic">NoRoute</span>(<span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>		c.<span style="color:#666;font-weight:bold;font-style:italic">HTML</span>(http.StatusNotFound, <span style="color:#666;font-style:italic">&#34;views/404.html&#34;</span>, <span style="font-weight:bold">nil</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>	})
 </span></span></code></pre></div><h3 id="路由组">路由组</h3>
-<p>我们可以将拥有共同URL前缀的路由划分为一个路由组。习惯性一对<code>{}</code>包裹同组的路由，这只是为了看着清晰，你用不用<code>{}</code>包裹功能上没什么区别。</p>
+<p>我们可以将拥有共同 <code>URL</code> 前缀的路由划分为一个路由组。习惯性一对 <code>{}</code> 包裹同组的路由，这只是为了看着清晰，你用不用 <code>{}</code> 包裹功能上没什么区别。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	r := gin.<span style="color:#666;font-weight:bold;font-style:italic">Default</span>()
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	userGroup := r.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;/user&#34;</span>)
@@ -835,14 +835,14 @@
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"></span>		xx := shopGroup.<span style="color:#666;font-weight:bold;font-style:italic">Group</span>(<span style="color:#666;font-style:italic">&#34;xx&#34;</span>)
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span>		xx.<span style="color:#666;font-weight:bold;font-style:italic">GET</span>(<span style="color:#666;font-style:italic">&#34;/oo&#34;</span>, <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {...})
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9</span><span>	}
-</span></span></code></pre></div><p>通常我们将路由分组用在划分业务逻辑或划分API版本时。</p>
+</span></span></code></pre></div><p>通常我们将路由分组用在划分业务逻辑或划分 <code>API</code> 版本时。</p>
 <h3 id="路由原理">路由原理</h3>
-<p>Gin框架中的路由使用的是<a href="https://github.com/julienschmidt/httprouter">httprouter</a>这个库。</p>
+<p><code>Gin</code> 框架中的路由使用的是<a href="https://github.com/julienschmidt/httprouter">httprouter</a>这个库。</p>
 <p>其基本原理就是构造一个路由地址的前缀树。</p>
 <h2 id="gin中间件">Gin中间件</h2>
-<p>Gin框架允许开发者在处理请求的过程中，加入用户自己的钩子（Hook）函数。这个钩子函数就叫中间件，中间件适合处理一些公共的业务逻辑，比如登录认证、权限校验、数据分页、记录日志、耗时统计等。</p>
+<p><code>Gin</code> 框架允许开发者在处理请求的过程中，加入用户自己的钩子（<code>Hook</code>）函数。这个钩子函数就叫中间件，中间件适合处理一些公共的业务逻辑，比如登录认证、权限校验、数据分页、记录日志、耗时统计等。</p>
 <h3 id="定义中间件">定义中间件</h3>
-<p>Gin中的中间件必须是一个<code>gin.HandlerFunc</code>类型。例如我们像下面的代码一样定义一个统计请求耗时的中间件。</p>
+<p><code>Gin</code> 中的中间件必须是一个 <code>gin.HandlerFunc</code> 类型。例如我们像下面的代码一样定义一个统计请求耗时的中间件。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#888;font-style:italic">// StatCost 是一个统计耗时请求耗时的中间件
 </span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">StatCost</span>() gin.HandlerFunc {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>	<span style="font-weight:bold">return</span> <span style="font-weight:bold;font-style:italic">func</span>(c *gin.Context) {
@@ -858,7 +858,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	}
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>}
 </span></span></code></pre></div><h3 id="注册中间件">注册中间件</h3>
-<p>在gin框架中，我们可以为每个路由添加任意数量的中间件。</p>
+<p>在 <code>Gin</code> 框架中，我们可以为每个路由添加任意数量的中间件。</p>
 <h4 id="为全局路由注册">为全局路由注册</h4>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#888;font-style:italic">// 新建一个没有任何默认中间件的路由
@@ -901,14 +901,14 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>}
 </span></span></code></pre></div><h3 id="中间件注意事项">中间件注意事项</h3>
 <h4 id="gin默认中间件">gin默认中间件</h4>
-<p><code>gin.Default()</code>默认使用了<code>Logger</code>和<code>Recovery</code>中间件，其中：</p>
+<p><code>gin.Default()</code> 默认使用了 <code>Logger</code> 和 <code>Recovery</code> 中间件，其中：</p>
 <ul>
-<li><code>Logger</code>中间件将日志写入<code>gin.DefaultWriter</code>，即使配置了<code>GIN_MODE=release</code>。</li>
-<li><code>Recovery</code>中间件会recover任何<code>panic</code>。如果有panic的话，会写入500响应码。</li>
+<li><code>Logger</code> 中间件将日志写入 <code>gin.DefaultWriter</code>，即使配置了 <code>GIN_MODE=release</code>。</li>
+<li><code>Recovery</code> 中间件会 <code>recover</code> 任何 <code>panic</code>。如果有 <code>panic</code> 的话，会写入 <code>500</code> 响应码。</li>
 </ul>
-<p>如果不想使用上面两个默认的中间件，可以使用<code>gin.New()</code>新建一个没有任何默认中间件的路由。</p>
+<p>如果不想使用上面两个默认的中间件，可以使用 <code>gin.New()</code> 新建一个没有任何默认中间件的路由。</p>
 <h4 id="gin中间件中使用goroutine">gin中间件中使用goroutine</h4>
-<p>当在中间件或<code>handler</code>中启动新的<code>goroutine</code>时，<strong>不能使用</strong>原始的上下文（c *gin.Context），必须使用其只读副本（<code>c.Copy()</code>）。</p>
+<p>当在中间件或<code>handler</code>中启动新的<code>goroutine</code>时，<strong>不能使用</strong>原始的上下文（<code>c *gin.Context</code>），必须使用其只读副本（<code>c.Copy()</code>）。</p>
 <h2 id="运行多个服务">运行多个服务</h2>
 <p>我们可以在多个端口启动服务，例如：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main

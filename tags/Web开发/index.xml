@@ -40,7 +40,7 @@
       <pubDate>Sat, 24 Aug 2019 00:00:00 +0000</pubDate>
       
       <guid>https://blog.imw7.com/post/Go/gin_quickstart/</guid>
-      <description>&lt;p&gt;&lt;code&gt;Gin&lt;/code&gt;是一个用Go语言编写的web框架。它是一个类似于&lt;code&gt;martini&lt;/code&gt;但拥有更好性能的API框架, 由于使用了&lt;code&gt;httprouter&lt;/code&gt;，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上&lt;code&gt;Gin&lt;/code&gt;。&lt;/p&gt;</description>
+      <description>&lt;p&gt;&lt;code&gt;Gin&lt;/code&gt; 是一个用 &lt;code&gt;Go&lt;/code&gt; 语言编写的 &lt;code&gt;Web&lt;/code&gt; 框架。它是一个类似于 &lt;code&gt;martini&lt;/code&gt; 但拥有更好性能的 &lt;code&gt;API&lt;/code&gt; 框架, 由于使用了 &lt;code&gt;httprouter&lt;/code&gt;，速度提高了近40倍。 如果你是性能和高效的追求者, 你会爱上 &lt;code&gt;Gin&lt;/code&gt;。&lt;/p&gt;</description>
     </item>
     
   </channel>
