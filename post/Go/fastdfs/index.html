@@ -320,7 +320,7 @@
 </table>
 <h3 id="编译环境">编译环境</h3>
 <p>CentOS</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ yum install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim -y
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ yum -y install git gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl-devel wget vim
 </span></span></code></pre></div><p>Debian</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ apt-get -y install git gcc g++ make automake autoconf libtool pcre2-utils libpcre2-dev zlib1g zlib1g-dev openssl libssh-dev wget vim
 </span></span></code></pre></div><h3 id="磁盘目录">磁盘目录</h3>
@@ -375,6 +375,8 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic">#添加fastdfs-nginx-module模块</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>$ sudo ./configure --add-module=/usr/local/src/fastdfs-nginx-module/src/
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>$ sudo make &amp;&amp; make install <span style="color:#888;font-style:italic">#编译安装</span>
+</span></span></code></pre></div><p><strong>注意</strong>：执行<code>sudo ./configure ...</code> 时 <code>Ubuntu</code> 可能会出现<strong>缺少<code>PCRE</code>库</strong>的错误。解决办法只需要安装缺少的库即可：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ sudo apt-get install libpcre3 libpcre3-dev
 </span></span></code></pre></div><h2 id="单机部署">单机部署</h2>
 <h3 id="tracker配置">tracker配置</h3>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">#服务器ip为 120.77.71.67</span>
@@ -399,8 +401,9 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#666;font-weight:bold;font-style:italic">maxConns</span>=100 <span style="color:#888;font-style:italic">#添加这行</span>
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#666;font-weight:bold;font-style:italic">base_path</span>=/root/fastdfs/tracker
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="color:#666;font-weight:bold;font-style:italic">tracker_server</span>=120.77.71.67:22122 <span style="color:#888;font-style:italic">#tracker服务器IP和端口</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#888;font-style:italic">#保存后测试，返回ID表示成功 如：group1/M00/00/00/xx.jpg</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span>fdfs_upload_file /etc/fdfs/client.conf /root/boy.jpg
+</span></span></code></pre></div><p>保存后测试，返回 <code>ID</code> 表示成功。如：<code>group1/M00/00/00/xx.jpg</code>。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ fdfs_upload_file /etc/fdfs/client.conf /root/boy.jpg
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>group1/M00/00/00/wKgDDGLx_SiALJDLAAXs_ju6GX8290.jpg
 </span></span></code></pre></div><p>这一步可能出现的问题有：</p>
 <ol>
 <li><code>unknown directive “ngx_fastdfs_module” in /usr/local/nginx/conf/nginx.conf:88</code></li>
@@ -412,7 +415,8 @@
 </ol>
 <p>解决办法，安装相应组件即可。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ yum install gd gd-devel
-</span></span></code></pre></div><ol start="3">
+</span></span></code></pre></div><p>注意：<code>Ubuntu</code> 使用 <code>apt-get -y install libgd-dev</code></p>
+<ol start="3">
 <li><code>./configure: error: perl module ExtUtils::Embed is required</code></li>
 </ol>
 <p>解决办法：</p>
@@ -440,7 +444,7 @@
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>    }
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>}
 </span></span></code></pre></div><p>测试下载，用外部浏览器访问刚才已传过的图片，引用返回的ID。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>http://120.77.71.67:8888/group1/M00/00/00/eE1HQ2Hx-eWAeIkaAAXs_ju6GX8852.jpg
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>http://120.77.71.67:8888/group1/M00/00/00/wKgDDGLx_SiALJDLAAXs_ju6GX8290.jpg
 </span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic">#弹出下载单机部署全部跑通</span>
 </span></span></code></pre></div><p>这里可能出现<code>400 Bad Request</code>的错误，解决办法有两种：</p>
 <ol>
