@@ -151,6 +151,7 @@
         <li><a href="#提交本地代码">提交本地代码</a></li>
         <li><a href="#查看修改内容">查看修改内容</a></li>
         <li><a href="#撤销未提交的修改">撤销未提交的修改</a></li>
+        <li><a href="#免用户名和密码">免用户名和密码</a></li>
       </ul>
     </li>
   </ul>
@@ -254,7 +255,12 @@
 </span></span></code></pre></div><h3 id="撤销未提交的修改">撤销未提交的修改</h3>
 <p>使用<code>checkout</code>命令，撤销还未提交的修改内容。</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>git checkout 文件路径
-</span></span></code></pre></div>
+</span></span></code></pre></div><h3 id="免用户名和密码">免用户名和密码</h3>
+<p>命令行输入以下命令：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>git config --global credential.helper store
+</span></span></code></pre></div><p>紧接着，使用 <code>git pull</code> 或者 <code>git push</code> 命令，根据提示输入账号和密码。这时将在 <code>/home/用户名/</code> 目录下创建一个<code>.git-credentials</code> 文件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>https://用户名:密码@github.com
+</span></span></code></pre></div><p>该文件用于记录账号和密码，这样下次就不用再次输入用户名和密码了。</p>
         </div>
 
         
