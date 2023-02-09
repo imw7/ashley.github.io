@@ -149,9 +149,18 @@
       <ul>
         <li><a href="#特点">特点</a></li>
         <li><a href="#consul-架构图">Consul 架构图</a></li>
-        <li><a href="#consul-安装">Consul 安装</a></li>
+        <li><a href="#consul-的使用场景">Consul 的使用场景</a></li>
       </ul>
     </li>
+    <li><a href="#安装">安装</a>
+      <ul>
+        <li><a href="#consul参数详解">Consul参数详解</a></li>
+        <li><a href="#关键代码">关键代码</a></li>
+        <li><a href="#配置中心">配置中心</a></li>
+        <li><a href="#maingo">main.go</a></li>
+      </ul>
+    </li>
+    <li><a href="#consul和grpc结合使用">consul和grpc结合使用</a></li>
   </ul>
 </nav>
     </div>
@@ -224,7 +233,32 @@
 <li>多数据中心：<code>Consul</code> 支持开箱即用的多数据中心。这意味着用户不需要担心需要建立 额外的抽象层让业务扩展到多个区域。</li>
 </ul>
 <h3 id="consul-架构图">Consul 架构图</h3>
-<h3 id="consul-安装">Consul 安装</h3>
+<p>
+        <a data-fancybox="gallery" href="https://blog.imw7.com/images/Go/consul/consul_structure.png">
+            <img class="mx-auto" alt="consul_structure" src="https://blog.imw7.com/images/Go/consul/consul_structure.png" />
+        </a>
+    </p>
+<p>首先，可以看到有两个数据中心，分别标记为 <code>DATACENTER 1</code> 和 <code>DATACENTER 2</code>。<code>Consul</code> 拥有对多个数据中心的一流支持，这是比较常见的情况。</p>
+<p>在每个数据中心中，都有客户机和服务器。预计将有三到五台服务器。这在故障情况下的可用性和性能之间取得了平衡，因为随着添加更多的机器，一致性会逐渐变慢。但是，客户端的数量没有限制，可以很容易地扩展到数千或数万。</p>
+<p><code>Consul</code> 实现多个数据中心都依赖于 <code>gossip protocol</code> 协议。这样做有几个目的：首先，不需要使用服务器的地址来配置客户端，服务发现是自动完成的。其次，健康检查故障的工作不是放在服务器上，而是分布式的。这使得故障检测比单纯的心跳模式更具可伸缩性。为节点提供故障检测;如果无法访问代理，则节点可能经历了故障。</p>
+<p>每个数据中心中的服务器都是一个筏对等集的一部分。这意味着它们一起工作来选举单个 <code>leader</code>，一个被选中的服务器有额外的职责。领导负责处理所有的查询和事务。事务还必须作为协商一致协议的一部分复制到所有对等方。由于这个需求，当非 <code>leader</code> 服务器接收到 <code>RPC</code> 请求时，它会将其转发给集群 <code>leader</code>。</p>
+<h3 id="consul-的使用场景">Consul 的使用场景</h3>
+<p><code>Consul</code> 的应用场景包括服务发现、服务隔离、服务配置：</p>
+<ul>
+<li>
+<p>服务发现场景中<code>consul</code>作为注册中心，服务地址被注册到<code>consul</code>中以后，可以使用<code>consul</code>提供的<code>dns</code>、<code>http</code>接口查询，<code>consul</code>支持<code>health check</code>。</p>
+</li>
+<li>
+<p>服务隔离场景中<code>consul</code>支持以服务为单位设置访问策略，能同时支持经典的平台和新兴的平台，支持<code>tls</code>证书分发，<code>service-to-service</code>加密。</p>
+</li>
+<li>
+<p>服务配置场景中<code>consul</code>提供<code>key-value</code>数据存储功能，并且能将变动迅速地通知出去，借助<code>Consul</code>可以实现配置共享，需要读取配置的服务可以从<code>Consul</code>中读取到准确的配置信息。</p>
+</li>
+<li>
+<p><code>Consul</code>可以帮助系统管理者更清晰的了解复杂系统内部的系统架构，运维人员可以将<code>Consul</code>看成一种监控软件，也可以看成一种资产（资源）管理系统。</p>
+</li>
+</ul>
+<h2 id="安装">安装</h2>
 <p><code>Docker</code> 安装并启动：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ docker run --name consul -d -p 8500:8500 -p 8300:8300 -p 8301:8301 -p 8302:8302 -p 8600:8600 consul agent -server -bootstrap-expect=1 -ui -bind=0.0.0.0 -client=0.0.0.0
 </span></span></code></pre></div><p><code>Ubuntu</code> 直接运行如下命令即可：</p>
@@ -246,7 +280,7 @@
 </span></span></code></pre></div><p><strong>注</strong>：如果想让外网也能访问consul，可以使用如下命令：</p>
 <div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ consul agent -dev -client 0.0.0.0 -ui
 </span></span></code></pre></div><p>通过以上命令，可以实现指定 <code>IP</code> 访问。</p>
-<h4 id="consul参数详解">Consul参数详解</h4>
+<h3 id="consul参数详解">Consul参数详解</h3>
 <table>
 <thead>
 <tr>
@@ -317,6 +351,310 @@
 </tr>
 </tbody>
 </table>
+<p>运行成功后，访问 http://localhost:8500 就可以到 <code>consul</code> 自带的 <code>UI</code> 界面了，如图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/consul_init.png">
+            <img class="mx-auto" alt="consul" src="https://imw7.github.io/images/Go/go_micro/consul_init.png" />
+        </a>
+    </p>
+<h3 id="关键代码">关键代码</h3>
+<p><code>main.go</code>的关键代码如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>	<span style="color:#666;font-style:italic">&#34;github.com/go-micro/plugins/v4/registry/consul&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/config&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/handler&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	<span style="color:#666;font-style:italic">&#34;go-micro-demo/registerConf/pb&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    <span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/logger&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/registry&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>	<span style="color:#888;font-style:italic">// register consul
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#888;font-style:italic"></span>	reg := consul.<span style="color:#666;font-weight:bold;font-style:italic">NewRegistry</span>(<span style="font-weight:bold;font-style:italic">func</span>(options *registry.Options) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>		options.Addrs = []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;127.0.0.1:8500&#34;</span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>	})
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>    <span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>	<span style="color:#888;font-style:italic">// create service
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#888;font-style:italic"></span>	srv := micro.<span style="color:#666;font-weight:bold;font-style:italic">NewService</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>		micro.<span style="color:#666;font-weight:bold;font-style:italic">Name</span>(<span style="color:#666;font-style:italic">&#34;registerConf&#34;</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>		micro.<span style="color:#666;font-weight:bold;font-style:italic">Version</span>(<span style="color:#666;font-style:italic">&#34;latest&#34;</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>		<span style="color:#888;font-style:italic">// 注册consul中心
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#888;font-style:italic"></span>		micro.<span style="color:#666;font-weight:bold;font-style:italic">Registry</span>(reg),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	<span style="color:#888;font-style:italic">// register handler
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := pb.<span style="color:#666;font-weight:bold;font-style:italic">RegisterRegisterConfHandler</span>(srv.<span style="color:#666;font-weight:bold;font-style:italic">Server</span>(), &amp;handler.RegisterConf{}); err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>	<span style="color:#888;font-style:italic">// run service
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := srv.<span style="color:#666;font-weight:bold;font-style:italic">Run</span>(); err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>}
+</span></span></code></pre></div><p><code>go-micro v4</code> 提供 <code>plugins</code>，只需要引入并创建实例之后，使用 <code>micro.Registry</code> 注册即可。</p>
+<p>运行后效果图如下：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/registerConf.png">
+            <img class="mx-auto" alt="registerConf" src="https://imw7.github.io/images/Go/go_micro/registerConf.png" />
+        </a>
+    </p>
+<p>可以看出名为 <code>registerConf</code> 的服务出现在了页面上。</p>
+<h3 id="配置中心">配置中心</h3>
+<p>点击 <code>Key/Value</code>创建目录<code>micro/config</code>，然后在<code>config</code>目录分别创建<code>mysql</code>、<code>redis</code>、<code>logger</code>和<code>server</code>四个<code>key</code>，如下图所示：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/config_center.png">
+            <img class="mx-auto" alt="config center" src="https://imw7.github.io/images/Go/go_micro/config_center.png" />
+        </a>
+    </p>
+<p>以其中 <code>mysql</code> 为例，输入信息：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/mysql_info.png">
+            <img class="mx-auto" alt="mysql info" src="https://imw7.github.io/images/Go/go_micro/mysql_info.png" />
+        </a>
+    </p>
+<p>然后在项目中的 <code>registerConf</code> 文件夹下创建 <code>config</code> 目录，并创建 <code>config.go</code>、<code>mysql.go</code> 文件，分别编写其中代码。</p>
+<h4 id="configgo">config.go</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> config
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>	<span style="color:#666;font-style:italic">&#34;github.com/go-micro/plugins/config/source/consul/v4&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>	<span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/config&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#666;font-style:italic">&#34;strconv&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#888;font-style:italic">// GetConsulConfig 设置配置中心
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">GetConsulConfig</span>(host <span style="font-weight:bold">string</span>, port <span style="font-weight:bold">int64</span>, prefix <span style="font-weight:bold">string</span>) (config.Config, <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	<span style="color:#888;font-style:italic">// 添加配置中心
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 配置中心使用consul key/value模式
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#888;font-style:italic"></span>	consulSource := consul.<span style="color:#666;font-weight:bold;font-style:italic">NewSource</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>		<span style="color:#888;font-style:italic">// 设置配置中心地址
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">WithAddress</span>(host+<span style="color:#666;font-style:italic">&#34;:&#34;</span>+strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(port, 10)),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>		<span style="color:#888;font-style:italic">// 设置前缀，不设置默认为 /micro/config
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">WithPrefix</span>(prefix),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>		<span style="color:#888;font-style:italic">// 是否移除前缀，这里设置为true：表示可以不带前缀直接获取对应配置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>		consul.<span style="color:#666;font-weight:bold;font-style:italic">StripPrefix</span>(<span style="font-weight:bold">true</span>),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>	)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>	<span style="color:#888;font-style:italic">// 配置初始化
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#888;font-style:italic"></span>	conf, err := config.<span style="color:#666;font-weight:bold;font-style:italic">NewConfig</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>		<span style="font-weight:bold">return</span> conf, err
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>	err = conf.<span style="color:#666;font-weight:bold;font-style:italic">Load</span>(consulSource)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	<span style="font-weight:bold">return</span> conf, err
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>}
+</span></span></code></pre></div><h4 id="mysqlgo">mysql.go</h4>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> config
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;go-micro.dev/v4/config&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#888;font-style:italic">// MySQLConfig 创建结构体
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">type</span> MySQLConfig <span style="font-weight:bold;font-style:italic">struct</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	Host     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;host&#34;`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>	User     <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;user&#34;`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>	Pwd      <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;pwd&#34;`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	Database <span style="font-weight:bold">string</span> <span style="color:#666;font-style:italic">`json:&#34;database&#34;`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	Port     <span style="font-weight:bold">int64</span>  <span style="color:#666;font-style:italic">`json:&#34;port&#34;`</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#888;font-style:italic">// GetMySQLFromConsul 获取mysql的配置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">GetMySQLFromConsul</span>(config config.Config, path ...<span style="font-weight:bold">string</span>) (*MySQLConfig, <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>	mysqlConfig := &amp;MySQLConfig{}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>	<span style="color:#888;font-style:italic">// 获取配置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := config.<span style="color:#666;font-weight:bold;font-style:italic">Get</span>(path...).<span style="color:#666;font-weight:bold;font-style:italic">Scan</span>(mysqlConfig); err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>		<span style="font-weight:bold">return</span> <span style="font-weight:bold">nil</span>, err
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>	<span style="font-weight:bold">return</span> mysqlConfig, <span style="font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>}
+</span></span></code></pre></div><h3 id="maingo">main.go</h3>
+<p>最后在主函数中插入如下代码，即可实现在启动服务之前就可获取配置中心的配置信息。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {	
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	<span style="color:#888;font-style:italic">// register consul
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#888;font-style:italic"></span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#888;font-style:italic">// 配置中心
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#888;font-style:italic"></span>	consulConfig, err := config.<span style="color:#666;font-weight:bold;font-style:italic">GetConsulConfig</span>(<span style="color:#666;font-style:italic">&#34;127.0.0.1&#34;</span>, 8500, <span style="color:#666;font-style:italic">&#34;/micro/config&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	<span style="color:#888;font-style:italic">// MySQL配置信息
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#888;font-style:italic"></span>	info, err := config.<span style="color:#666;font-weight:bold;font-style:italic">GetMySQLFromConsul</span>(consulConfig, <span style="color:#666;font-style:italic">&#34;mysql&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>		logger.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>	logger.<span style="color:#666;font-weight:bold;font-style:italic">Info</span>(<span style="color:#666;font-style:italic">&#34;MySQL配置信息:&#34;</span>, info)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    <span style="color:#888;font-style:italic">// create service
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// ...
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#888;font-style:italic"></span>}
+</span></span></code></pre></div><p>运行主函数之后，可以成功获取刚在 <code>consul</code> 页面输入的 <code>mysql</code> 配置信息，如图：</p>
+<p>
+        <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/go_micro/get_conf.png">
+            <img class="mx-auto" alt="get_conf" src="https://imw7.github.io/images/Go/go_micro/get_conf.png" />
+        </a>
+    </p>
+<h2 id="consul和grpc结合使用">consul和grpc结合使用</h2>
+<p>如何将 <code>grpc</code> 服务注册到 <code>consul</code> 中呢？</p>
+<p><code>hello.proto</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-protobuf" data-lang="protobuf"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>syntax = <span style="color:#666;font-style:italic">&#34;proto3&#34;</span>;<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style=""></span><span style="font-weight:bold">package</span> <span style="color:#666;font-weight:bold;font-style:italic">pb</span>;<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style=""></span><span style="font-weight:bold">option</span> go_package = <span style="color:#666;font-style:italic">&#34;../pb&#34;</span>;<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Request</span> {<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style=""></span>  <span style="font-weight:bold">string</span> name = 1;<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style=""></span>}<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style=""></span><span style="font-weight:bold;font-style:italic">message</span> <span style="color:#666;font-weight:bold;font-style:italic">Response</span> {<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style=""></span>  <span style="font-weight:bold">string</span> msg = 1;<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style=""></span>}<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style=""></span><span style="font-weight:bold;font-style:italic">service</span> HelloService {<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style=""></span>  <span style="font-weight:bold">rpc</span> Hello (Request) <span style="font-weight:bold">returns</span> (Response);<span style="">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style=""></span>}<span style="">
+</span></span></span></code></pre></div><p>服务端<code>server.go</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>	<span style="color:#666;font-style:italic">&#34;github.com/hashicorp/consul/api&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	<span style="color:#666;font-style:italic">&#34;grpc-consul/pb&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>	<span style="color:#666;font-style:italic">&#34;net&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#888;font-style:italic">// 把grpc服务注册到consul上面
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="font-weight:bold;font-style:italic">type</span> HelloService <span style="font-weight:bold;font-style:italic">struct</span>{}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#888;font-style:italic">// Hello 绑定方法，实现接口
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#888;font-style:italic"></span><span style="font-weight:bold;font-style:italic">func</span> (h *HelloService) <span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(_ context.Context, req *pb.Request) (*pb.Response, <span style="font-weight:bold">error</span>) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>	<span style="font-weight:bold">return</span> &amp;pb.Response{Msg: <span style="color:#666;font-style:italic">&#34;Hello, &#34;</span> + req.Name + <span style="color:#666;font-style:italic">&#34;!&#34;</span>}, <span style="font-weight:bold">nil</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>	<span style="color:#888;font-style:italic">// 初始化consul配置，客户端服务器需要一致
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#888;font-style:italic"></span>	consulConfig := api.<span style="color:#666;font-weight:bold;font-style:italic">DefaultConfig</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>	<span style="color:#888;font-style:italic">// 获取consul操作对象
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#888;font-style:italic"></span>	registry, err := api.<span style="color:#666;font-weight:bold;font-style:italic">NewClient</span>(consulConfig)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>	<span style="color:#888;font-style:italic">// 注册服务，服务的常规配置
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#888;font-style:italic"></span>	registerService := api.AgentServiceRegistration{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>		ID:      <span style="color:#666;font-style:italic">&#34;1&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>		Name:    <span style="color:#666;font-style:italic">&#34;HelloService&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>		Tags:    []<span style="font-weight:bold">string</span>{<span style="color:#666;font-style:italic">&#34;grpc&#34;</span>, <span style="color:#666;font-style:italic">&#34;consul&#34;</span>},
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span>		Port:    1234,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span>		Address: <span style="color:#666;font-style:italic">&#34;127.0.0.1&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span>		Check: &amp;api.AgentServiceCheck{
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span>			CheckID:  <span style="color:#666;font-style:italic">&#34;consul grpc test&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>			TCP:      <span style="color:#666;font-style:italic">&#34;127.0.0.1:1234&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>			Timeout:  <span style="color:#666;font-style:italic">&#34;5s&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>			Interval: <span style="color:#666;font-style:italic">&#34;5s&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>		},
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span>	<span style="color:#888;font-style:italic">// 将服务注册到consul上
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := registry.<span style="color:#666;font-weight:bold;font-style:italic">Agent</span>().<span style="color:#666;font-weight:bold;font-style:italic">ServiceRegister</span>(&amp;registerService); err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>	<span style="color:#888;font-style:italic">// 设置监听
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span><span style="color:#888;font-style:italic"></span>	listener, err := net.<span style="color:#666;font-weight:bold;font-style:italic">Listen</span>(<span style="color:#666;font-style:italic">&#34;tcp&#34;</span>, <span style="color:#666;font-style:italic">&#34;:1234&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(<span style="color:#666;font-style:italic">&#34;listen failed, err:&#34;</span>, err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span>	<span style="color:#888;font-style:italic">// 构造gRPC对象
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span><span style="color:#888;font-style:italic"></span>	grpcServer := grpc.<span style="color:#666;font-weight:bold;font-style:italic">NewServer</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>	<span style="color:#888;font-style:italic">// 注册服务
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span><span style="color:#888;font-style:italic"></span>	pb.<span style="color:#666;font-weight:bold;font-style:italic">RegisterHelloServiceServer</span>(grpcServer, &amp;HelloService{})
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>	<span style="color:#888;font-style:italic">// 启动服务
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span><span style="color:#888;font-style:italic"></span>	<span style="font-weight:bold">if</span> err := grpcServer.<span style="color:#666;font-weight:bold;font-style:italic">Serve</span>(listener); err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span><span>}
+</span></span></code></pre></div><p>客户端<code>client.go</code></p>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="font-weight:bold">package</span> main
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="font-weight:bold">import</span> (
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>	<span style="color:#666;font-style:italic">&#34;context&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>	<span style="color:#666;font-style:italic">&#34;fmt&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	<span style="color:#666;font-style:italic">&#34;github.com/hashicorp/consul/api&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>	<span style="color:#666;font-style:italic">&#34;google.golang.org/grpc/credentials/insecure&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>	<span style="color:#666;font-style:italic">&#34;grpc-consul/pb&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>	<span style="color:#666;font-style:italic">&#34;log&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	<span style="color:#666;font-style:italic">&#34;strconv&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>() {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>	<span style="color:#888;font-style:italic">// 初始化consul配置，客户端服务端需要一致
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#888;font-style:italic"></span>	consulConfig := api.<span style="color:#666;font-weight:bold;font-style:italic">DefaultConfig</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>	<span style="color:#888;font-style:italic">// 获取consul操作对象
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>	registerClient, err := api.<span style="color:#666;font-weight:bold;font-style:italic">NewClient</span>(consulConfig)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>	<span style="color:#888;font-style:italic">// 服务注销
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// if err := registerClient.Agent().ServiceDeregister(&#34;1&#34;); err != nil {
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	log.Fatal(err)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// }
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>	<span style="color:#888;font-style:italic">// 服务发现，从consul上获取健康的服务
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// params:
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@service: 服务名。注册服务时指定该string
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@tag: 外号/别名。如果有多个，任选一个
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@passingOnly: 是否通过健康检查
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@q: 查询参数，通常为nil
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// returns:
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// 	@ServiceEntry: 存储服务的切片
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">//  @QueryMeta: 额外查询返回值，通常为nil
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">//  @error: 错误信息
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span><span style="color:#888;font-style:italic"></span>	serviceEntry, _, err := registerClient.<span style="color:#666;font-weight:bold;font-style:italic">Health</span>().<span style="color:#666;font-weight:bold;font-style:italic">Service</span>(
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span>		<span style="color:#666;font-style:italic">&#34;HelloService&#34;</span>, <span style="color:#666;font-style:italic">&#34;consul&#34;</span>, <span style="font-weight:bold">false</span>, &amp;api.QueryOptions{})
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span><span>	<span style="color:#888;font-style:italic">// 和grpc服务建立连接
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span><span><span style="color:#888;font-style:italic"></span>	<span style="color:#888;font-style:italic">// conn, err := grpc.Dial(&#34;127.0.0.1:1234&#34;, grpc.WithTransportCredentials(insecure.NewCredentials()))
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span><span><span style="color:#888;font-style:italic"></span>	conn, err := grpc.<span style="color:#666;font-weight:bold;font-style:italic">Dial</span>(serviceEntry[0].Service.Address+<span style="color:#666;font-style:italic">&#34;:&#34;</span>+strconv.<span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(serviceEntry[0].Service.Port),
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span><span>		grpc.<span style="color:#666;font-weight:bold;font-style:italic">WithTransportCredentials</span>(insecure.<span style="color:#666;font-weight:bold;font-style:italic">NewCredentials</span>()))
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span><span>	<span style="font-weight:bold">defer</span> <span style="font-weight:bold;font-style:italic">func</span>(conn *grpc.ClientConn) {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span><span>		err := conn.<span style="color:#666;font-weight:bold;font-style:italic">Close</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span><span>		<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span>			<span style="font-weight:bold">return</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56</span><span>		}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57</span><span>	}(conn)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59</span><span>	<span style="color:#888;font-style:italic">// 初始化 gRPC 客户端
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60</span><span><span style="color:#888;font-style:italic"></span>	client := pb.<span style="color:#666;font-weight:bold;font-style:italic">NewHelloServiceClient</span>(conn)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62</span><span>	<span style="color:#888;font-style:italic">// 调用远程函数
+</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63</span><span><span style="color:#888;font-style:italic"></span>	rsp, err := client.<span style="color:#666;font-weight:bold;font-style:italic">Hello</span>(context.<span style="color:#666;font-weight:bold;font-style:italic">TODO</span>(), &amp;pb.Request{Name: <span style="color:#666;font-style:italic">&#34;John&#34;</span>})
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64</span><span>	<span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65</span><span>		log.<span style="color:#666;font-weight:bold;font-style:italic">Fatal</span>(err)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(rsp.Msg)
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68</span><span>}
+</span></span></code></pre></div>
         </div>
 
         
