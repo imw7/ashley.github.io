@@ -6,7 +6,16 @@
     <description>Recent content in Categories on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 01 Aug 2022 03:31:31 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Feb 2023 23:47:46 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go</title>
+      <link>https://blog.imw7.com/categories/Go/</link>
+      <pubDate>Wed, 08 Feb 2023 23:47:46 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/categories/Go/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Linux</title>
       <link>https://blog.imw7.com/categories/Linux/</link>
@@ -40,15 +49,6 @@
       <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
       
       <guid>https://blog.imw7.com/categories/Docker/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Go</title>
-      <link>https://blog.imw7.com/categories/Go/</link>
-      <pubDate>Wed, 26 Jan 2022 14:01:14 +0800</pubDate>
-      
-      <guid>https://blog.imw7.com/categories/Go/</guid>
       <description></description>
     </item>
     
