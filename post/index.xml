@@ -6,7 +6,16 @@
     <description>Recent content in Posts on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 08 Feb 2023 23:47:46 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 25 Apr 2023 18:07:12 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Excel VBA 常用代码</title>
+      <link>https://blog.imw7.com/post/VBA/</link>
+      <pubDate>Tue, 25 Apr 2023 18:07:12 +0800</pubDate>
+      
+      <guid>https://blog.imw7.com/post/VBA/</guid>
+      <description>&lt;p&gt;本文记录了 &lt;code&gt;Excel VBA&lt;/code&gt; 的常用工具，方便取用。&lt;/p&gt;</description>
+    </item>
+    
     <item>
       <title>Consul简介</title>
       <link>https://blog.imw7.com/post/consul/</link>

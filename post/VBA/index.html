@@ -1,0 +1,1750 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>Excel VBA 常用代码 | 魏奇的博客</title>
+    <meta property="og:title" content="Excel VBA 常用代码 - 魏奇的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2023-04-25T18:07:12&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2023-04-25T18:07:12&#43;08:00'>
+        
+    <meta name="Keywords" content="golang,go语言,go语言笔记,java,android,博客,项目管理,python,软件架构,公众号,小程序">
+    <meta name="description" content="Excel VBA 常用代码">
+        
+    <meta name="author" content="魏奇">
+    <meta property="og:url" content="https://blog.imw7.com/post/VBA/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://blog.imw7.com/">
+                        魏奇的博客
+                    </a>
+                
+                <p class="description">海阔凭鱼跃，天高任鸟飞</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://blog.imw7.com/">首页</a>
+                    
+                    <a  href="https://blog.imw7.com/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://blog.imw7.com/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin-right: 0px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 45%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        float: right;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 18px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 12px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 8px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 10px;
+        list-style: none;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul ul ul ul {
+        margin-right: 10px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="top: 280px; right: 0px; float: right;">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#批量创建工作表">批量创建工作表</a></li>
+        <li><a href="#删除全部工作表">删除全部工作表</a></li>
+        <li><a href="#提取工作表名字">提取工作表名字</a></li>
+        <li><a href="#删除指定工作表">删除指定工作表</a></li>
+        <li><a href="#生成带超链接的工作表目录">生成带超链接的工作表目录</a></li>
+        <li><a href="#在各个分表创建返回总表的命令按钮">在各个分表创建返回总表的命令按钮</a></li>
+        <li><a href="#批量提取工作表的名字推荐">批量提取工作表的名字【推荐】</a></li>
+        <li><a href="#批量修改工作表的名字">批量修改工作表的名字</a></li>
+        <li><a href="#批量取消工作表的隐藏">批量取消工作表的隐藏</a></li>
+        <li><a href="#一键汇总各分表数据成总表不保留分表格式">一键汇总各分表数据成总表【不保留分表格式】</a></li>
+        <li><a href="#汇总分表成总表保留分表格式">汇总分表成总表【保留分表格式】</a></li>
+        <li><a href="#工作表排序">工作表排序</a></li>
+        <li><a href="#批量工作表加密">批量工作表加密</a></li>
+        <li><a href="#批量工作表解密">批量工作表解密</a></li>
+        <li><a href="#按任意列拆分多个表">按任意列拆分多个表</a></li>
+        <li><a href="#批量将工作表转换为独立的工作簿">批量将工作表转换为独立的工作簿</a></li>
+        <li><a href="#将总表按任意列拆分成多个工作簿">将总表按任意列拆分成多个工作簿</a></li>
+        <li><a href="#选中行或列会填充颜色">选中行或列会填充颜色</a></li>
+        <li><a href="#按指定名称批量创建工作簿">按指定名称批量创建工作簿</a></li>
+        <li><a href="#按指定条件批量删除工作簿">按指定条件批量删除工作簿</a></li>
+        <li><a href="#批量获取指定文件夹下文件名并创建超链接">批量获取指定文件夹下文件名并创建超链接</a></li>
+        <li><a href="#批量给工作簿重命名">批量给工作簿重命名</a></li>
+        <li><a href="#对office文件设置自杀程序">对office文件设置自杀程序</a></li>
+        <li><a href="#获取多层文件夹下文件名并创建超链接">获取多层文件夹下文件名并创建超链接</a></li>
+        <li><a href="#合并多工作簿数据成总表">合并多工作簿数据成总表</a></li>
+        <li><a href="#将word表格批量写入excel">将Word表格批量写入Excel</a></li>
+        <li><a href="#取消复杂的合并单元格">取消复杂的合并单元格</a></li>
+        <li><a href="#批量将图片插入到单元格批注中">批量将图片插入到单元格批注中</a></li>
+        <li><a href="#批量将图片插入到表格中">批量将图片插入到表格中</a></li>
+        <li><a href="#修改单元格内容会被记录到批注">修改单元格内容会被记录到批注</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var rightPos = window.screenX+$("#main").offset().left;
+            if(rightPos<220){
+                postToc.css({"width":rightPos+10,"margin-right":0})
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+    })
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">Excel VBA 常用代码</h1>
+        </header>
+        <date class="post-meta meta-date">
+            2023年4月25日
+        </date>
+        
+        <div class="post-meta">
+            <span>|</span>
+            
+            <span class="meta-category"><a href='/categories/VBA'>VBA</a></span>
+            
+        </div>
+        
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">| 本文阅读量 <span id="busuanzi_value_page_pv"></span><span> 次</span></span>
+                     
+        </div>
+        
+        
+        <div class="clear" style="display: none;">
+            <div class="toc-article" style="float: right;">
+                <div class="toc-title">文章目录</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <p>本文记录了 <code>Excel VBA</code> 的常用工具，方便取用。</p>
+<h3 id="批量创建工作表">批量创建工作表</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub NewSht()
+    Dim shtActive As Worksheet, sht As Worksheet
+    Dim i As Long, strShtName As String
+    On Error Resume Next &#39;当代码出错时继续运行
+    Set shtActive = ActiveSheet
+    For i = 2 To shtActive.Cells(Rows.Count, 1).End(xlUp).Row
+    &#39;单元格A1是标题，跳过，从第2行开始遍历工作表名称
+        strShtName = shtActive.Cells(i, 1).Value
+        &#39;工作表名强制转换为字符串类型
+        Set sht = Sheets(strShtName)
+        &#39;当工作簿不存在工作表Sheets(strShtName)时，这句代码会出错，然后……
+        If Err Then
+        &#39;如果代码出错，说明不存在工作表Sheets(t)，则新建工作表
+            Worksheets.Add , Sheets(Sheets.Count)
+            &#39;新建一个工作表，位置放在所有已存在工作表的后面
+            ActiveSheet.Name = strShtName
+            &#39;新建的工作表必然是活动工作表，为之命名
+            Err.Clear
+            &#39;清除错误状态
+        End If
+    Next
+    shtActive.Activate
+    &#39;重新激活原工作表
+End Sub
+</code></pre><h3 id="删除全部工作表">删除全部工作表</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub DelShet() &#39;删除所有工作表
+    Dim sht As Worksheet
+    Application.ScreenUpdating = False &#39;关屏幕刷新
+    Application.DisplayAlerts = False &#39;关警告信息
+    On Error Resume Next
+    For Each sht In Worksheets
+        sht.Delete &#39;遍历工作表删除
+    Next
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+End Sub
+</code></pre><h3 id="提取工作表名字">提取工作表名字</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetShtByVba()
+    Dim sht As Worksheet, k As Long
+    Application.ScreenUpdating = False
+    k = 1
+    Range(&#34;a:b&#34;).Clear &#39;清空数据
+    Range(&#34;a:a&#34;).NumberFormat = &#34;@&#34; &#39;设置文本格式
+    For Each sht In Worksheets &#39;遍历工作表取表名
+        k = k + 1
+        Cells(k, 1) = sht.Name
+    Next
+    Range(&#34;a1:b1&#34;) = Array(&#34;工作表名&#34;, &#34;是否删除&#34;)
+    Application.ScreenUpdating = True
+End Sub
+</code></pre><h3 id="删除指定工作表">删除指定工作表</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub DelShtByVba()
+    Dim sht As Worksheet, i As Long, r
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    On Error Resume Next
+    r = Range(&#34;a1&#34;).CurrentRegion &#39;数据装入数组r
+    For i = 2 To UBound(r) &#39;遍历并删除工作表
+        If r(i, 2) = &#34;删除&#34; Then Worksheets(CStr(r(i, 1))).Delete
+    Next
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+End Sub
+</code></pre><h3 id="生成带超链接的工作表目录">生成带超链接的工作表目录</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub ml()
+    Dim sht As Worksheet, i&amp;, strShtName$
+    Columns(1).ClearContents &#39;清空A列数据
+    Cells(1, 1) = &#34;目录&#34; &#39;第一个单元格写入标题&#34;目录&#34;
+    i = 1  &#39;将i的初值设置为1.
+    For Each sht In Worksheets  &#39;循环当前工作簿的每个工作表
+        strShtName = sht.Name
+        If strShtName &lt;&gt; ActiveSheet.Name Then
+       &#39;如果sht的名称不是当前工作表的名称则开始在当前工作表建立超链接
+            i = i + 1 &#39;累加工作表数量
+           ActiveSheet.Hyperlinks.Add anchor:=Cells(i, 1), Address:=&#34;&#34;, _
+            SubAddress:=&#34;&#39;&#34; &amp; strShtName &amp; &#34;&#39;!a1&#34;, TextToDisplay:=strShtName
+           &#39;建超链接
+        End If
+    Next
+End Sub
+</code></pre><h3 id="在各个分表创建返回总表的命令按钮">在各个分表创建返回总表的命令按钮</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Dim strShtName As String
+Sub Mybutton()
+    Dim sht As Worksheet, btn As Button
+    On Error Resume Next
+    For Each sht In Worksheets
+        With sht
+            If .Name &lt;&gt; strShtName Then
+                .Shapes(strShtName).Delete
+                &#39;删除原有的名称为shtn的按钮，避免重复创建
+                Set btn = .Buttons.Add(0, 0, 60, 30)&#39;使用add方法在工作表中添加一个按钮控件，add方法语法如下:表达式.Add(left,right,width,height)
+                &#39;新建按钮，释义见小贴士
+                With btn
+                    .Name = strShtName
+                    &#39;命令按钮命名
+                    .Characters.Text = &#34;返回总表&#34;
+                    &#39;按钮的文本内容
+                    .OnAction = &#34;LinkTable&#34;
+                    &#39;指定按钮控件所执行的宏命令
+                End With
+            End If
+        End With
+    Next
+    Set btn = Nothing
+End Sub
+
+Sub LinkTable()
+    strShtName = &#34;总表&#34;&#39;指定了返回总表的名字，可以根据实际需要修改为目标表的名称，比如“目录”。
+    &#39;设置变量strShtName为总表的名称，可以根据实际总表的名称做修改
+    Worksheets(strShtName).Activate
+    [a1].Select
+End Sub
+</code></pre><h3 id="批量提取工作表的名字推荐">批量提取工作表的名字【推荐】</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetShtName()
+    Dim sht As Worksheet, i As Long
+    i = 1 &#39;i初始值为1
+    With Columns(1)
+        .ClearContents &#39;清除A列内容
+        .NumberFormat = &#34;@&#34; &#39;设置单元格格式为文本
+    End With
+    Cells(1, 1) = &#34;工作表名称目录&#34;
+    For Each sht In Worksheets &#39;遍历工作表
+        i = i + 1
+        Cells(i, 1) = sht.Name &#39;在A列记录工作表名称
+    Next
+End Sub
+</code></pre><h3 id="批量修改工作表的名字">批量修改工作表的名字</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub ReNameSht()
+    Dim strShtName$, sht As Worksheet, i&amp;
+    On Error Resume Next &#39;当程序运行中出现错误时，继续运行
+    For i = 2 To Cells(Rows.Count, 1).End(xlup).Row &#39;遍历当前表格A列的数据
+        strShtName = Cells(i, 1).Value &#39;将表格A列的值，赋予变量strShtName
+        Worksheets(strShtName).Name = Cells(i, 2).Value &#39;工作表重命名
+    Next
+End Sub
+</code></pre><h3 id="批量取消工作表的隐藏">批量取消工作表的隐藏</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub unShtVisible()
+    Dim sht As Worksheet
+    For Each sht In Worksheets &#39;遍历工作表，设置可见
+        sht.Visible = xlSheetVisible
+    Next
+End Sub
+</code></pre><h3 id="一键汇总各分表数据成总表不保留分表格式">一键汇总各分表数据成总表【不保留分表格式】</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub CollectData()
+    Dim Sht As Worksheet, rng As Range, k&amp;, n&amp;
+    Application.ScreenUpdating = False
+    &#39;取消屏幕更新
+    n = Val(InputBox(&#34;请输入标题的行数&#34;, &#34;提醒&#34;))
+    If n &lt; 0 Then MsgBox &#34;标题行数不能为负数。&#34;, 64, &#34;提示&#34;: Exit Sub
+    &#39;取得用户输入的标题行数，如果为负数，退出程序
+    Cells.ClearContents
+    &#39;清空当前表数据
+    For Each Sht In Worksheets
+    &#39;遍历工作表
+        If Sht.Name &lt;&gt; ActiveSheet.Name Then
+        &#39;如果工作表名称不等于当前表名则进行汇总动作……
+            Set rng = Sht.UsedRange
+            &#39;定义rng为表格已用区域
+            k = k + 1
+            &#39;累计K值
+            If k = 1 Then
+            &#39;如果是首个表格，则K为1，则把标题行一起复制到汇总表
+                rng.Copy
+                [a1].PasteSpecial Paste:=xlPasteValues &#39;仅粘贴数值
+            Else
+                &#39;否则，扣除标题行后再复制黏贴到总表，只黏贴数值
+                rng.Offset(n).Copy
+                Cells(ActiveSheet.UsedRange.Rows.Count + 1, 1).PasteSpecial Paste:=xlPasteValues
+            End If
+        End If
+    Next
+    [a1].Activate
+    Application.ScreenUpdating = True &#39;恢复屏幕刷新
+End Sub
+</code></pre><h3 id="汇总分表成总表保留分表格式">汇总分表成总表【保留分表格式】</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub CollectDataFromShtFormat()
+    Dim sht As Worksheet, rng As Range, k As Long, nTitleCount As Long
+    On Error Resume Next
+    nTitleCount = Val(InputBox(&#34;请输入标题的行数&#34;, &#34;提醒&#34;, 1))
+    If nTitleCount &lt; 0 Then MsgBox &#34;标题行数不能为负数。&#34;, 64, &#34;提示&#34;: Exit Sub
+    Application.ScreenUpdating = False
+    Cells.ClearContents &#39;清空当前表数据
+    For Each sht In Worksheets &#39;遍历工作表
+        If sht.Name &lt;&gt; ActiveSheet.Name Then
+        &#39;如果工作表名称不等于当前表名则进行汇总动作……
+            Set rng = sht.UsedRange
+            k = k + 1 &#39;累计K值
+            If k = 1 Then &#39;如果是首个表格，则K为1，则把标题行一起复制到汇总表
+                sht.Cells.Copy: Range(&#34;a1&#34;).PasteSpecial Paste:=xlPasteFormats &#39;只粘贴格式
+                rng.Copy: Range(&#34;a1&#34;).PasteSpecial Paste:=xlPasteValues &#39;只粘贴数值
+            Else &#39;否则，扣除标题行后再复制黏贴到总表，只黏贴数值
+                rng.Offset(nTitleCount).Copy
+                With Cells(ActiveSheet.UsedRange.Rows.Count + 1, 1)
+                    .PasteSpecial Paste:=xlPasteFormats &#39;粘贴格式
+                    .PasteSpecial Paste:=xlPasteValues &#39;粘贴数值
+                End With
+            End If
+        End If
+    Next
+    Range(&#34;a1&#34;).Activate
+    Application.ScreenUpdating = True &#39;恢复屏幕刷新
+    MsgBox &#34;汇总OK，一共汇总了：&#34; &amp; k &amp; &#34;张工作表&#34;
+End Sub
+</code></pre><h3 id="工作表排序">工作表排序</h3>
+<h4 id="提取所有工作表名">提取所有工作表名</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetShtName()
+    Dim k As Long, sht As Worksheet
+    Application.ScreenUpdating = False
+    With Columns(1)
+        .ClearContents &#39;清空A列原有数据
+        .NumberFormat = &#34;@&#34; &#39;设置单元格格式为文本
+    End With
+    Cells(1, 1) = &#34;目录&#34;
+    k = 1
+    For Each sht In ThisWorkbook.Worksheets &#39;遍历工作表
+        If sht.Name &lt;&gt; ActiveSheet.Name Then &#39;如果sht不等于当前工作表名称
+            k = k + 1 &#39;累加工作表个数
+            Cells(k, 1) = sht.Name &#39;工作表名称写入A列
+        End If
+    Next
+    Application.ScreenUpdating = True
+End Sub
+</code></pre><h4 id="按照指定顺序排列工作表">按照指定顺序排列工作表</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub SortSht()
+    Dim shtActive As Worksheet, i As Long
+    Dim arr, strShtName As String
+    On Error Resume Next
+    Application.ScreenUpdating = False
+    Set shtActive = ActiveSheet &#39;当前表赋值变量shtactive
+    arr = Range(&#34;a1:a&#34; &amp; Cells(Rows.Count, 1).End(xlUp).Row)
+    &#39;A列数据装入数组arr
+    For i = 2 To UBound(arr) &#39;遍历数组arr
+        strShtName = arr(i, 1)
+        Worksheets(strShtName).Move after:=Worksheets(i - 1)
+        &#39;指定工作表按顺序排放
+    Next
+    shtActive.Select &#39;回到操作表
+    Application.ScreenUpdating = True
+End Sub
+</code></pre><h3 id="批量工作表加密">批量工作表加密</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub ProtectSht()
+    Dim strAds As String, sht As Worksheet
+    Dim strKey As String, strTemp As String
+    Dim rng As Range, strMsg As String
+    Dim strNoShtName As String, strYesShtName As String
+    On Error Resume Next
+    strAds = InputBox(&#34;请输入单元格保存范围，例如A1:B10.&#34; &amp; vbCr _
+                                &amp; &#34;可以设置不连续单元格，中间请以逗号分隔。比如A1:B10,D2:D8&#34; &amp; vbCr _
+                                &amp; &#34;如果需要全表保护，可以直接确定。&#34;, Default:=&#34;全表保护&#34;)
+    If StrPtr(strAds) = False Then Exit Sub
+    If strAds = &#34;全表保护&#34; Then strAds = Cells.Address
+    Set rng = Range(strAds) &#39;测试输入的单元格区域是否有效
+    If Err Then MsgBox &#34;你输入的单元格区域地址不是正确的格式，请重新操作。&#34;: Exit Sub
+    strKey = InputBox(&#34;请输入保护密码。&#34;) &#39;第一次输入密码
+    If StrPtr(strKey) = False Then Exit Sub
+    strTemp = InputBox(&#34;请再次输入保护密码。&#34;) &#39;第二次输入密码
+    If StrPtr(strKey) = False Then Exit Sub
+    If strKey &lt;&gt; strTemp Then MsgBox &#34;你两次输入的密码不一致，系统退出，请重新操作。&#34;: Exit Sub
+    For Each sht In Worksheets &#39;遍历工作表加密保护
+        With sht
+            If .ProtectContents = False Then &#39;如果工作表未保护
+                .Cells.Locked = False &#39;全部单元格区域取消锁定
+                .Range(strAds).Locked = True &#39;需要保护的区域锁定
+                .Protect strKey, True, True, True &#39;保护工作表，只允许编辑非锁定区域
+                strYesShtName = strYesShtName &amp; &#34;,&#34; &amp; .Name &#39;保护成功的工作表名称
+            Else
+                strNoShtName = strNoShtName &amp; &#34;,&#34; &amp; .Name &#39;自身已有保护功能的工作表
+            End If
+        End With
+    Next
+    If strYesShtName &lt;&gt; &#34;&#34; Then strMsg = &#34;工作表：&#34; &amp; Mid(strYesShtName, 2) &amp; &#34;的&#34; &amp; strAds &amp; &#34;区域保护完成&#34;
+    If strNoShtName &lt;&gt; &#34;&#34; Then strMsg = strMsg &amp; vbCrLf &amp; &#34;以下工作表自身已有保护，无法再次保护：&#34; &amp; Mid(strNoShtName, 2)
+    MsgBox (strMsg)
+End Sub
+</code></pre><h3 id="批量工作表解密">批量工作表解密</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub UnProtct()
+    MsgBox &#34;破解提示：当要求输入密码时请点击取消！”&#34;
+    Application.DisplayAlerts = False
+    On Error Resume Next
+    Dim sht As Worksheet
+    For Each sht In Worksheets
+        With sht
+            .Protect DrawingObjects:=True, Contents:=True, Scenarios:=True, AllowFiltering:=True, AllowUsingPivotTables:=True
+            .Protect DrawingObjects:=False, Contents:=True, Scenarios:=False, AllowFiltering:=True, AllowUsingPivotTables:=True
+            .Protect DrawingObjects:=True, Contents:=True, Scenarios:=False, AllowFiltering:=True, AllowUsingPivotTables:=True
+            .Protect DrawingObjects:=False, Contents:=True, Scenarios:=True, AllowFiltering:=True, AllowUsingPivotTables:=True
+            .Unprotect
+        End With
+    Next
+    MsgBox &#34;ok&#34;
+End Sub
+</code></pre><h3 id="按任意列拆分多个表">按任意列拆分多个表</h3>
+<h4 id="方法一">方法一</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub SplitShts()
+    Dim d As Object, sht As Worksheet
+    Dim aData, aResult, aTemp, aKeys, i&amp;, j&amp;, k&amp;, x&amp;
+    Dim rngData As Range, rngGist As Range
+    Dim lngTitleCount&amp;, lngGistCol&amp;, lngColCount&amp;
+    Dim rngFormat As Range, aRef, strYesOrNo As String
+    Dim strKey As String, strTemp As String
+    On Error Resume Next &#39;忽略错误，程序继续运行
+    Set d = CreateObject(&#34;scripting.dictionary&#34;)
+    Set rngGist = Application.InputBox(&#34;请框选拆分依据列！只能选择单列单元格区域！&#34;, Title:=&#34;提示&#34;, Type:=8)
+    &#39;用户选择的拆分依据列
+    lngGistCol = rngGist.Column
+    &#39;拆分依据列的列标
+    lngTitleCount = Val(Application.InputBox(&#34;请输入总表标题行的行数？&#34;, Default:=1))
+    &#39;用户设置总表的标题行数
+    If lngTitleCount &lt; 0 Then MsgBox &#34;标题行数不能为负数，程序退出。&#34;: Exit Sub
+    strYesOrNo = MsgBox(&#34;是否需要在分表保留总表格式？&#34;, vbYesNo)
+    Set rngData = rngGist.Parent.UsedRange
+    &#39;总表的数据区域
+    Set rngFormat = rngGist.Parent.Cells
+    &#39;总表的单元格区域用于粘贴总表格式
+    aData = rngData.Value &#39;数据源装入数组
+    lngGistCol = lngGistCol - rngData.Column + 1
+    &#39;计算依据列在数组中的位置
+    lngColCount = UBound(aData, 2)
+    &#39;数据源的列数
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    ReDim aRef(1 To UBound(aData))
+    For i = 1 To UBound(aData) &#39;处理依据列的异常值，空白/错误值/整行空白等
+        If IsError(aData(i, lngGistCol)) Then
+            aRef(i) = &#34;错误值&#34;
+        ElseIf aData(i, lngGistCol) = &#34;&#34; Then
+            strTemp = &#34;&#34; &#39;判断是否整行数据为空
+            For j = 1 To lngColCount
+                strTemp = strTemp &amp; aData(i, j)
+            Next
+            If strTemp = &#34;&#34; Then &#39;如果整行为空
+                aRef(i) = &#34;整行空白&#34;
+            Else
+                aRef(i) = &#34;空白单元格&#34;
+            End If
+        Else
+            strKey = aData(i, lngGistCol)
+            aRef(i) = strKey
+        End If
+    Next
+    For i = lngTitleCount + 1 To UBound(aData)
+        strKey = aRef(i)
+        If strKey &lt;&gt; &#34;整行空白&#34; Then
+            If Not d.exists(strKey) Then
+            &#39;字典中不存在关键字时则遍历建表
+                d(strKey) = &#34;&#34;
+                ReDim aResult(1 To UBound(aData), 1 To lngColCount) &#39;声明一个结果数组
+                k = 0
+                For x = lngTitleCount + 1 To UBound(aData) &#39;遍历数据源
+                    strTemp = aRef(x)
+                    If strTemp = strKey Then &#39;如果记录符合条件，则装入结果数组
+                        k = k + 1
+                        For j = 1 To lngColCount
+                            aResult(k, j) = aData(x, j)
+                        Next
+                    End If
+                Next
+                For Each sht In ActiveWorkbook.Worksheets &#39;删除旧表
+                    If sht.Name = strKey Then sht.Delete
+                Next
+                With Worksheets.Add(, Sheets(Sheets.Count))
+                &#39;新建一个工作表
+                    .Name = strKey
+                    .Range(&#34;a1&#34;).Resize(UBound(aData), lngColCount).NumberFormat = &#34;@&#34;
+                    &#39;设置单元格为文本格式
+                    If lngTitleCount &gt; 0 Then .Range(&#34;a1&#34;).Resize(lngTitleCount, lngColCount) = aData
+                    &#39;标题行
+                    .Range(&#34;a1&#34;).Offset(lngTitleCount, 0).Resize(k, lngColCount) = aResult
+                    &#39;写入数据
+                    If strYesOrNo = vbYes Then &#39;如果用户选择保留总表格式
+                        rngFormat.Copy
+                        .Range(&#34;a1&#34;).PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+                         &#39;复制粘贴总表的格式
+                        .Range(&#34;a1&#34;).Offset(lngTitleCount + k, 0).Resize(UBound(aData) - k - lngTitleCount, 1).EntireRow.Delete
+                        &#39;删除多余的格式单元格
+                    End If
+                    .Range(&#34;a1&#34;).Select
+                End With
+            End If
+        End If
+    Next
+    rngData.Parent.Activate &#39;回到总表
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    Set d = Nothing
+    Set rngData = Nothing
+    Set rngGist = Nothing
+    Set rngFormat = Nothing
+    Erase aData: Erase aResult
+    MsgBox &#34;数据拆分完成！&#34;
+End Sub
+</code></pre><h4 id="方法二">方法二</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Private Sub Worksheet_Change(ByVal Target As Range)
+   ActiveWorkbook.RefreshAll
+End Sub
+</code></pre><h3 id="批量将工作表转换为独立的工作簿">批量将工作表转换为独立的工作簿</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub EachShtToWorkbook()
+    Dim sht As Worksheet, strPath As String
+    With Application.FileDialog(msoFileDialogFolderPicker)
+   &#39;选择保存工作薄的文件路径
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+        &#39;读取选择的文件路径,如果用户未选取路径则退出程序
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Application.DisplayAlerts = False
+    &#39;取消显示系统警告和消息，避免重名工作簿无法保存。当有重名工作簿时，会直接覆盖保存。
+    Application.ScreenUpdating = False &#39;取消屏幕刷新
+    For Each sht In Worksheets &#39;遍历工作表
+        sht.Copy &#39;复制工作表，工作表单纯复制后，会成为活动工作薄
+        With ActiveWorkbook
+            .SaveAs strPath &amp; sht.Name, xlWorkbookDefault
+            &#39;保存活动工作薄到指定路径下，以当前系统默认文件格式
+            .Close True &#39;关闭工作薄并保存
+        End With
+    Next
+    MsgBox &#34;处理完成。&#34;, , &#34;提醒&#34;
+    Application.ScreenUpdating = True &#39;恢复屏幕刷新
+    Application.DisplayAlerts = True &#39;恢复显示系统警告和消息
+End Sub
+</code></pre><h3 id="将总表按任意列拆分成多个工作簿">将总表按任意列拆分成多个工作簿</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub SplitShts()
+    Dim d As Object, sht As Worksheet
+    Dim aData, aResult, aTemp, aKeys, i&amp;, j&amp;, k&amp;, x&amp;
+    Dim rngData As Range, rngGist As Range, ws As Workbook
+    Dim lngTitleCount&amp;, lngGistCol&amp;, lngColCount&amp;
+    Dim rngFormat As Range, aRef, strYesOrNo As String
+    Dim strKey As String, strTemp As String, strPath As String
+    On Error Resume Next &#39;忽略错误，程序继续运行
+    Set d = CreateObject(&#34;scripting.dictionary&#34;)
+    With Application.FileDialog(msoFileDialogFolderPicker)
+    &#39;用户选择保存工作簿的路径
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Set rngGist = Application.InputBox(&#34;请框选拆分依据列！只能选择单列单元格区域！&#34;, Title:=&#34;提示&#34;, Type:=8)
+    &#39;用户选择的拆分依据列
+    If rngGist Is Nothing Then Exit Sub
+    lngGistCol = rngGist.Column &#39;拆分依据列的列标
+    lngTitleCount = Val(Application.InputBox(&#34;请输入总表标题行的行数？&#34;, Default:=1))
+    &#39;用户设置总表的标题行数
+    If lngTitleCount &lt; 0 Then MsgBox &#34;标题行数不能为负数，程序退出。&#34;: Exit Sub
+    strYesOrNo = MsgBox(&#34;是否需要在分表保留总表格式？&#34;, vbYesNo)
+    Set rngData = rngGist.Parent.UsedRange
+    &#39;总表的数据区域
+    Set rngFormat = rngGist.Parent.Cells
+    &#39;总表的单元格区域用于粘贴总表格式
+    aData = rngData.Value &#39;数据源装入数组
+    lngGistCol = lngGistCol - rngData.Column + 1
+    &#39;计算依据列在数组中的位置
+    lngColCount = UBound(aData, 2)
+    &#39;数据源的列数
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    ReDim aRef(1 To UBound(aData))
+    For i = 1 To UBound(aData) &#39;处理依据列的异常值，空白/错误值/整行空白等
+        If IsError(aData(i, lngGistCol)) Then
+            aRef(i) = &#34;错误值&#34;
+        ElseIf aData(i, lngGistCol) = &#34;&#34; Then
+            strTemp = &#34;&#34; &#39;判断是否整行数据为空
+            For j = 1 To lngColCount
+                strTemp = strTemp &amp; aData(i, j)
+            Next
+            If strTemp = &#34;&#34; Then &#39;如果整行为空
+                aRef(i) = &#34;整行空白&#34;
+            Else
+                aRef(i) = &#34;空白单元格&#34;
+            End If
+        Else
+            strKey = aData(i, lngGistCol)
+            aRef(i) = strKey
+        End If
+    Next
+    For i = lngTitleCount + 1 To UBound(aData)
+        strKey = aRef(i)
+        If strKey &lt;&gt; &#34;整行空白&#34; Then
+            If Not d.exists(strKey) Then
+            &#39;字典中不存在关键字时则遍历建表
+                d(strKey) = &#34;&#34;
+                ReDim aResult(1 To UBound(aData), 1 To lngColCount) &#39;声明一个结果数组
+                k = 0
+                For x = lngTitleCount + 1 To UBound(aData) &#39;遍历数据源
+                    strTemp = aRef(x)
+                    If strTemp = strKey Then &#39;如果记录符合条件，则装入结果数组
+                        k = k + 1
+                        For j = 1 To lngColCount
+                            aResult(k, j) = aData(x, j)
+                        Next
+                    End If
+                Next
+                Set ws = Workbooks.Add
+                With ws.Sheets(1)
+                &#39;新建一个工作簿
+                    .Range(&#34;a1&#34;).Resize(UBound(aData), lngColCount).NumberFormat = &#34;@&#34;
+                    &#39;设置单元格为文本格式
+                    If lngTitleCount &gt; 0 Then .Range(&#34;a1&#34;).Resize(lngTitleCount, lngColCount) = aData
+                    &#39;标题行
+                    .Range(&#34;a1&#34;).Offset(lngTitleCount, 0).Resize(k, lngColCount) = aResult
+                    &#39;写入数据
+                    If strYesOrNo = vbYes Then &#39;如果用户选择保留总表格式
+                        rngFormat.Copy
+                        .Range(&#34;a1&#34;).PasteSpecial Paste:=xlPasteFormats, Operation:=xlNone, SkipBlanks:=False, Transpose:=False
+                         &#39;复制粘贴总表的格式
+                        .Range(&#34;a1&#34;).Offset(lngTitleCount + k, 0).Resize(UBound(aData) - k - lngTitleCount, 1).EntireRow.Delete
+                        &#39;删除多余的格式单元格
+                    End If
+                    .Range(&#34;a1&#34;).Select
+                End With
+                ws.SaveAs strPath &amp; strKey, xlWorkbookDefault
+                ws.Close False
+            End If
+        End If
+    Next
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    Set d = Nothing
+    Set rngData = Nothing
+    Set rngGist = Nothing
+    Set rngFormat = Nothing
+    Erase aData: Erase aResult
+    MsgBox &#34;数据拆分完成！&#34;
+End Sub
+</code></pre><h3 id="选中行或列会填充颜色">选中行或列会填充颜色</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
+    Application.ScreenUpdating = False
+    Cells.Interior.ColorIndex = -4142 &#39;取消单元格原有填充色，但不包含条件格式产生的颜色。
+    Rows(Target.Row).Interior.ColorIndex = 33 &#39;活动单元格整行填充颜色
+    Columns(Target.Column).Interior.ColorIndex = 33 &#39;活动单元格整列填充颜色
+    Application.ScreenUpdating = True
+End Sub
+</code></pre><h3 id="按指定名称批量创建工作簿">按指定名称批量创建工作簿</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub CreateFiles()
+    Dim strPath As String, strFileName As String
+    Dim i As Long, r
+    On Error Resume Next
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        &#39;用户选择文件夹路径
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+        &#39;如果用户为选择文件夹则退出程序
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Application.ScreenUpdating = False &#39;取消屏幕刷新
+    Application.DisplayAlerts = False &#39;取消警告提示，当有重名工作簿时直接覆盖
+    r = Range(&#34;a1:a&#34; &amp; Cells(Rows.Count, 1).End(xlUp).Row) &#39;数据装入数组r
+    For i = 2 To UBound(r) &#39;标题不要，因此从第2个元素开始遍历数组r
+        With Workbooks.Add &#39;新建工作簿
+            .SaveAs strPath &amp; r(i, 1), xlWorkbookDefault
+            &#39;以指定名称、默认文件类型保存工作簿
+            .Close True &#39;关闭工作簿
+        End With
+    Next
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    MsgBox &#34;创建完成。&#34;
+End Sub
+</code></pre><h3 id="按指定条件批量删除工作簿">按指定条件批量删除工作簿</h3>
+<h4 id="提取工作簿">提取工作簿</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetFiles()
+    Dim strPath As String, strFileName As String, k As Long
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        If .Show Then strPath = .SelectedItems(1) Else: Exit Sub
+        &#39;获取用户选择的文件夹的路径，如果未选取，则退出程序
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Application.ScreenUpdating = False
+    Range(&#34;a:b&#34;).Clear: k = 1
+    &#39;清除A:B列的所有
+    Cells(1, 1) = &#34;旧文件名&#34;: Cells(1, 2) = &#34;是否删除&#34;
+    strFileName = Dir(strPath &amp; &#34;*.xls*&#34;)
+    Do While strFileName &lt;&gt; &#34;&#34;
+        k = k + 1
+        Cells(k, 1) = strPath &amp; strFileName
+        strFileName = Dir
+    Loop
+    Application.DisplayAlerts = True
+End Sub
+</code></pre><h4 id="删除指定工作簿">删除指定工作簿</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub DeleteFile()
+    Dim r, i As Long
+    r = Range(&#34;a1&#34;).CurrentRegion &#39;数据装入数组
+    For i = 2 To UBound(r)
+    &#39;标题行不要，从数组第二行开始遍历
+        If r(i, 2) = &#34;删除&#34; Then Kill r(i, 1) &#39;Kill语句删除指定文件
+    Next
+    MsgBox &#34;完成。&#34;
+End Sub
+</code></pre><h3 id="批量获取指定文件夹下文件名并创建超链接">批量获取指定文件夹下文件名并创建超链接</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetFiles()
+    Dim strPath As String, strFileName As String, k As Long
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        &#39;用户选择文件夹路径
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+        &#39;如果用户为选择文件夹则退出程序
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Application.ScreenUpdating = False &#39;取消屏幕刷新
+    strFileName = Dir(strPath &amp; &#34;*.*&#34;)
+    &#39;dir+通配符获取首个文件名
+    &#39;如果一个文件也无，则返回空
+    Columns(1).Clear: Cells(1, 1) = &#34;目录&#34;: k = 1 &#39;清除当前工作表A列数据
+    Do While strFileName &lt;&gt; &#34;&#34;
+        k = k + 1 &#39;累加文件个数
+        ActiveSheet.Hyperlinks.Add Cells(k, 1), strPath &amp; strFileName
+        &#39;创建超链接
+        strFileName = Dir
+        &#39;第2次调用Dir函数，未使用任何参数，则同目录下的下一个文件名
+    Loop
+    Application.ScreenUpdating = True
+    MsgBox &#34;一共读取了：&#34; &amp; k-1 &amp; &#34;个文件名。&#34;
+End Sub
+</code></pre><h3 id="批量给工作簿重命名">批量给工作簿重命名</h3>
+<h4 id="获取文件夹下的工作簿">获取文件夹下的工作簿</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetFiles()
+    Dim strPath As String, strFileName As String, k As Long
+    With Application.FileDialog(msoFileDialogFolderPicker)
+        If .Show Then strPath = .SelectedItems(1) Else: Exit Sub
+        &#39;获取用户选择的文件夹的路径，如果未选取，则退出程序
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    Application.ScreenUpdating = False
+    Range(&#34;a:b&#34;).Clear: k = 1
+    &#39;清除A:B列的所有
+    Cells(1, 1) = &#34;旧文件名&#34;: Cells(1, 2) = &#34;新文件名&#34;
+    strFileName = Dir(strPath &amp; &#34;*.xls*&#34;)
+    Do While strFileName &lt;&gt; &#34;&#34;
+        k = k + 1
+        Cells(k, 1) = strPath &amp; strFileName
+        strFileName = Dir
+    Loop
+    Application.DisplayAlerts = True
+End Sub
+</code></pre><h4 id="重命名">重命名</h4>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub ChangeFileName()
+    Dim r, i As Long
+    r = Range(&#34;a1&#34;).CurrentRegion &#39;数据装入数组
+    For i = 2 To UBound(r)
+    &#39;标题行不要，从数组第二行开始遍历
+        Name r(i, 1) As r(i, 2) &#39;Name语句重命名
+    Next
+    MsgBox &#34;更名完成。&#34;
+End Sub
+</code></pre><h3 id="对office文件设置自杀程序">对office文件设置自杀程序</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">&#39;此工具要生效，需要将Excel保存为【Excel启用宏的工作簿(*.xlsm)】格式
+Private Sub Workbook_Open()
+    Dim dat As Date
+    dat = DateSerial(2020, 1, 1)
+    If Date &gt;= dat Then
+        Application.DisplayAlerts = False
+        MsgBox &#34;你是在偷看我的文件吗？&#34; &amp; vbCr &amp; &#34;别以为我不知道，我就在你身后看着你！白衣服，长头发，没有腿的那个。&#34;
+        With ThisWorkbook
+            .Saved = True
+            .ChangeFileAccess xlReadOnly
+            Kill .FullName
+            .Close
+        End With
+    End If
+End Sub
+</code></pre><h3 id="获取多层文件夹下文件名并创建超链接">获取多层文件夹下文件名并创建超链接</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub AutoAddLink()
+    Dim strFldPath As String
+    With Application.FileDialog(msoFileDialogFolderPicker)
+    &#39;用户选择指定文件夹
+        .Title = &#34;请选择指定文件夹。&#34;
+        If .Show Then strFldPath = .SelectedItems(1) Else Exit Sub
+        &#39;未选择文件夹则退出程序，否则将地址赋予变量strFldPath
+    End With
+    Application.ScreenUpdating = False
+    &#39;关闭屏幕刷新
+    Range(&#34;a:b&#34;).ClearContents
+    Range(&#34;a1:b1&#34;) = Array(&#34;文件夹&#34;, &#34;文件名&#34;)
+    Call SearchFileToHyperlinks(strFldPath)
+    &#39;调取自定义函数SearchFileToHyperlinks
+    Range(&#34;a:b&#34;).EntireColumn.AutoFit
+    &#39;自动列宽
+    Application.ScreenUpdating = True
+    &#39;重开屏幕刷新
+End Sub
+Function SearchFileToHyperlinks(ByVal strFldPath As String) As String
+    Dim objFld As Object
+    Dim objFile As Object
+    Dim objSubFld As Object
+    Dim strFilePath As String
+    Dim lngLastRow As Long
+    Dim intNum As Integer
+    Set objFld = CreateObject(&#34;Scripting.FileSystemObject&#34;).GetFolder(strFldPath)
+    &#39;创建FileSystemObject对象引用
+    For Each objFile In objFld.Files
+    &#39;遍历文件夹内的文件
+        lngLastRow = Cells(Rows.Count, 1).End(xlUp).Row + 1
+        strFilePath = objFile.Path
+        intNum = InStrRev(strFilePath, &#34;\&#34;)
+        &#39;使用instrrev函数获取最后文件夹名截至的位置
+        Cells(lngLastRow, 1) = Left(strFilePath, intNum - 1)
+        &#39;文件夹地址
+        Cells(lngLastRow, 2) = Mid(strFilePath, intNum + 1)
+        &#39;文件名
+        ActiveSheet.Hyperlinks.Add Anchor:=Cells(lngLastRow, 2), _
+                    Address:=strFilePath, ScreenTip:=strFilePath
+        &#39;添加超链接
+    Next objFile
+    For Each objSubFld In objFld.SubFolders
+    &#39;遍历文件夹内的子文件夹
+        Call SearchFileToHyperlinks(objSubFld.Path)
+    Next objSubFld
+    Set objFld = Nothing
+    Set objFile = Nothing
+    Set objSubFld = Nothing
+End Function
+</code></pre><h3 id="合并多工作簿数据成总表">合并多工作簿数据成总表</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">&#39;合并指定文件夹下多个工作簿数据
+&#39;1.代码运行后，首先会弹出一个选择文件夹的对话框，选中目标文件夹后，单击【确定】按钮即可。
+&#39;2.而后出现一个设置汇总工作表关键字的对话框。这里的关键字不区分大小写；如果需要汇总全部工作表的数据，可以不设置关键字，直接单击【确定】按钮即可。
+&#39;3.下一步设置工作表标题行的行数，默认为1行，可以根据实际情况设置为任意行，比如0行、2行等。
+&#39;4.数据合并完成后会弹出一个对话框，告知汇总了几张工作表的数据。
+Sub CollectWorkBookDatas()
+    Dim shtActive As Worksheet, rng As Range, shtData As Worksheet
+    Dim nTitleRow As Long, k As Long, nLastRow As Long
+    Dim i As Long, j As Long, nStartRow As Long
+    Dim aData, aResult, nStarRng As Long
+    Dim strPath As String, strFileName As String
+    Dim strKey As String, nShtCount As Long
+    With Application.FileDialog(msoFileDialogFolderPicker)
+    &#39;取得用户选择的文件夹路径
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+    End With
+    If Right(strPath, 1) &lt;&gt; &#34;\&#34; Then strPath = strPath &amp; &#34;\&#34;
+    strKey = InputBox(&#34;请输入需要合并的工作表所包含的关键词：&#34; &amp; vbCrLf &amp; &#34;如未填写关键词，则默认汇总全部表格数据&#34;, &#34;提醒&#34;)
+    If StrPtr(strKey) = 0 Then Exit Sub &#39;如果点击了取消或者关闭按钮，则退出程序
+    nTitleRow = Val(InputBox(&#34;请输入标题的行数，默认标题行数为1&#34;, &#34;提醒&#34;, 1))
+    If nTitleRow &lt; 0 Then MsgBox &#34;标题行数不能为负数。&#34;, 64, &#34;警告&#34;: Exit Sub
+    Set shtActive = ActiveSheet
+    With Application
+        .ScreenUpdating = False
+        .DisplayAlerts = False
+        .AskToUpdateLinks = False
+    End With
+    ReDim aResult(1 To 80000, 1 To 1) &#39;声明结果数组
+    Cells.ClearContents &#39;清空当前表格数据
+    Cells.NumberFormat = &#34;@&#34; &#39;设置单元格为文本格式
+    strFileName = Dir(strPath &amp; &#34;*.xls*&#34;) &#39;使用Dir函数遍历excel文件
+    Do While strFileName &lt;&gt; &#34;&#34;
+        If strFileName &lt;&gt; ThisWorkbook.Name Then &#39;避免同名文件重复打开出错
+            With GetObject(strPath &amp; strFileName)
+            &#39;以只读&#39;形式读取文件时，使用getobject会比workbooks.open稍快
+                For Each shtData In .Worksheets &#39;遍历表
+                    If InStr(1, shtData.Name, strKey, vbTextCompare) Then
+                    &#39;如果表中包含关键字则进行汇总(不区分关键词字母大小写）
+                        Set rng = shtData.UsedRange
+                        If rng.Count &gt; 1 Then &#39;判断工作表是否存在数据……
+                            nShtCount = nShtCount + 1 &#39;汇总工作表的数量
+                            nStartRow = IIf(nShtCount = 1, 1, nTitleRow + 1) &#39;判断遍历数据源是否应该扣掉标题行
+                            aData = rng.Value &#39;数据区域读入数组arr
+                            If UBound(aData, 2) + 2 &gt; UBound(aResult, 2) Then &#39;动态调整结果数组brr的最大列数
+                                ReDim Preserve aResult(1 To UBound(aResult), 1 To UBound(aData, 2) + 2)
+                            End If
+                            For i = nStartRow To UBound(aData) &#39;遍历行
+                                k = k + 1
+                                aResult(k, 1) = strFileName &#39;数组第一列放工作簿名称
+                                aResult(k, 2) = shtData.Name &#39;数组第二列放工作表名称
+                                For j = 1 To UBound(aData, 2) &#39;遍历列
+                                    aResult(k, j + 2) = aData(i, j)
+                                Next
+                                If k &gt; UBound(aResult) - 1 Then
+                                &#39;如果数据行数到达结果数组的上限，则将数据导入汇总表，并清空结果数组
+                                    With shtActive
+                                        nLastRow = .Cells(Rows.Count, 1).End(xlUp).Row &#39;获取放置来源数据的位置
+                                        If nLastRow = 1 Then &#39;判断是否扣除标题行
+                                            nStarRng = IIf(nTitleRow = 0, 1, 0)
+                                            .Range(&#34;a1&#34;).Offset(nStarRng).Resize(k, UBound(aResult, 2)) = aResult
+                                            .Range(&#34;a1:b1&#34;) = Array(&#34;来源工作簿名称&#34;, &#34;来源工作表名称&#34;)
+                                            &#39;前两列放来源工作簿和工作表名称
+                                        Else
+                                            .Range(&#34;a1&#34;).Offset(nLastRow).Resize(k, UBound(aResult, 2)) = aResult
+                                            &#39;放结果数组的数据
+                                        End If
+                                    End With
+                                    k = 0
+                                    ReDim aResult(1 To UBound(aResult), 1 To UBound(aResult, 2))
+                                    &#39;重新设置结果数组
+                                End If
+                            Next
+                        End If
+                    End If
+                Next
+                .Close False &#39;关闭工作簿
+            End With
+        End If
+        strFileName = Dir &#39;下一个excel文件
+    Loop
+    If k &gt; 0 Then
+        shtActive.Select &#39;激活汇总表
+        nLastRow = Cells(Rows.Count, 1).End(xlUp).Row &#39;放置数据的位置
+        If nLastRow = 1 Then &#39;如果汇总表数据为空，说明需要汇总的数据没有超过结果数组的上限
+             nStarRng = IIf(nTitleRow = 0, 1, 0)
+             Range(&#34;a1&#34;).Offset(nStarRng).Resize(k, UBound(aResult, 2)) = aResult
+             Range(&#34;a1:b1&#34;) = Array(&#34;来源工作簿名称&#34;, &#34;来源工作表名称&#34;)
+         Else
+             Range(&#34;a1&#34;).Offset(nLastRow).Resize(k, UBound(aResult, 2)) = aResult
+         End If
+    End If
+    With Application
+        .ScreenUpdating = True
+        .DisplayAlerts = True
+        .AskToUpdateLinks = True
+    End With
+    MsgBox &#34;一共汇总完成。&#34; &amp; nShtCount &amp; &#34;个工作表&#34;, , &#34;魏奇&#34;
+End Sub
+</code></pre><h3 id="将word表格批量写入excel">将Word表格批量写入Excel</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub GetWordTable()
+    Dim WdApp As Object
+    Dim objTable As Object
+    Dim objDoc As Object
+    Dim strPath As String
+    Dim shtEach As Worksheet
+    Dim shtSelect As Worksheet
+    Dim i As Long
+    Dim j As Long
+    Dim x As Long
+    Dim y As Long
+    Dim k As Long
+    Dim brr As Variant
+    Set WdApp = CreateObject(&#34;Word.Application&#34;)
+    With Application.FileDialog(msoFileDialogFilePicker)
+        .Filters.Add &#34;Word文件&#34;, &#34;*.doc*&#34;, 1
+        &#39;只显示word文件
+        .AllowMultiSelect = False
+        &#39;禁止多选文件
+        If .Show Then strPath = .SelectedItems(1) Else Exit Sub
+    End With
+    Application.ScreenUpdating = False
+    Application.DisplayAlerts = False
+    Set shtSelect = ActiveSheet
+    &#39;当前表赋值变量shtSelect，方便代码运行完成后叶落归根回到开始的地方
+    For Each shtEach In Worksheets
+    &#39;删除当前工作表以外的所有工作表
+        If shtEach.Name &lt;&gt; shtSelect.Name Then shtEach.Delete
+    Next
+    shtSelect.Name = &#34;魏奇&#34;
+    &#39;这句代码不是无聊，作用在于……你猜……
+    &#39;……其实是避免下面的程序工作表名称重复
+    Set objDoc = WdApp.documents.Open(strPath)
+    &#39;后台打开用户选定的word文档
+    For Each objTable In objDoc.tables
+    &#39;遍历文档中的每个表格
+        k = k + 1
+        Worksheets.Add after:=Worksheets(Worksheets.Count)
+        &#39;新建工作表
+        ActiveSheet.Name = k &amp; &#34;表&#34;
+        x = objTable.Rows.Count
+        &#39;table的行数
+        y = objTable.Columns.Count
+        &#39;table的列数
+        ReDim brr(1 To x, 1 To y)
+        &#39;以下遍历行列，数据写入数组brr
+        For i = 1 To x
+            For j = 1 To y
+                brr(i, j) = &#34;&#39;&#34; &amp; Application.Clean(objTable.cell(i, j).Range.Text)
+                &#39;Clean函数清除制表符等
+                &#39;半角单引号将数据统一转换为文本格式，避免身份证等数值变形
+            Next
+        Next
+        With [a1].Resize(x, y)
+            .Value = brr
+            &#39;数据写入Excel工作表
+            .Borders.LineStyle = 1
+            &#39;添加边框线
+        End With
+    Next
+    shtSelect.Select
+    objDoc.Close: WdApp.Quit
+    Application.ScreenUpdating = True
+    Application.DisplayAlerts = True
+    Set objDoc = Nothing
+    Set WdApp = Nothing
+    MsgBox &#34;共获取：&#34; &amp; k &amp; &#34;张表格的数据。&#34;
+End Sub
+</code></pre><h3 id="取消复杂的合并单元格">取消复杂的合并单元格</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub UnMergeRange2() &#39;取消合并单元格
+Dim MaxRow As Integer &#39;
+Dim Rng As Range
+Dim x%, y%, m%, n%, i%
+Dim Rng2 As Range
+    On Error Resume Next
+    Set Rng = Application.InputBox(&#34;请选择需要取消合并单元格的区域：&#34;, _
+                &#34;区域选择&#34;, , , , , , 8)
+    
+    For x = 1 To Rng.Rows.Count
+        For y = 1 To Rng.Columns.Count
+            Set Rng2 = Rng.Cells(x, y)
+            i = Rng2.MergeArea.Count
+            If i &gt; 1 Then
+                m = Rng2.MergeArea.Rows.Count
+                n = Rng2.MergeArea.Columns.Count
+                Rng2.UnMerge &#39;取消合并单元格
+                Rng2.Resize(m, n).Value = Rng2.Value
+            End If
+        Next
+    Next
+End Sub
+</code></pre><h3 id="批量将图片插入到单元格批注中">批量将图片插入到单元格批注中</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub AddCommentPic()
+    Dim arr, i&amp;, k&amp;, n&amp;, b As Boolean
+    Dim strPicName$, strPicPath$, strFdPath$
+    Dim rngData As Range, rngEach As Range
+    &#39;On Error Resume Next
+    &#39;用户选择图片所在的文件夹
+    With Application.FileDialog(msoFileDialogFolderPicker)
+       If .Show Then strFdPath = .SelectedItems(1) Else: Exit Sub
+    End With
+    If Right(strFdPath, 1) &lt;&gt; &#34;\&#34; Then strFdPath = strFdPath &amp; &#34;\&#34;
+    Set rngData = Application.InputBox(&#34;请选择需要插入图片到批注中的单元格区域&#34;, Type:=8)
+    &#39;用户选择需要插入图片到批注中的单元格或区域
+    If rngData.Count = 0 Then Exit Sub
+    Set rngData = Intersect(rngData.Parent.UsedRange, rngData)
+    &#39;intersect语句避免用户选择整列单元格，造成无谓运算的情况
+    If rngData Is Nothing Then MsgBox &#34;选择单元格不能全为空。&#34;: Exit Sub
+    arr = Array(&#34;.jpg&#34;, &#34;.jpeg&#34;, &#34;.bmp&#34;, &#34;.png&#34;, &#34;.gif&#34;)
+    &#39;用数组变量记录五种文件格式
+    Application.ScreenUpdating = False
+    For Each rngEach In rngData
+    &#39;遍历选择区域的每一个单元格
+        If Not rngEach.Comment Is Nothing Then rngEach.Comment.Delete  &#39;删除旧的批注
+        strPicName = rngEach.Text &#39;图片名称
+        If Len(strPicName) Then &#39;如果单元格存在值
+            strPicPath = strFdPath &amp; strPicName &#39;图片路径
+            b = False &#39;pd变量标记是否找到相关图片
+            For i = 0 To UBound(arr)
+            &#39;由于不确定用户的图片格式，因此遍历图片格式
+                If Len(Dir(strPicPath &amp; arr(i))) Then
+                &#39;如果存在相关文件
+                    rngEach.AddComment &#39;增加批注
+                    With rngEach.Comment
+                        .Visible = True &#39;批注可见
+                        .Text Text:=&#34;&#34;
+                        .Shape.Select True &#39;选中批注图形
+                        Selection.ShapeRange.Fill.UserPicture strPicPath &amp; arr(i)
+                        &#39;插入图片到批注中
+                        .Shape.Height = 150 &#39;图形的高度，可以根据需要自己调整
+                        .Shape.Width = 150 &#39;图形的宽度，可以根据需要自己调整
+                        .Visible = False &#39;取消显示
+                    End With
+                    b = True &#39;标记找到结果
+                    n = n + 1 &#39;累加找到结果的个数
+                    Exit For &#39;找到结果后就可以退出文件格式循环
+                End If
+            Next
+            If b = False Then k = k + 1  &#39;如果没找到图片累加个数
+        End If
+    Next
+    MsgBox &#34;共处理成功&#34; &amp; n &amp; &#34;个图片，另有&#34; &amp; k &amp; &#34;个非空单元格未找到对应的图片。&#34;
+    Application.ScreenUpdating = True
+End Sub
+</code></pre><h3 id="批量将图片插入到表格中">批量将图片插入到表格中</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">Sub InsertPic()
+    Dim arr, i&amp;, k&amp;, n&amp;, b As Boolean
+    Dim strPicName$, strPicPath$, strFdPath$, shp As Shape
+    Dim rngData As Range, rngEach As Range, rngWhere As Range, strWhere As String
+    &#39;On Error Resume Next
+    &#39;用户选择图片所在的文件夹
+    With Application.FileDialog(msoFileDialogFolderPicker)
+       If .Show Then strFdPath = .SelectedItems(1) Else: Exit Sub
+    End With
+    If Right(strFdPath, 1) &lt;&gt; &#34;\&#34; Then strFdPath = strFdPath &amp; &#34;\&#34;
+    Set rngData = Application.InputBox(&#34;请选择图片名称所在的单元格区域&#34;, Type:=8)
+    &#39;用户选择需要插入图片的名称所在单元格范围
+    Set rngData = Intersect(rngData.Parent.UsedRange, rngData)
+    &#39;intersect语句避免用户选择整列单元格，造成无谓运算的情况
+    If rngData Is Nothing Then MsgBox &#34;选择的单元格范围不存在数据！&#34;: Exit Sub
+    strWhere = InputBox(&#34;请输入图片偏移的位置，例如上1、下1、左1、右1&#34;, , &#34;右1&#34;)
+    &#39;用户输入图片相对单元格的偏移位置。
+    If Len(strWhere) = 0 Then Exit Sub
+    x = Left(strWhere, 1)
+    &#39;偏移的方向
+    If InStr(&#34;上下左右&#34;, x) = 0 Then MsgBox &#34;你未输入偏移方位。&#34;: Exit Sub
+    y = Val(Mid(strWhere, 2))
+    &#39;偏移的值
+    Select Case x
+        Case &#34;上&#34;
+        Set rngWhere = rngData.Offset(-y, 0)
+        Case &#34;下&#34;
+        Set rngWhere = rngData.Offset(y, 0)
+        Case &#34;左&#34;
+        Set rngWhere = rngData.Offset(0, -y)
+        Case &#34;右&#34;
+        Set rngWhere = rngData.Offset(0, y)
+    End Select
+    Application.ScreenUpdating = False
+    rngData.Parent.Parent.Activate &#39;用户选定的激活工作簿
+    rngData.Parent.Select
+    For Each shp In ActiveSheet.Shapes
+    &#39;如果旧图片存放在目标图片存放范围则删除
+        If Not Intersect(rngWhere, shp.TopLeftCell) Is Nothing Then shp.Delete
+    Next
+    x = rngWhere.Row - rngData.Row
+    y = rngWhere.Column - rngData.Column
+    &#39;偏移的坐标
+    arr = Array(&#34;.jpg&#34;, &#34;.jpeg&#34;, &#34;.bmp&#34;, &#34;.png&#34;, &#34;.gif&#34;)
+    &#39;用数组变量记录五种文件格式
+    For Each rngEach In rngData
+    &#39;遍历选择区域的每一个单元格
+        strPicName = rngEach.Text
+        &#39;图片名称
+        If Len(strPicName) Then
+        &#39;如果单元格存在值
+            strPicPath = strFdPath &amp; strPicName
+            &#39;图片路径
+            b = False
+            &#39;变量标记是否找到相关图片
+            For i = 0 To UBound(arr)
+            &#39;由于不确定用户的图片格式，因此遍历图片格式
+                If Len(Dir(strPicPath &amp; arr(i))) Then
+                &#39;如果存在相关文件
+                    Set shp = ActiveSheet.Shapes.AddPicture( _
+                        strPicPath &amp; arr(i), False, True, _
+                        rngEach.Offset(x, y).Left + 5, _
+                        rngEach.Offset(x, y).Top + 5, _
+                        20, 20)
+                    shp.Select
+                    With Selection
+                        .ShapeRange.LockAspectRatio = msoFalse
+                        &#39;撤销锁定图片纵横比
+                        .Height = rngEach.Offset(x, y).Height - 10 &#39;图片高度
+                        .Width = rngEach.Offset(x, y).Width - 10 &#39;图片宽度
+                    End With
+                    b = True &#39;标记找到结果
+                    n = n + 1 &#39;累加找到结果的个数
+                    Range(&#34;a1&#34;).Select: Exit For &#39;找到结果后就可以退出文件格式循环
+                End If
+            Next
+            If b = False Then k = k + 1 &#39;如果没找到图片累加个数
+        End If
+    Next
+    Application.ScreenUpdating = True
+    MsgBox &#34;共处理成功&#34; &amp; n &amp; &#34;个图片，另有&#34; &amp; k &amp; &#34;个非空单元格未找到对应的图片。&#34;
+End Sub
+</code></pre><h3 id="修改单元格内容会被记录到批注">修改单元格内容会被记录到批注</h3>
+<pre tabindex="0"><code class="language-visual" data-lang="visual">&#39;在所有过程之前用Dim语句定义的变量r1是模块级变量，应模块中所有的过程都可以使用它
+Dim r1 &#39;定义一个模块给变量，用户保存单元格的数据
+&#39;第一个事件过程，用于记录被更改前单元格中保存的数据
+Private Sub Worksheet_SelectionChange(ByVal Target As Range)
+If Target.Cells.Count &lt;&gt; 1 Then Exit Sub &#39;选中多个单元格时退出程序
+If Target.Formula = &#34;&#34; Then &#39;根据选中单元格中保存的数据，确定给变量r1赋什么值
+    r1 = &#34;空&#34;
+Else
+    r1 = Target.Text
+End If
+End Sub
+&#39;第二个事件过程，用于批注记录单元格修改前后的信息
+Private Sub Worksheet_Change(ByVal Target As Range)
+If Target.Cells.Count &lt;&gt; 1 Then Exit Sub
+&#39;定义变量保存单元格修改后的内容
+Dim r2
+&#39;判断单元格是否被修改为空单元格
+If Target.Formula = &#34;&#34; Then
+    r2 = &#34;空&#34;
+Else
+    r2 = Target.Formula
+End If
+&#39;如果单元格修改前后的内容一样则退出程序
+If r1 = r2 Then Exit Sub
+&#39;定义一个批注变量
+Dim r3
+&#39;定义一个变量保存批注内容
+Dim r4
+&#39;将被修改单元格的批注赋给变量r3
+Set r3 = Target.Comment
+&#39;如果单元格中没有批注则新建批注
+If r3 Is Nothing Then Target.AddComment
+&#39;将批注的内容保存到变量r4中
+r4 = Target.Comment.Text
+&#39;重新修改批注的内容=原批注内容+当前日期和时间+原内容+修改后的新内容
+Target.Comment.Text Text:=r4 &amp; Chr(10) &amp; Format(Now(), &#34;yyyy-mm-dd hh:mm&#34;) &amp; &#34;原内容:&#34; &amp; r1 &amp; &#34;修改为:&#34; &amp; r2
+&#39;根据批注内容自动调整批注大小
+Target.Comment.Shape.TextFrame.AutoSize = True
+End Sub
+</code></pre>
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/consul/">Consul简介</a></li>
+        
+        <li><a href="/post/linux_guide/">Linux手册</a></li>
+        
+        <li><a href="/post/beego_guide/">Beego使用指南</a></li>
+        
+        <li><a href="/post/hugo_guide/">Hugo使用指南</a></li>
+        
+        <li><a href="/post/docker_advanced/">Docker进阶指南</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/VBA'>VBA</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    
+    
+
+</div>
+
+                    <footer id="footer">
+    <script type="text/javascript"
+        async
+        src="https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[\[','\]\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+
+MathJax.Hub.Queue(function() {
+    
+    
+    
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+</script>
+
+<style>
+code.has-jax {
+    font: inherit;
+    font-size: 100%;
+    background: inherit;
+    border: inherit;
+    color: #515151;
+}
+</style>
+
+    <div>
+        &copy; 2023 <a href="https://blog.imw7.com/">魏奇的博客 By 魏奇</a>
+        
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">蜀ICP备2022000811号-1</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://blog.imw7.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://blog.imw7.com/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/consul/" title="Consul简介">Consul简介</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/linux_guide/" title="Linux手册">Linux手册</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/beego_guide/" title="Beego使用指南">Beego使用指南</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/hugo_guide/" title="Hugo使用指南">Hugo使用指南</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/docker_advanced/" title="Docker进阶指南">Docker进阶指南</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/docker_guide/" title="Docker简易指南">Docker简易指南</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/Go/fastdfs/" title="FastDFS">FastDFS</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
+    </li>
+    
+    <li>
+        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://blog.imw7.com/categories/Beego/">Beego (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Docker/">Docker (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Go/">Go (54)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hexo/">Hexo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Hugo/">Hugo (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/Linux/">Linux (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/VBA/">VBA (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/git/">git (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E5%85%B6%E4%BB%96/">其他 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8/">服务器 (3)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E7%AE%97%E6%B3%95/">算法 (1)</a></li>
+    
+    <li><a href="https://blog.imw7.com/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络 (1)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://blog.imw7.com/tags/Bcrypt/">Bcrypt</a>
+    
+    <a href="https://blog.imw7.com/tags/Beego/">Beego</a>
+    
+    <a href="https://blog.imw7.com/tags/Cookie/">Cookie</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/ES/">ES</a>
+    
+    <a href="https://blog.imw7.com/tags/Firefox/">Firefox</a>
+    
+    <a href="https://blog.imw7.com/tags/GMP/">GMP</a>
+    
+    <a href="https://blog.imw7.com/tags/HDMI/">HDMI</a>
+    
+    <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
+    
+    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    
+    <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
+    
+    <a href="https://blog.imw7.com/tags/Kibana/">Kibana</a>
+    
+    <a href="https://blog.imw7.com/tags/Linux/">Linux</a>
+    
+    <a href="https://blog.imw7.com/tags/MongoDB/">MongoDB</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/NSQ/">NSQ</a>
+    
+    <a href="https://blog.imw7.com/tags/Redis/">Redis</a>
+    
+    <a href="https://blog.imw7.com/tags/Session/">Session</a>
+    
+    <a href="https://blog.imw7.com/tags/Ubuntu/">Ubuntu</a>
+    
+    <a href="https://blog.imw7.com/tags/VBA/">VBA</a>
+    
+    <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
+    
+    <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/centos/">centos</a>
+    
+    <a href="https://blog.imw7.com/tags/channel/">channel</a>
+    
+    <a href="https://blog.imw7.com/tags/consul/">consul</a>
+    
+    <a href="https://blog.imw7.com/tags/context/">context</a>
+    
+    <a href="https://blog.imw7.com/tags/Docker/">Docker</a>
+    
+    <a href="https://blog.imw7.com/tags/etcd/">etcd</a>
+    
+    <a href="https://blog.imw7.com/tags/fastdfs/">fastdfs</a>
+    
+    <a href="https://blog.imw7.com/tags/flag/">flag</a>
+    
+    <a href="https://blog.imw7.com/tags/fmt/">fmt</a>
+    
+    <a href="https://blog.imw7.com/tags/gin/">gin</a>
+    
+    <a href="https://blog.imw7.com/tags/git/">git</a>
+    
+    <a href="https://blog.imw7.com/tags/go-micro/">go-micro</a>
+    
+    <a href="https://blog.imw7.com/tags/go-module/">go module</a>
+    
+    <a href="https://blog.imw7.com/tags/goroutine/">goroutine</a>
+    
+    <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
+    
+    <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/interface/">interface</a>
+    
+    <a href="https://blog.imw7.com/tags/iota/">iota</a>
+    
+    <a href="https://blog.imw7.com/tags/jwt/">jwt</a>
+    
+    <a href="https://blog.imw7.com/tags/log/">log</a>
+    
+    <a href="https://blog.imw7.com/tags/logrus/">logrus</a>
+    
+    <a href="https://blog.imw7.com/tags/makefile/">makefile</a>
+    
+    <a href="https://blog.imw7.com/tags/map/">map</a>
+    
+    <a href="https://blog.imw7.com/tags/MySQL/">MySQL</a>
+    
+    <a href="https://blog.imw7.com/tags/net/http/">net/http</a>
+    
+    <a href="https://blog.imw7.com/tags/os.Args/">os.Args</a>
+    
+    <a href="https://blog.imw7.com/tags/package/">package</a>
+    
+    <a href="https://blog.imw7.com/tags/pprof/">pprof</a>
+    
+    <a href="https://blog.imw7.com/tags/protobuf/">protobuf</a>
+    
+    <a href="https://blog.imw7.com/tags/sarama/">sarama</a>
+    
+    <a href="https://blog.imw7.com/tags/sqlx/">sqlx</a>
+    
+    <a href="https://blog.imw7.com/tags/ssh/">ssh</a>
+    
+    <a href="https://blog.imw7.com/tags/strconv/">strconv</a>
+    
+    <a href="https://blog.imw7.com/tags/tailf/">tailf</a>
+    
+    <a href="https://blog.imw7.com/tags/template/">template</a>
+    
+    <a href="https://blog.imw7.com/tags/time/">time</a>
+    
+    <a href="https://blog.imw7.com/tags/viper/">viper</a>
+    
+    <a href="https://blog.imw7.com/tags/yilia/">yilia</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8A%E4%BC%A0/">上传</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%B8%8B%E8%BD%BD/">下载</a>
+    
+    <a href="https://blog.imw7.com/tags/%E4%BE%9D%E8%B5%96%E7%AE%A1%E7%90%86/">依赖管理</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%87%BD%E6%95%B0/">函数</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%88%87%E7%89%87/">切片</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%8D%E5%B0%84/">反射</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/">变量和常量</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">基本数据类型</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%9F%BA%E7%A1%80/">基础</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%86%E7%A0%81%E5%8A%A0%E5%AF%86/">密码加密</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%AF%BC%E5%85%A5%E6%9C%AC%E5%9C%B0%E5%8C%85/">导入本地包</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E5%92%8C%E7%BB%84%E4%BB%B6/">常用框架和组件</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E4%B8%8E%E6%8A%80%E5%B7%A7/">常用组件与技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/">常用组件和技巧</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%B9%B6%E5%8F%91/">并发</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87/">开发环境准备</a>
+    
+    <a href="https://blog.imw7.com/tags/%E5%BC%82%E6%88%96/">异或</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8C%87%E9%92%88/">指针</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">排序算法</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%95%B0%E7%BB%84/">数组</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">文件操作</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%A0%87%E5%87%86%E5%BA%93/">标准库</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/">流程控制</a>
+    
+    <a href="https://blog.imw7.com/tags/%E6%B5%8B%E8%AF%95/">测试</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/">类型断言</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/">结构体</a>
+    
+    <a href="https://blog.imw7.com/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/">网络编程</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/">跨平台编译</a>
+    
+    <a href="https://blog.imw7.com/tags/%E8%BF%90%E7%AE%97%E7%AC%A6/">运算符</a>
+    
+    <a href="https://blog.imw7.com/tags/%E9%A1%B9%E7%9B%AE%E7%BB%93%E6%9E%84/">项目结构</a>
+    
+</div>
+    </section>
+
+    
+<section class="widget">
+    <h3 class="widget-title">友情链接</h3>
+    <ul class="widget-list">
+        
+        <li>
+            <a target="_blank" href="https://blog.imw7.com/" title="魏奇的博客">魏奇的博客</a>
+        </li>
+        
+    </ul>
+</section>
+
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://blog.imw7.com/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
