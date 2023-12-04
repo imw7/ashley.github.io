@@ -6,123 +6,98 @@
     <description>Recent content in 常用组件和技巧 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 31 Jul 2022 23:49:32 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 Jul 2022 23:49:32 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6%E5%92%8C%E6%8A%80%E5%B7%A7/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Beego使用指南</title>
       <link>https://blog.imw7.com/post/beego_guide/</link>
       <pubDate>Sun, 31 Jul 2022 23:49:32 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/beego_guide/</guid>
       <description>&lt;p&gt;这篇文章是 &lt;code&gt;Beego&lt;/code&gt; 框架的使用教程，实现了如何用 &lt;code&gt;bee&lt;/code&gt; 工具自动生成项目的基本结构。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Hugo使用指南</title>
       <link>https://blog.imw7.com/post/hugo_guide/</link>
       <pubDate>Fri, 01 Jul 2022 21:23:51 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/hugo_guide/</guid>
       <description>&lt;p&gt;本文介绍的是在 &lt;code&gt;Hugo&lt;/code&gt; 的使用过程中遇到的一些问题。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Docker进阶指南</title>
       <link>https://blog.imw7.com/post/docker_advanced/</link>
       <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/docker_advanced/</guid>
       <description>&lt;p&gt;本文是 &lt;code&gt;Docker&lt;/code&gt; 的进阶篇，通过本文能够更好的对 &lt;code&gt;Docker&lt;/code&gt; 的高级功能有一个清楚的认识。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Docker简易指南</title>
       <link>https://blog.imw7.com/post/docker_guide/</link>
       <pubDate>Wed, 22 Jun 2022 10:42:36 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/docker_guide/</guid>
       <description>&lt;p&gt;本文是 &lt;code&gt;Docker&lt;/code&gt; 的简易使用指南，包含方方面面的知识，争取通过本文能够对 &lt;code&gt;Docker&lt;/code&gt; 有个初步的了解。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>为Go项目编写Makefile</title>
       <link>https://blog.imw7.com/post/Go/makefile/</link>
       <pubDate>Fri, 10 Sep 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/makefile/</guid>
       <description>&lt;p&gt;借助&lt;code&gt;Makefile&lt;/code&gt;我们在编译过程中不再需要每次手动输入编译的命令和编译的参数，可以极大简化项目编译过程。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>go-micro</title>
       <link>https://blog.imw7.com/post/Go/go_micro/</link>
       <pubDate>Wed, 11 Aug 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_micro/</guid>
       <description>&lt;p&gt;本文介绍 &lt;code&gt;go-micro&lt;/code&gt; 框架，该框架是微服务的基础框架。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go语言配置管理神器——Viper中文教程</title>
       <link>https://blog.imw7.com/post/Go/viper_tutorial/</link>
       <pubDate>Thu, 21 May 2020 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/viper_tutorial/</guid>
       <description>&lt;p&gt;&lt;code&gt;Viper&lt;/code&gt; 是适用于 &lt;code&gt;Go&lt;/code&gt; 应用程序的完整配置解决方案。它被设计用于在应用程序中工作，并且可以处理所有类型的配置需求和格式。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>protobuf初识</title>
       <link>https://blog.imw7.com/post/Go/protobuf/</link>
       <pubDate>Sun, 08 Mar 2020 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/protobuf/</guid>
       <description>&lt;p&gt;protobuf是一种高效的数据格式，平台无关、语言无关、可扩展，可用于 RPC 系统和持续数据存储系统。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Docker的安装与使用</title>
       <link>https://blog.imw7.com/post/about_docker/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/about_docker/</guid>
       <description>&lt;p&gt;本文介绍 &lt;code&gt;Docker&lt;/code&gt; 在 &lt;code&gt;Ubuntu&lt;/code&gt; 下的安装以及 &lt;code&gt;Docker&lt;/code&gt; 的基本命令。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>第三方日志库logrus使用</title>
       <link>https://blog.imw7.com/post/Go/go_logrus/</link>
       <pubDate>Thu, 29 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_logrus/</guid>
       <description>&lt;p&gt;日志是程序中必不可少的一个环节，由于Go语言内置的日志库功能比较简洁，我们在实际开发中通常会选择使用第三方的日志库进行开发。文本介绍了&lt;code&gt;logrus&lt;/code&gt;这个日志库的基本使用。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go操作etcd</title>
       <link>https://blog.imw7.com/post/Go/go_etcd/</link>
       <pubDate>Mon, 19 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_etcd/</guid>
       <description>&lt;p&gt;&lt;code&gt;etcd&lt;/code&gt; 是近几年比较火热的一个开源的、分布式的键值对数据存储系统，提供共享配置、服务的注册和发现，本文主要介绍 &lt;code&gt;etcd&lt;/code&gt; 的安装和使用。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go操作Kafka</title>
       <link>https://blog.imw7.com/post/Go/go_kafka/</link>
       <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_kafka/</guid>
       <description>&lt;p&gt;Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据，具有高性能、持久化、多副本备份、横向扩展等特点。本文介绍了如何使用Go语言发送和接收kafka消息。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Go操作NSQ</title>
       <link>https://blog.imw7.com/post/Go/go_nsq/</link>
       <pubDate>Sat, 17 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_nsq/</guid>
       <description>&lt;p&gt;NSQ是目前比较流行的一个分布式的消息队列，本文主要介绍了NSQ及Go语言如何操作NSQ。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

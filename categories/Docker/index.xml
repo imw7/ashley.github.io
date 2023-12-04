@@ -6,33 +6,28 @@
     <description>Recent content in Docker on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 25 Jun 2022 13:39:22 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/categories/Docker/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 25 Jun 2022 13:39:22 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/categories/Docker/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Docker进阶指南</title>
       <link>https://blog.imw7.com/post/docker_advanced/</link>
       <pubDate>Sat, 25 Jun 2022 13:39:22 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/docker_advanced/</guid>
       <description>&lt;p&gt;本文是 &lt;code&gt;Docker&lt;/code&gt; 的进阶篇，通过本文能够更好的对 &lt;code&gt;Docker&lt;/code&gt; 的高级功能有一个清楚的认识。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Docker简易指南</title>
       <link>https://blog.imw7.com/post/docker_guide/</link>
       <pubDate>Wed, 22 Jun 2022 10:42:36 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/docker_guide/</guid>
       <description>&lt;p&gt;本文是 &lt;code&gt;Docker&lt;/code&gt; 的简易使用指南，包含方方面面的知识，争取通过本文能够对 &lt;code&gt;Docker&lt;/code&gt; 有个初步的了解。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>Docker的安装与使用</title>
       <link>https://blog.imw7.com/post/about_docker/</link>
       <pubDate>Wed, 04 Mar 2020 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/about_docker/</guid>
       <description>&lt;p&gt;本文介绍 &lt;code&gt;Docker&lt;/code&gt; 在 &lt;code&gt;Ubuntu&lt;/code&gt; 下的安装以及 &lt;code&gt;Docker&lt;/code&gt; 的基本命令。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

@@ -6,15 +6,14 @@
     <description>Recent content in Bcrypt on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 23 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Bcrypt/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 23 Dec 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/Bcrypt/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>密码加密</title>
       <link>https://blog.imw7.com/post/Go/bcrypt/</link>
       <pubDate>Thu, 23 Dec 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/bcrypt/</guid>
       <description>&lt;p&gt;本文介绍的密码加密方式是&lt;code&gt;bcrypt&lt;/code&gt;。&lt;code&gt;bcrypt&lt;/code&gt;是单向&lt;code&gt;Hash&lt;/code&gt;加密算法，类似&lt;code&gt;Pbkdf2&lt;/code&gt;算法，不可反向破解生成明文。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

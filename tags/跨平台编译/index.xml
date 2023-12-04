@@ -6,15 +6,14 @@
     <description>Recent content in 跨平台编译 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 20 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 20 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>安装Go语言及搭建Go语言开发环境</title>
       <link>https://blog.imw7.com/post/Go/go_install_dev/</link>
       <pubDate>Sat, 20 Mar 2021 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_install_dev/</guid>
       <description>&lt;p&gt;最新1.16版本，一步一步，从零搭建Go语言开发环境。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

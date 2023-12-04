@@ -6,15 +6,14 @@
     <description>Recent content in ssh on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 02 Jan 2022 11:36:55 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/ssh/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>SSH使用指南</title>
       <link>https://blog.imw7.com/post/ssh/</link>
       <pubDate>Sun, 02 Jan 2022 11:36:55 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/ssh/</guid>
       <description>&lt;p&gt;本文主要介绍使用 &lt;code&gt;SSH&lt;/code&gt; 远程连接的一些技术指导，包括免密登录、文件上传下载、连接超时等问题的解决。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

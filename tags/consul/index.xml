@@ -6,15 +6,14 @@
     <description>Recent content in consul on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 08 Feb 2023 23:47:46 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/consul/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Feb 2023 23:47:46 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/consul/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Consul简介</title>
       <link>https://blog.imw7.com/post/consul/</link>
       <pubDate>Wed, 08 Feb 2023 23:47:46 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/consul/</guid>
       <description>&lt;p&gt;写微服务项目的过程中用到了 &lt;code&gt;Consul&lt;/code&gt; 作为服务发现工具，本文作为对 &lt;code&gt;Consul&lt;/code&gt; 的总结。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

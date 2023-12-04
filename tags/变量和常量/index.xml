@@ -6,15 +6,14 @@
     <description>Recent content in 变量和常量 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 02 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 02 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言基础之变量和常量</title>
       <link>https://blog.imw7.com/post/Go/01_var_and_const/</link>
       <pubDate>Sat, 02 Mar 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/01_var_and_const/</guid>
       <description>&lt;p&gt;变量和常量是编程必不可少的部分，也是很好理解的一部分。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

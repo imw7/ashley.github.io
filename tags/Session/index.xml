@@ -6,15 +6,14 @@
     <description>Recent content in Session on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 31 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Session/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 31 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/Session/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Cookie和Session</title>
       <link>https://blog.imw7.com/post/Go/go_cookie_session/</link>
       <pubDate>Sat, 31 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_cookie_session/</guid>
       <description>&lt;p&gt;Cookie和Session是Web开发绕不开的一个环节，本文介绍了Cookie和Session的原理及在Go语言中如何操作Cookie。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

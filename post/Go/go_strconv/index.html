@@ -245,78 +245,78 @@
 <p>这一组函数是我们平时编程中用的最多的。</p>
 <h3 id="atoi">Atoi()</h3>
 <p><code>Atoi()</code>函数用于将字符串类型的整数转换为int类型，函数签名如下。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Atoi</span>(s <span style="font-weight:bold">string</span>) (i <span style="font-weight:bold">int</span>, err <span style="font-weight:bold">error</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Atoi</span>(s <span style="font-weight:bold">string</span>) (i <span style="font-weight:bold">int</span>, err <span style="font-weight:bold">error</span>)
 </span></span></code></pre></div><p>如果传入的字符串参数无法转换为int类型，就会返回错误。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>s1 := <span style="color:#666;font-style:italic">&#34;100&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>i1, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">Atoi</span>(s1)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;can&#39;t convert to int&#34;</span>)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>} <span style="font-weight:bold">else</span> {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type:%T value:%#v\n&#34;</span>, i1, i1) <span style="color:#888;font-style:italic">//type:int value:100
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"></span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>s1 := <span style="color:#666;font-style:italic">&#34;100&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>i1, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">Atoi</span>(s1)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">if</span> err != <span style="font-weight:bold">nil</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;can&#39;t convert to int&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>} <span style="font-weight:bold">else</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type:%T value:%#v\n&#34;</span>, i1, i1) <span style="color:#888;font-style:italic">//type:int value:100
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"></span>}
 </span></span></code></pre></div><h3 id="itoa">Itoa()</h3>
 <p><code>Itoa()</code>函数用于将int类型数据转换为对应的字符串表示，具体的函数签名如下。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(i <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(i <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
 </span></span></code></pre></div><p>示例代码如下：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>i2 := 200
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>s2 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(i2)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type:%T value:%#v\n&#34;</span>, s2, s2) <span style="color:#888;font-style:italic">//type:string value:&#34;200&#34;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>i2 := 200
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>s2 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">Itoa</span>(i2)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>fmt.<span style="color:#666;font-weight:bold;font-style:italic">Printf</span>(<span style="color:#666;font-style:italic">&#34;type:%T value:%#v\n&#34;</span>, s2, s2) <span style="color:#888;font-style:italic">//type:string value:&#34;200&#34;
 </span></span></span></code></pre></div><h3 id="a的典故">a的典故</h3>
 <p>【扩展阅读】这是C语言遗留下的典故。C语言中没有string类型而是用字符数组(array)表示字符串，所以<code>Itoa</code>对很多C系的程序员很好理解。</p>
 <h2 id="parse系列函数">Parse系列函数</h2>
 <p>Parse类函数用于转换字符串为给定类型的值：ParseBool()、ParseFloat()、ParseInt()、ParseUint()。</p>
 <h3 id="parsebool">ParseBool()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseBool</span>(str <span style="font-weight:bold">string</span>) (value <span style="font-weight:bold">bool</span>, err <span style="font-weight:bold">error</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseBool</span>(str <span style="font-weight:bold">string</span>) (value <span style="font-weight:bold">bool</span>, err <span style="font-weight:bold">error</span>)
 </span></span></code></pre></div><p>返回字符串表示的bool值。它接受1、0、t、f、T、F、true、false、True、False、TRUE、FALSE；否则返回错误。</p>
 <h3 id="parseint">ParseInt()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseInt</span>(s <span style="font-weight:bold">string</span>, base <span style="font-weight:bold">int</span>, bitSize <span style="font-weight:bold">int</span>) (i <span style="font-weight:bold">int64</span>, err <span style="font-weight:bold">error</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseInt</span>(s <span style="font-weight:bold">string</span>, base <span style="font-weight:bold">int</span>, bitSize <span style="font-weight:bold">int</span>) (i <span style="font-weight:bold">int64</span>, err <span style="font-weight:bold">error</span>)
 </span></span></code></pre></div><p>返回字符串表示的整数值，接受正负号。</p>
 <p>base指定进制（2到36），如果base为0，则会从字符串前置判断，”0x”是16进制，”0”是8进制，否则是10进制；</p>
 <p>bitSize指定结果必须能无溢出赋值的整数类型，0、8、16、32、64 分别代表 int、int8、int16、int32、int64；</p>
 <p>返回的err是*NumErr类型的，如果语法有误，err.Error = ErrSyntax；如果结果超出类型范围err.Error = ErrRange。</p>
 <h3 id="parseunit">ParseUnit()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseUint</span>(s <span style="font-weight:bold">string</span>, base <span style="font-weight:bold">int</span>, bitSize <span style="font-weight:bold">int</span>) (n <span style="font-weight:bold">uint64</span>, err <span style="font-weight:bold">error</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseUint</span>(s <span style="font-weight:bold">string</span>, base <span style="font-weight:bold">int</span>, bitSize <span style="font-weight:bold">int</span>) (n <span style="font-weight:bold">uint64</span>, err <span style="font-weight:bold">error</span>)
 </span></span></code></pre></div><p><code>ParseUint</code>类似<code>ParseInt</code>但不接受正负号，用于无符号整型。</p>
 <h3 id="parsefloat">ParseFloat()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseFloat</span>(s <span style="font-weight:bold">string</span>, bitSize <span style="font-weight:bold">int</span>) (f <span style="font-weight:bold">float64</span>, err <span style="font-weight:bold">error</span>)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">ParseFloat</span>(s <span style="font-weight:bold">string</span>, bitSize <span style="font-weight:bold">int</span>) (f <span style="font-weight:bold">float64</span>, err <span style="font-weight:bold">error</span>)
 </span></span></code></pre></div><p>解析一个表示浮点数的字符串并返回其值。</p>
 <p>如果s合乎语法规则，函数会返回最为接近s表示值的一个浮点数（使用IEEE754规范舍入）。</p>
 <p>bitSize指定了期望的接收类型，32是float32（返回值可以不改变精确值的赋值给float32），64是float64；</p>
 <p>返回值err是*NumErr类型的，语法有误的，err.Error=ErrSyntax；结果超出表示范围的，返回值f为±Inf，err.Error= ErrRange。</p>
 <h3 id="代码示例">代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>b, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseBool</span>(<span style="color:#666;font-style:italic">&#34;true&#34;</span>)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>f, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseFloat</span>(<span style="color:#666;font-style:italic">&#34;3.1415&#34;</span>, 64)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>i, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseInt</span>(<span style="color:#666;font-style:italic">&#34;-2&#34;</span>, 10, 64)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>u, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseUint</span>(<span style="color:#666;font-style:italic">&#34;2&#34;</span>, 10, 64)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>b, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseBool</span>(<span style="color:#666;font-style:italic">&#34;true&#34;</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>f, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseFloat</span>(<span style="color:#666;font-style:italic">&#34;3.1415&#34;</span>, 64)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>i, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseInt</span>(<span style="color:#666;font-style:italic">&#34;-2&#34;</span>, 10, 64)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>u, err := strconv.<span style="color:#666;font-weight:bold;font-style:italic">ParseUint</span>(<span style="color:#666;font-style:italic">&#34;2&#34;</span>, 10, 64)
 </span></span></code></pre></div><p>这些函数都有两个返回值，第一个返回值是转换后的值，第二个返回值为转化失败的错误信息。</p>
 <h2 id="format系列函数">Format系列函数</h2>
 <p>Format系列函数实现了将给定类型数据格式化为string类型数据的功能。</p>
 <h3 id="formatbool">FormatBool()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatBool</span>(b <span style="font-weight:bold">bool</span>) <span style="font-weight:bold">string</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatBool</span>(b <span style="font-weight:bold">bool</span>) <span style="font-weight:bold">string</span>
 </span></span></code></pre></div><p>根据b的值返回”true”或”false”。</p>
 <h3 id="formatint">FormatInt()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(i <span style="font-weight:bold">int64</span>, base <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(i <span style="font-weight:bold">int64</span>, base <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
 </span></span></code></pre></div><p>返回i的base进制的字符串表示。base 必须在2到36之间，结果中会使用小写字母’a’到’z’表示大于10的数字。</p>
 <h3 id="formatuint">FormatUint()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatUint</span>(i <span style="font-weight:bold">uint64</span>, base <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatUint</span>(i <span style="font-weight:bold">uint64</span>, base <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
 </span></span></code></pre></div><p>是FormatInt的无符号整数版本。</p>
 <h3 id="formatfloat">FormatFloat()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatFloat</span>(f <span style="font-weight:bold">float64</span>, fmt <span style="font-weight:bold">byte</span>, prec, bitSize <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">FormatFloat</span>(f <span style="font-weight:bold">float64</span>, fmt <span style="font-weight:bold">byte</span>, prec, bitSize <span style="font-weight:bold">int</span>) <span style="font-weight:bold">string</span>
 </span></span></code></pre></div><p>函数将浮点数表示为字符串并返回。</p>
 <p>bitSize表示f的来源类型（32：float32、64：float64），会据此进行舍入。</p>
 <p>fmt表示格式：’f’（-ddd.dddd）、’b’（-ddddp±ddd，指数为二进制）、’e’（-d.dddde±dd，十进制指数）、’E’（-d.ddddE±dd，十进制指数）、’g’（指数很大时用’e’格式，否则’f’格式）、’G’（指数很大时用’E’格式，否则’f’格式）。</p>
 <p>prec控制精度（排除指数部分）：对’f’、’e’、’E’，它表示小数点后的数字个数；对’g’、’G’，它控制总的数字个数。如果prec 为-1，则代表使用最少数量的、但又必需的数字来表示f。</p>
 <h3 id="代码示例-1">代码示例</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>s1 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatBool</span>(<span style="font-weight:bold">true</span>)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>s2 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatFloat</span>(3.1415, <span style="color:#666;font-style:italic">&#39;E&#39;</span>, -1, 64)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>s3 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(-2, 16)
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>s4 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatUint</span>(2, 16)
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>s1 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatBool</span>(<span style="font-weight:bold">true</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>s2 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatFloat</span>(3.1415, <span style="color:#666;font-style:italic">&#39;E&#39;</span>, -1, 64)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>s3 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatInt</span>(-2, 16)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>s4 := strconv.<span style="color:#666;font-weight:bold;font-style:italic">FormatUint</span>(2, 16)
 </span></span></code></pre></div><h2 id="其他">其他</h2>
 <h3 id="isprint">isPrint()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">IsPrint</span>(r <span style="font-weight:bold">rune</span>) <span style="font-weight:bold">bool</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">IsPrint</span>(r <span style="font-weight:bold">rune</span>) <span style="font-weight:bold">bool</span>
 </span></span></code></pre></div><p>返回一个字符是否是可打印的，和<code>unicode.IsPrint</code>一样，r必须是：字母（广义）、数字、标点、符号、ASCII空格。</p>
 <h3 id="canbackquote">CanBackquote()</h3>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">CanBackquote</span>(s <span style="font-weight:bold">string</span>) <span style="font-weight:bold">bool</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">CanBackquote</span>(s <span style="font-weight:bold">string</span>) <span style="font-weight:bold">bool</span>
 </span></span></code></pre></div><p>返回字符串s是否可以不被修改的表示为一个单行的、没有空格和tab之外控制字符的反引号字符串。</p>
 <h3 id="其他-1">其他</h3>
 <p>除上文列出的函数外，<code>strconv</code>包中还有Append系列、Quote系列等函数。具体用法可查看<a href="https://golang.org/pkg/strconv/">官方文档</a>。</p>
@@ -464,6 +464,10 @@ code.has-jax {
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/hugo_aliyun/" title="将hugo博客部署到阿里云">将hugo博客部署到阿里云</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
     </li>
     
@@ -497,10 +501,6 @@ code.has-jax {
     
     <li>
         <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
     </li>
     
 </ul>
@@ -561,7 +561,7 @@ code.has-jax {
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
-    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -586,6 +586,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
     <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/aliyun/">aliyun</a>
     
     <a href="https://blog.imw7.com/tags/centos/">centos</a>
     
@@ -618,6 +620,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
     
     <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/interface/">interface</a>
     

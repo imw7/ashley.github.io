@@ -6,15 +6,14 @@
     <description>Recent content in http on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 28 Dec 2021 22:56:50 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/http/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 28 Dec 2021 22:56:50 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/http/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTTP协议</title>
       <link>https://blog.imw7.com/post/http/</link>
       <pubDate>Tue, 28 Dec 2021 22:56:50 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/http/</guid>
       <description>&lt;p&gt;本文介绍&lt;code&gt;HTTP&lt;/code&gt;协议的相关知识，争取通过这篇博客彻底弄懂&lt;code&gt;HTTP&lt;/code&gt;协议。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

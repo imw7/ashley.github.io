@@ -103,43 +103,43 @@
             <p>本文介绍的是在 <code>Hugo</code> 的使用过程中遇到的一些问题。</p>
 <h2 id="hugo处理数学公式">Hugo处理数学公式</h2>
 <p>添加 <code>MathJax</code> 以便对 <code>Hugo</code> 解析公式时提供支持。把一下内容写入 <code>layouts/partials/mathjax.html</code> 文件中：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;script type=<span style="color:#666;font-style:italic">&#34;text/javascript&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>        async
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        src=<span style="color:#666;font-style:italic">&#34;https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;</span>&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>MathJax.Hub.Config({
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  tex2jax: {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    inlineMath: [[<span style="color:#666;font-style:italic">&#39;$&#39;</span>,<span style="color:#666;font-style:italic">&#39;$&#39;</span>], [<span style="color:#666;font-style:italic">&#39;\\(&#39;</span>,<span style="color:#666;font-style:italic">&#39;\\)&#39;</span>]],
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    displayMath: [[<span style="color:#666;font-style:italic">&#39;$$&#39;</span>,<span style="color:#666;font-style:italic">&#39;$$&#39;</span>], [<span style="color:#666;font-style:italic">&#39;\[\[&#39;</span>,<span style="color:#666;font-style:italic">&#39;\]\]&#39;</span>]],
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    processEscapes: <span style="font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    processEnvironments: <span style="font-weight:bold">true</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    skipTags: [<span style="color:#666;font-style:italic">&#39;script&#39;</span>, <span style="color:#666;font-style:italic">&#39;noscript&#39;</span>, <span style="color:#666;font-style:italic">&#39;style&#39;</span>, <span style="color:#666;font-style:italic">&#39;textarea&#39;</span>, <span style="color:#666;font-style:italic">&#39;pre&#39;</span>],
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    TeX: { equationNumbers: { autoNumber: <span style="color:#666;font-style:italic">&#34;AMS&#34;</span> },
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>         extensions: [<span style="color:#666;font-style:italic">&#34;AMSmath.js&#34;</span>, <span style="color:#666;font-style:italic">&#34;AMSsymbols.js&#34;</span>] }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>});
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>MathJax.Hub.Queue(<span style="font-weight:bold;font-style:italic">function</span>() {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#888;font-style:italic">// Fix &lt;code&gt; tags after MathJax finishes running. This is a
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// hack to overcome a shortcoming of Markdown. Discussion at
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// https://github.com/mojombo/jekyll/issues/199
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold;font-style:italic">var</span> all = MathJax.Hub.getAllJax(), i;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="font-weight:bold">for</span>(i = 0; i &lt; all.length; i += 1) {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        all[i].SourceElement().parentNode.className += <span style="color:#666;font-style:italic">&#39; has-jax&#39;</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    }
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>});
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>&lt;/script&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>&lt;style&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>code.<span style="color:#666;font-weight:bold;font-style:italic">has-jax</span> {
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>    <span style="font-weight:bold">font</span>: <span style="font-weight:bold">inherit</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>    <span style="font-weight:bold">font-size</span>: 100<span style="font-weight:bold">%</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    <span style="font-weight:bold">background</span>: <span style="font-weight:bold">inherit</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    <span style="font-weight:bold">border</span>: <span style="font-weight:bold">inherit</span>;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    <span style="font-weight:bold">color</span>: #515151;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>}
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>&lt;/style&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;script type=<span style="color:#666;font-style:italic">&#34;text/javascript&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>        async
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        src=<span style="color:#666;font-style:italic">&#34;https://cdn.bootcss.com/mathjax/2.7.3/MathJax.js?config=TeX-AMS-MML_HTMLorMML&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>MathJax.Hub.Config({
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>  tex2jax: {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    inlineMath: [[<span style="color:#666;font-style:italic">&#39;$&#39;</span>,<span style="color:#666;font-style:italic">&#39;$&#39;</span>], [<span style="color:#666;font-style:italic">&#39;\\(&#39;</span>,<span style="color:#666;font-style:italic">&#39;\\)&#39;</span>]],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    displayMath: [[<span style="color:#666;font-style:italic">&#39;$$&#39;</span>,<span style="color:#666;font-style:italic">&#39;$$&#39;</span>], [<span style="color:#666;font-style:italic">&#39;\[\[&#39;</span>,<span style="color:#666;font-style:italic">&#39;\]\]&#39;</span>]],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    processEscapes: <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    processEnvironments: <span style="font-weight:bold">true</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    skipTags: [<span style="color:#666;font-style:italic">&#39;script&#39;</span>, <span style="color:#666;font-style:italic">&#39;noscript&#39;</span>, <span style="color:#666;font-style:italic">&#39;style&#39;</span>, <span style="color:#666;font-style:italic">&#39;textarea&#39;</span>, <span style="color:#666;font-style:italic">&#39;pre&#39;</span>],
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    TeX: { equationNumbers: { autoNumber: <span style="color:#666;font-style:italic">&#34;AMS&#34;</span> },
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>         extensions: [<span style="color:#666;font-style:italic">&#34;AMSmath.js&#34;</span>, <span style="color:#666;font-style:italic">&#34;AMSsymbols.js&#34;</span>] }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>});
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>MathJax.Hub.Queue(<span style="font-weight:bold;font-style:italic">function</span>() {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>    <span style="color:#888;font-style:italic">// Fix &lt;code&gt; tags after MathJax finishes running. This is a
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// hack to overcome a shortcoming of Markdown. Discussion at
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#888;font-style:italic"></span>    <span style="color:#888;font-style:italic">// https://github.com/mojombo/jekyll/issues/199
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#888;font-style:italic"></span>    <span style="font-weight:bold;font-style:italic">var</span> all = MathJax.Hub.getAllJax(), i;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    <span style="font-weight:bold">for</span>(i = 0; i &lt; all.length; i += 1) {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>        all[i].SourceElement().parentNode.className += <span style="color:#666;font-style:italic">&#39; has-jax&#39;</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>});
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>&lt;/script&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>&lt;style&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>code.<span style="color:#666;font-weight:bold;font-style:italic">has-jax</span> {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>    <span style="font-weight:bold">font</span>: <span style="font-weight:bold">inherit</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>    <span style="font-weight:bold">font-size</span>: 100<span style="font-weight:bold">%</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    <span style="font-weight:bold">background</span>: <span style="font-weight:bold">inherit</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    <span style="font-weight:bold">border</span>: <span style="font-weight:bold">inherit</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>    <span style="font-weight:bold">color</span>: #515151;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span>&lt;/style&gt;
 </span></span></code></pre></div><p>然后在 <code>layouts/partials/footer.html</code> 文件头部写入下面的代码，因为我知道我的每篇博客都有 <code>footer</code>。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{{ partial &#34;mathjax.html&#34; . }}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>{{ partial &#34;mathjax.html&#34; . }}
 </span></span></code></pre></div><p><strong>注意</strong>：上面的语句最后的括号前面有个 <code>.</code></p>
 <p>这样 <code>Hugo</code> 就能正常解析数学公式了。</p>
         </div>
@@ -286,6 +286,10 @@ code.has-jax {
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/hugo_aliyun/" title="将hugo博客部署到阿里云">将hugo博客部署到阿里云</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
     </li>
     
@@ -319,10 +323,6 @@ code.has-jax {
     
     <li>
         <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
     </li>
     
 </ul>
@@ -383,7 +383,7 @@ code.has-jax {
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
-    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -408,6 +408,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
     <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/aliyun/">aliyun</a>
     
     <a href="https://blog.imw7.com/tags/centos/">centos</a>
     
@@ -440,6 +442,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
     
     <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/interface/">interface</a>
     

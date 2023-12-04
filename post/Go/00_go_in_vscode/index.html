@@ -256,7 +256,7 @@
 <h2 id="安装go语言开发工具包">安装Go语言开发工具包</h2>
 <p>在座Go语言开发的时候为我们提供诸如代码提示、代码自动补全等功能。</p>
 <p>在此之前请先设置<code>GOPROXY</code>，打开终端执行以下命令：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
 </span></span></code></pre></div><p>Windows平台按下<code>Ctrl+Shift+P</code>，Mac平台按<code>Command+Shift+P</code>，这个时候VS Code界面会弹出一个输入框，如下图：</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/00_config_VSCode/vscode09.png">
@@ -320,24 +320,24 @@
         </a>
     </p>
 <p>大家可以简单看下上面的注释，介绍了主要用法：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;这里放个名字&#34;</span>:{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#666;font-style:italic">&#34;prefix&#34;</span>: <span style="color:#666;font-style:italic">&#34;这个是快捷键&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#666;font-style:italic">&#34;body&#34;</span>: <span style="color:#666;font-style:italic">&#34;这里是按快捷键插入的代码片段&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#666;font-style:italic">&#34;description&#34;</span>: <span style="color:#666;font-style:italic">&#34;这里放提示信息的描述&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-style:italic">&#34;这里放个名字&#34;</span>:{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    <span style="color:#666;font-style:italic">&#34;prefix&#34;</span>: <span style="color:#666;font-style:italic">&#34;这个是快捷键&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    <span style="color:#666;font-style:italic">&#34;body&#34;</span>: <span style="color:#666;font-style:italic">&#34;这里是按快捷键插入的代码片段&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>    <span style="color:#666;font-style:italic">&#34;description&#34;</span>: <span style="color:#666;font-style:italic">&#34;这里放提示信息的描述&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span>}
 </span></span></code></pre></div><p>其中<code>$0</code>表示最终光标提留的位置。 举个例子，我这里创建了两个快捷方式，一个是输入<code>pln</code>就会在编辑器中插入<code>fmt.Println()</code>代码；输入<code>plf</code>，就会插入<code>fmt.Printf(&quot;&quot;)</code>代码。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	&#34;pln&#34;:{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>		&#34;prefix&#34;: <span style="color:#666;font-style:italic">&#34;pln&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>		&#34;body&#34;:<span style="color:#666;font-style:italic">&#34;fmt.Println($0)&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>		&#34;description&#34;: <span style="color:#666;font-style:italic">&#34;println&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	},
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	&#34;plf&#34;:{
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>		&#34;prefix&#34;: <span style="color:#666;font-style:italic">&#34;plf&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>		&#34;body&#34;: <span style="color:#666;font-style:italic">&#34;fmt.Printf(\&#34;$0\\n\&#34;)&#34;</span>,
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>		&#34;description&#34;: <span style="color:#666;font-style:italic">&#34;printf&#34;</span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	}
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-json" data-lang="json"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>	&#34;pln&#34;:{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>		&#34;prefix&#34;: <span style="color:#666;font-style:italic">&#34;pln&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>		&#34;body&#34;:<span style="color:#666;font-style:italic">&#34;fmt.Println($0)&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>		&#34;description&#34;: <span style="color:#666;font-style:italic">&#34;println&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>	},
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>	&#34;plf&#34;:{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>		&#34;prefix&#34;: <span style="color:#666;font-style:italic">&#34;plf&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>		&#34;body&#34;: <span style="color:#666;font-style:italic">&#34;fmt.Printf(\&#34;$0\\n\&#34;)&#34;</span>,
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>		&#34;description&#34;: <span style="color:#666;font-style:italic">&#34;printf&#34;</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>	}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>}
 </span></span></code></pre></div><p>把上面的代码，按下图方式粘贴到配置文件中，保存并关闭配置文件即可。</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/00_config_VSCode/vscode20.png">
@@ -494,6 +494,10 @@ code.has-jax {
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/hugo_aliyun/" title="将hugo博客部署到阿里云">将hugo博客部署到阿里云</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
     </li>
     
@@ -527,10 +531,6 @@ code.has-jax {
     
     <li>
         <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
     </li>
     
 </ul>
@@ -591,7 +591,7 @@ code.has-jax {
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
-    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -616,6 +616,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
     <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/aliyun/">aliyun</a>
     
     <a href="https://blog.imw7.com/tags/centos/">centos</a>
     
@@ -648,6 +650,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
     
     <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/interface/">interface</a>
     

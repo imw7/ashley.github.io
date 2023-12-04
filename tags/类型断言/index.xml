@@ -6,15 +6,14 @@
     <description>Recent content in 类型断言 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 02 May 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言基础之接口</title>
       <link>https://blog.imw7.com/post/Go/12_interface/</link>
       <pubDate>Thu, 02 May 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/12_interface/</guid>
       <description>&lt;p&gt;接口（interface）定义了一个对象的行为规范，只定义规范不实现，由具体的对象来实现规范的细节。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

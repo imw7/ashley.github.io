@@ -6,15 +6,14 @@
     <description>Recent content in template on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/template/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/template/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言标准库之html/template</title>
       <link>https://blog.imw7.com/post/Go/go_template/</link>
       <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_template/</guid>
       <description>&lt;p&gt;&lt;code&gt;html/template&lt;/code&gt;包实现了数据驱动的模板，用于生成可防止代码注入的安全的&lt;code&gt;HTML&lt;/code&gt;内容。它提供了和&lt;code&gt;text/template&lt;/code&gt;包相同的接口，&lt;code&gt;Go&lt;/code&gt;语言中输出&lt;code&gt;HTML&lt;/code&gt;的场景都应使用&lt;code&gt;html/template&lt;/code&gt;这个包。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

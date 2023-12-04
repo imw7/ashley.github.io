@@ -6,15 +6,14 @@
     <description>Recent content in 结构体 on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 31 Mar 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 31 Mar 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/%E7%BB%93%E6%9E%84%E4%BD%93/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go语言基础之结构体</title>
       <link>https://blog.imw7.com/post/Go/10_struct/</link>
       <pubDate>Sun, 31 Mar 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/10_struct/</guid>
       <description>&lt;p&gt;Go语言中没有“类”的概念，也不支持“类”的继承等面向对象的概念。Go语言中通过结构体的内嵌再配合接口比面向对象具有更高的扩展性和灵活性。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

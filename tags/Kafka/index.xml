@@ -6,24 +6,21 @@
     <description>Recent content in Kafka on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Sun, 18 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Kafka/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 18 Aug 2019 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/Kafka/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go操作Kafka</title>
       <link>https://blog.imw7.com/post/Go/go_kafka/</link>
       <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/go_kafka/</guid>
       <description>&lt;p&gt;Kafka是一种高吞吐量的分布式发布订阅消息系统，它可以处理消费者规模的网站中的所有动作流数据，具有高性能、持久化、多副本备份、横向扩展等特点。本文介绍了如何使用Go语言发送和接收kafka消息。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>日志收集项目</title>
       <link>https://blog.imw7.com/post/Go/log_agent/</link>
       <pubDate>Sun, 18 Aug 2019 00:00:00 +0000</pubDate>
-      
       <guid>https://blog.imw7.com/post/Go/log_agent/</guid>
       <description>&lt;p&gt;本文介绍日志收集项目的架构设计以及Kafka、tailf、sarama等包的使用。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>

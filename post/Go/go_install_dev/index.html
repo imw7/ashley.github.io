@@ -292,16 +292,16 @@
 <h3 id="linux下安装">Linux下安装</h3>
 <p>如果不是要在<code>Linux</code>平台敲<code>Go</code>代码就不需要在<code>Linux</code>平台安装<code>Go</code>，我们开发机上写好的<code>Go</code>代码只需要跨平台编译（详见文章末尾的跨平台编译）好之后就可以拷贝到<code>Linux</code>服务器上运行了，这也是<code>Go</code>程序跨平台易部署的优势。</p>
 <p>我们在版本选择页面选择并下载好<code>go1.16.linux-amd64.tar.gz</code>文件：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>wget https://dl.google.com/go/go1.16.linux-amd64.tar.gz
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>wget https://dl.google.com/go/go1.16.linux-amd64.tar.gz
 </span></span></code></pre></div><p>将下载好的文件解压到<code>/usr/local</code>目录下：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>tar -zxvf go1.16.linux-amd64.tar.gz -C /usr/local  <span style="color:#888;font-style:italic"># 解压</span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>tar -zxvf go1.16.linux-amd64.tar.gz -C /usr/local  <span style="color:#888;font-style:italic"># 解压</span>
 </span></span></code></pre></div><p>如果提示没有权限，加上<code>sudo</code>以<code>root</code>用户的身份再运行。执行完就可以在<code>/usr/local/</code>下看到<code>go</code>目录了。</p>
 <p>配置环境变量： <code>Linux</code>下有两个文件可以配置环境变量，其中<code>/etc/profile</code>是对所有用户生效的；<code>$HOME/.profile</code>是对当前用户生效的，根据自己的情况自行选择一个文件打开，添加如下两行代码，保存退出。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">GOROOT</span>=/usr/local/go
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">PATH</span>=<span style="color:#666;font-weight:bold;font-style:italic">$PATH</span>:<span style="color:#666;font-weight:bold;font-style:italic">$GOROOT</span>/bin
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">GOROOT</span>=/usr/local/go
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="font-weight:bold;font-style:italic">export</span> <span style="color:#666;font-weight:bold;font-style:italic">PATH</span>=<span style="color:#666;font-weight:bold;font-style:italic">$PATH</span>:<span style="color:#666;font-weight:bold;font-style:italic">$GOROOT</span>/bin
 </span></span></code></pre></div><p>修改<code>/etc/profile</code>后要重启生效，修改<code>$HOME/.profile</code>后使用<code>source</code>命令加载<code>$HOME/.profile</code>文件即可生效。 检查：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>~ go version
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>go version go1.16 linux/amd64
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>~ go version
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>go version go1.16 linux/amd64
 </span></span></code></pre></div><h3 id="mac下安装">Mac下安装</h3>
 <p>下载可执行文件版，直接点击<strong>下一步</strong>安装即可，默认会将<code>Go</code>安装到<code>/usr/local/go</code>目录下。</p>
 <p>
@@ -371,7 +371,7 @@
 <p><code>Go1.14</code>版本之后，都推荐使用<code>go mod</code>模式来管理依赖环境了，也不再强制我们把代码必须写在<code>GOPATH</code>下面的<code>src</code>目录了，你可以在你电脑的任意位置编写<code>Go</code>代码。（网上有些教程适用于1.11版本之前。）</p>
 <p>默认<code>GOPROXY</code>配置是：<code>GOPROXY=https://proxy.golang.org,direct</code>，由于国内访问不到<code>https://proxy.golang.org</code>，所以我们需要换一个<code>PROXY</code>，这里推荐使用<code>https://goproxy.io</code>或<code>https://goproxy.cn</code>。</p>
 <p>可以执行下面的命令修改<code>GOPROXY</code>：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go env -w <span style="color:#666;font-weight:bold;font-style:italic">GOPROXY</span>=https://goproxy.cn,direct
 </span></span></code></pre></div><h2 id="go开发编辑器">Go开发编辑器</h2>
 <p><code>Go</code>采用的是<code>UTF-8</code>编码的文本文件存放源代码，理论上使用任何一款文本编辑器都可以做<code>Go</code>语言开发，这里推荐使用<code>VS Code</code>和<code>Goland</code>。 <code>VS Code</code>是微软开源的编辑器，而<code>Goland</code>是<code>JetBrains</code>出品的付费<code>IDE</code>。</p>
 <p>我们这里使用<code>VS Code</code> 加插件做为<code>Go</code>语言的开发工具。</p>
@@ -410,26 +410,26 @@
 <h3 id="hello-world">Hello World</h3>
 <p>现在我们来创建第一个<code>Go</code>项目——<code>hello</code>。在我们桌面创建一个<code>hello</code>目录。</p>
 <p>在该目录中创建一个<code>main.go</code>文件：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">package</span> main  <span style="color:#888;font-style:italic">// 声明 main 包，表明当前是一个可执行程序
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>  <span style="color:#888;font-style:italic">// 导入内置 fmt 包
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"></span>
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>(){  <span style="color:#888;font-style:italic">// main函数，是程序执行的入口
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Hello World!&#34;</span>)  <span style="color:#888;font-style:italic">// 在终端打印 Hello World!
-</span></span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"></span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-go" data-lang="go"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold">package</span> main  <span style="color:#888;font-style:italic">// 声明 main 包，表明当前是一个可执行程序
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="font-weight:bold">import</span> <span style="color:#666;font-style:italic">&#34;fmt&#34;</span>  <span style="color:#888;font-style:italic">// 导入内置 fmt 包
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span><span style="color:#888;font-style:italic"></span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span><span style="font-weight:bold;font-style:italic">func</span> <span style="color:#666;font-weight:bold;font-style:italic">main</span>(){  <span style="color:#888;font-style:italic">// main函数，是程序执行的入口
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span><span style="color:#888;font-style:italic"></span>	fmt.<span style="color:#666;font-weight:bold;font-style:italic">Println</span>(<span style="color:#666;font-style:italic">&#34;Hello World!&#34;</span>)  <span style="color:#888;font-style:italic">// 在终端打印 Hello World!
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span><span><span style="color:#888;font-style:italic"></span>}
 </span></span></code></pre></div><h3 id="go-build">go build</h3>
 <p><code>go build</code>表示将源代码编译成可执行文件。</p>
 <p>在<code>hello</code>目录下执行：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build
 </span></span></code></pre></div><p>或者在其他目录执行以下命令：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build hello
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build hello
 </span></span></code></pre></div><p><code>Go</code>编译器会去 <code>GOPATH</code>的<code>src</code>目录下查找你要编译的<code>hello</code>项目</p>
 <p>编译得到的可执行文件会保存在执行编译命令的当前目录下，如果是<code>windows</code>平台会在当前目录下找到<code>hello.exe</code>可执行文件。</p>
 <p>可在终端直接执行该<code>hello.exe</code>文件：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>c:<span style="color:#666;font-style:italic">\d</span>esktop<span style="color:#666;font-style:italic">\h</span>ello&gt;hello.exe
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Hello World!
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>c:<span style="color:#666;font-style:italic">\d</span>esktop<span style="color:#666;font-style:italic">\h</span>ello&gt;hello.exe
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>Hello World!
 </span></span></code></pre></div><p>我们还可以使用<code>-o</code>参数来指定编译后得到的可执行文件的名字。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build -o helloworld.exe
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>go build -o helloworld.exe
 </span></span></code></pre></div><h3 id="windows下vscode切换cmdexe作为默认终端">Windows下VSCode切换cmd.exe作为默认终端</h3>
 <p>如果你打开<code>VS Code</code>的终端界面出现如下图场景（注意观察红框圈中部分），那么你的<code>VS Code</code>此时正使用<code>powershell</code>作为默认终端：
         <a data-fancybox="gallery" href="https://imw7.github.io/images/Go/install_go_dev/vscode_shell1.png">
@@ -455,22 +455,22 @@
 <h3 id="跨平台编译">跨平台编译</h3>
 <p>默认我们<code>go build</code>的可执行文件都是当前操作系统可执行的文件，如果我想在<code>windows</code>下编译一个<code>linux</code>下可执行文件，那需要怎么做呢？</p>
 <p>只需要指定目标操作系统的平台和处理器架构即可：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0  // 禁用CGO
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux  // 目标平台是linux
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64  // 目标处理器架构是amd64
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0  // 禁用CGO
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux  // 目标平台是linux
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64  // 目标处理器架构是amd64
 </span></span></code></pre></div><p><em><strong>使用了<code>cgo</code>的代码是不支持跨平台编译的</strong></em></p>
 <p>然后再执行<code>go build</code>命令，得到的就是能够在<code>Linux</code>平台运行的可执行文件了。</p>
 <p><code>Mac </code>下编译 <code>Linux</code> 和<code> Windows</code>平台 <code>64位</code> 可执行程序：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=windows <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=linux <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=windows <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
 </span></span></code></pre></div><p><code>Linux</code> 下编译 <code>Mac</code> 和 <code>Windows</code> 平台<code>64位</code>可执行程序：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=darwin <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=windows <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=darwin <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0 <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=windows <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64 go build
 </span></span></code></pre></div><p><code>Windows</code>下编译<code>Mac</code>平台<code>64位</code>可执行程序：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=darwin
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>go build
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">CGO_ENABLED</span>=0
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOOS</span>=darwin
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>SET <span style="color:#666;font-weight:bold;font-style:italic">GOARCH</span>=amd64
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span>go build
 </span></span></code></pre></div><p>好了，完成。人生苦短，let’s Go。</p>
         </div>
 
@@ -616,6 +616,10 @@ code.has-jax {
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/hugo_aliyun/" title="将hugo博客部署到阿里云">将hugo博客部署到阿里云</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
     </li>
     
@@ -649,10 +653,6 @@ code.has-jax {
     
     <li>
         <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
     </li>
     
 </ul>
@@ -713,7 +713,7 @@ code.has-jax {
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
-    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -738,6 +738,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
     <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/aliyun/">aliyun</a>
     
     <a href="https://blog.imw7.com/tags/centos/">centos</a>
     
@@ -770,6 +772,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
     
     <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/interface/">interface</a>
     

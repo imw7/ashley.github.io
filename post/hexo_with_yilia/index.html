@@ -280,10 +280,10 @@
 </blockquote>
 <h3 id="安装-hexo">安装 Hexo</h3>
 <p>所有必备的应用程序安装完成后，即可使用 npm 安装 Hexo。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ npm install -g hexo-cli
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ npm install -g hexo-cli
 </span></span></code></pre></div><h3 id="进阶安装和使用">进阶安装和使用</h3>
 <p>对于熟悉 npm 的进阶用户，可以仅局部安装 <code>hexo</code> 包。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ npm install hexo
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>$ npm install hexo
 </span></span></code></pre></div><p>安装以后，可以使用以下两种方式执行 Hexo：</p>
 <ol>
 <li>
@@ -291,7 +291,7 @@
 </li>
 <li>
 <p>将 Hexo 所在的目录下的 <code>node_modules</code> 添加到环境变量之中即可直接使用 <code>hexo &lt;command&gt;</code>：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">echo</span> <span style="color:#666;font-style:italic">&#39;PATH=&#34;$PATH:./node_modules/.bin&#34;&#39;</span> &gt;&gt; ~/.profile
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="font-weight:bold;font-style:italic">echo</span> <span style="color:#666;font-style:italic">&#39;PATH=&#34;$PATH:./node_modules/.bin&#34;&#39;</span> &gt;&gt; ~/.profile
 </span></span></code></pre></div></li>
 </ol>
 <p>好了，Hexo安装和使用介绍完毕。下面以Linux为例，教你如何一步一步搭建个人博客。</p>
@@ -407,7 +407,7 @@
 <h3 id="博客首页不显示全文">博客首页不显示全文</h3>
 <p>如果不做任何操作，博客默认是会显示全文的，数量少影响不大。但是，如果博客数量特别多，而且都是显示全文的情况下，想要快速浏览就不太现实了。这种情况下，就很有必要选择只在首页显示一部分，用户点进去之后再显示全文。</p>
 <p>如何让<code>yilia</code>主题首页不显示全文，截断文章？很简单，只需要在<code>markdown</code>文档中，手动写入下面这条语句即可。</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">&lt;!--</span> more --&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#888;font-style:italic">&lt;!--</span> more --&gt;
 </span></span></code></pre></div><p>具体位置，看情况个人选择。语句块位置的上面部分会显示在首页，余下部分不会显示。</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/hexo/add.png">
@@ -424,9 +424,9 @@
 <h3 id="首页隐藏more">首页隐藏more</h3>
 <p>要想隐藏<code>markdown</code>文本中的<code>more</code>，需要进行如下操作：</p>
 <p>首先进入 <code>yourlog/themes/yilia/layout/_partial</code> 目录，在其中找到<code>article.ejs</code>文件，使用<code>vim</code>或其他工具打开，找到 <code>article-more-a</code>语句块，在其中加入<code>style=&quot;display: none&quot;</code>即可。代码如下：</p>
-<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;div <span style="font-weight:bold">class</span>=<span style="color:#666;font-style:italic">&#34;article-entry&#34;</span> itemprop=<span style="color:#666;font-style:italic">&#34;articleBody&#34;</span>&gt;
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    ...
-</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    &lt;a <span style="font-weight:bold">class</span>=<span style="color:#666;font-style:italic">&#34;article-more-a&#34;</span> style=<span style="color:#666;font-style:italic">&#34;display: none&#34;</span> href=<span style="color:#666;font-style:italic">&#34;%- url_for(post.path) %&gt;#more&#34;</span>&gt;&lt;%= theme.excerpt_link %&gt; &gt;&gt;&lt;<span style="">/a&gt; </span>
+<div class="highlight"><pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-js" data-lang="js"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span>&lt;div <span style="font-weight:bold">class</span>=<span style="color:#666;font-style:italic">&#34;article-entry&#34;</span> itemprop=<span style="color:#666;font-style:italic">&#34;articleBody&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span>    ...
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span>    &lt;a <span style="font-weight:bold">class</span>=<span style="color:#666;font-style:italic">&#34;article-more-a&#34;</span> style=<span style="color:#666;font-style:italic">&#34;display: none&#34;</span> href=<span style="color:#666;font-style:italic">&#34;%- url_for(post.path) %&gt;#more&#34;</span>&gt;&lt;%= theme.excerpt_link %&gt; &gt;&gt;&lt;<span style="">/a&gt; </span>
 </span></span></code></pre></div><p>添加完成后，保存退出。回到blog根目录，先后执行<code>hexo clean</code> 和 <code>hexo d</code> 命令。浏览器打开自己的blog网页，会发现已经发生了变化。</p>
 <p>
         <a data-fancybox="gallery" href="https://imw7.github.io/images/hexo/clean.png">
@@ -619,6 +619,10 @@ code.has-jax {
 <ul class="widget-list">
     
     <li>
+        <a href="https://blog.imw7.com/post/hugo_aliyun/" title="将hugo博客部署到阿里云">将hugo博客部署到阿里云</a>
+    </li>
+    
+    <li>
         <a href="https://blog.imw7.com/post/VBA/" title="Excel VBA 常用代码">Excel VBA 常用代码</a>
     </li>
     
@@ -652,10 +656,6 @@ code.has-jax {
     
     <li>
         <a href="https://blog.imw7.com/post/mysql/" title="在CentOS7.x上安装MySQL8.0">在CentOS7.x上安装MySQL8.0</a>
-    </li>
-    
-    <li>
-        <a href="https://blog.imw7.com/post/redis_on_centos/" title="CentOS与Redis">CentOS与Redis</a>
     </li>
     
 </ul>
@@ -716,7 +716,7 @@ code.has-jax {
     
     <a href="https://blog.imw7.com/tags/Hexo/">Hexo</a>
     
-    <a href="https://blog.imw7.com/tags/Hugo/">Hugo</a>
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/Kafka/">Kafka</a>
     
@@ -741,6 +741,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/VS-Code/">VS Code</a>
     
     <a href="https://blog.imw7.com/tags/Web%E5%BC%80%E5%8F%91/">Web开发</a>
+    
+    <a href="https://blog.imw7.com/tags/aliyun/">aliyun</a>
     
     <a href="https://blog.imw7.com/tags/centos/">centos</a>
     
@@ -773,6 +775,8 @@ code.has-jax {
     <a href="https://blog.imw7.com/tags/grpc/">grpc</a>
     
     <a href="https://blog.imw7.com/tags/http/">http</a>
+    
+    <a href="https://blog.imw7.com/tags/hugo/">hugo</a>
     
     <a href="https://blog.imw7.com/tags/interface/">interface</a>
     

@@ -6,24 +6,21 @@
     <description>Recent content in Linux on 魏奇的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 01 Aug 2022 03:31:31 +0800</lastBuildDate><atom:link href="https://blog.imw7.com/tags/Linux/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 01 Aug 2022 03:31:31 +0800</lastBuildDate>
+    <atom:link href="https://blog.imw7.com/tags/Linux/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Linux手册</title>
       <link>https://blog.imw7.com/post/linux_guide/</link>
       <pubDate>Mon, 01 Aug 2022 03:31:31 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/linux_guide/</guid>
       <description>&lt;p&gt;本文主要介绍 &lt;code&gt;Linux&lt;/code&gt; 的常见命令及其使用方法。&lt;/p&gt;</description>
     </item>
-    
     <item>
       <title>使用Linux遇到的问题</title>
       <link>https://blog.imw7.com/post/ubuntu_problems/</link>
       <pubDate>Thu, 29 Apr 2021 21:55:28 +0800</pubDate>
-      
       <guid>https://blog.imw7.com/post/ubuntu_problems/</guid>
       <description>&lt;p&gt;本文记录在&lt;code&gt;Linux&lt;/code&gt;使用过程中，遇到的一些问题。&lt;/p&gt;</description>
     </item>
-    
   </channel>
 </rss>
